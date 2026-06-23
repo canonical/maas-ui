@@ -2,6 +2,7 @@ import { useMemo, useState } from "react";
 
 import { Spinner } from "@canonical/react-components";
 import type { ColumnDef } from "@tanstack/react-table";
+import { Link } from "react-router";
 
 import { useGetCurrentUser } from "@/app/api/query/auth";
 import type { UserWithStatistics } from "@/app/api/query/users";
@@ -146,15 +147,29 @@ const useUsersTableColumns = ({
           },
         },
         {
-          id: "is_superuser",
-          accessorKey: "is_superuser",
+          id: "groups",
+          accessorKey: "groups",
           enableSorting: true,
-          header: "Role",
+          header: "Groups",
           cell: ({
             row: {
-              original: { is_superuser },
+              original: { groups },
             },
-          }) => (is_superuser ? "Admin" : "User"),
+          }) =>
+            groups.length > 0
+              ? groups.map((group, index) => (
+                  <span key={group.id}>
+                    <Link
+                      to={urls.settings.userManagement.group.members({
+                        id: group.id,
+                      })}
+                    >
+                      {group.name}
+                    </Link>
+                    {index < groups.length - 1 ? ", " : null}
+                  </span>
+                ))
+              : "\u2014",
         },
         {
           id: "sshkeys_count",

@@ -2440,6 +2440,118 @@ export type OAuthTokenTypeChoices = "JWT" | "Opaque";
 export type OpenFgaEntitlementResourceType = "maas" | "pool";
 
 /**
+ * OperationResponse
+ */
+export type OperationResponse = {
+  _links?: BaseHal;
+  /**
+   * Embedded
+   */
+  _embedded?: Record<string, unknown>;
+  /**
+   * Kind
+   */
+  kind?: string;
+  /**
+   * Uuid
+   */
+  uuid: string;
+  op_type: OperationType;
+  /**
+   * Resource Id
+   */
+  resource_id?: number;
+  /**
+   * Resource Type
+   */
+  resource_type?: string;
+  status: OperationStatus;
+  /**
+   * Created
+   */
+  created: string;
+  /**
+   * Updated
+   */
+  updated: string;
+  /**
+   * Started
+   */
+  started?: string;
+  /**
+   * Finished
+   */
+  finished?: string;
+  /**
+   * Current Task
+   */
+  current_task?: string;
+  /**
+   * Parameters
+   */
+  parameters?: Record<string, unknown>;
+  /**
+   * Result
+   */
+  result?: Record<string, unknown>;
+  /**
+   * Is Bulk
+   */
+  is_bulk: boolean;
+  /**
+   * Parent Id
+   */
+  parent_id?: string;
+  /**
+   * User Id
+   */
+  user_id?: number;
+};
+
+/**
+ * OperationStatus
+ */
+export type OperationStatus =
+  | "ACCEPTED"
+  | "CANCELLED"
+  | "CANCELLING"
+  | "COMPLETED_WITH_ERRORS"
+  | "COMPLETED"
+  | "FAILED"
+  | "RUNNING";
+
+/**
+ * OperationType
+ */
+export type OperationType =
+  | "machine.bulkdeploy"
+  | "machine.commission"
+  | "machine.deploy"
+  | "selection.sync";
+
+/**
+ * OperationsListResponse
+ */
+export type OperationsListResponse = {
+  /**
+   * Items
+   */
+  items: OperationResponse[];
+  /**
+   * Total
+   */
+  total: number;
+  /**
+   * Next
+   */
+  next?: string;
+  /**
+   * Kind
+   */
+  kind?: string;
+};
+
+/**
  * PackageRepositoryCreateRequest
  */
 export type PackageRepositoryCreateRequest = {
@@ -4500,10 +4612,6 @@ export type UserCreateRequest = {
    */
   username: string;
   /**
-   * Is Superuser
-   */
-  is_superuser: boolean;
-  /**
    * First Name
    */
   first_name: string;
@@ -4519,6 +4627,12 @@ export type UserCreateRequest = {
    * Password
    */
   password: string;
+  /**
+   * Groups
+   *
+   * The IDs of the groups the user will be a member of.
+   */
+  groups?: number[];
 };
 
 /**
@@ -4646,6 +4760,20 @@ export type UserGroupStatisticsResponse = {
 };
 
 /**
+ * UserGroupSummaryResponse
+ */
+export type UserGroupSummaryResponse = {
+  /**
+   * Id
+   */
+  id: number;
+  /**
+   * Name
+   */
+  name: string;
+};
+
+/**
  * UserGroupsListResponse
  */
 export type UserGroupsListResponse = {
@@ -4702,9 +4830,9 @@ export type UserInfoResponse = {
    */
   username: string;
   /**
-   * Is Superuser
+   * Entitlements
    */
-  is_superuser: boolean;
+  entitlements: EntitlementResponse[];
 };
 
 /**
@@ -4729,9 +4857,9 @@ export type UserResponse = {
    */
   username: string;
   /**
-   * Is Superuser
+   * Groups
    */
-  is_superuser: boolean;
+  groups: UserGroupSummaryResponse[];
   /**
    * First Name
    */
@@ -4798,10 +4926,6 @@ export type UserUpdateRequest = {
    */
   username: string;
   /**
-   * Is Superuser
-   */
-  is_superuser: boolean;
-  /**
    * First Name
    */
   first_name: string;
@@ -4817,6 +4941,12 @@ export type UserUpdateRequest = {
    * Password
    */
   password?: string;
+  /**
+   * Groups
+   *
+   * The IDs of the groups the user will be a member of.
+   */
+  groups?: number[];
 };
 
 /**
@@ -6859,6 +6989,12 @@ export type ListCustomImagesStatusData = {
      */
     id?: number[];
     /**
+     * File Type
+     *
+     * Filter by file type (e.g., self-extracting for switch images)
+     */
+    file_type?: BootResourceFileTypeChoice;
+    /**
      * Page
      */
     page?: number;
@@ -6932,6 +7068,12 @@ export type ListCustomImagesStatisticData = {
      * Filter by Custom Image ID
      */
     id?: number[];
+    /**
+     * File Type
+     *
+     * Filter by file type (e.g., self-extracting for switch images)
+     */
+    file_type?: BootResourceFileTypeChoice;
     /**
      * Page
      */
@@ -7042,6 +7184,18 @@ export type ListCustomImagesData = {
   body?: never;
   path?: never;
   query?: {
+    /**
+     * Id
+     *
+     * Filter by Custom Image ID
+     */
+    id?: number[];
+    /**
+     * File Type
+     *
+     * Filter by file type (e.g., self-extracting for switch images)
+     */
+    file_type?: BootResourceFileTypeChoice;
     /**
      * Page
      */
@@ -8747,6 +8901,135 @@ export type DismissNotificationResponses = {
 
 export type DismissNotificationResponse =
   DismissNotificationResponses[keyof DismissNotificationResponses];
+
+export type CancelOperationData = {
+  body?: never;
+  path: {
+    /**
+     * Operation Uuid
+     */
+    operation_uuid: string;
+  };
+  query?: never;
+  url: "/MAAS/a/v3/operations/{operation_uuid}";
+};
+
+export type CancelOperationErrors = {
+  /**
+   * Not Found
+   */
+  404: NotFoundBodyResponse;
+  /**
+   * Conflict
+   */
+  409: ConflictBodyResponse;
+  /**
+   * Unprocessable Content
+   */
+  422: ValidationErrorBodyResponse;
+};
+
+export type CancelOperationError =
+  CancelOperationErrors[keyof CancelOperationErrors];
+
+export type CancelOperationResponses = {
+  /**
+   * Successful Response
+   */
+  202: OperationResponse;
+};
+
+export type CancelOperationResponse =
+  CancelOperationResponses[keyof CancelOperationResponses];
+
+export type GetOperationData = {
+  body?: never;
+  path: {
+    /**
+     * Operation Uuid
+     */
+    operation_uuid: string;
+  };
+  query?: never;
+  url: "/MAAS/a/v3/operations/{operation_uuid}";
+};
+
+export type GetOperationErrors = {
+  /**
+   * Not Found
+   */
+  404: NotFoundBodyResponse;
+  /**
+   * Unprocessable Content
+   */
+  422: ValidationErrorBodyResponse;
+};
+
+export type GetOperationError = GetOperationErrors[keyof GetOperationErrors];
+
+export type GetOperationResponses = {
+  /**
+   * Successful Response
+   */
+  200: OperationResponse;
+};
+
+export type GetOperationResponse =
+  GetOperationResponses[keyof GetOperationResponses];
+
+export type ListOperationsData = {
+  body?: never;
+  path?: never;
+  query?: {
+    /**
+     * Status
+     *
+     * Filter by operation status
+     */
+    status?: OperationStatus;
+    /**
+     * Op Type
+     *
+     * Filter by operation type
+     */
+    op_type?: OperationType;
+    /**
+     * Is Bulk
+     *
+     * Filter by whether operation is bulk (True) or individual (False)
+     */
+    is_bulk?: boolean;
+    /**
+     * Page
+     */
+    page?: number;
+    /**
+     * Size
+     */
+    size?: number;
+  };
+  url: "/MAAS/a/v3/operations";
+};
+
+export type ListOperationsErrors = {
+  /**
+   * Unprocessable Content
+   */
+  422: ValidationErrorBodyResponse;
+};
+
+export type ListOperationsError =
+  ListOperationsErrors[keyof ListOperationsErrors];
+
+export type ListOperationsResponses = {
+  /**
+   * Successful Response
+   */
+  200: OperationsListResponse;
+};
+
+export type ListOperationsResponse =
+  ListOperationsResponses[keyof ListOperationsResponses];
 
 export type ListPackageRepositoriesData = {
   body?: never;
@@ -10680,7 +10963,14 @@ export type DeleteFabricVlanSubnetData = {
      */
     id: number;
   };
-  query?: never;
+  query?: {
+    /**
+     * Force
+     *
+     * If true, delete the subnet even if it has IP addresses in use by nodes.
+     */
+    force?: boolean;
+  };
   url: "/MAAS/a/v3/fabrics/{fabric_id}/vlans/{vlan_id}/subnets/{id}";
 };
 
@@ -10689,6 +10979,10 @@ export type DeleteFabricVlanSubnetErrors = {
    * Not Found
    */
   404: NotFoundBodyResponse;
+  /**
+   * Precondition Failed
+   */
+  412: PreconditionFailedBodyResponse;
   /**
    * Unprocessable Content
    */
@@ -11989,6 +12283,10 @@ export type CreateUserData = {
 };
 
 export type CreateUserErrors = {
+  /**
+   * Not Found
+   */
+  404: NotFoundBodyResponse;
   /**
    * Conflict
    */

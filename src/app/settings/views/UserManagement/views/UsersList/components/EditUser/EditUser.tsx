@@ -1,5 +1,5 @@
 import type { ReactElement } from "react";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 
 import {
   Button,
@@ -7,16 +7,21 @@ import {
   Spinner,
 } from "@canonical/react-components";
 import { useQueryClient } from "@tanstack/react-query";
+import type { FormikContextType } from "formik";
 import * as Yup from "yup";
 
 import { Labels } from "../../constants";
 
 import { useAuthenticate } from "@/app/api/query/auth";
+import { useGroups } from "@/app/api/query/groups";
 import { useGetUser, useUpdateUser } from "@/app/api/query/users";
 import type { UpdateUserError, UserUpdateRequest } from "@/app/apiclient";
 import { getUserQueryKey } from "@/app/apiclient/@tanstack/react-query.gen";
 import FormikField from "@/app/base/components/FormikField";
+import { FormikFieldChangeError } from "@/app/base/components/FormikField/FormikField";
 import FormikForm from "@/app/base/components/FormikForm";
+import TagSelector from "@/app/base/components/TagSelector";
+import type { Tag } from "@/app/base/components/TagSelector/TagSelector";
 import { useSidePanel } from "@/app/base/side-panel-context";
 
 type EditUserProps = {
@@ -29,7 +34,7 @@ const UserSchema = Yup.object().shape({
     .email("Must be a valid email address")
     .required("Email is required"),
   fullName: Yup.string(),
-  is_superuser: Yup.boolean(),
+  groups: Yup.array().of(Yup.number().required()),
   password: Yup.string(),
   passwordConfirm: Yup.string().oneOf(
     [Yup.ref("password")],
@@ -64,6 +69,19 @@ const EditUser = ({
   const eTag = user.data?.headers?.get("ETag");
   const updateUser = useUpdateUser();
 
+  const { data: groups } = useGroups();
+
+  const groupTags = useMemo(
+    (): Tag[] =>
+      groups?.items.map((group) => ({
+        id: group.id,
+        name: group.name,
+        description:
+          typeof group.description === "string" ? group.description : undefined,
+      })) ?? [],
+    [groups]
+  );
+
   const combinedErrors = {
     ...(updateUser.error || {}),
     ...(authError ? { old_password: authError } : {}),
@@ -94,7 +112,7 @@ const EditUser = ({
             password: "",
             passwordConfirm: "",
             oldPassword: "",
-            is_superuser: user.data.is_superuser,
+            groups: user.data.groups.map((group) => group.id),
             first_name: user.data.first_name,
             last_name: user.data.last_name || "",
             email: user.data.email,
@@ -119,7 +137,7 @@ const EditUser = ({
 
             const updateData: UserUpdateRequest = {
               username: values.username,
-              is_superuser: values.is_superuser,
+              groups: values.groups,
               first_name: values.first_name,
               last_name: values.last_name,
               email: values.email,
@@ -153,71 +171,105 @@ const EditUser = ({
             isSelfEditing && passwordVisible ? SelfEditUserSchema : UserSchema
           }
         >
-          <FormikField
-            autoComplete="username"
-            help="Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only."
-            label={Labels.Username}
-            name="username"
-            required={true}
-            type="text"
-          />
-          <FormikField label={Labels.FullName} name="last_name" type="text" />
-          <FormikField
-            label={Labels.Email}
-            name="email"
-            required={true}
-            type="email"
-          />
-          {!isSelfEditing && (
-            <FormikField
-              label={Labels.MaasAdmin}
-              name="is_superuser"
-              type="checkbox"
-            />
-          )}
-          {!passwordVisible && (
-            <div className="u-sv2">
-              <Button
-                appearance="link"
-                className="u-no-margin--bottom"
-                data-testid="toggle-passwords"
-                onClick={() => {
-                  setPasswordVisible(!passwordVisible);
-                }}
-                type="button"
-              >
-                {Labels.ChangePassword}
-              </Button>
-            </div>
-          )}
-          {passwordVisible && (
+          {({
+            setFieldValue,
+          }: FormikContextType<
+            UserUpdateRequest & {
+              passwordConfirm: UserUpdateRequest["password"];
+              oldPassword: UserUpdateRequest["password"];
+            }
+          >) => (
             <>
-              {isSelfEditing && (
+              <FormikField
+                autoComplete="username"
+                help="Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only."
+                label={Labels.Username}
+                name="username"
+                required={true}
+                type="text"
+              />
+              <FormikField
+                label={Labels.FullName}
+                name="last_name"
+                type="text"
+              />
+              <FormikField
+                label={Labels.Email}
+                name="email"
+                required={true}
+                type="email"
+              />
+              {!isSelfEditing && (
                 <FormikField
-                  autoComplete="current-password"
-                  label={Labels.CurrentPassword}
-                  name="oldPassword"
-                  required={true}
-                  type="password"
+                  component={TagSelector}
+                  initialSelected={groupTags.filter((tag) =>
+                    user.data.groups.some((group) => group.id === tag.id)
+                  )}
+                  label="Groups"
+                  name="groups"
+                  onTagsUpdate={(selectedGroups: Tag[]) => {
+                    setFieldValue(
+                      "groups",
+                      selectedGroups.map((group) => group.id)
+                    ).catch((reason: unknown) => {
+                      throw new FormikFieldChangeError(
+                        "groups",
+                        "setFieldValue",
+                        reason as string
+                      );
+                    });
+                  }}
+                  placeholder="Select groups"
+                  tags={groupTags}
                 />
               )}
-              <FormikField
-                autoComplete="new-password"
-                label={isSelfEditing ? Labels.NewPassword : Labels.Password}
-                name="password"
-                required={true}
-                type="password"
-              />
-              <FormikField
-                autoComplete="new-password"
-                help="Enter the same password as before, for verification"
-                label={
-                  isSelfEditing ? Labels.NewPasswordAgain : Labels.PasswordAgain
-                }
-                name="passwordConfirm"
-                required={true}
-                type="password"
-              />
+              {!passwordVisible && (
+                <div className="u-sv2">
+                  <Button
+                    appearance="link"
+                    className="u-no-margin--bottom"
+                    data-testid="toggle-passwords"
+                    onClick={() => {
+                      setPasswordVisible(!passwordVisible);
+                    }}
+                    type="button"
+                  >
+                    {Labels.ChangePassword}
+                  </Button>
+                </div>
+              )}
+              {passwordVisible && (
+                <>
+                  {isSelfEditing && (
+                    <FormikField
+                      autoComplete="current-password"
+                      label={Labels.CurrentPassword}
+                      name="oldPassword"
+                      required={true}
+                      type="password"
+                    />
+                  )}
+                  <FormikField
+                    autoComplete="new-password"
+                    label={isSelfEditing ? Labels.NewPassword : Labels.Password}
+                    name="password"
+                    required={true}
+                    type="password"
+                  />
+                  <FormikField
+                    autoComplete="new-password"
+                    help="Enter the same password as before, for verification"
+                    label={
+                      isSelfEditing
+                        ? Labels.NewPasswordAgain
+                        : Labels.PasswordAgain
+                    }
+                    name="passwordConfirm"
+                    required={true}
+                    type="password"
+                  />
+                </>
+              )}
             </>
           )}
         </FormikForm>

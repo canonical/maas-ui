@@ -66,7 +66,7 @@ describe("DomainSummary", () => {
     });
     mockServer.use(
       authResolvers.getCurrentUser.handler(
-        factory.user({ is_superuser: false })
+        factory.userInfo({ entitlements: [] })
       )
     );
 
@@ -97,15 +97,17 @@ describe("DomainSummary", () => {
       });
     });
 
-    it("renders the Edit button", () => {
+    it("renders the Edit button", async () => {
       renderWithProviders(<DomainSummary id={1} />, {
         state,
       });
 
       expect(
-        screen.getAllByRole("button", {
-          name: EditableSectionLabels.EditButton,
-        })[0]
+        (
+          await screen.findAllByRole("button", {
+            name: EditableSectionLabels.EditButton,
+          })
+        )[0]
       ).toBeInTheDocument();
     });
 
@@ -115,9 +117,11 @@ describe("DomainSummary", () => {
       });
 
       await userEvent.click(
-        screen.getAllByRole("button", {
-          name: EditableSectionLabels.EditButton,
-        })[0]
+        (
+          await screen.findAllByRole("button", {
+            name: EditableSectionLabels.EditButton,
+          })
+        )[0]
       );
 
       expect(
@@ -134,9 +138,11 @@ describe("DomainSummary", () => {
       });
 
       await userEvent.click(
-        screen.getAllByRole("button", {
-          name: EditableSectionLabels.EditButton,
-        })[0]
+        (
+          await screen.findAllByRole("button", {
+            name: EditableSectionLabels.EditButton,
+          })
+        )[0]
       );
 
       await userEvent.click(screen.getByRole("button", { name: "Cancel" }));
@@ -155,9 +161,11 @@ describe("DomainSummary", () => {
       });
 
       await userEvent.click(
-        screen.getAllByRole("button", {
-          name: EditableSectionLabels.EditButton,
-        })[0]
+        (
+          await screen.findAllByRole("button", {
+            name: EditableSectionLabels.EditButton,
+          })
+        )[0]
       );
 
       await userEvent.clear(

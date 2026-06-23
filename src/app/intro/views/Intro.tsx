@@ -20,6 +20,8 @@ import type { SyncNavigateFunction } from "@/app/base/types";
 import urls from "@/app/base/urls";
 import configSelectors from "@/app/store/config/selectors";
 import { getRelativeRoute } from "@/app/utils";
+import { hasPermissions } from "@/app/utils/permissions";
+import { Entitlement } from "@/app/settings/views/UserManagement/views/Groups/constants";
 
 const Intro = (): ReactElement => {
   const navigate: SyncNavigateFunction = useNavigate();
@@ -31,9 +33,11 @@ const Intro = (): ReactElement => {
   const viewingUserIntro = location.pathname.startsWith(urls.intro.user);
 
   const user = useGetCurrentUser();
+  const isSuperUser = hasPermissions(user.data?.entitlements || [], [
+    Entitlement.CAN_EDIT_CONFIGURATIONS,
+  ]);
 
-  const showIncomplete =
-    !completedIntro && !completedUserIntro && !user.data?.is_superuser;
+  const showIncomplete = !completedIntro && !completedUserIntro && !isSuperUser;
 
   useEffect(() => {
     if (!user.isPending && !configLoading && !showIncomplete) {

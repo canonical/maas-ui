@@ -157,7 +157,7 @@ describe("NotificationGroupNotification", () => {
     });
     mockServer.use(
       authResolvers.getCurrentUser.handler(
-        factory.user({ is_superuser: false })
+        factory.userInfo({ entitlements: [] })
       )
     );
     renderWithProviders(

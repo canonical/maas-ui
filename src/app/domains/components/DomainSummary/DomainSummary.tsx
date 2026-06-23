@@ -4,16 +4,18 @@ import { Col, Row } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 
-import { useGetIsSuperUser } from "@/app/api/query/auth";
+import { useGetUserEntitlements } from "@/app/api/query/auth";
 import Definition from "@/app/base/components/Definition";
 import EditableSection from "@/app/base/components/EditableSection";
 import FormikField from "@/app/base/components/FormikField";
 import FormikForm from "@/app/base/components/FormikForm";
+import { Entitlement } from "@/app/settings/views/UserManagement/views/Groups/constants";
 import { domainActions } from "@/app/store/domain";
 import { MIN_TTL } from "@/app/store/domain/constants";
 import domainsSelectors from "@/app/store/domain/selectors";
 import type { Domain } from "@/app/store/domain/types";
 import type { RootState } from "@/app/store/root/types";
+import { hasPermissions } from "@/app/utils/permissions";
 
 const EditDomainSchema = Yup.object().shape({
   authoritative: Yup.boolean(),
@@ -51,7 +53,10 @@ const DomainSummary = ({ id }: Props): React.ReactElement | null => {
   const saving = useSelector(domainsSelectors.saving);
   const cleanup = useCallback(() => domainActions.cleanup(), []);
 
-  const isSuperUser = useGetIsSuperUser();
+  const userEntitlements = useGetUserEntitlements();
+  const canEdit = hasPermissions(userEntitlements.data || [], [
+    Entitlement.CAN_EDIT_GLOBAL_ENTITIES,
+  ]);
 
   if (!domain) {
     return null;
@@ -59,7 +64,7 @@ const DomainSummary = ({ id }: Props): React.ReactElement | null => {
 
   return (
     <EditableSection
-      canEdit={isSuperUser.data}
+      canEdit={canEdit}
       hasSidebarTitle
       renderContent={(editing, setEditing) =>
         editing ? (

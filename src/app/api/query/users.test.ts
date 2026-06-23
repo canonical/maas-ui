@@ -97,7 +97,7 @@ describe("useCreateUser", () => {
       email: "new.user@example.com",
       first_name: "Test",
       last_name: "User",
-      is_superuser: false,
+      groups: [],
       password: "xxxx",
       username: "new-user",
     };
@@ -115,7 +115,7 @@ describe("useUpdateUser", () => {
       email: "updated.user@example.com",
       first_name: "Test",
       last_name: "User",
-      is_superuser: false,
+      groups: [],
       username: "updated-user",
     };
     const { result } = renderHookWithProviders(() => useUpdateUser());

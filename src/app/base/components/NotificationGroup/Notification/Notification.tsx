@@ -3,9 +3,10 @@ import type { NotificationProps } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router";
 
-import { useGetIsSuperUser } from "@/app/api/query/auth";
+import { useGetUserEntitlements } from "@/app/api/query/auth";
 import type { SyncNavigateFunction } from "@/app/base/types";
 import settingsURLs from "@/app/settings/urls";
+import { Entitlement } from "@/app/settings/views/UserManagement/views/Groups/constants";
 import { notificationActions } from "@/app/store/notification";
 import notificationSelectors from "@/app/store/notification/selectors";
 import type { Notification as NotificationType } from "@/app/store/notification/types";
@@ -14,6 +15,7 @@ import {
   isUpgradeNotification,
 } from "@/app/store/notification/utils";
 import type { RootState } from "@/app/store/root/types";
+import { hasPermissions } from "@/app/utils/permissions";
 import { formatUtcDatetime } from "@/app/utils/time";
 
 type Props = {
@@ -29,7 +31,7 @@ const NotificationGroupNotification = ({
 }: Props): React.ReactElement | null => {
   const dispatch = useDispatch();
   const navigate: SyncNavigateFunction = useNavigate();
-  const isSuperUser = useGetIsSuperUser();
+  const userEntitlements = useGetUserEntitlements();
   const notification = useSelector((state: RootState) =>
     notificationSelectors.getById(state, id)
   );
@@ -37,7 +39,11 @@ const NotificationGroupNotification = ({
   if (!notification) {
     return null;
   }
-  const showSettings = isReleaseNotification(notification) && isSuperUser.data;
+
+  const canShowSettings = hasPermissions(userEntitlements.data || [], [
+    Entitlement.CAN_VIEW_GLOBAL_ENTITIES,
+  ]);
+  const showSettings = isReleaseNotification(notification) && canShowSettings;
   const showDate = isUpgradeNotification(notification);
   return (
     <NotificationBanner

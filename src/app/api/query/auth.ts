@@ -4,7 +4,8 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useDispatch } from "react-redux";
 
 import { useWebsocketAwareQuery } from "@/app/api/query/base";
-import type { UserWithStatistics } from "@/app/api/query/users";
+// import type { UserWithStatistics } from "@/app/api/query/users";
+import type { WithHeaders } from "@/app/api/utils";
 import {
   mutationOptionsWithHeaders,
   queryOptionsWithHeaders,
@@ -22,6 +23,7 @@ import type {
   DeleteOauthProviderData,
   DeleteOauthProviderErrors,
   DeleteOauthProviderResponses,
+  EntitlementResponse,
   ExtendSessionData,
   ExtendSessionErrors,
   ExtendSessionResponses,
@@ -54,6 +56,7 @@ import type {
   UpdateOauthProviderData,
   UpdateOauthProviderErrors,
   UpdateOauthProviderResponses,
+  UserStatisticsResponse,
 } from "@/app/apiclient";
 import {
   completeIntro,
@@ -244,10 +247,17 @@ export const useExtendSession = (
   });
 };
 
+export type CurrentUserInfo = {
+  id: number;
+  username: string;
+  entitlements: EntitlementResponse[];
+  statistics: WithHeaders<UserStatisticsResponse> | undefined;
+};
+
 export const useGetCurrentUser = (
   options?: Options<GetUserInfoData>
 ): {
-  data: UserWithStatistics | undefined;
+  data: CurrentUserInfo | undefined;
   isPending: boolean;
   isSuccess: boolean;
   isError: boolean;
@@ -276,24 +286,25 @@ export const useGetCurrentUser = (
   return {
     ...userInfo,
     data: userInfo.data
-      ? ({
+      ? {
           ...userInfo.data,
+          entitlements: userInfo.data.entitlements,
           statistics: statistics.data,
-        } as UserWithStatistics)
+        }
       : undefined,
     error: userInfo.error,
     statisticsError: statistics.error,
   };
 };
 
-export const useGetIsSuperUser = (options?: Options<GetUserInfoData>) => {
+export const useGetUserEntitlements = (options?: Options<GetUserInfoData>) => {
   return useWebsocketAwareQuery({
     ...queryOptionsWithHeaders<
       GetUserInfoResponses,
       GetUserInfoErrors,
       GetUserInfoData
     >(options, getUserInfo, getUserInfoQueryKey(options)),
-    select: (data) => data.is_superuser,
+    select: (data) => data.entitlements,
   });
 };
 

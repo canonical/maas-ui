@@ -33,6 +33,9 @@ import type {
   BulkRemoveGroupMembersData,
   BulkRemoveGroupMembersErrors,
   BulkRemoveGroupMembersResponses,
+  CancelOperationData,
+  CancelOperationErrors,
+  CancelOperationResponses,
   ChangePasswordAdminData,
   ChangePasswordAdminErrors,
   ChangePasswordAdminResponses,
@@ -306,6 +309,9 @@ import type {
   GetOauthProviderData,
   GetOauthProviderErrors,
   GetOauthProviderResponses,
+  GetOperationData,
+  GetOperationErrors,
+  GetOperationResponses,
   GetPackageRepositoryData,
   GetPackageRepositoryErrors,
   GetPackageRepositoryResponses,
@@ -447,6 +453,9 @@ import type {
   ListOauthProvidersData,
   ListOauthProvidersErrors,
   ListOauthProvidersResponses,
+  ListOperationsData,
+  ListOperationsErrors,
+  ListOperationsResponses,
   ListPackageRepositoriesData,
   ListPackageRepositoriesErrors,
   ListPackageRepositoriesResponses,
@@ -596,7 +605,8 @@ import type {
 export type Options<
   TData extends TDataShape = TDataShape,
   ThrowOnError extends boolean = boolean,
-> = Options2<TData, ThrowOnError> & {
+  TResponse = unknown,
+> = Options2<TData, ThrowOnError, TResponse> & {
   /**
    * You can provide a client instance returned by `createClient()` instead of
    * individual options. This might be also useful if you want to implement a
@@ -615,40 +625,29 @@ export type Options<
  */
 export const listOauthProviders = <ThrowOnError extends boolean = false>(
   options?: Options<ListOauthProvidersData, ThrowOnError>
-) => {
-  return (options?.client ?? client).get<
+) =>
+  (options?.client ?? client).get<
     ListOauthProvidersResponses,
     ListOauthProvidersErrors,
     ThrowOnError
   >({
-    security: [
-      {
-        scheme: "bearer",
-        type: "http",
-      },
-    ],
+    security: [{ scheme: "bearer", type: "http" }],
     url: "/MAAS/a/v3/auth/oauth/providers",
     ...options,
   });
-};
 
 /**
  * Create Oauth Provider
  */
 export const createOauthProvider = <ThrowOnError extends boolean = false>(
   options: Options<CreateOauthProviderData, ThrowOnError>
-) => {
-  return (options.client ?? client).post<
+) =>
+  (options.client ?? client).post<
     CreateOauthProviderResponses,
     CreateOauthProviderErrors,
     ThrowOnError
   >({
-    security: [
-      {
-        scheme: "bearer",
-        type: "http",
-      },
-    ],
+    security: [{ scheme: "bearer", type: "http" }],
     url: "/MAAS/a/v3/auth/oauth/providers",
     ...options,
     headers: {
@@ -656,85 +655,63 @@ export const createOauthProvider = <ThrowOnError extends boolean = false>(
       ...options.headers,
     },
   });
-};
 
 /**
  * Create Session
  */
 export const createSession = <ThrowOnError extends boolean = false>(
   options?: Options<CreateSessionData, ThrowOnError>
-) => {
-  return (options?.client ?? client).post<
+) =>
+  (options?.client ?? client).post<
     CreateSessionResponses,
     CreateSessionErrors,
     ThrowOnError
-  >({
-    url: "/MAAS/a/v3/auth/sessions",
-    ...options,
-  });
-};
+  >({ url: "/MAAS/a/v3/auth/sessions", ...options });
 
 /**
  * Delete Oauth Provider
  */
 export const deleteOauthProvider = <ThrowOnError extends boolean = false>(
   options: Options<DeleteOauthProviderData, ThrowOnError>
-) => {
-  return (options.client ?? client).delete<
+) =>
+  (options.client ?? client).delete<
     DeleteOauthProviderResponses,
     DeleteOauthProviderErrors,
     ThrowOnError
   >({
-    security: [
-      {
-        scheme: "bearer",
-        type: "http",
-      },
-    ],
+    security: [{ scheme: "bearer", type: "http" }],
     url: "/MAAS/a/v3/auth/oauth/providers/{provider_id}",
     ...options,
   });
-};
 
 /**
  * Get Oauth Provider By Id
  */
 export const getOauthProviderById = <ThrowOnError extends boolean = false>(
   options: Options<GetOauthProviderByIdData, ThrowOnError>
-) => {
-  return (options.client ?? client).get<
+) =>
+  (options.client ?? client).get<
     GetOauthProviderByIdResponses,
     GetOauthProviderByIdErrors,
     ThrowOnError
   >({
-    security: [
-      {
-        scheme: "bearer",
-        type: "http",
-      },
-    ],
+    security: [{ scheme: "bearer", type: "http" }],
     url: "/MAAS/a/v3/auth/oauth/providers/{provider_id}",
     ...options,
   });
-};
 
 /**
  * Update Oauth Provider
  */
 export const updateOauthProvider = <ThrowOnError extends boolean = false>(
   options: Options<UpdateOauthProviderData, ThrowOnError>
-) => {
-  return (options.client ?? client).put<
+) =>
+  (options.client ?? client).put<
     UpdateOauthProviderResponses,
     UpdateOauthProviderErrors,
     ThrowOnError
   >({
-    security: [
-      {
-        scheme: "bearer",
-        type: "http",
-      },
-    ],
+    security: [{ scheme: "bearer", type: "http" }],
     url: "/MAAS/a/v3/auth/oauth/providers/{provider_id}",
     ...options,
     headers: {
@@ -742,61 +719,46 @@ export const updateOauthProvider = <ThrowOnError extends boolean = false>(
       ...options.headers,
     },
   });
-};
 
 /**
  * Extend Session
  */
 export const extendSession = <ThrowOnError extends boolean = false>(
   options?: Options<ExtendSessionData, ThrowOnError>
-) => {
-  return (options?.client ?? client).post<
+) =>
+  (options?.client ?? client).post<
     ExtendSessionResponses,
     ExtendSessionErrors,
     ThrowOnError
-  >({
-    url: "/MAAS/a/v3/auth/sessions:extend",
-    ...options,
-  });
-};
+  >({ url: "/MAAS/a/v3/auth/sessions:extend", ...options });
 
 /**
  * Get Access Token
  */
 export const getAccessToken = <ThrowOnError extends boolean = false>(
   options?: Options<GetAccessTokenData, ThrowOnError>
-) => {
-  return (options?.client ?? client).get<
+) =>
+  (options?.client ?? client).get<
     GetAccessTokenResponses,
     GetAccessTokenErrors,
     ThrowOnError
-  >({
-    url: "/MAAS/a/v3/auth/access_token",
-    ...options,
-  });
-};
+  >({ url: "/MAAS/a/v3/auth/access_token", ...options });
 
 /**
  * Get Oauth Provider
  */
 export const getOauthProvider = <ThrowOnError extends boolean = false>(
   options?: Options<GetOauthProviderData, ThrowOnError>
-) => {
-  return (options?.client ?? client).get<
+) =>
+  (options?.client ?? client).get<
     GetOauthProviderResponses,
     GetOauthProviderErrors,
     ThrowOnError
   >({
-    security: [
-      {
-        scheme: "bearer",
-        type: "http",
-      },
-    ],
+    security: [{ scheme: "bearer", type: "http" }],
     url: "/MAAS/a/v3/auth/oauth:is_active",
     ...options,
   });
-};
 
 /**
  * Handle Oauth Callback
@@ -805,63 +767,46 @@ export const getOauthProvider = <ThrowOnError extends boolean = false>(
  */
 export const handleOauthCallback = <ThrowOnError extends boolean = false>(
   options: Options<HandleOauthCallbackData, ThrowOnError>
-) => {
-  return (options.client ?? client).get<
+) =>
+  (options.client ?? client).get<
     HandleOauthCallbackResponses,
     HandleOauthCallbackErrors,
     ThrowOnError
-  >({
-    url: "/MAAS/a/v3/auth/oauth/callback",
-    ...options,
-  });
-};
+  >({ url: "/MAAS/a/v3/auth/oauth/callback", ...options });
 
 /**
  * Initiate Auth Flow
  *
- * Initiate the OAuth flow by generating the authorization URL and setting the necessary security cookies,
- * if the user is an OIDC user.
+ * Decide whether the login should proceed via OIDC or local password.
  */
 export const initiateAuthFlow = <ThrowOnError extends boolean = false>(
   options: Options<InitiateAuthFlowData, ThrowOnError>
-) => {
-  return (options.client ?? client).get<
+) =>
+  (options.client ?? client).get<
     InitiateAuthFlowResponses,
     InitiateAuthFlowErrors,
     ThrowOnError
-  >({
-    url: "/MAAS/a/v3/auth/login_info",
-    ...options,
-  });
-};
+  >({ url: "/MAAS/a/v3/auth/login_info", ...options });
 
 /**
  * Pre Login
  */
 export const preLogin = <ThrowOnError extends boolean = false>(
   options?: Options<PreLoginData, ThrowOnError>
-) => {
-  return (options?.client ?? client).get<
+) =>
+  (options?.client ?? client).get<
     PreLoginResponses,
     PreLoginErrors,
     ThrowOnError
-  >({
-    url: "/MAAS/a/v3/auth/login",
-    ...options,
-  });
-};
+  >({ url: "/MAAS/a/v3/auth/login", ...options });
 
 /**
  * Login
  */
 export const login = <ThrowOnError extends boolean = false>(
   options: Options<LoginData, ThrowOnError>
-) => {
-  return (options.client ?? client).post<
-    LoginResponses,
-    LoginErrors,
-    ThrowOnError
-  >({
+) =>
+  (options.client ?? client).post<LoginResponses, LoginErrors, ThrowOnError>({
     ...urlSearchParamsBodySerializer,
     url: "/MAAS/a/v3/auth/login",
     ...options,
@@ -870,107 +815,77 @@ export const login = <ThrowOnError extends boolean = false>(
       ...options.headers,
     },
   });
-};
 
 /**
  * Logout
  */
 export const logout = <ThrowOnError extends boolean = false>(
   options?: Options<LogoutData, ThrowOnError>
-) => {
-  return (options?.client ?? client).post<
-    LogoutResponses,
-    LogoutErrors,
-    ThrowOnError
-  >({
-    url: "/MAAS/a/v3/auth/logout",
-    ...options,
-  });
-};
+) =>
+  (options?.client ?? client).post<LogoutResponses, LogoutErrors, ThrowOnError>(
+    { url: "/MAAS/a/v3/auth/logout", ...options }
+  );
 
 /**
  * Get Bootloader
  */
 export const getBootloader = <ThrowOnError extends boolean = false>(
   options: Options<GetBootloaderData, ThrowOnError>
-) => {
-  return (options.client ?? client).get<
+) =>
+  (options.client ?? client).get<
     GetBootloaderResponses,
     GetBootloaderErrors,
     ThrowOnError
   >({
-    security: [
-      {
-        scheme: "bearer",
-        type: "http",
-      },
-    ],
+    security: [{ scheme: "bearer", type: "http" }],
     url: "/MAAS/a/v3/bootloaders/{bootloader_id}",
     ...options,
   });
-};
 
 /**
  * List Bootloaders
  */
 export const listBootloaders = <ThrowOnError extends boolean = false>(
   options?: Options<ListBootloadersData, ThrowOnError>
-) => {
-  return (options?.client ?? client).get<
+) =>
+  (options?.client ?? client).get<
     ListBootloadersResponses,
     ListBootloadersErrors,
     ThrowOnError
   >({
-    security: [
-      {
-        scheme: "bearer",
-        type: "http",
-      },
-    ],
+    security: [{ scheme: "bearer", type: "http" }],
     url: "/MAAS/a/v3/bootloaders",
     ...options,
   });
-};
 
 /**
  * List Bootsources
  */
 export const listBootsources = <ThrowOnError extends boolean = false>(
   options?: Options<ListBootsourcesData, ThrowOnError>
-) => {
-  return (options?.client ?? client).get<
+) =>
+  (options?.client ?? client).get<
     ListBootsourcesResponses,
     ListBootsourcesErrors,
     ThrowOnError
   >({
-    security: [
-      {
-        scheme: "bearer",
-        type: "http",
-      },
-    ],
+    security: [{ scheme: "bearer", type: "http" }],
     url: "/MAAS/a/v3/boot_sources",
     ...options,
   });
-};
 
 /**
  * Create Bootsource
  */
 export const createBootsource = <ThrowOnError extends boolean = false>(
   options: Options<CreateBootsourceData, ThrowOnError>
-) => {
-  return (options.client ?? client).post<
+) =>
+  (options.client ?? client).post<
     CreateBootsourceResponses,
     CreateBootsourceErrors,
     ThrowOnError
   >({
-    security: [
-      {
-        scheme: "bearer",
-        type: "http",
-      },
-    ],
+    security: [{ scheme: "bearer", type: "http" }],
     url: "/MAAS/a/v3/boot_sources",
     ...options,
     headers: {
@@ -978,7 +893,6 @@ export const createBootsource = <ThrowOnError extends boolean = false>(
       ...options.headers,
     },
   });
-};
 
 /**
  * List Bootsource Bootsourceselection
@@ -987,22 +901,16 @@ export const listBootsourceBootsourceselection = <
   ThrowOnError extends boolean = false,
 >(
   options: Options<ListBootsourceBootsourceselectionData, ThrowOnError>
-) => {
-  return (options.client ?? client).get<
+) =>
+  (options.client ?? client).get<
     ListBootsourceBootsourceselectionResponses,
     ListBootsourceBootsourceselectionErrors,
     ThrowOnError
   >({
-    security: [
-      {
-        scheme: "bearer",
-        type: "http",
-      },
-    ],
+    security: [{ scheme: "bearer", type: "http" }],
     url: "/MAAS/a/v3/boot_sources/{boot_source_id}/selections",
     ...options,
   });
-};
 
 /**
  * Create Bootsource Bootsourceselection
@@ -1011,18 +919,13 @@ export const createBootsourceBootsourceselection = <
   ThrowOnError extends boolean = false,
 >(
   options: Options<CreateBootsourceBootsourceselectionData, ThrowOnError>
-) => {
-  return (options.client ?? client).post<
+) =>
+  (options.client ?? client).post<
     CreateBootsourceBootsourceselectionResponses,
     CreateBootsourceBootsourceselectionErrors,
     ThrowOnError
   >({
-    security: [
-      {
-        scheme: "bearer",
-        type: "http",
-      },
-    ],
+    security: [{ scheme: "bearer", type: "http" }],
     url: "/MAAS/a/v3/boot_sources/{boot_source_id}/selections",
     ...options,
     headers: {
@@ -1030,69 +933,51 @@ export const createBootsourceBootsourceselection = <
       ...options.headers,
     },
   });
-};
 
 /**
  * Delete Bootsource
  */
 export const deleteBootsource = <ThrowOnError extends boolean = false>(
   options: Options<DeleteBootsourceData, ThrowOnError>
-) => {
-  return (options.client ?? client).delete<
+) =>
+  (options.client ?? client).delete<
     DeleteBootsourceResponses,
     DeleteBootsourceErrors,
     ThrowOnError
   >({
-    security: [
-      {
-        scheme: "bearer",
-        type: "http",
-      },
-    ],
+    security: [{ scheme: "bearer", type: "http" }],
     url: "/MAAS/a/v3/boot_sources/{boot_source_id}",
     ...options,
   });
-};
 
 /**
  * Get Bootsource
  */
 export const getBootsource = <ThrowOnError extends boolean = false>(
   options: Options<GetBootsourceData, ThrowOnError>
-) => {
-  return (options.client ?? client).get<
+) =>
+  (options.client ?? client).get<
     GetBootsourceResponses,
     GetBootsourceErrors,
     ThrowOnError
   >({
-    security: [
-      {
-        scheme: "bearer",
-        type: "http",
-      },
-    ],
+    security: [{ scheme: "bearer", type: "http" }],
     url: "/MAAS/a/v3/boot_sources/{boot_source_id}",
     ...options,
   });
-};
 
 /**
  * Update Bootsource
  */
 export const updateBootsource = <ThrowOnError extends boolean = false>(
   options: Options<UpdateBootsourceData, ThrowOnError>
-) => {
-  return (options.client ?? client).put<
+) =>
+  (options.client ?? client).put<
     UpdateBootsourceResponses,
     UpdateBootsourceErrors,
     ThrowOnError
   >({
-    security: [
-      {
-        scheme: "bearer",
-        type: "http",
-      },
-    ],
+    security: [{ scheme: "bearer", type: "http" }],
     url: "/MAAS/a/v3/boot_sources/{boot_source_id}",
     ...options,
     headers: {
@@ -1100,7 +985,6 @@ export const updateBootsource = <ThrowOnError extends boolean = false>(
       ...options.headers,
     },
   });
-};
 
 /**
  * Delete Bootsource Bootsourceselection
@@ -1109,22 +993,16 @@ export const deleteBootsourceBootsourceselection = <
   ThrowOnError extends boolean = false,
 >(
   options: Options<DeleteBootsourceBootsourceselectionData, ThrowOnError>
-) => {
-  return (options.client ?? client).delete<
+) =>
+  (options.client ?? client).delete<
     DeleteBootsourceBootsourceselectionResponses,
     DeleteBootsourceBootsourceselectionErrors,
     ThrowOnError
   >({
-    security: [
-      {
-        scheme: "bearer",
-        type: "http",
-      },
-    ],
+    security: [{ scheme: "bearer", type: "http" }],
     url: "/MAAS/a/v3/boot_sources/{boot_source_id}/selections/{id}",
     ...options,
   });
-};
 
 /**
  * Get Bootsource Bootsourceselection
@@ -1133,22 +1011,16 @@ export const getBootsourceBootsourceselection = <
   ThrowOnError extends boolean = false,
 >(
   options: Options<GetBootsourceBootsourceselectionData, ThrowOnError>
-) => {
-  return (options.client ?? client).get<
+) =>
+  (options.client ?? client).get<
     GetBootsourceBootsourceselectionResponses,
     GetBootsourceBootsourceselectionErrors,
     ThrowOnError
   >({
-    security: [
-      {
-        scheme: "bearer",
-        type: "http",
-      },
-    ],
+    security: [{ scheme: "bearer", type: "http" }],
     url: "/MAAS/a/v3/boot_sources/{boot_source_id}/selections/{id}",
     ...options,
   });
-};
 
 /**
  * Fetch Bootsources Available Images
@@ -1157,18 +1029,13 @@ export const fetchBootsourcesAvailableImages = <
   ThrowOnError extends boolean = false,
 >(
   options: Options<FetchBootsourcesAvailableImagesData, ThrowOnError>
-) => {
-  return (options.client ?? client).post<
+) =>
+  (options.client ?? client).post<
     FetchBootsourcesAvailableImagesResponses,
     FetchBootsourcesAvailableImagesErrors,
     ThrowOnError
   >({
-    security: [
-      {
-        scheme: "bearer",
-        type: "http",
-      },
-    ],
+    security: [{ scheme: "bearer", type: "http" }],
     url: "/MAAS/a/v3/boot_sources:fetch",
     ...options,
     headers: {
@@ -1176,29 +1043,22 @@ export const fetchBootsourcesAvailableImages = <
       ...options.headers,
     },
   });
-};
 
 /**
  * Get All Available Images
  */
 export const getAllAvailableImages = <ThrowOnError extends boolean = false>(
   options?: Options<GetAllAvailableImagesData, ThrowOnError>
-) => {
-  return (options?.client ?? client).get<
+) =>
+  (options?.client ?? client).get<
     GetAllAvailableImagesResponses,
     GetAllAvailableImagesErrors,
     ThrowOnError
   >({
-    security: [
-      {
-        scheme: "bearer",
-        type: "http",
-      },
-    ],
+    security: [{ scheme: "bearer", type: "http" }],
     url: "/MAAS/a/v3/available_images",
     ...options,
   });
-};
 
 /**
  * Get Bootsource Available Images
@@ -1207,22 +1067,16 @@ export const getBootsourceAvailableImages = <
   ThrowOnError extends boolean = false,
 >(
   options: Options<GetBootsourceAvailableImagesData, ThrowOnError>
-) => {
-  return (options.client ?? client).get<
+) =>
+  (options.client ?? client).get<
     GetBootsourceAvailableImagesResponses,
     GetBootsourceAvailableImagesErrors,
     ThrowOnError
   >({
-    security: [
-      {
-        scheme: "bearer",
-        type: "http",
-      },
-    ],
+    security: [{ scheme: "bearer", type: "http" }],
     url: "/MAAS/a/v3/boot_sources/{boot_source_id}/available_images",
     ...options,
   });
-};
 
 /**
  * Get Bootsource Bootsourceselection Resource
@@ -1231,22 +1085,16 @@ export const getBootsourceBootsourceselectionResource = <
   ThrowOnError extends boolean = false,
 >(
   options: Options<GetBootsourceBootsourceselectionResourceData, ThrowOnError>
-) => {
-  return (options.client ?? client).get<
+) =>
+  (options.client ?? client).get<
     GetBootsourceBootsourceselectionResourceResponses,
     GetBootsourceBootsourceselectionResourceErrors,
     ThrowOnError
   >({
-    security: [
-      {
-        scheme: "bearer",
-        type: "http",
-      },
-    ],
+    security: [{ scheme: "bearer", type: "http" }],
     url: "/MAAS/a/v3/boot_sources/{boot_source_id}/selections/{selection_id}/resources/{id}",
     ...options,
   });
-};
 
 /**
  * List Bootsource Bootsourceselection Resources
@@ -1255,22 +1103,16 @@ export const listBootsourceBootsourceselectionResources = <
   ThrowOnError extends boolean = false,
 >(
   options: Options<ListBootsourceBootsourceselectionResourcesData, ThrowOnError>
-) => {
-  return (options.client ?? client).get<
+) =>
+  (options.client ?? client).get<
     ListBootsourceBootsourceselectionResourcesResponses,
     ListBootsourceBootsourceselectionResourcesErrors,
     ThrowOnError
   >({
-    security: [
-      {
-        scheme: "bearer",
-        type: "http",
-      },
-    ],
+    security: [{ scheme: "bearer", type: "http" }],
     url: "/MAAS/a/v3/boot_sources/{boot_source_id}/selections/{selection_id}/resources",
     ...options,
   });
-};
 
 /**
  * Stop Sync Bootsource Bootsourceselection
@@ -1279,22 +1121,16 @@ export const stopSyncBootsourceBootsourceselection = <
   ThrowOnError extends boolean = false,
 >(
   options: Options<StopSyncBootsourceBootsourceselectionData, ThrowOnError>
-) => {
-  return (options.client ?? client).post<
+) =>
+  (options.client ?? client).post<
     StopSyncBootsourceBootsourceselectionResponses,
     StopSyncBootsourceBootsourceselectionErrors,
     ThrowOnError
   >({
-    security: [
-      {
-        scheme: "bearer",
-        type: "http",
-      },
-    ],
+    security: [{ scheme: "bearer", type: "http" }],
     url: "/MAAS/a/v3/boot_sources/{boot_source_id}/selections/{id}:stop_sync",
     ...options,
   });
-};
 
 /**
  * Sync Bootsource Bootsourceselection
@@ -1303,194 +1139,141 @@ export const syncBootsourceBootsourceselection = <
   ThrowOnError extends boolean = false,
 >(
   options: Options<SyncBootsourceBootsourceselectionData, ThrowOnError>
-) => {
-  return (options.client ?? client).post<
+) =>
+  (options.client ?? client).post<
     SyncBootsourceBootsourceselectionResponses,
     SyncBootsourceBootsourceselectionErrors,
     ThrowOnError
   >({
-    security: [
-      {
-        scheme: "bearer",
-        type: "http",
-      },
-    ],
+    security: [{ scheme: "bearer", type: "http" }],
     url: "/MAAS/a/v3/boot_sources/{boot_source_id}/selections/{id}:sync",
     ...options,
   });
-};
 
 /**
  * Update Manifest Bootsources
  */
 export const updateManifestBootsources = <ThrowOnError extends boolean = false>(
   options?: Options<UpdateManifestBootsourcesData, ThrowOnError>
-) => {
-  return (options?.client ?? client).post<
+) =>
+  (options?.client ?? client).post<
     UpdateManifestBootsourcesResponses,
     UpdateManifestBootsourcesErrors,
     ThrowOnError
   >({
-    security: [
-      {
-        scheme: "bearer",
-        type: "http",
-      },
-    ],
+    security: [{ scheme: "bearer", type: "http" }],
     url: "/MAAS/a/v3/boot_sources:update_manifest",
     ...options,
   });
-};
 
 /**
  * List Selection Status
  */
 export const listSelectionStatus = <ThrowOnError extends boolean = false>(
   options?: Options<ListSelectionStatusData, ThrowOnError>
-) => {
-  return (options?.client ?? client).get<
+) =>
+  (options?.client ?? client).get<
     ListSelectionStatusResponses,
     ListSelectionStatusErrors,
     ThrowOnError
   >({
-    security: [
-      {
-        scheme: "bearer",
-        type: "http",
-      },
-    ],
+    security: [{ scheme: "bearer", type: "http" }],
     url: "/MAAS/a/v3/selections/statuses",
     ...options,
   });
-};
 
 /**
  * Get Selection Status
  */
 export const getSelectionStatus = <ThrowOnError extends boolean = false>(
   options: Options<GetSelectionStatusData, ThrowOnError>
-) => {
-  return (options.client ?? client).get<
+) =>
+  (options.client ?? client).get<
     GetSelectionStatusResponses,
     GetSelectionStatusErrors,
     ThrowOnError
   >({
-    security: [
-      {
-        scheme: "bearer",
-        type: "http",
-      },
-    ],
+    security: [{ scheme: "bearer", type: "http" }],
     url: "/MAAS/a/v3/selections/statuses/{id}",
     ...options,
   });
-};
 
 /**
  * List Selection Statistic
  */
 export const listSelectionStatistic = <ThrowOnError extends boolean = false>(
   options?: Options<ListSelectionStatisticData, ThrowOnError>
-) => {
-  return (options?.client ?? client).get<
+) =>
+  (options?.client ?? client).get<
     ListSelectionStatisticResponses,
     ListSelectionStatisticErrors,
     ThrowOnError
   >({
-    security: [
-      {
-        scheme: "bearer",
-        type: "http",
-      },
-    ],
+    security: [{ scheme: "bearer", type: "http" }],
     url: "/MAAS/a/v3/selections/statistics",
     ...options,
   });
-};
 
 /**
  * Get Selection Statistic
  */
 export const getSelectionStatistic = <ThrowOnError extends boolean = false>(
   options: Options<GetSelectionStatisticData, ThrowOnError>
-) => {
-  return (options.client ?? client).get<
+) =>
+  (options.client ?? client).get<
     GetSelectionStatisticResponses,
     GetSelectionStatisticErrors,
     ThrowOnError
   >({
-    security: [
-      {
-        scheme: "bearer",
-        type: "http",
-      },
-    ],
+    security: [{ scheme: "bearer", type: "http" }],
     url: "/MAAS/a/v3/selections/statistics/{id}",
     ...options,
   });
-};
 
 /**
  * Bulk Delete Selections
  */
 export const bulkDeleteSelections = <ThrowOnError extends boolean = false>(
   options: Options<BulkDeleteSelectionsData, ThrowOnError>
-) => {
-  return (options.client ?? client).delete<
+) =>
+  (options.client ?? client).delete<
     BulkDeleteSelectionsResponses,
     BulkDeleteSelectionsErrors,
     ThrowOnError
   >({
-    security: [
-      {
-        scheme: "bearer",
-        type: "http",
-      },
-    ],
+    security: [{ scheme: "bearer", type: "http" }],
     url: "/MAAS/a/v3/selections",
     ...options,
   });
-};
 
 /**
  * List Selections
  */
 export const listSelections = <ThrowOnError extends boolean = false>(
   options?: Options<ListSelectionsData, ThrowOnError>
-) => {
-  return (options?.client ?? client).get<
+) =>
+  (options?.client ?? client).get<
     ListSelectionsResponses,
     ListSelectionsErrors,
     ThrowOnError
   >({
-    security: [
-      {
-        scheme: "bearer",
-        type: "http",
-      },
-    ],
+    security: [{ scheme: "bearer", type: "http" }],
     url: "/MAAS/a/v3/selections",
     ...options,
   });
-};
 
 /**
  * Bulk Create Selections
  */
 export const bulkCreateSelections = <ThrowOnError extends boolean = false>(
   options: Options<BulkCreateSelectionsData, ThrowOnError>
-) => {
-  return (options.client ?? client).post<
+) =>
+  (options.client ?? client).post<
     BulkCreateSelectionsResponses,
     BulkCreateSelectionsErrors,
     ThrowOnError
   >({
-    security: [
-      {
-        scheme: "bearer",
-        type: "http",
-      },
-    ],
+    security: [{ scheme: "bearer", type: "http" }],
     url: "/MAAS/a/v3/selections",
     ...options,
     headers: {
@@ -1498,69 +1281,51 @@ export const bulkCreateSelections = <ThrowOnError extends boolean = false>(
       ...options.headers,
     },
   });
-};
 
 /**
  * Get Selection
  */
 export const getSelection = <ThrowOnError extends boolean = false>(
   options: Options<GetSelectionData, ThrowOnError>
-) => {
-  return (options.client ?? client).get<
+) =>
+  (options.client ?? client).get<
     GetSelectionResponses,
     GetSelectionErrors,
     ThrowOnError
   >({
-    security: [
-      {
-        scheme: "bearer",
-        type: "http",
-      },
-    ],
+    security: [{ scheme: "bearer", type: "http" }],
     url: "/MAAS/a/v3/selections/{id}",
     ...options,
   });
-};
 
 /**
  * Get Configuration
  */
 export const getConfiguration = <ThrowOnError extends boolean = false>(
   options: Options<GetConfigurationData, ThrowOnError>
-) => {
-  return (options.client ?? client).get<
+) =>
+  (options.client ?? client).get<
     GetConfigurationResponses,
     GetConfigurationErrors,
     ThrowOnError
   >({
-    security: [
-      {
-        scheme: "bearer",
-        type: "http",
-      },
-    ],
+    security: [{ scheme: "bearer", type: "http" }],
     url: "/MAAS/a/v3/configurations/{name}",
     ...options,
   });
-};
 
 /**
  * Set Configuration
  */
 export const setConfiguration = <ThrowOnError extends boolean = false>(
   options: Options<SetConfigurationData, ThrowOnError>
-) => {
-  return (options.client ?? client).put<
+) =>
+  (options.client ?? client).put<
     SetConfigurationResponses,
     SetConfigurationErrors,
     ThrowOnError
   >({
-    security: [
-      {
-        scheme: "bearer",
-        type: "http",
-      },
-    ],
+    security: [{ scheme: "bearer", type: "http" }],
     url: "/MAAS/a/v3/configurations/{name}",
     ...options,
     headers: {
@@ -1568,47 +1333,35 @@ export const setConfiguration = <ThrowOnError extends boolean = false>(
       ...options.headers,
     },
   });
-};
 
 /**
  * Get Configurations
  */
 export const getConfigurations = <ThrowOnError extends boolean = false>(
   options?: Options<GetConfigurationsData, ThrowOnError>
-) => {
-  return (options?.client ?? client).get<
+) =>
+  (options?.client ?? client).get<
     GetConfigurationsResponses,
     GetConfigurationsErrors,
     ThrowOnError
   >({
-    security: [
-      {
-        scheme: "bearer",
-        type: "http",
-      },
-    ],
+    security: [{ scheme: "bearer", type: "http" }],
     url: "/MAAS/a/v3/configurations",
     ...options,
   });
-};
 
 /**
  * Set Configurations
  */
 export const setConfigurations = <ThrowOnError extends boolean = false>(
   options: Options<SetConfigurationsData, ThrowOnError>
-) => {
-  return (options.client ?? client).put<
+) =>
+  (options.client ?? client).put<
     SetConfigurationsResponses,
     SetConfigurationsErrors,
     ThrowOnError
   >({
-    security: [
-      {
-        scheme: "bearer",
-        type: "http",
-      },
-    ],
+    security: [{ scheme: "bearer", type: "http" }],
     url: "/MAAS/a/v3/configurations",
     ...options,
     headers: {
@@ -1616,158 +1369,116 @@ export const setConfigurations = <ThrowOnError extends boolean = false>(
       ...options.headers,
     },
   });
-};
 
 /**
  * List Custom Images Status
  */
 export const listCustomImagesStatus = <ThrowOnError extends boolean = false>(
   options?: Options<ListCustomImagesStatusData, ThrowOnError>
-) => {
-  return (options?.client ?? client).get<
+) =>
+  (options?.client ?? client).get<
     ListCustomImagesStatusResponses,
     ListCustomImagesStatusErrors,
     ThrowOnError
   >({
-    security: [
-      {
-        scheme: "bearer",
-        type: "http",
-      },
-    ],
+    security: [{ scheme: "bearer", type: "http" }],
     url: "/MAAS/a/v3/custom_images/statuses",
     ...options,
   });
-};
 
 /**
  * Get Custom Image Status
  */
 export const getCustomImageStatus = <ThrowOnError extends boolean = false>(
   options: Options<GetCustomImageStatusData, ThrowOnError>
-) => {
-  return (options.client ?? client).get<
+) =>
+  (options.client ?? client).get<
     GetCustomImageStatusResponses,
     GetCustomImageStatusErrors,
     ThrowOnError
   >({
-    security: [
-      {
-        scheme: "bearer",
-        type: "http",
-      },
-    ],
+    security: [{ scheme: "bearer", type: "http" }],
     url: "/MAAS/a/v3/custom_images/statuses/{id}",
     ...options,
   });
-};
 
 /**
  * List Custom Images Statistic
  */
 export const listCustomImagesStatistic = <ThrowOnError extends boolean = false>(
   options?: Options<ListCustomImagesStatisticData, ThrowOnError>
-) => {
-  return (options?.client ?? client).get<
+) =>
+  (options?.client ?? client).get<
     ListCustomImagesStatisticResponses,
     ListCustomImagesStatisticErrors,
     ThrowOnError
   >({
-    security: [
-      {
-        scheme: "bearer",
-        type: "http",
-      },
-    ],
+    security: [{ scheme: "bearer", type: "http" }],
     url: "/MAAS/a/v3/custom_images/statistics",
     ...options,
   });
-};
 
 /**
  * Get Custom Image Statistic
  */
 export const getCustomImageStatistic = <ThrowOnError extends boolean = false>(
   options: Options<GetCustomImageStatisticData, ThrowOnError>
-) => {
-  return (options.client ?? client).get<
+) =>
+  (options.client ?? client).get<
     GetCustomImageStatisticResponses,
     GetCustomImageStatisticErrors,
     ThrowOnError
   >({
-    security: [
-      {
-        scheme: "bearer",
-        type: "http",
-      },
-    ],
+    security: [{ scheme: "bearer", type: "http" }],
     url: "/MAAS/a/v3/custom_images/statistics/{id}",
     ...options,
   });
-};
 
 /**
  * Bulk Delete Custom Images
  */
 export const bulkDeleteCustomImages = <ThrowOnError extends boolean = false>(
   options: Options<BulkDeleteCustomImagesData, ThrowOnError>
-) => {
-  return (options.client ?? client).delete<
+) =>
+  (options.client ?? client).delete<
     BulkDeleteCustomImagesResponses,
     BulkDeleteCustomImagesErrors,
     ThrowOnError
   >({
-    security: [
-      {
-        scheme: "bearer",
-        type: "http",
-      },
-    ],
+    security: [{ scheme: "bearer", type: "http" }],
     url: "/MAAS/a/v3/custom_images",
     ...options,
   });
-};
 
 /**
  * List Custom Images
  */
 export const listCustomImages = <ThrowOnError extends boolean = false>(
   options?: Options<ListCustomImagesData, ThrowOnError>
-) => {
-  return (options?.client ?? client).get<
+) =>
+  (options?.client ?? client).get<
     ListCustomImagesResponses,
     ListCustomImagesErrors,
     ThrowOnError
   >({
-    security: [
-      {
-        scheme: "bearer",
-        type: "http",
-      },
-    ],
+    security: [{ scheme: "bearer", type: "http" }],
     url: "/MAAS/a/v3/custom_images",
     ...options,
   });
-};
 
 /**
  * Upload Custom Image
  */
 export const uploadCustomImage = <ThrowOnError extends boolean = false>(
   options: Options<UploadCustomImageData, ThrowOnError>
-) => {
-  return (options.client ?? client).post<
+) =>
+  (options.client ?? client).post<
     UploadCustomImageResponses,
     UploadCustomImageErrors,
     ThrowOnError
   >({
     bodySerializer: null,
-    security: [
-      {
-        scheme: "bearer",
-        type: "http",
-      },
-    ],
+    security: [{ scheme: "bearer", type: "http" }],
     url: "/MAAS/a/v3/custom_images",
     ...options,
     headers: {
@@ -1775,73 +1486,54 @@ export const uploadCustomImage = <ThrowOnError extends boolean = false>(
       ...options.headers,
     },
   });
-};
 
 /**
  * Delete Custom Image By Id
  */
 export const deleteCustomImageById = <ThrowOnError extends boolean = false>(
   options: Options<DeleteCustomImageByIdData, ThrowOnError>
-) => {
-  return (options.client ?? client).delete<
+) =>
+  (options.client ?? client).delete<
     DeleteCustomImageByIdResponses,
     DeleteCustomImageByIdErrors,
     ThrowOnError
   >({
-    security: [
-      {
-        scheme: "bearer",
-        type: "http",
-      },
-    ],
+    security: [{ scheme: "bearer", type: "http" }],
     url: "/MAAS/a/v3/custom_images/{boot_resource_id}",
     ...options,
   });
-};
 
 /**
  * Get Custom Image By Id
  */
 export const getCustomImageById = <ThrowOnError extends boolean = false>(
   options: Options<GetCustomImageByIdData, ThrowOnError>
-) => {
-  return (options.client ?? client).get<
+) =>
+  (options.client ?? client).get<
     GetCustomImageByIdResponses,
     GetCustomImageByIdErrors,
     ThrowOnError
   >({
-    security: [
-      {
-        scheme: "bearer",
-        type: "http",
-      },
-    ],
+    security: [{ scheme: "bearer", type: "http" }],
     url: "/MAAS/a/v3/custom_images/{boot_resource_id}",
     ...options,
   });
-};
 
 /**
  * List Events
  */
 export const listEvents = <ThrowOnError extends boolean = false>(
   options?: Options<ListEventsData, ThrowOnError>
-) => {
-  return (options?.client ?? client).get<
+) =>
+  (options?.client ?? client).get<
     ListEventsResponses,
     ListEventsErrors,
     ThrowOnError
   >({
-    security: [
-      {
-        scheme: "bearer",
-        type: "http",
-      },
-    ],
+    security: [{ scheme: "bearer", type: "http" }],
     url: "/MAAS/a/v3/events",
     ...options,
   });
-};
 
 /**
  * Clear All Discoveries With Optional Ip And Mac
@@ -1850,44 +1542,32 @@ export const clearAllDiscoveriesWithOptionalIpAndMac = <
   ThrowOnError extends boolean = false,
 >(
   options?: Options<ClearAllDiscoveriesWithOptionalIpAndMacData, ThrowOnError>
-) => {
-  return (options?.client ?? client).delete<
+) =>
+  (options?.client ?? client).delete<
     ClearAllDiscoveriesWithOptionalIpAndMacResponses,
     ClearAllDiscoveriesWithOptionalIpAndMacErrors,
     ThrowOnError
   >({
-    security: [
-      {
-        scheme: "bearer",
-        type: "http",
-      },
-    ],
+    security: [{ scheme: "bearer", type: "http" }],
     url: "/MAAS/a/v3/discoveries",
     ...options,
   });
-};
 
 /**
  * List Discoveries
  */
 export const listDiscoveries = <ThrowOnError extends boolean = false>(
   options?: Options<ListDiscoveriesData, ThrowOnError>
-) => {
-  return (options?.client ?? client).get<
+) =>
+  (options?.client ?? client).get<
     ListDiscoveriesResponses,
     ListDiscoveriesErrors,
     ThrowOnError
   >({
-    security: [
-      {
-        scheme: "bearer",
-        type: "http",
-      },
-    ],
+    security: [{ scheme: "bearer", type: "http" }],
     url: "/MAAS/a/v3/discoveries",
     ...options,
   });
-};
 
 /**
  * Clear Neighbours Discoveries
@@ -1896,22 +1576,16 @@ export const clearNeighboursDiscoveries = <
   ThrowOnError extends boolean = false,
 >(
   options?: Options<ClearNeighboursDiscoveriesData, ThrowOnError>
-) => {
-  return (options?.client ?? client).delete<
+) =>
+  (options?.client ?? client).delete<
     ClearNeighboursDiscoveriesResponses,
     ClearNeighboursDiscoveriesErrors,
     ThrowOnError
   >({
-    security: [
-      {
-        scheme: "bearer",
-        type: "http",
-      },
-    ],
+    security: [{ scheme: "bearer", type: "http" }],
     url: "/MAAS/a/v3/discoveries:clear_neighbours",
     ...options,
   });
-};
 
 /**
  * Clear Rdns And Mdns Discoveries
@@ -1920,84 +1594,61 @@ export const clearRdnsAndMdnsDiscoveries = <
   ThrowOnError extends boolean = false,
 >(
   options?: Options<ClearRdnsAndMdnsDiscoveriesData, ThrowOnError>
-) => {
-  return (options?.client ?? client).delete<
+) =>
+  (options?.client ?? client).delete<
     ClearRdnsAndMdnsDiscoveriesResponses,
     ClearRdnsAndMdnsDiscoveriesErrors,
     ThrowOnError
   >({
-    security: [
-      {
-        scheme: "bearer",
-        type: "http",
-      },
-    ],
+    security: [{ scheme: "bearer", type: "http" }],
     url: "/MAAS/a/v3/discoveries:clear_dns",
     ...options,
   });
-};
 
 /**
  * Get Discovery
  */
 export const getDiscovery = <ThrowOnError extends boolean = false>(
   options: Options<GetDiscoveryData, ThrowOnError>
-) => {
-  return (options.client ?? client).get<
+) =>
+  (options.client ?? client).get<
     GetDiscoveryResponses,
     GetDiscoveryErrors,
     ThrowOnError
   >({
-    security: [
-      {
-        scheme: "bearer",
-        type: "http",
-      },
-    ],
+    security: [{ scheme: "bearer", type: "http" }],
     url: "/MAAS/a/v3/discoveries/{discovery_id}",
     ...options,
   });
-};
 
 /**
  * List Domains
  */
 export const listDomains = <ThrowOnError extends boolean = false>(
   options?: Options<ListDomainsData, ThrowOnError>
-) => {
-  return (options?.client ?? client).get<
+) =>
+  (options?.client ?? client).get<
     ListDomainsResponses,
     ListDomainsErrors,
     ThrowOnError
   >({
-    security: [
-      {
-        scheme: "bearer",
-        type: "http",
-      },
-    ],
+    security: [{ scheme: "bearer", type: "http" }],
     url: "/MAAS/a/v3/domains",
     ...options,
   });
-};
 
 /**
  * Create Domain
  */
 export const createDomain = <ThrowOnError extends boolean = false>(
   options: Options<CreateDomainData, ThrowOnError>
-) => {
-  return (options.client ?? client).post<
+) =>
+  (options.client ?? client).post<
     CreateDomainResponses,
     CreateDomainErrors,
     ThrowOnError
   >({
-    security: [
-      {
-        scheme: "bearer",
-        type: "http",
-      },
-    ],
+    security: [{ scheme: "bearer", type: "http" }],
     url: "/MAAS/a/v3/domains",
     ...options,
     headers: {
@@ -2005,41 +1656,31 @@ export const createDomain = <ThrowOnError extends boolean = false>(
       ...options.headers,
     },
   });
-};
 
 /**
  * Get Domain Rrsets
  */
 export const getDomainRrsets = <ThrowOnError extends boolean = false>(
   options: Options<GetDomainRrsetsData, ThrowOnError>
-) => {
-  return (options.client ?? client).get<
+) =>
+  (options.client ?? client).get<
     GetDomainRrsetsResponses,
     GetDomainRrsetsErrors,
     ThrowOnError
-  >({
-    url: "/MAAS/a/v3/domains/{domain_id}/rrsets",
-    ...options,
-  });
-};
+  >({ url: "/MAAS/a/v3/domains/{domain_id}/rrsets", ...options });
 
 /**
  * Create Domain Rrsets
  */
 export const createDomainRrsets = <ThrowOnError extends boolean = false>(
   options: Options<CreateDomainRrsetsData, ThrowOnError>
-) => {
-  return (options.client ?? client).post<
+) =>
+  (options.client ?? client).post<
     CreateDomainRrsetsResponses,
     CreateDomainRrsetsErrors,
     ThrowOnError
   >({
-    security: [
-      {
-        scheme: "bearer",
-        type: "http",
-      },
-    ],
+    security: [{ scheme: "bearer", type: "http" }],
     url: "/MAAS/a/v3/domains/{domain_id}/rrsets",
     ...options,
     headers: {
@@ -2047,91 +1688,67 @@ export const createDomainRrsets = <ThrowOnError extends boolean = false>(
       ...options.headers,
     },
   });
-};
 
 /**
  * Delete Domain
  */
 export const deleteDomain = <ThrowOnError extends boolean = false>(
   options: Options<DeleteDomainData, ThrowOnError>
-) => {
-  return (options.client ?? client).delete<
+) =>
+  (options.client ?? client).delete<
     DeleteDomainResponses,
     DeleteDomainErrors,
     ThrowOnError
   >({
-    security: [
-      {
-        scheme: "bearer",
-        type: "http",
-      },
-    ],
+    security: [{ scheme: "bearer", type: "http" }],
     url: "/MAAS/a/v3/domains/{domain_id}",
     ...options,
   });
-};
 
 /**
  * Get Domain
  */
 export const getDomain = <ThrowOnError extends boolean = false>(
   options: Options<GetDomainData, ThrowOnError>
-) => {
-  return (options.client ?? client).get<
+) =>
+  (options.client ?? client).get<
     GetDomainResponses,
     GetDomainErrors,
     ThrowOnError
   >({
-    security: [
-      {
-        scheme: "bearer",
-        type: "http",
-      },
-    ],
+    security: [{ scheme: "bearer", type: "http" }],
     url: "/MAAS/a/v3/domains/{domain_id}",
     ...options,
   });
-};
 
 /**
  * List Fabrics
  */
 export const listFabrics = <ThrowOnError extends boolean = false>(
   options?: Options<ListFabricsData, ThrowOnError>
-) => {
-  return (options?.client ?? client).get<
+) =>
+  (options?.client ?? client).get<
     ListFabricsResponses,
     ListFabricsErrors,
     ThrowOnError
   >({
-    security: [
-      {
-        scheme: "bearer",
-        type: "http",
-      },
-    ],
+    security: [{ scheme: "bearer", type: "http" }],
     url: "/MAAS/a/v3/fabrics",
     ...options,
   });
-};
 
 /**
  * Create Fabric
  */
 export const createFabric = <ThrowOnError extends boolean = false>(
   options: Options<CreateFabricData, ThrowOnError>
-) => {
-  return (options.client ?? client).post<
+) =>
+  (options.client ?? client).post<
     CreateFabricResponses,
     CreateFabricErrors,
     ThrowOnError
   >({
-    security: [
-      {
-        scheme: "bearer",
-        type: "http",
-      },
-    ],
+    security: [{ scheme: "bearer", type: "http" }],
     url: "/MAAS/a/v3/fabrics",
     ...options,
     headers: {
@@ -2139,69 +1756,51 @@ export const createFabric = <ThrowOnError extends boolean = false>(
       ...options.headers,
     },
   });
-};
 
 /**
  * Delete Fabric
  */
 export const deleteFabric = <ThrowOnError extends boolean = false>(
   options: Options<DeleteFabricData, ThrowOnError>
-) => {
-  return (options.client ?? client).delete<
+) =>
+  (options.client ?? client).delete<
     DeleteFabricResponses,
     DeleteFabricErrors,
     ThrowOnError
   >({
-    security: [
-      {
-        scheme: "bearer",
-        type: "http",
-      },
-    ],
+    security: [{ scheme: "bearer", type: "http" }],
     url: "/MAAS/a/v3/fabrics/{fabric_id}",
     ...options,
   });
-};
 
 /**
  * Get Fabric
  */
 export const getFabric = <ThrowOnError extends boolean = false>(
   options: Options<GetFabricData, ThrowOnError>
-) => {
-  return (options.client ?? client).get<
+) =>
+  (options.client ?? client).get<
     GetFabricResponses,
     GetFabricErrors,
     ThrowOnError
   >({
-    security: [
-      {
-        scheme: "bearer",
-        type: "http",
-      },
-    ],
+    security: [{ scheme: "bearer", type: "http" }],
     url: "/MAAS/a/v3/fabrics/{fabric_id}",
     ...options,
   });
-};
 
 /**
  * Update Fabric
  */
 export const updateFabric = <ThrowOnError extends boolean = false>(
   options: Options<UpdateFabricData, ThrowOnError>
-) => {
-  return (options.client ?? client).put<
+) =>
+  (options.client ?? client).put<
     UpdateFabricResponses,
     UpdateFabricErrors,
     ThrowOnError
   >({
-    security: [
-      {
-        scheme: "bearer",
-        type: "http",
-      },
-    ],
+    security: [{ scheme: "bearer", type: "http" }],
     url: "/MAAS/a/v3/fabrics/{fabric_id}",
     ...options,
     headers: {
@@ -2209,70 +1808,52 @@ export const updateFabric = <ThrowOnError extends boolean = false>(
       ...options.headers,
     },
   });
-};
 
 /**
  * Delete File
  */
 export const deleteFile = <ThrowOnError extends boolean = false>(
   options: Options<DeleteFileData, ThrowOnError>
-) => {
-  return (options.client ?? client).delete<
+) =>
+  (options.client ?? client).delete<
     DeleteFileResponses,
     DeleteFileErrors,
     ThrowOnError
   >({
-    security: [
-      {
-        scheme: "bearer",
-        type: "http",
-      },
-    ],
+    security: [{ scheme: "bearer", type: "http" }],
     url: "/MAAS/a/v3/files",
     ...options,
   });
-};
 
 /**
  * List Files
  */
 export const listFiles = <ThrowOnError extends boolean = false>(
   options?: Options<ListFilesData, ThrowOnError>
-) => {
-  return (options?.client ?? client).get<
+) =>
+  (options?.client ?? client).get<
     ListFilesResponses,
     ListFilesErrors,
     ThrowOnError
   >({
-    security: [
-      {
-        scheme: "bearer",
-        type: "http",
-      },
-    ],
+    security: [{ scheme: "bearer", type: "http" }],
     url: "/MAAS/a/v3/files",
     ...options,
   });
-};
 
 /**
  * Create Or Replace File
  */
 export const createOrReplaceFile = <ThrowOnError extends boolean = false>(
   options: Options<CreateOrReplaceFileData, ThrowOnError>
-) => {
-  return (options.client ?? client).put<
+) =>
+  (options.client ?? client).put<
     CreateOrReplaceFileResponses,
     CreateOrReplaceFileErrors,
     ThrowOnError
   >({
     ...formDataBodySerializer,
-    security: [
-      {
-        scheme: "bearer",
-        type: "http",
-      },
-    ],
+    security: [{ scheme: "bearer", type: "http" }],
     url: "/MAAS/a/v3/files",
     ...options,
     headers: {
@@ -2280,73 +1861,52 @@ export const createOrReplaceFile = <ThrowOnError extends boolean = false>(
       ...options.headers,
     },
   });
-};
 
 /**
  * Get File
  */
 export const getFile = <ThrowOnError extends boolean = false>(
   options: Options<GetFileData, ThrowOnError>
-) => {
-  return (options.client ?? client).get<
-    GetFileResponses,
-    GetFileErrors,
-    ThrowOnError
-  >({
-    security: [
-      {
-        scheme: "bearer",
-        type: "http",
-      },
-    ],
-    url: "/MAAS/a/v3/files:get",
-    ...options,
-  });
-};
+) =>
+  (options.client ?? client).get<GetFileResponses, GetFileErrors, ThrowOnError>(
+    {
+      security: [{ scheme: "bearer", type: "http" }],
+      url: "/MAAS/a/v3/files:get",
+      ...options,
+    }
+  );
 
 /**
  * Get File By Key
  */
 export const getFileByKey = <ThrowOnError extends boolean = false>(
   options: Options<GetFileByKeyData, ThrowOnError>
-) => {
-  return (options.client ?? client).get<
+) =>
+  (options.client ?? client).get<
     GetFileByKeyResponses,
     GetFileByKeyErrors,
     ThrowOnError
   >({
-    security: [
-      {
-        scheme: "bearer",
-        type: "http",
-      },
-    ],
+    security: [{ scheme: "bearer", type: "http" }],
     url: "/MAAS/a/v3/files/{key}",
     ...options,
   });
-};
 
 /**
  * List Interfaces
  */
 export const listInterfaces = <ThrowOnError extends boolean = false>(
   options: Options<ListInterfacesData, ThrowOnError>
-) => {
-  return (options.client ?? client).get<
+) =>
+  (options.client ?? client).get<
     ListInterfacesResponses,
     ListInterfacesErrors,
     ThrowOnError
   >({
-    security: [
-      {
-        scheme: "bearer",
-        type: "http",
-      },
-    ],
+    security: [{ scheme: "bearer", type: "http" }],
     url: "/MAAS/a/v3/machines/{node_id}/interfaces",
     ...options,
   });
-};
 
 /**
  * List Fabric Vlan Subnet Iprange
@@ -2355,8 +1915,8 @@ export const listFabricVlanSubnetIprange = <
   ThrowOnError extends boolean = false,
 >(
   options: Options<ListFabricVlanSubnetIprangeData, ThrowOnError>
-) => {
-  return (options.client ?? client).get<
+) =>
+  (options.client ?? client).get<
     ListFabricVlanSubnetIprangeResponses,
     ListFabricVlanSubnetIprangeErrors,
     ThrowOnError
@@ -2364,7 +1924,6 @@ export const listFabricVlanSubnetIprange = <
     url: "/MAAS/a/v3/fabrics/{fabric_id}/vlans/{vlan_id}/subnets/{subnet_id}/ipranges",
     ...options,
   });
-};
 
 /**
  * Create Fabric Vlan Subnet Iprange
@@ -2373,8 +1932,8 @@ export const createFabricVlanSubnetIprange = <
   ThrowOnError extends boolean = false,
 >(
   options: Options<CreateFabricVlanSubnetIprangeData, ThrowOnError>
-) => {
-  return (options.client ?? client).post<
+) =>
+  (options.client ?? client).post<
     CreateFabricVlanSubnetIprangeResponses,
     CreateFabricVlanSubnetIprangeErrors,
     ThrowOnError
@@ -2386,7 +1945,6 @@ export const createFabricVlanSubnetIprange = <
       ...options.headers,
     },
   });
-};
 
 /**
  * Delete Fabric Vlan Subnet Iprange
@@ -2395,8 +1953,8 @@ export const deleteFabricVlanSubnetIprange = <
   ThrowOnError extends boolean = false,
 >(
   options: Options<DeleteFabricVlanSubnetIprangeData, ThrowOnError>
-) => {
-  return (options.client ?? client).delete<
+) =>
+  (options.client ?? client).delete<
     DeleteFabricVlanSubnetIprangeResponses,
     DeleteFabricVlanSubnetIprangeErrors,
     ThrowOnError
@@ -2404,7 +1962,6 @@ export const deleteFabricVlanSubnetIprange = <
     url: "/MAAS/a/v3/fabrics/{fabric_id}/vlans/{vlan_id}/subnets/{subnet_id}/ipranges/{iprange_id}",
     ...options,
   });
-};
 
 /**
  * Update Fabric Vlan Subnet Iprange
@@ -2413,8 +1970,8 @@ export const updateFabricVlanSubnetIprange = <
   ThrowOnError extends boolean = false,
 >(
   options: Options<UpdateFabricVlanSubnetIprangeData, ThrowOnError>
-) => {
-  return (options.client ?? client).put<
+) =>
+  (options.client ?? client).put<
     UpdateFabricVlanSubnetIprangeResponses,
     UpdateFabricVlanSubnetIprangeErrors,
     ThrowOnError
@@ -2426,7 +1983,6 @@ export const updateFabricVlanSubnetIprange = <
       ...options.headers,
     },
   });
-};
 
 /**
  * Get Fabric Vlan Subnet Iprange
@@ -2435,8 +1991,8 @@ export const getFabricVlanSubnetIprange = <
   ThrowOnError extends boolean = false,
 >(
   options: Options<GetFabricVlanSubnetIprangeData, ThrowOnError>
-) => {
-  return (options.client ?? client).get<
+) =>
+  (options.client ?? client).get<
     GetFabricVlanSubnetIprangeResponses,
     GetFabricVlanSubnetIprangeErrors,
     ThrowOnError
@@ -2444,100 +2000,78 @@ export const getFabricVlanSubnetIprange = <
     url: "/MAAS/a/v3/fabrics/{fabric_id}/vlans/{vlan_id}/subnets/{subnet_id}/ipranges/{id}",
     ...options,
   });
-};
 
 /**
  * Get Machine Power Parameters
  */
 export const getMachinePowerParameters = <ThrowOnError extends boolean = false>(
   options: Options<GetMachinePowerParametersData, ThrowOnError>
-) => {
-  return (options.client ?? client).get<
+) =>
+  (options.client ?? client).get<
     GetMachinePowerParametersResponses,
     GetMachinePowerParametersErrors,
     ThrowOnError
   >({
-    security: [
-      {
-        scheme: "bearer",
-        type: "http",
-      },
-    ],
+    security: [{ scheme: "bearer", type: "http" }],
     url: "/MAAS/a/v3/machines/{system_id}/power_parameters",
     ...options,
   });
-};
 
 /**
  * List Machine Pci Devices
  */
 export const listMachinePciDevices = <ThrowOnError extends boolean = false>(
   options: Options<ListMachinePciDevicesData, ThrowOnError>
-) => {
-  return (options.client ?? client).get<
+) =>
+  (options.client ?? client).get<
     ListMachinePciDevicesResponses,
     ListMachinePciDevicesErrors,
     ThrowOnError
   >({
-    security: [
-      {
-        scheme: "bearer",
-        type: "http",
-      },
-    ],
+    security: [{ scheme: "bearer", type: "http" }],
     url: "/MAAS/a/v3/machines/{system_id}/pci_devices",
     ...options,
   });
-};
 
 /**
  * List Machine Usb Devices
  */
 export const listMachineUsbDevices = <ThrowOnError extends boolean = false>(
   options: Options<ListMachineUsbDevicesData, ThrowOnError>
-) => {
-  return (options.client ?? client).get<
+) =>
+  (options.client ?? client).get<
     ListMachineUsbDevicesResponses,
     ListMachineUsbDevicesErrors,
     ThrowOnError
   >({
-    security: [
-      {
-        scheme: "bearer",
-        type: "http",
-      },
-    ],
+    security: [{ scheme: "bearer", type: "http" }],
     url: "/MAAS/a/v3/machines/{system_id}/usb_devices",
     ...options,
   });
-};
 
 /**
  * List Machines
  */
 export const listMachines = <ThrowOnError extends boolean = false>(
   options?: Options<ListMachinesData, ThrowOnError>
-) => {
-  return (options?.client ?? client).get<
+) =>
+  (options?.client ?? client).get<
     ListMachinesResponses,
     ListMachinesErrors,
     ThrowOnError
   >({
-    security: [
-      {
-        scheme: "bearer",
-        type: "http",
-      },
-    ],
+    security: [{ scheme: "bearer", type: "http" }],
     url: "/MAAS/a/v3/machines",
     ...options,
   });
-};
 
 /**
  * Get Nos Installer
  *
  * Serve NOS installer binary.
+ *
+ * Experimental: this endpoint is part of an experimental feature set
+ * and may change in future releases.
  *
  * This endpoint:
  * - Receives ONIE headers from the switch
@@ -2546,50 +2080,37 @@ export const listMachines = <ThrowOnError extends boolean = false>(
  */
 export const getNosInstaller = <ThrowOnError extends boolean = false>(
   options: Options<GetNosInstallerData, ThrowOnError>
-) => {
-  return (options.client ?? client).get<
+) =>
+  (options.client ?? client).get<
     GetNosInstallerResponses,
     GetNosInstallerErrors,
     ThrowOnError
-  >({
-    url: "/MAAS/a/v3/nos-installer",
-    ...options,
-  });
-};
+  >({ url: "/MAAS/a/v3/nos-installer", ...options });
 
 /**
  * List Notifications
  */
 export const listNotifications = <ThrowOnError extends boolean = false>(
   options?: Options<ListNotificationsData, ThrowOnError>
-) => {
-  return (options?.client ?? client).get<
+) =>
+  (options?.client ?? client).get<
     ListNotificationsResponses,
     ListNotificationsErrors,
     ThrowOnError
-  >({
-    url: "/MAAS/a/v3/notifications",
-    ...options,
-  });
-};
+  >({ url: "/MAAS/a/v3/notifications", ...options });
 
 /**
  * Create Notification
  */
 export const createNotification = <ThrowOnError extends boolean = false>(
   options: Options<CreateNotificationData, ThrowOnError>
-) => {
-  return (options.client ?? client).post<
+) =>
+  (options.client ?? client).post<
     CreateNotificationResponses,
     CreateNotificationErrors,
     ThrowOnError
   >({
-    security: [
-      {
-        scheme: "bearer",
-        type: "http",
-      },
-    ],
+    security: [{ scheme: "bearer", type: "http" }],
     url: "/MAAS/a/v3/notifications",
     ...options,
     headers: {
@@ -2597,63 +2118,47 @@ export const createNotification = <ThrowOnError extends boolean = false>(
       ...options.headers,
     },
   });
-};
 
 /**
  * Delete Notification
  */
 export const deleteNotification = <ThrowOnError extends boolean = false>(
   options: Options<DeleteNotificationData, ThrowOnError>
-) => {
-  return (options.client ?? client).delete<
+) =>
+  (options.client ?? client).delete<
     DeleteNotificationResponses,
     DeleteNotificationErrors,
     ThrowOnError
   >({
-    security: [
-      {
-        scheme: "bearer",
-        type: "http",
-      },
-    ],
+    security: [{ scheme: "bearer", type: "http" }],
     url: "/MAAS/a/v3/notifications/{notification_id}",
     ...options,
   });
-};
 
 /**
  * Get Notification
  */
 export const getNotification = <ThrowOnError extends boolean = false>(
   options: Options<GetNotificationData, ThrowOnError>
-) => {
-  return (options.client ?? client).get<
+) =>
+  (options.client ?? client).get<
     GetNotificationResponses,
     GetNotificationErrors,
     ThrowOnError
-  >({
-    url: "/MAAS/a/v3/notifications/{notification_id}",
-    ...options,
-  });
-};
+  >({ url: "/MAAS/a/v3/notifications/{notification_id}", ...options });
 
 /**
  * Update Notification
  */
 export const updateNotification = <ThrowOnError extends boolean = false>(
   options: Options<UpdateNotificationData, ThrowOnError>
-) => {
-  return (options.client ?? client).put<
+) =>
+  (options.client ?? client).put<
     UpdateNotificationResponses,
     UpdateNotificationErrors,
     ThrowOnError
   >({
-    security: [
-      {
-        scheme: "bearer",
-        type: "http",
-      },
-    ],
+    security: [{ scheme: "bearer", type: "http" }],
     url: "/MAAS/a/v3/notifications/{notification_id}",
     ...options,
     headers: {
@@ -2661,63 +2166,89 @@ export const updateNotification = <ThrowOnError extends boolean = false>(
       ...options.headers,
     },
   });
-};
 
 /**
  * Dismiss Notification
  */
 export const dismissNotification = <ThrowOnError extends boolean = false>(
   options: Options<DismissNotificationData, ThrowOnError>
-) => {
-  return (options.client ?? client).post<
+) =>
+  (options.client ?? client).post<
     DismissNotificationResponses,
     DismissNotificationErrors,
     ThrowOnError
-  >({
-    url: "/MAAS/a/v3/notifications/{notification_id}:dismiss",
-    ...options,
-  });
-};
+  >({ url: "/MAAS/a/v3/notifications/{notification_id}:dismiss", ...options });
+
+/**
+ * Cancel Operation
+ *
+ * Cancel a specific operation by UUID.
+ */
+export const cancelOperation = <ThrowOnError extends boolean = false>(
+  options: Options<CancelOperationData, ThrowOnError>
+) =>
+  (options.client ?? client).delete<
+    CancelOperationResponses,
+    CancelOperationErrors,
+    ThrowOnError
+  >({ url: "/MAAS/a/v3/operations/{operation_uuid}", ...options });
+
+/**
+ * Get Operation
+ *
+ * Get a specific operation by UUID.
+ */
+export const getOperation = <ThrowOnError extends boolean = false>(
+  options: Options<GetOperationData, ThrowOnError>
+) =>
+  (options.client ?? client).get<
+    GetOperationResponses,
+    GetOperationErrors,
+    ThrowOnError
+  >({ url: "/MAAS/a/v3/operations/{operation_uuid}", ...options });
+
+/**
+ * List Operations
+ *
+ * List all operations with pagination and filtering.
+ */
+export const listOperations = <ThrowOnError extends boolean = false>(
+  options?: Options<ListOperationsData, ThrowOnError>
+) =>
+  (options?.client ?? client).get<
+    ListOperationsResponses,
+    ListOperationsErrors,
+    ThrowOnError
+  >({ url: "/MAAS/a/v3/operations", ...options });
 
 /**
  * List Package Repositories
  */
 export const listPackageRepositories = <ThrowOnError extends boolean = false>(
   options?: Options<ListPackageRepositoriesData, ThrowOnError>
-) => {
-  return (options?.client ?? client).get<
+) =>
+  (options?.client ?? client).get<
     ListPackageRepositoriesResponses,
     ListPackageRepositoriesErrors,
     ThrowOnError
   >({
-    security: [
-      {
-        scheme: "bearer",
-        type: "http",
-      },
-    ],
+    security: [{ scheme: "bearer", type: "http" }],
     url: "/MAAS/a/v3/package_repositories",
     ...options,
   });
-};
 
 /**
  * Create Package Repository
  */
 export const createPackageRepository = <ThrowOnError extends boolean = false>(
   options: Options<CreatePackageRepositoryData, ThrowOnError>
-) => {
-  return (options.client ?? client).post<
+) =>
+  (options.client ?? client).post<
     CreatePackageRepositoryResponses,
     CreatePackageRepositoryErrors,
     ThrowOnError
   >({
-    security: [
-      {
-        scheme: "bearer",
-        type: "http",
-      },
-    ],
+    security: [{ scheme: "bearer", type: "http" }],
     url: "/MAAS/a/v3/package_repositories",
     ...options,
     headers: {
@@ -2725,69 +2256,51 @@ export const createPackageRepository = <ThrowOnError extends boolean = false>(
       ...options.headers,
     },
   });
-};
 
 /**
  * Delete Package Repository
  */
 export const deletePackageRepository = <ThrowOnError extends boolean = false>(
   options: Options<DeletePackageRepositoryData, ThrowOnError>
-) => {
-  return (options.client ?? client).delete<
+) =>
+  (options.client ?? client).delete<
     DeletePackageRepositoryResponses,
     DeletePackageRepositoryErrors,
     ThrowOnError
   >({
-    security: [
-      {
-        scheme: "bearer",
-        type: "http",
-      },
-    ],
+    security: [{ scheme: "bearer", type: "http" }],
     url: "/MAAS/a/v3/package_repositories/{package_repository_id}",
     ...options,
   });
-};
 
 /**
  * Get Package Repository
  */
 export const getPackageRepository = <ThrowOnError extends boolean = false>(
   options: Options<GetPackageRepositoryData, ThrowOnError>
-) => {
-  return (options.client ?? client).get<
+) =>
+  (options.client ?? client).get<
     GetPackageRepositoryResponses,
     GetPackageRepositoryErrors,
     ThrowOnError
   >({
-    security: [
-      {
-        scheme: "bearer",
-        type: "http",
-      },
-    ],
+    security: [{ scheme: "bearer", type: "http" }],
     url: "/MAAS/a/v3/package_repositories/{package_repository_id}",
     ...options,
   });
-};
 
 /**
  * Update Package Repository
  */
 export const updatePackageRepository = <ThrowOnError extends boolean = false>(
   options: Options<UpdatePackageRepositoryData, ThrowOnError>
-) => {
-  return (options.client ?? client).put<
+) =>
+  (options.client ?? client).put<
     UpdatePackageRepositoryResponses,
     UpdatePackageRepositoryErrors,
     ThrowOnError
   >({
-    security: [
-      {
-        scheme: "bearer",
-        type: "http",
-      },
-    ],
+    security: [{ scheme: "bearer", type: "http" }],
     url: "/MAAS/a/v3/package_repositories/{package_repository_id}",
     ...options,
     headers: {
@@ -2795,47 +2308,35 @@ export const updatePackageRepository = <ThrowOnError extends boolean = false>(
       ...options.headers,
     },
   });
-};
 
 /**
  * List Racks
  */
 export const listRacks = <ThrowOnError extends boolean = false>(
   options?: Options<ListRacksData, ThrowOnError>
-) => {
-  return (options?.client ?? client).get<
+) =>
+  (options?.client ?? client).get<
     ListRacksResponses,
     ListRacksErrors,
     ThrowOnError
   >({
-    security: [
-      {
-        scheme: "bearer",
-        type: "http",
-      },
-    ],
+    security: [{ scheme: "bearer", type: "http" }],
     url: "/MAAS/a/v3/racks",
     ...options,
   });
-};
 
 /**
  * Create Rack
  */
 export const createRack = <ThrowOnError extends boolean = false>(
   options: Options<CreateRackData, ThrowOnError>
-) => {
-  return (options.client ?? client).post<
+) =>
+  (options.client ?? client).post<
     CreateRackResponses,
     CreateRackErrors,
     ThrowOnError
   >({
-    security: [
-      {
-        scheme: "bearer",
-        type: "http",
-      },
-    ],
+    security: [{ scheme: "bearer", type: "http" }],
     url: "/MAAS/a/v3/racks",
     ...options,
     headers: {
@@ -2843,113 +2344,81 @@ export const createRack = <ThrowOnError extends boolean = false>(
       ...options.headers,
     },
   });
-};
 
 /**
  * Delete Rack Agent
  */
 export const deleteRackAgent = <ThrowOnError extends boolean = false>(
   options: Options<DeleteRackAgentData, ThrowOnError>
-) => {
-  return (options.client ?? client).delete<
+) =>
+  (options.client ?? client).delete<
     DeleteRackAgentResponses,
     DeleteRackAgentErrors,
     ThrowOnError
   >({
-    security: [
-      {
-        scheme: "bearer",
-        type: "http",
-      },
-    ],
+    security: [{ scheme: "bearer", type: "http" }],
     url: "/MAAS/a/v3/racks/{rack_id}/agents/{id}",
     ...options,
   });
-};
 
 /**
  * Get Rack Agent
  */
 export const getRackAgent = <ThrowOnError extends boolean = false>(
   options: Options<GetRackAgentData, ThrowOnError>
-) => {
-  return (options.client ?? client).get<
+) =>
+  (options.client ?? client).get<
     GetRackAgentResponses,
     GetRackAgentErrors,
     ThrowOnError
   >({
-    security: [
-      {
-        scheme: "bearer",
-        type: "http",
-      },
-    ],
+    security: [{ scheme: "bearer", type: "http" }],
     url: "/MAAS/a/v3/racks/{rack_id}/agents/{id}",
     ...options,
   });
-};
 
 /**
  * Delete Racks
  */
 export const deleteRacks = <ThrowOnError extends boolean = false>(
   options: Options<DeleteRacksData, ThrowOnError>
-) => {
-  return (options.client ?? client).delete<
+) =>
+  (options.client ?? client).delete<
     DeleteRacksResponses,
     DeleteRacksErrors,
     ThrowOnError
   >({
-    security: [
-      {
-        scheme: "bearer",
-        type: "http",
-      },
-    ],
+    security: [{ scheme: "bearer", type: "http" }],
     url: "/MAAS/a/v3/racks/{rack_id}",
     ...options,
   });
-};
 
 /**
  * Get Rack
  */
 export const getRack = <ThrowOnError extends boolean = false>(
   options: Options<GetRackData, ThrowOnError>
-) => {
-  return (options.client ?? client).get<
-    GetRackResponses,
-    GetRackErrors,
-    ThrowOnError
-  >({
-    security: [
-      {
-        scheme: "bearer",
-        type: "http",
-      },
-    ],
-    url: "/MAAS/a/v3/racks/{rack_id}",
-    ...options,
-  });
-};
+) =>
+  (options.client ?? client).get<GetRackResponses, GetRackErrors, ThrowOnError>(
+    {
+      security: [{ scheme: "bearer", type: "http" }],
+      url: "/MAAS/a/v3/racks/{rack_id}",
+      ...options,
+    }
+  );
 
 /**
  * Update Rack
  */
 export const updateRack = <ThrowOnError extends boolean = false>(
   options: Options<UpdateRackData, ThrowOnError>
-) => {
-  return (options.client ?? client).put<
+) =>
+  (options.client ?? client).put<
     UpdateRackResponses,
     UpdateRackErrors,
     ThrowOnError
   >({
-    security: [
-      {
-        scheme: "bearer",
-        type: "http",
-      },
-    ],
+    security: [{ scheme: "bearer", type: "http" }],
     url: "/MAAS/a/v3/racks/{rack_id}",
     ...options,
     headers: {
@@ -2957,7 +2426,6 @@ export const updateRack = <ThrowOnError extends boolean = false>(
       ...options.headers,
     },
   });
-};
 
 /**
  * Generate Rack Bootstrap Token
@@ -2966,66 +2434,48 @@ export const generateRackBootstrapToken = <
   ThrowOnError extends boolean = false,
 >(
   options: Options<GenerateRackBootstrapTokenData, ThrowOnError>
-) => {
-  return (options.client ?? client).post<
+) =>
+  (options.client ?? client).post<
     GenerateRackBootstrapTokenResponses,
     GenerateRackBootstrapTokenErrors,
     ThrowOnError
   >({
-    security: [
-      {
-        scheme: "bearer",
-        type: "http",
-      },
-    ],
+    security: [{ scheme: "bearer", type: "http" }],
     url: "/MAAS/a/v3/racks/{rack_id}/tokens:generate",
     ...options,
   });
-};
 
 /**
  * List Rack Agents
  */
 export const listRackAgents = <ThrowOnError extends boolean = false>(
   options: Options<ListRackAgentsData, ThrowOnError>
-) => {
-  return (options.client ?? client).get<
+) =>
+  (options.client ?? client).get<
     ListRackAgentsResponses,
     ListRackAgentsErrors,
     ThrowOnError
   >({
-    security: [
-      {
-        scheme: "bearer",
-        type: "http",
-      },
-    ],
+    security: [{ scheme: "bearer", type: "http" }],
     url: "/MAAS/a/v3/racks/{rack_id}/agents",
     ...options,
   });
-};
 
 /**
  * List racks with a summary.
  */
 export const listRacksWithSummary = <ThrowOnError extends boolean = false>(
   options?: Options<ListRacksWithSummaryData, ThrowOnError>
-) => {
-  return (options?.client ?? client).get<
+) =>
+  (options?.client ?? client).get<
     ListRacksWithSummaryResponses,
     ListRacksWithSummaryErrors,
     ThrowOnError
   >({
-    security: [
-      {
-        scheme: "bearer",
-        type: "http",
-      },
-    ],
+    security: [{ scheme: "bearer", type: "http" }],
     url: "/MAAS/a/v3/racks_with_summary",
     ...options,
   });
-};
 
 /**
  * List Fabric Vlan Subnet Reserved Ips
@@ -3034,22 +2484,16 @@ export const listFabricVlanSubnetReservedIps = <
   ThrowOnError extends boolean = false,
 >(
   options: Options<ListFabricVlanSubnetReservedIpsData, ThrowOnError>
-) => {
-  return (options.client ?? client).get<
+) =>
+  (options.client ?? client).get<
     ListFabricVlanSubnetReservedIpsResponses,
     ListFabricVlanSubnetReservedIpsErrors,
     ThrowOnError
   >({
-    security: [
-      {
-        scheme: "bearer",
-        type: "http",
-      },
-    ],
+    security: [{ scheme: "bearer", type: "http" }],
     url: "/MAAS/a/v3/fabrics/{fabric_id}/vlans/{vlan_id}/subnets/{subnet_id}/reserved_ips",
     ...options,
   });
-};
 
 /**
  * Create Fabric Vlan Subnet Reserved Ip
@@ -3058,18 +2502,13 @@ export const createFabricVlanSubnetReservedIp = <
   ThrowOnError extends boolean = false,
 >(
   options: Options<CreateFabricVlanSubnetReservedIpData, ThrowOnError>
-) => {
-  return (options.client ?? client).post<
+) =>
+  (options.client ?? client).post<
     CreateFabricVlanSubnetReservedIpResponses,
     CreateFabricVlanSubnetReservedIpErrors,
     ThrowOnError
   >({
-    security: [
-      {
-        scheme: "bearer",
-        type: "http",
-      },
-    ],
+    security: [{ scheme: "bearer", type: "http" }],
     url: "/MAAS/a/v3/fabrics/{fabric_id}/vlans/{vlan_id}/subnets/{subnet_id}/reserved_ips",
     ...options,
     headers: {
@@ -3077,7 +2516,6 @@ export const createFabricVlanSubnetReservedIp = <
       ...options.headers,
     },
   });
-};
 
 /**
  * Delete Fabric Vlan Subnet Reserved Ip
@@ -3086,22 +2524,16 @@ export const deleteFabricVlanSubnetReservedIp = <
   ThrowOnError extends boolean = false,
 >(
   options: Options<DeleteFabricVlanSubnetReservedIpData, ThrowOnError>
-) => {
-  return (options.client ?? client).delete<
+) =>
+  (options.client ?? client).delete<
     DeleteFabricVlanSubnetReservedIpResponses,
     DeleteFabricVlanSubnetReservedIpErrors,
     ThrowOnError
   >({
-    security: [
-      {
-        scheme: "bearer",
-        type: "http",
-      },
-    ],
+    security: [{ scheme: "bearer", type: "http" }],
     url: "/MAAS/a/v3/fabrics/{fabric_id}/vlans/{vlan_id}/subnets/{subnet_id}/reserved_ips/{id}",
     ...options,
   });
-};
 
 /**
  * Update Fabric Vlan Subnet Reserved Ip
@@ -3110,18 +2542,13 @@ export const updateFabricVlanSubnetReservedIp = <
   ThrowOnError extends boolean = false,
 >(
   options: Options<UpdateFabricVlanSubnetReservedIpData, ThrowOnError>
-) => {
-  return (options.client ?? client).put<
+) =>
+  (options.client ?? client).put<
     UpdateFabricVlanSubnetReservedIpResponses,
     UpdateFabricVlanSubnetReservedIpErrors,
     ThrowOnError
   >({
-    security: [
-      {
-        scheme: "bearer",
-        type: "http",
-      },
-    ],
+    security: [{ scheme: "bearer", type: "http" }],
     url: "/MAAS/a/v3/fabrics/{fabric_id}/vlans/{vlan_id}/subnets/{subnet_id}/reserved_ips/{id}",
     ...options,
     headers: {
@@ -3129,7 +2556,6 @@ export const updateFabricVlanSubnetReservedIp = <
       ...options.headers,
     },
   });
-};
 
 /**
  * Get Fabric Vlan Subnet Reserved Ip
@@ -3138,62 +2564,45 @@ export const getFabricVlanSubnetReservedIp = <
   ThrowOnError extends boolean = false,
 >(
   options: Options<GetFabricVlanSubnetReservedIpData, ThrowOnError>
-) => {
-  return (options.client ?? client).get<
+) =>
+  (options.client ?? client).get<
     GetFabricVlanSubnetReservedIpResponses,
     GetFabricVlanSubnetReservedIpErrors,
     ThrowOnError
   >({
-    security: [
-      {
-        scheme: "bearer",
-        type: "http",
-      },
-    ],
+    security: [{ scheme: "bearer", type: "http" }],
     url: "/MAAS/a/v3/fabrics/{fabric_id}/vlans/{vlan_id}/subnets/{subnet_id}/reserved_ips/{reservedip_id}",
     ...options,
   });
-};
 
 /**
  * List Resource Pools
  */
 export const listResourcePools = <ThrowOnError extends boolean = false>(
   options?: Options<ListResourcePoolsData, ThrowOnError>
-) => {
-  return (options?.client ?? client).get<
+) =>
+  (options?.client ?? client).get<
     ListResourcePoolsResponses,
     ListResourcePoolsErrors,
     ThrowOnError
   >({
-    security: [
-      {
-        scheme: "bearer",
-        type: "http",
-      },
-    ],
+    security: [{ scheme: "bearer", type: "http" }],
     url: "/MAAS/a/v3/resource_pools",
     ...options,
   });
-};
 
 /**
  * Create Resource Pool
  */
 export const createResourcePool = <ThrowOnError extends boolean = false>(
   options: Options<CreateResourcePoolData, ThrowOnError>
-) => {
-  return (options.client ?? client).post<
+) =>
+  (options.client ?? client).post<
     CreateResourcePoolResponses,
     CreateResourcePoolErrors,
     ThrowOnError
   >({
-    security: [
-      {
-        scheme: "bearer",
-        type: "http",
-      },
-    ],
+    security: [{ scheme: "bearer", type: "http" }],
     url: "/MAAS/a/v3/resource_pools",
     ...options,
     headers: {
@@ -3201,69 +2610,51 @@ export const createResourcePool = <ThrowOnError extends boolean = false>(
       ...options.headers,
     },
   });
-};
 
 /**
  * Delete Resource Pool
  */
 export const deleteResourcePool = <ThrowOnError extends boolean = false>(
   options: Options<DeleteResourcePoolData, ThrowOnError>
-) => {
-  return (options.client ?? client).delete<
+) =>
+  (options.client ?? client).delete<
     DeleteResourcePoolResponses,
     DeleteResourcePoolErrors,
     ThrowOnError
   >({
-    security: [
-      {
-        scheme: "bearer",
-        type: "http",
-      },
-    ],
+    security: [{ scheme: "bearer", type: "http" }],
     url: "/MAAS/a/v3/resource_pools/{resource_pool_id}",
     ...options,
   });
-};
 
 /**
  * Get Resource Pool
  */
 export const getResourcePool = <ThrowOnError extends boolean = false>(
   options: Options<GetResourcePoolData, ThrowOnError>
-) => {
-  return (options.client ?? client).get<
+) =>
+  (options.client ?? client).get<
     GetResourcePoolResponses,
     GetResourcePoolErrors,
     ThrowOnError
   >({
-    security: [
-      {
-        scheme: "bearer",
-        type: "http",
-      },
-    ],
+    security: [{ scheme: "bearer", type: "http" }],
     url: "/MAAS/a/v3/resource_pools/{resource_pool_id}",
     ...options,
   });
-};
 
 /**
  * Update Resource Pool
  */
 export const updateResourcePool = <ThrowOnError extends boolean = false>(
   options: Options<UpdateResourcePoolData, ThrowOnError>
-) => {
-  return (options.client ?? client).put<
+) =>
+  (options.client ?? client).put<
     UpdateResourcePoolResponses,
     UpdateResourcePoolErrors,
     ThrowOnError
   >({
-    security: [
-      {
-        scheme: "bearer",
-        type: "http",
-      },
-    ],
+    security: [{ scheme: "bearer", type: "http" }],
     url: "/MAAS/a/v3/resource_pools/{resource_pool_id}",
     ...options,
     headers: {
@@ -3271,7 +2662,6 @@ export const updateResourcePool = <ThrowOnError extends boolean = false>(
       ...options.headers,
     },
   });
-};
 
 /**
  * List resource pools with statistics. ONLY FOR INTERNAL USAGE.
@@ -3282,22 +2672,16 @@ export const listResourcePoolsStatistics = <
   ThrowOnError extends boolean = false,
 >(
   options?: Options<ListResourcePoolsStatisticsData, ThrowOnError>
-) => {
-  return (options?.client ?? client).get<
+) =>
+  (options?.client ?? client).get<
     ListResourcePoolsStatisticsResponses,
     ListResourcePoolsStatisticsErrors,
     ThrowOnError
   >({
-    security: [
-      {
-        scheme: "bearer",
-        type: "http",
-      },
-    ],
+    security: [{ scheme: "bearer", type: "http" }],
     url: "/MAAS/a/v3/resource_pools:statistics",
     ...options,
   });
-};
 
 /**
  * List Fabric Vlan Subnet Staticroutes
@@ -3306,22 +2690,16 @@ export const listFabricVlanSubnetStaticroutes = <
   ThrowOnError extends boolean = false,
 >(
   options: Options<ListFabricVlanSubnetStaticroutesData, ThrowOnError>
-) => {
-  return (options.client ?? client).get<
+) =>
+  (options.client ?? client).get<
     ListFabricVlanSubnetStaticroutesResponses,
     ListFabricVlanSubnetStaticroutesErrors,
     ThrowOnError
   >({
-    security: [
-      {
-        scheme: "bearer",
-        type: "http",
-      },
-    ],
+    security: [{ scheme: "bearer", type: "http" }],
     url: "/MAAS/a/v3/fabrics/{fabric_id}/vlans/{vlan_id}/subnets/{subnet_id}/staticroutes",
     ...options,
   });
-};
 
 /**
  * Create Fabric Vlan Subnet Staticroute
@@ -3330,18 +2708,13 @@ export const createFabricVlanSubnetStaticroute = <
   ThrowOnError extends boolean = false,
 >(
   options: Options<CreateFabricVlanSubnetStaticrouteData, ThrowOnError>
-) => {
-  return (options.client ?? client).post<
+) =>
+  (options.client ?? client).post<
     CreateFabricVlanSubnetStaticrouteResponses,
     CreateFabricVlanSubnetStaticrouteErrors,
     ThrowOnError
   >({
-    security: [
-      {
-        scheme: "bearer",
-        type: "http",
-      },
-    ],
+    security: [{ scheme: "bearer", type: "http" }],
     url: "/MAAS/a/v3/fabrics/{fabric_id}/vlans/{vlan_id}/subnets/{subnet_id}/staticroutes",
     ...options,
     headers: {
@@ -3349,7 +2722,6 @@ export const createFabricVlanSubnetStaticroute = <
       ...options.headers,
     },
   });
-};
 
 /**
  * Delete Fabric Vlan Subnet Staticroute
@@ -3358,22 +2730,16 @@ export const deleteFabricVlanSubnetStaticroute = <
   ThrowOnError extends boolean = false,
 >(
   options: Options<DeleteFabricVlanSubnetStaticrouteData, ThrowOnError>
-) => {
-  return (options.client ?? client).delete<
+) =>
+  (options.client ?? client).delete<
     DeleteFabricVlanSubnetStaticrouteResponses,
     DeleteFabricVlanSubnetStaticrouteErrors,
     ThrowOnError
   >({
-    security: [
-      {
-        scheme: "bearer",
-        type: "http",
-      },
-    ],
+    security: [{ scheme: "bearer", type: "http" }],
     url: "/MAAS/a/v3/fabrics/{fabric_id}/vlans/{vlan_id}/subnets/{subnet_id}/staticroutes/{id}",
     ...options,
   });
-};
 
 /**
  * Get Fabric Vlan Subnet Staticroute
@@ -3382,22 +2748,16 @@ export const getFabricVlanSubnetStaticroute = <
   ThrowOnError extends boolean = false,
 >(
   options: Options<GetFabricVlanSubnetStaticrouteData, ThrowOnError>
-) => {
-  return (options.client ?? client).get<
+) =>
+  (options.client ?? client).get<
     GetFabricVlanSubnetStaticrouteResponses,
     GetFabricVlanSubnetStaticrouteErrors,
     ThrowOnError
   >({
-    security: [
-      {
-        scheme: "bearer",
-        type: "http",
-      },
-    ],
+    security: [{ scheme: "bearer", type: "http" }],
     url: "/MAAS/a/v3/fabrics/{fabric_id}/vlans/{vlan_id}/subnets/{subnet_id}/staticroutes/{id}",
     ...options,
   });
-};
 
 /**
  * Update Fabric Vlan Subnet Staticroute
@@ -3406,18 +2766,13 @@ export const updateFabricVlanSubnetStaticroute = <
   ThrowOnError extends boolean = false,
 >(
   options: Options<UpdateFabricVlanSubnetStaticrouteData, ThrowOnError>
-) => {
-  return (options.client ?? client).put<
+) =>
+  (options.client ?? client).put<
     UpdateFabricVlanSubnetStaticrouteResponses,
     UpdateFabricVlanSubnetStaticrouteErrors,
     ThrowOnError
   >({
-    security: [
-      {
-        scheme: "bearer",
-        type: "http",
-      },
-    ],
+    security: [{ scheme: "bearer", type: "http" }],
     url: "/MAAS/a/v3/fabrics/{fabric_id}/vlans/{vlan_id}/subnets/{subnet_id}/staticroutes/{id}",
     ...options,
     headers: {
@@ -3425,47 +2780,35 @@ export const updateFabricVlanSubnetStaticroute = <
       ...options.headers,
     },
   });
-};
 
 /**
  * List Spaces
  */
 export const listSpaces = <ThrowOnError extends boolean = false>(
   options?: Options<ListSpacesData, ThrowOnError>
-) => {
-  return (options?.client ?? client).get<
+) =>
+  (options?.client ?? client).get<
     ListSpacesResponses,
     ListSpacesErrors,
     ThrowOnError
   >({
-    security: [
-      {
-        scheme: "bearer",
-        type: "http",
-      },
-    ],
+    security: [{ scheme: "bearer", type: "http" }],
     url: "/MAAS/a/v3/spaces",
     ...options,
   });
-};
 
 /**
  * Create Space
  */
 export const createSpace = <ThrowOnError extends boolean = false>(
   options: Options<CreateSpaceData, ThrowOnError>
-) => {
-  return (options.client ?? client).post<
+) =>
+  (options.client ?? client).post<
     CreateSpaceResponses,
     CreateSpaceErrors,
     ThrowOnError
   >({
-    security: [
-      {
-        scheme: "bearer",
-        type: "http",
-      },
-    ],
+    security: [{ scheme: "bearer", type: "http" }],
     url: "/MAAS/a/v3/spaces",
     ...options,
     headers: {
@@ -3473,69 +2816,51 @@ export const createSpace = <ThrowOnError extends boolean = false>(
       ...options.headers,
     },
   });
-};
 
 /**
  * Delete Space
  */
 export const deleteSpace = <ThrowOnError extends boolean = false>(
   options: Options<DeleteSpaceData, ThrowOnError>
-) => {
-  return (options.client ?? client).delete<
+) =>
+  (options.client ?? client).delete<
     DeleteSpaceResponses,
     DeleteSpaceErrors,
     ThrowOnError
   >({
-    security: [
-      {
-        scheme: "bearer",
-        type: "http",
-      },
-    ],
+    security: [{ scheme: "bearer", type: "http" }],
     url: "/MAAS/a/v3/spaces/{space_id}",
     ...options,
   });
-};
 
 /**
  * Get Space
  */
 export const getSpace = <ThrowOnError extends boolean = false>(
   options: Options<GetSpaceData, ThrowOnError>
-) => {
-  return (options.client ?? client).get<
+) =>
+  (options.client ?? client).get<
     GetSpaceResponses,
     GetSpaceErrors,
     ThrowOnError
   >({
-    security: [
-      {
-        scheme: "bearer",
-        type: "http",
-      },
-    ],
+    security: [{ scheme: "bearer", type: "http" }],
     url: "/MAAS/a/v3/spaces/{space_id}",
     ...options,
   });
-};
 
 /**
  * Update Space
  */
 export const updateSpace = <ThrowOnError extends boolean = false>(
   options: Options<UpdateSpaceData, ThrowOnError>
-) => {
-  return (options.client ?? client).put<
+) =>
+  (options.client ?? client).put<
     UpdateSpaceResponses,
     UpdateSpaceErrors,
     ThrowOnError
   >({
-    security: [
-      {
-        scheme: "bearer",
-        type: "http",
-      },
-    ],
+    security: [{ scheme: "bearer", type: "http" }],
     url: "/MAAS/a/v3/spaces/{space_id}",
     ...options,
     headers: {
@@ -3543,31 +2868,26 @@ export const updateSpace = <ThrowOnError extends boolean = false>(
       ...options.headers,
     },
   });
-};
 
 /**
  * List User Sshkeys
  */
 export const listUserSshkeys = <ThrowOnError extends boolean = false>(
   options?: Options<ListUserSshkeysData, ThrowOnError>
-) => {
-  return (options?.client ?? client).get<
+) =>
+  (options?.client ?? client).get<
     ListUserSshkeysResponses,
     ListUserSshkeysErrors,
     ThrowOnError
-  >({
-    url: "/MAAS/a/v3/users/me/sshkeys",
-    ...options,
-  });
-};
+  >({ url: "/MAAS/a/v3/users/me/sshkeys", ...options });
 
 /**
  * Create User Sshkeys
  */
 export const createUserSshkeys = <ThrowOnError extends boolean = false>(
   options: Options<CreateUserSshkeysData, ThrowOnError>
-) => {
-  return (options.client ?? client).post<
+) =>
+  (options.client ?? client).post<
     CreateUserSshkeysResponses,
     CreateUserSshkeysErrors,
     ThrowOnError
@@ -3579,47 +2899,38 @@ export const createUserSshkeys = <ThrowOnError extends boolean = false>(
       ...options.headers,
     },
   });
-};
 
 /**
  * Delete User Sshkey
  */
 export const deleteUserSshkey = <ThrowOnError extends boolean = false>(
   options: Options<DeleteUserSshkeyData, ThrowOnError>
-) => {
-  return (options.client ?? client).delete<
+) =>
+  (options.client ?? client).delete<
     DeleteUserSshkeyResponses,
     DeleteUserSshkeyErrors,
     ThrowOnError
-  >({
-    url: "/MAAS/a/v3/users/me/sshkeys/{id}",
-    ...options,
-  });
-};
+  >({ url: "/MAAS/a/v3/users/me/sshkeys/{id}", ...options });
 
 /**
  * Get User Sshkey
  */
 export const getUserSshkey = <ThrowOnError extends boolean = false>(
   options: Options<GetUserSshkeyData, ThrowOnError>
-) => {
-  return (options.client ?? client).get<
+) =>
+  (options.client ?? client).get<
     GetUserSshkeyResponses,
     GetUserSshkeyErrors,
     ThrowOnError
-  >({
-    url: "/MAAS/a/v3/users/me/sshkeys/{sshkey_id}",
-    ...options,
-  });
-};
+  >({ url: "/MAAS/a/v3/users/me/sshkeys/{sshkey_id}", ...options });
 
 /**
  * Import User Sshkeys
  */
 export const importUserSshkeys = <ThrowOnError extends boolean = false>(
   options: Options<ImportUserSshkeysData, ThrowOnError>
-) => {
-  return (options.client ?? client).post<
+) =>
+  (options.client ?? client).post<
     ImportUserSshkeysResponses,
     ImportUserSshkeysErrors,
     ThrowOnError
@@ -3631,31 +2942,26 @@ export const importUserSshkeys = <ThrowOnError extends boolean = false>(
       ...options.headers,
     },
   });
-};
 
 /**
  * Get User Sslkeys
  */
 export const getUserSslkeys = <ThrowOnError extends boolean = false>(
   options?: Options<GetUserSslkeysData, ThrowOnError>
-) => {
-  return (options?.client ?? client).get<
+) =>
+  (options?.client ?? client).get<
     GetUserSslkeysResponses,
     GetUserSslkeysErrors,
     ThrowOnError
-  >({
-    url: "/MAAS/a/v3/users/me/sslkeys",
-    ...options,
-  });
-};
+  >({ url: "/MAAS/a/v3/users/me/sslkeys", ...options });
 
 /**
  * Create User Sslkey
  */
 export const createUserSslkey = <ThrowOnError extends boolean = false>(
   options: Options<CreateUserSslkeyData, ThrowOnError>
-) => {
-  return (options.client ?? client).post<
+) =>
+  (options.client ?? client).post<
     CreateUserSslkeyResponses,
     CreateUserSslkeyErrors,
     ThrowOnError
@@ -3667,95 +2973,71 @@ export const createUserSslkey = <ThrowOnError extends boolean = false>(
       ...options.headers,
     },
   });
-};
 
 /**
  * Delete User Sslkey
  */
 export const deleteUserSslkey = <ThrowOnError extends boolean = false>(
   options: Options<DeleteUserSslkeyData, ThrowOnError>
-) => {
-  return (options.client ?? client).delete<
+) =>
+  (options.client ?? client).delete<
     DeleteUserSslkeyResponses,
     DeleteUserSslkeyErrors,
     ThrowOnError
-  >({
-    url: "/MAAS/a/v3/users/me/sslkeys/{sslkey_id}",
-    ...options,
-  });
-};
+  >({ url: "/MAAS/a/v3/users/me/sslkeys/{sslkey_id}", ...options });
 
 /**
  * Get User Sslkey
  */
 export const getUserSslkey = <ThrowOnError extends boolean = false>(
   options: Options<GetUserSslkeyData, ThrowOnError>
-) => {
-  return (options.client ?? client).get<
+) =>
+  (options.client ?? client).get<
     GetUserSslkeyResponses,
     GetUserSslkeyErrors,
     ThrowOnError
-  >({
-    url: "/MAAS/a/v3/users/me/sslkeys/{sslkey_id}",
-    ...options,
-  });
-};
+  >({ url: "/MAAS/a/v3/users/me/sslkeys/{sslkey_id}", ...options });
 
 /**
  * List User Sslkeys Statistics
  */
 export const listUserSslkeysStatistics = <ThrowOnError extends boolean = false>(
   options?: Options<ListUserSslkeysStatisticsData, ThrowOnError>
-) => {
-  return (options?.client ?? client).get<
+) =>
+  (options?.client ?? client).get<
     ListUserSslkeysStatisticsResponses,
     ListUserSslkeysStatisticsErrors,
     ThrowOnError
-  >({
-    url: "/MAAS/a/v3/users/me/sslkeys:statistics",
-    ...options,
-  });
-};
+  >({ url: "/MAAS/a/v3/users/me/sslkeys:statistics", ...options });
 
 /**
  * List Fabric Vlan Subnets
  */
 export const listFabricVlanSubnets = <ThrowOnError extends boolean = false>(
   options: Options<ListFabricVlanSubnetsData, ThrowOnError>
-) => {
-  return (options.client ?? client).get<
+) =>
+  (options.client ?? client).get<
     ListFabricVlanSubnetsResponses,
     ListFabricVlanSubnetsErrors,
     ThrowOnError
   >({
-    security: [
-      {
-        scheme: "bearer",
-        type: "http",
-      },
-    ],
+    security: [{ scheme: "bearer", type: "http" }],
     url: "/MAAS/a/v3/fabrics/{fabric_id}/vlans/{vlan_id}/subnets",
     ...options,
   });
-};
 
 /**
  * Create Fabric Vlan Subnet
  */
 export const createFabricVlanSubnet = <ThrowOnError extends boolean = false>(
   options: Options<CreateFabricVlanSubnetData, ThrowOnError>
-) => {
-  return (options.client ?? client).post<
+) =>
+  (options.client ?? client).post<
     CreateFabricVlanSubnetResponses,
     CreateFabricVlanSubnetErrors,
     ThrowOnError
   >({
-    security: [
-      {
-        scheme: "bearer",
-        type: "http",
-      },
-    ],
+    security: [{ scheme: "bearer", type: "http" }],
     url: "/MAAS/a/v3/fabrics/{fabric_id}/vlans/{vlan_id}/subnets",
     ...options,
     headers: {
@@ -3763,47 +3045,35 @@ export const createFabricVlanSubnet = <ThrowOnError extends boolean = false>(
       ...options.headers,
     },
   });
-};
 
 /**
  * Delete Fabric Vlan Subnet
  */
 export const deleteFabricVlanSubnet = <ThrowOnError extends boolean = false>(
   options: Options<DeleteFabricVlanSubnetData, ThrowOnError>
-) => {
-  return (options.client ?? client).delete<
+) =>
+  (options.client ?? client).delete<
     DeleteFabricVlanSubnetResponses,
     DeleteFabricVlanSubnetErrors,
     ThrowOnError
   >({
-    security: [
-      {
-        scheme: "bearer",
-        type: "http",
-      },
-    ],
+    security: [{ scheme: "bearer", type: "http" }],
     url: "/MAAS/a/v3/fabrics/{fabric_id}/vlans/{vlan_id}/subnets/{id}",
     ...options,
   });
-};
 
 /**
  * Update Fabric Vlan Subnet
  */
 export const updateFabricVlanSubnet = <ThrowOnError extends boolean = false>(
   options: Options<UpdateFabricVlanSubnetData, ThrowOnError>
-) => {
-  return (options.client ?? client).put<
+) =>
+  (options.client ?? client).put<
     UpdateFabricVlanSubnetResponses,
     UpdateFabricVlanSubnetErrors,
     ThrowOnError
   >({
-    security: [
-      {
-        scheme: "bearer",
-        type: "http",
-      },
-    ],
+    security: [{ scheme: "bearer", type: "http" }],
     url: "/MAAS/a/v3/fabrics/{fabric_id}/vlans/{vlan_id}/subnets/{id}",
     ...options,
     headers: {
@@ -3811,73 +3081,61 @@ export const updateFabricVlanSubnet = <ThrowOnError extends boolean = false>(
       ...options.headers,
     },
   });
-};
 
 /**
  * Get Fabric Vlan Subnet
  */
 export const getFabricVlanSubnet = <ThrowOnError extends boolean = false>(
   options: Options<GetFabricVlanSubnetData, ThrowOnError>
-) => {
-  return (options.client ?? client).get<
+) =>
+  (options.client ?? client).get<
     GetFabricVlanSubnetResponses,
     GetFabricVlanSubnetErrors,
     ThrowOnError
   >({
-    security: [
-      {
-        scheme: "bearer",
-        type: "http",
-      },
-    ],
+    security: [{ scheme: "bearer", type: "http" }],
     url: "/MAAS/a/v3/fabrics/{fabric_id}/vlans/{vlan_id}/subnets/{subnet_id}",
     ...options,
   });
-};
 
 /**
  * List Switches
  *
  * List all switches with pagination.
+ *
+ * **Experimental**: this endpoint is part of an experimental feature set
+ * and may change in future releases.
  */
 export const listSwitches = <ThrowOnError extends boolean = false>(
   options?: Options<ListSwitchesData, ThrowOnError>
-) => {
-  return (options?.client ?? client).get<
+) =>
+  (options?.client ?? client).get<
     ListSwitchesResponses,
     ListSwitchesErrors,
     ThrowOnError
   >({
-    security: [
-      {
-        scheme: "bearer",
-        type: "http",
-      },
-    ],
+    security: [{ scheme: "bearer", type: "http" }],
     url: "/MAAS/a/v3/switches",
     ...options,
   });
-};
 
 /**
  * Create Switch
  *
  * Create a new switch with its management interface.
+ *
+ * **Experimental**: this endpoint is part of an experimental feature set
+ * and may change in future releases.
  */
 export const createSwitch = <ThrowOnError extends boolean = false>(
   options: Options<CreateSwitchData, ThrowOnError>
-) => {
-  return (options.client ?? client).post<
+) =>
+  (options.client ?? client).post<
     CreateSwitchResponses,
     CreateSwitchErrors,
     ThrowOnError
   >({
-    security: [
-      {
-        scheme: "bearer",
-        type: "http",
-      },
-    ],
+    security: [{ scheme: "bearer", type: "http" }],
     url: "/MAAS/a/v3/switches",
     ...options,
     headers: {
@@ -3885,75 +3143,66 @@ export const createSwitch = <ThrowOnError extends boolean = false>(
       ...options.headers,
     },
   });
-};
 
 /**
  * Delete Switch
  *
  * Delete a switch and all related entries.
+ *
+ * **Experimental**: this endpoint is part of an experimental feature set
+ * and may change in future releases.
  */
 export const deleteSwitch = <ThrowOnError extends boolean = false>(
   options: Options<DeleteSwitchData, ThrowOnError>
-) => {
-  return (options.client ?? client).delete<
+) =>
+  (options.client ?? client).delete<
     DeleteSwitchResponses,
     DeleteSwitchErrors,
     ThrowOnError
   >({
-    security: [
-      {
-        scheme: "bearer",
-        type: "http",
-      },
-    ],
+    security: [{ scheme: "bearer", type: "http" }],
     url: "/MAAS/a/v3/switches/{switch_id}",
     ...options,
   });
-};
 
 /**
  * Get Switch
  *
  * Get a specific switch by ID.
+ *
+ * **Experimental**: this endpoint is part of an experimental feature set
+ * and may change in future releases.
  */
 export const getSwitch = <ThrowOnError extends boolean = false>(
   options: Options<GetSwitchData, ThrowOnError>
-) => {
-  return (options.client ?? client).get<
+) =>
+  (options.client ?? client).get<
     GetSwitchResponses,
     GetSwitchErrors,
     ThrowOnError
   >({
-    security: [
-      {
-        scheme: "bearer",
-        type: "http",
-      },
-    ],
+    security: [{ scheme: "bearer", type: "http" }],
     url: "/MAAS/a/v3/switches/{switch_id}",
     ...options,
   });
-};
 
 /**
  * Update Switch
  *
  * Update a switch's target image.
+ *
+ * **Experimental**: this endpoint is part of an experimental feature set
+ * and may change in future releases.
  */
 export const updateSwitch = <ThrowOnError extends boolean = false>(
   options: Options<UpdateSwitchData, ThrowOnError>
-) => {
-  return (options.client ?? client).patch<
+) =>
+  (options.client ?? client).patch<
     UpdateSwitchResponses,
     UpdateSwitchErrors,
     ThrowOnError
   >({
-    security: [
-      {
-        scheme: "bearer",
-        type: "http",
-      },
-    ],
+    security: [{ scheme: "bearer", type: "http" }],
     url: "/MAAS/a/v3/switches/{switch_id}",
     ...options,
     headers: {
@@ -3961,47 +3210,35 @@ export const updateSwitch = <ThrowOnError extends boolean = false>(
       ...options.headers,
     },
   });
-};
 
 /**
  * List Tags
  */
 export const listTags = <ThrowOnError extends boolean = false>(
   options?: Options<ListTagsData, ThrowOnError>
-) => {
-  return (options?.client ?? client).get<
+) =>
+  (options?.client ?? client).get<
     ListTagsResponses,
     ListTagsErrors,
     ThrowOnError
   >({
-    security: [
-      {
-        scheme: "bearer",
-        type: "http",
-      },
-    ],
+    security: [{ scheme: "bearer", type: "http" }],
     url: "/MAAS/a/v3/tags",
     ...options,
   });
-};
 
 /**
  * Create Tag
  */
 export const createTag = <ThrowOnError extends boolean = false>(
   options: Options<CreateTagData, ThrowOnError>
-) => {
-  return (options.client ?? client).post<
+) =>
+  (options.client ?? client).post<
     CreateTagResponses,
     CreateTagErrors,
     ThrowOnError
   >({
-    security: [
-      {
-        scheme: "bearer",
-        type: "http",
-      },
-    ],
+    security: [{ scheme: "bearer", type: "http" }],
     url: "/MAAS/a/v3/tags",
     ...options,
     headers: {
@@ -4009,69 +3246,47 @@ export const createTag = <ThrowOnError extends boolean = false>(
       ...options.headers,
     },
   });
-};
 
 /**
  * Delete Tag
  */
 export const deleteTag = <ThrowOnError extends boolean = false>(
   options: Options<DeleteTagData, ThrowOnError>
-) => {
-  return (options.client ?? client).delete<
+) =>
+  (options.client ?? client).delete<
     DeleteTagResponses,
     DeleteTagErrors,
     ThrowOnError
   >({
-    security: [
-      {
-        scheme: "bearer",
-        type: "http",
-      },
-    ],
+    security: [{ scheme: "bearer", type: "http" }],
     url: "/MAAS/a/v3/tags/{tag_id}",
     ...options,
   });
-};
 
 /**
  * Get Tag
  */
 export const getTag = <ThrowOnError extends boolean = false>(
   options: Options<GetTagData, ThrowOnError>
-) => {
-  return (options.client ?? client).get<
-    GetTagResponses,
-    GetTagErrors,
-    ThrowOnError
-  >({
-    security: [
-      {
-        scheme: "bearer",
-        type: "http",
-      },
-    ],
+) =>
+  (options.client ?? client).get<GetTagResponses, GetTagErrors, ThrowOnError>({
+    security: [{ scheme: "bearer", type: "http" }],
     url: "/MAAS/a/v3/tags/{tag_id}",
     ...options,
   });
-};
 
 /**
  * Update Tag
  */
 export const updateTag = <ThrowOnError extends boolean = false>(
   options: Options<UpdateTagData, ThrowOnError>
-) => {
-  return (options.client ?? client).put<
+) =>
+  (options.client ?? client).put<
     UpdateTagResponses,
     UpdateTagErrors,
     ThrowOnError
   >({
-    security: [
-      {
-        scheme: "bearer",
-        type: "http",
-      },
-    ],
+    security: [{ scheme: "bearer", type: "http" }],
     url: "/MAAS/a/v3/tags/{tag_id}",
     ...options,
     headers: {
@@ -4079,91 +3294,67 @@ export const updateTag = <ThrowOnError extends boolean = false>(
       ...options.headers,
     },
   });
-};
 
 /**
  * Evaluate Tag
  */
 export const evaluateTag = <ThrowOnError extends boolean = false>(
   options: Options<EvaluateTagData, ThrowOnError>
-) => {
-  return (options.client ?? client).post<
+) =>
+  (options.client ?? client).post<
     EvaluateTagResponses,
     EvaluateTagErrors,
     ThrowOnError
   >({
-    security: [
-      {
-        scheme: "bearer",
-        type: "http",
-      },
-    ],
+    security: [{ scheme: "bearer", type: "http" }],
     url: "/MAAS/a/v3/tags/{tag_id}:evaluate",
     ...options,
   });
-};
 
 /**
  * Remove Group Entitlement
  */
 export const removeGroupEntitlement = <ThrowOnError extends boolean = false>(
   options: Options<RemoveGroupEntitlementData, ThrowOnError>
-) => {
-  return (options.client ?? client).delete<
+) =>
+  (options.client ?? client).delete<
     RemoveGroupEntitlementResponses,
     RemoveGroupEntitlementErrors,
     ThrowOnError
   >({
-    security: [
-      {
-        scheme: "bearer",
-        type: "http",
-      },
-    ],
+    security: [{ scheme: "bearer", type: "http" }],
     url: "/MAAS/a/v3/groups/{group_id}/entitlements",
     ...options,
   });
-};
 
 /**
  * List Group Entitlements
  */
 export const listGroupEntitlements = <ThrowOnError extends boolean = false>(
   options: Options<ListGroupEntitlementsData, ThrowOnError>
-) => {
-  return (options.client ?? client).get<
+) =>
+  (options.client ?? client).get<
     ListGroupEntitlementsResponses,
     ListGroupEntitlementsErrors,
     ThrowOnError
   >({
-    security: [
-      {
-        scheme: "bearer",
-        type: "http",
-      },
-    ],
+    security: [{ scheme: "bearer", type: "http" }],
     url: "/MAAS/a/v3/groups/{group_id}/entitlements",
     ...options,
   });
-};
 
 /**
  * Add Group Entitlement
  */
 export const addGroupEntitlement = <ThrowOnError extends boolean = false>(
   options: Options<AddGroupEntitlementData, ThrowOnError>
-) => {
-  return (options.client ?? client).post<
+) =>
+  (options.client ?? client).post<
     AddGroupEntitlementResponses,
     AddGroupEntitlementErrors,
     ThrowOnError
   >({
-    security: [
-      {
-        scheme: "bearer",
-        type: "http",
-      },
-    ],
+    security: [{ scheme: "bearer", type: "http" }],
     url: "/MAAS/a/v3/groups/{group_id}/entitlements",
     ...options,
     headers: {
@@ -4171,69 +3362,51 @@ export const addGroupEntitlement = <ThrowOnError extends boolean = false>(
       ...options.headers,
     },
   });
-};
 
 /**
  * Bulk Remove Group Members
  */
 export const bulkRemoveGroupMembers = <ThrowOnError extends boolean = false>(
   options: Options<BulkRemoveGroupMembersData, ThrowOnError>
-) => {
-  return (options.client ?? client).delete<
+) =>
+  (options.client ?? client).delete<
     BulkRemoveGroupMembersResponses,
     BulkRemoveGroupMembersErrors,
     ThrowOnError
   >({
-    security: [
-      {
-        scheme: "bearer",
-        type: "http",
-      },
-    ],
+    security: [{ scheme: "bearer", type: "http" }],
     url: "/MAAS/a/v3/groups/{group_id}/members",
     ...options,
   });
-};
 
 /**
  * List Group Members
  */
 export const listGroupMembers = <ThrowOnError extends boolean = false>(
   options: Options<ListGroupMembersData, ThrowOnError>
-) => {
-  return (options.client ?? client).get<
+) =>
+  (options.client ?? client).get<
     ListGroupMembersResponses,
     ListGroupMembersErrors,
     ThrowOnError
   >({
-    security: [
-      {
-        scheme: "bearer",
-        type: "http",
-      },
-    ],
+    security: [{ scheme: "bearer", type: "http" }],
     url: "/MAAS/a/v3/groups/{group_id}/members",
     ...options,
   });
-};
 
 /**
  * Add Group Member
  */
 export const addGroupMember = <ThrowOnError extends boolean = false>(
   options: Options<AddGroupMemberData, ThrowOnError>
-) => {
-  return (options.client ?? client).post<
+) =>
+  (options.client ?? client).post<
     AddGroupMemberResponses,
     AddGroupMemberErrors,
     ThrowOnError
   >({
-    security: [
-      {
-        scheme: "bearer",
-        type: "http",
-      },
-    ],
+    security: [{ scheme: "bearer", type: "http" }],
     url: "/MAAS/a/v3/groups/{group_id}/members",
     ...options,
     headers: {
@@ -4241,25 +3414,19 @@ export const addGroupMember = <ThrowOnError extends boolean = false>(
       ...options.headers,
     },
   });
-};
 
 /**
  * Bulk Add Group Members
  */
 export const bulkAddGroupMembers = <ThrowOnError extends boolean = false>(
   options: Options<BulkAddGroupMembersData, ThrowOnError>
-) => {
-  return (options.client ?? client).post<
+) =>
+  (options.client ?? client).post<
     BulkAddGroupMembersResponses,
     BulkAddGroupMembersErrors,
     ThrowOnError
   >({
-    security: [
-      {
-        scheme: "bearer",
-        type: "http",
-      },
-    ],
+    security: [{ scheme: "bearer", type: "http" }],
     url: "/MAAS/a/v3/groups/{group_id}/members:batch_create",
     ...options,
     headers: {
@@ -4267,7 +3434,6 @@ export const bulkAddGroupMembers = <ThrowOnError extends boolean = false>(
       ...options.headers,
     },
   });
-};
 
 /**
  * Bulk Remove Group Entitlements
@@ -4276,18 +3442,13 @@ export const bulkRemoveGroupEntitlements = <
   ThrowOnError extends boolean = false,
 >(
   options: Options<BulkRemoveGroupEntitlementsData, ThrowOnError>
-) => {
-  return (options.client ?? client).post<
+) =>
+  (options.client ?? client).post<
     BulkRemoveGroupEntitlementsResponses,
     BulkRemoveGroupEntitlementsErrors,
     ThrowOnError
   >({
-    security: [
-      {
-        scheme: "bearer",
-        type: "http",
-      },
-    ],
+    security: [{ scheme: "bearer", type: "http" }],
     url: "/MAAS/a/v3/groups/{group_id}/entitlements:batch_delete",
     ...options,
     headers: {
@@ -4295,47 +3456,35 @@ export const bulkRemoveGroupEntitlements = <
       ...options.headers,
     },
   });
-};
 
 /**
  * List Groups
  */
 export const listGroups = <ThrowOnError extends boolean = false>(
   options?: Options<ListGroupsData, ThrowOnError>
-) => {
-  return (options?.client ?? client).get<
+) =>
+  (options?.client ?? client).get<
     ListGroupsResponses,
     ListGroupsErrors,
     ThrowOnError
   >({
-    security: [
-      {
-        scheme: "bearer",
-        type: "http",
-      },
-    ],
+    security: [{ scheme: "bearer", type: "http" }],
     url: "/MAAS/a/v3/groups",
     ...options,
   });
-};
 
 /**
  * Create Group
  */
 export const createGroup = <ThrowOnError extends boolean = false>(
   options: Options<CreateGroupData, ThrowOnError>
-) => {
-  return (options.client ?? client).post<
+) =>
+  (options.client ?? client).post<
     CreateGroupResponses,
     CreateGroupErrors,
     ThrowOnError
   >({
-    security: [
-      {
-        scheme: "bearer",
-        type: "http",
-      },
-    ],
+    security: [{ scheme: "bearer", type: "http" }],
     url: "/MAAS/a/v3/groups",
     ...options,
     headers: {
@@ -4343,69 +3492,51 @@ export const createGroup = <ThrowOnError extends boolean = false>(
       ...options.headers,
     },
   });
-};
 
 /**
  * Delete Group
  */
 export const deleteGroup = <ThrowOnError extends boolean = false>(
   options: Options<DeleteGroupData, ThrowOnError>
-) => {
-  return (options.client ?? client).delete<
+) =>
+  (options.client ?? client).delete<
     DeleteGroupResponses,
     DeleteGroupErrors,
     ThrowOnError
   >({
-    security: [
-      {
-        scheme: "bearer",
-        type: "http",
-      },
-    ],
+    security: [{ scheme: "bearer", type: "http" }],
     url: "/MAAS/a/v3/groups/{group_id}",
     ...options,
   });
-};
 
 /**
  * Get Group
  */
 export const getGroup = <ThrowOnError extends boolean = false>(
   options: Options<GetGroupData, ThrowOnError>
-) => {
-  return (options.client ?? client).get<
+) =>
+  (options.client ?? client).get<
     GetGroupResponses,
     GetGroupErrors,
     ThrowOnError
   >({
-    security: [
-      {
-        scheme: "bearer",
-        type: "http",
-      },
-    ],
+    security: [{ scheme: "bearer", type: "http" }],
     url: "/MAAS/a/v3/groups/{group_id}",
     ...options,
   });
-};
 
 /**
  * Update Group
  */
 export const updateGroup = <ThrowOnError extends boolean = false>(
   options: Options<UpdateGroupData, ThrowOnError>
-) => {
-  return (options.client ?? client).put<
+) =>
+  (options.client ?? client).put<
     UpdateGroupResponses,
     UpdateGroupErrors,
     ThrowOnError
   >({
-    security: [
-      {
-        scheme: "bearer",
-        type: "http",
-      },
-    ],
+    security: [{ scheme: "bearer", type: "http" }],
     url: "/MAAS/a/v3/groups/{group_id}",
     ...options,
     headers: {
@@ -4413,107 +3544,82 @@ export const updateGroup = <ThrowOnError extends boolean = false>(
       ...options.headers,
     },
   });
-};
 
 /**
  * List Groups Statistics
  */
 export const listGroupsStatistics = <ThrowOnError extends boolean = false>(
   options?: Options<ListGroupsStatisticsData, ThrowOnError>
-) => {
-  return (options?.client ?? client).get<
+) =>
+  (options?.client ?? client).get<
     ListGroupsStatisticsResponses,
     ListGroupsStatisticsErrors,
     ThrowOnError
   >({
-    security: [
-      {
-        scheme: "bearer",
-        type: "http",
-      },
-    ],
+    security: [{ scheme: "bearer", type: "http" }],
     url: "/MAAS/a/v3/groups:statistics",
     ...options,
   });
-};
 
 /**
  * Remove Group Member
  */
 export const removeGroupMember = <ThrowOnError extends boolean = false>(
   options: Options<RemoveGroupMemberData, ThrowOnError>
-) => {
-  return (options.client ?? client).delete<
+) =>
+  (options.client ?? client).delete<
     RemoveGroupMemberResponses,
     RemoveGroupMemberErrors,
     ThrowOnError
   >({
-    security: [
-      {
-        scheme: "bearer",
-        type: "http",
-      },
-    ],
+    security: [{ scheme: "bearer", type: "http" }],
     url: "/MAAS/a/v3/groups/{group_id}/members/{user_id}",
     ...options,
   });
-};
 
 /**
  * Get additional statistics for the logged-in user, e.g. machine count.
  */
 export const getMeStatistics = <ThrowOnError extends boolean = false>(
   options?: Options<GetMeStatisticsData, ThrowOnError>
-) => {
-  return (options?.client ?? client).get<
+) =>
+  (options?.client ?? client).get<
     GetMeStatisticsResponses,
     GetMeStatisticsErrors,
     ThrowOnError
-  >({
-    url: "/MAAS/a/v3/users/me:statistics",
-    ...options,
-  });
-};
+  >({ url: "/MAAS/a/v3/users/me:statistics", ...options });
 
 /**
  * Get User Info
  */
 export const getUserInfo = <ThrowOnError extends boolean = false>(
   options?: Options<GetUserInfoData, ThrowOnError>
-) => {
-  return (options?.client ?? client).get<
+) =>
+  (options?.client ?? client).get<
     GetUserInfoResponses,
     GetUserInfoErrors,
     ThrowOnError
-  >({
-    url: "/MAAS/a/v3/users/me",
-    ...options,
-  });
-};
+  >({ url: "/MAAS/a/v3/users/me", ...options });
 
 /**
  * Complete Intro
  */
 export const completeIntro = <ThrowOnError extends boolean = false>(
   options?: Options<CompleteIntroData, ThrowOnError>
-) => {
-  return (options?.client ?? client).post<
+) =>
+  (options?.client ?? client).post<
     CompleteIntroResponses,
     CompleteIntroErrors,
     ThrowOnError
-  >({
-    url: "/MAAS/a/v3/users/me:complete_intro",
-    ...options,
-  });
-};
+  >({ url: "/MAAS/a/v3/users/me:complete_intro", ...options });
 
 /**
  * Change Password User
  */
 export const changePasswordUser = <ThrowOnError extends boolean = false>(
   options: Options<ChangePasswordUserData, ThrowOnError>
-) => {
-  return (options.client ?? client).post<
+) =>
+  (options.client ?? client).post<
     ChangePasswordUserResponses,
     ChangePasswordUserErrors,
     ThrowOnError
@@ -4525,47 +3631,35 @@ export const changePasswordUser = <ThrowOnError extends boolean = false>(
       ...options.headers,
     },
   });
-};
 
 /**
  * List Users
  */
 export const listUsers = <ThrowOnError extends boolean = false>(
   options?: Options<ListUsersData, ThrowOnError>
-) => {
-  return (options?.client ?? client).get<
+) =>
+  (options?.client ?? client).get<
     ListUsersResponses,
     ListUsersErrors,
     ThrowOnError
   >({
-    security: [
-      {
-        scheme: "bearer",
-        type: "http",
-      },
-    ],
+    security: [{ scheme: "bearer", type: "http" }],
     url: "/MAAS/a/v3/users",
     ...options,
   });
-};
 
 /**
  * Create User
  */
 export const createUser = <ThrowOnError extends boolean = false>(
   options: Options<CreateUserData, ThrowOnError>
-) => {
-  return (options.client ?? client).post<
+) =>
+  (options.client ?? client).post<
     CreateUserResponses,
     CreateUserErrors,
     ThrowOnError
   >({
-    security: [
-      {
-        scheme: "bearer",
-        type: "http",
-      },
-    ],
+    security: [{ scheme: "bearer", type: "http" }],
     url: "/MAAS/a/v3/users",
     ...options,
     headers: {
@@ -4573,69 +3667,49 @@ export const createUser = <ThrowOnError extends boolean = false>(
       ...options.headers,
     },
   });
-};
 
 /**
  * Delete User
  */
 export const deleteUser = <ThrowOnError extends boolean = false>(
   options: Options<DeleteUserData, ThrowOnError>
-) => {
-  return (options.client ?? client).delete<
+) =>
+  (options.client ?? client).delete<
     DeleteUserResponses,
     DeleteUserErrors,
     ThrowOnError
   >({
-    security: [
-      {
-        scheme: "bearer",
-        type: "http",
-      },
-    ],
+    security: [{ scheme: "bearer", type: "http" }],
     url: "/MAAS/a/v3/users/{user_id}",
     ...options,
   });
-};
 
 /**
  * Get User
  */
 export const getUser = <ThrowOnError extends boolean = false>(
   options: Options<GetUserData, ThrowOnError>
-) => {
-  return (options.client ?? client).get<
-    GetUserResponses,
-    GetUserErrors,
-    ThrowOnError
-  >({
-    security: [
-      {
-        scheme: "bearer",
-        type: "http",
-      },
-    ],
-    url: "/MAAS/a/v3/users/{user_id}",
-    ...options,
-  });
-};
+) =>
+  (options.client ?? client).get<GetUserResponses, GetUserErrors, ThrowOnError>(
+    {
+      security: [{ scheme: "bearer", type: "http" }],
+      url: "/MAAS/a/v3/users/{user_id}",
+      ...options,
+    }
+  );
 
 /**
  * Update User
  */
 export const updateUser = <ThrowOnError extends boolean = false>(
   options: Options<UpdateUserData, ThrowOnError>
-) => {
-  return (options.client ?? client).put<
+) =>
+  (options.client ?? client).put<
     UpdateUserResponses,
     UpdateUserErrors,
     ThrowOnError
   >({
-    security: [
-      {
-        scheme: "bearer",
-        type: "http",
-      },
-    ],
+    security: [{ scheme: "bearer", type: "http" }],
     url: "/MAAS/a/v3/users/{user_id}",
     ...options,
     headers: {
@@ -4643,25 +3717,19 @@ export const updateUser = <ThrowOnError extends boolean = false>(
       ...options.headers,
     },
   });
-};
 
 /**
  * Change Password Admin
  */
 export const changePasswordAdmin = <ThrowOnError extends boolean = false>(
   options: Options<ChangePasswordAdminData, ThrowOnError>
-) => {
-  return (options.client ?? client).post<
+) =>
+  (options.client ?? client).post<
     ChangePasswordAdminResponses,
     ChangePasswordAdminErrors,
     ThrowOnError
   >({
-    security: [
-      {
-        scheme: "bearer",
-        type: "http",
-      },
-    ],
+    security: [{ scheme: "bearer", type: "http" }],
     url: "/MAAS/a/v3/users/{user_id}:change_password",
     ...options,
     headers: {
@@ -4669,69 +3737,51 @@ export const changePasswordAdmin = <ThrowOnError extends boolean = false>(
       ...options.headers,
     },
   });
-};
 
 /**
  * List additional statistics of users, e.g. machine count.
  */
 export const listUsersStatistics = <ThrowOnError extends boolean = false>(
   options?: Options<ListUsersStatisticsData, ThrowOnError>
-) => {
-  return (options?.client ?? client).get<
+) =>
+  (options?.client ?? client).get<
     ListUsersStatisticsResponses,
     ListUsersStatisticsErrors,
     ThrowOnError
   >({
-    security: [
-      {
-        scheme: "bearer",
-        type: "http",
-      },
-    ],
+    security: [{ scheme: "bearer", type: "http" }],
     url: "/MAAS/a/v3/users:statistics",
     ...options,
   });
-};
 
 /**
  * List Fabric Vlans
  */
 export const listFabricVlans = <ThrowOnError extends boolean = false>(
   options: Options<ListFabricVlansData, ThrowOnError>
-) => {
-  return (options.client ?? client).get<
+) =>
+  (options.client ?? client).get<
     ListFabricVlansResponses,
     ListFabricVlansErrors,
     ThrowOnError
   >({
-    security: [
-      {
-        scheme: "bearer",
-        type: "http",
-      },
-    ],
+    security: [{ scheme: "bearer", type: "http" }],
     url: "/MAAS/a/v3/fabrics/{fabric_id}/vlans",
     ...options,
   });
-};
 
 /**
  * Create Fabric Vlan
  */
 export const createFabricVlan = <ThrowOnError extends boolean = false>(
   options: Options<CreateFabricVlanData, ThrowOnError>
-) => {
-  return (options.client ?? client).post<
+) =>
+  (options.client ?? client).post<
     CreateFabricVlanResponses,
     CreateFabricVlanErrors,
     ThrowOnError
   >({
-    security: [
-      {
-        scheme: "bearer",
-        type: "http",
-      },
-    ],
+    security: [{ scheme: "bearer", type: "http" }],
     url: "/MAAS/a/v3/fabrics/{fabric_id}/vlans",
     ...options,
     headers: {
@@ -4739,69 +3789,51 @@ export const createFabricVlan = <ThrowOnError extends boolean = false>(
       ...options.headers,
     },
   });
-};
 
 /**
  * Delete Fabric Vlan
  */
 export const deleteFabricVlan = <ThrowOnError extends boolean = false>(
   options: Options<DeleteFabricVlanData, ThrowOnError>
-) => {
-  return (options.client ?? client).delete<
+) =>
+  (options.client ?? client).delete<
     DeleteFabricVlanResponses,
     DeleteFabricVlanErrors,
     ThrowOnError
   >({
-    security: [
-      {
-        scheme: "bearer",
-        type: "http",
-      },
-    ],
+    security: [{ scheme: "bearer", type: "http" }],
     url: "/MAAS/a/v3/fabrics/{fabric_id}/vlans/{vlan_id}",
     ...options,
   });
-};
 
 /**
  * Get Fabric Vlan
  */
 export const getFabricVlan = <ThrowOnError extends boolean = false>(
   options: Options<GetFabricVlanData, ThrowOnError>
-) => {
-  return (options.client ?? client).get<
+) =>
+  (options.client ?? client).get<
     GetFabricVlanResponses,
     GetFabricVlanErrors,
     ThrowOnError
   >({
-    security: [
-      {
-        scheme: "bearer",
-        type: "http",
-      },
-    ],
+    security: [{ scheme: "bearer", type: "http" }],
     url: "/MAAS/a/v3/fabrics/{fabric_id}/vlans/{vlan_id}",
     ...options,
   });
-};
 
 /**
  * Update Fabric Vlan
  */
 export const updateFabricVlan = <ThrowOnError extends boolean = false>(
   options: Options<UpdateFabricVlanData, ThrowOnError>
-) => {
-  return (options.client ?? client).put<
+) =>
+  (options.client ?? client).put<
     UpdateFabricVlanResponses,
     UpdateFabricVlanErrors,
     ThrowOnError
   >({
-    security: [
-      {
-        scheme: "bearer",
-        type: "http",
-      },
-    ],
+    security: [{ scheme: "bearer", type: "http" }],
     url: "/MAAS/a/v3/fabrics/{fabric_id}/vlans/{vlan_id}",
     ...options,
     headers: {
@@ -4809,47 +3841,35 @@ export const updateFabricVlan = <ThrowOnError extends boolean = false>(
       ...options.headers,
     },
   });
-};
 
 /**
  * List Zones
  */
 export const listZones = <ThrowOnError extends boolean = false>(
   options?: Options<ListZonesData, ThrowOnError>
-) => {
-  return (options?.client ?? client).get<
+) =>
+  (options?.client ?? client).get<
     ListZonesResponses,
     ListZonesErrors,
     ThrowOnError
   >({
-    security: [
-      {
-        scheme: "bearer",
-        type: "http",
-      },
-    ],
+    security: [{ scheme: "bearer", type: "http" }],
     url: "/MAAS/a/v3/zones",
     ...options,
   });
-};
 
 /**
  * Create Zone
  */
 export const createZone = <ThrowOnError extends boolean = false>(
   options: Options<CreateZoneData, ThrowOnError>
-) => {
-  return (options.client ?? client).post<
+) =>
+  (options.client ?? client).post<
     CreateZoneResponses,
     CreateZoneErrors,
     ThrowOnError
   >({
-    security: [
-      {
-        scheme: "bearer",
-        type: "http",
-      },
-    ],
+    security: [{ scheme: "bearer", type: "http" }],
     url: "/MAAS/a/v3/zones",
     ...options,
     headers: {
@@ -4857,7 +3877,6 @@ export const createZone = <ThrowOnError extends boolean = false>(
       ...options.headers,
     },
   });
-};
 
 /**
  * Delete Zone
@@ -4866,62 +3885,43 @@ export const createZone = <ThrowOnError extends boolean = false>(
  */
 export const deleteZone = <ThrowOnError extends boolean = false>(
   options: Options<DeleteZoneData, ThrowOnError>
-) => {
-  return (options.client ?? client).delete<
+) =>
+  (options.client ?? client).delete<
     DeleteZoneResponses,
     DeleteZoneErrors,
     ThrowOnError
   >({
-    security: [
-      {
-        scheme: "bearer",
-        type: "http",
-      },
-    ],
+    security: [{ scheme: "bearer", type: "http" }],
     url: "/MAAS/a/v3/zones/{zone_id}",
     ...options,
   });
-};
 
 /**
  * Get Zone
  */
 export const getZone = <ThrowOnError extends boolean = false>(
   options: Options<GetZoneData, ThrowOnError>
-) => {
-  return (options.client ?? client).get<
-    GetZoneResponses,
-    GetZoneErrors,
-    ThrowOnError
-  >({
-    security: [
-      {
-        scheme: "bearer",
-        type: "http",
-      },
-    ],
-    url: "/MAAS/a/v3/zones/{zone_id}",
-    ...options,
-  });
-};
+) =>
+  (options.client ?? client).get<GetZoneResponses, GetZoneErrors, ThrowOnError>(
+    {
+      security: [{ scheme: "bearer", type: "http" }],
+      url: "/MAAS/a/v3/zones/{zone_id}",
+      ...options,
+    }
+  );
 
 /**
  * Update Zone
  */
 export const updateZone = <ThrowOnError extends boolean = false>(
   options: Options<UpdateZoneData, ThrowOnError>
-) => {
-  return (options.client ?? client).put<
+) =>
+  (options.client ?? client).put<
     UpdateZoneResponses,
     UpdateZoneErrors,
     ThrowOnError
   >({
-    security: [
-      {
-        scheme: "bearer",
-        type: "http",
-      },
-    ],
+    security: [{ scheme: "bearer", type: "http" }],
     url: "/MAAS/a/v3/zones/{zone_id}",
     ...options,
     headers: {
@@ -4929,7 +3929,6 @@ export const updateZone = <ThrowOnError extends boolean = false>(
       ...options.headers,
     },
   });
-};
 
 /**
  * List zones with statistics. ONLY FOR INTERNAL USAGE.
@@ -4938,63 +3937,45 @@ export const updateZone = <ThrowOnError extends boolean = false>(
  */
 export const listZonesWithStatistics = <ThrowOnError extends boolean = false>(
   options?: Options<ListZonesWithStatisticsData, ThrowOnError>
-) => {
-  return (options?.client ?? client).get<
+) =>
+  (options?.client ?? client).get<
     ListZonesWithStatisticsResponses,
     ListZonesWithStatisticsErrors,
     ThrowOnError
   >({
-    security: [
-      {
-        scheme: "bearer",
-        type: "http",
-      },
-    ],
+    security: [{ scheme: "bearer", type: "http" }],
     url: "/MAAS/a/v3/zones:statistics",
     ...options,
   });
-};
 
 /**
  * Get Subnet
  */
 export const getSubnet = <ThrowOnError extends boolean = false>(
   options: Options<GetSubnetData, ThrowOnError>
-) => {
-  return (options.client ?? client).get<
+) =>
+  (options.client ?? client).get<
     GetSubnetResponses,
     GetSubnetErrors,
     ThrowOnError
   >({
-    security: [
-      {
-        scheme: "bearer",
-        type: "http",
-      },
-    ],
+    security: [{ scheme: "bearer", type: "http" }],
     url: "/MAAS/a/v3ui/subnets/{subnet_id}",
     ...options,
   });
-};
 
 /**
  * List Subnets
  */
 export const listSubnets = <ThrowOnError extends boolean = false>(
   options?: Options<ListSubnetsData, ThrowOnError>
-) => {
-  return (options?.client ?? client).get<
+) =>
+  (options?.client ?? client).get<
     ListSubnetsResponses,
     ListSubnetsErrors,
     ThrowOnError
   >({
-    security: [
-      {
-        scheme: "bearer",
-        type: "http",
-      },
-    ],
+    security: [{ scheme: "bearer", type: "http" }],
     url: "/MAAS/a/v3ui/subnets",
     ...options,
   });
-};

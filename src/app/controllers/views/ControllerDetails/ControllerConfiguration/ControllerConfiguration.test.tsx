@@ -208,6 +208,13 @@ describe("ControllerConfiguration", () => {
         initialEntries: [route],
       }
     );
+    await waitFor(() => {
+      expect(
+        screen.getAllByRole("button", {
+          name: EditableSectionLabels.EditButton,
+        })
+      ).toHaveLength(4);
+    });
     await userEvent.click(
       screen.getAllByRole("button", {
         name: EditableSectionLabels.EditButton,

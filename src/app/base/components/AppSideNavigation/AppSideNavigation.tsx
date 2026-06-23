@@ -19,8 +19,8 @@ import AppSideNavItems from "./AppSideNavItems";
 import NavigationBanner from "./NavigationBanner";
 import { navGroups } from "./constants";
 
+import type { CurrentUserInfo } from "@/app/api/query/auth";
 import { useGetCurrentUser } from "@/app/api/query/auth";
-import type { UserResponse } from "@/app/apiclient";
 import {
   useCompletedIntro,
   useCompletedUserIntro,
@@ -36,7 +36,7 @@ import podSelectors from "@/app/store/pod/selectors";
 import type { RootState } from "@/app/store/root/types";
 
 export type SideNavigationProps = {
-  authUser: UserResponse;
+  authUser: CurrentUserInfo | undefined;
   filteredGroups: typeof navGroups;
   isAuthenticated: boolean;
   isCollapsed: boolean;
@@ -102,7 +102,6 @@ export const AppSideNavigation = ({
           <AppSideNavItems
             authUser={authUser}
             groups={filteredGroups}
-            isAdmin={authUser?.is_superuser ?? false}
             isAuthenticated={isAuthenticated}
             logout={logout}
             path={path}
