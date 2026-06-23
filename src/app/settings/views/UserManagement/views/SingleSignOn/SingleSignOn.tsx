@@ -9,21 +9,31 @@ import {
 } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 
+import { Entitlement } from "../Groups/constants";
+
 import ResetSingleSignOn from "./components/ResetSingleSignOn";
 import SingleSignOnForm from "./components/SingleSignOnForm";
 
-import { useActiveOauthProvider } from "@/app/api/query/auth";
+import {
+  useActiveOauthProvider,
+  useGetUserEntitlements,
+} from "@/app/api/query/auth";
 import PageContent from "@/app/base/components/PageContent";
 import { useWindowTitle } from "@/app/base/hooks";
 import { useSidePanel } from "@/app/base/side-panel-context";
 import { generalActions } from "@/app/store/general";
 import { maasURL } from "@/app/store/general/selectors";
+import { hasPermissions } from "@/app/utils/permissions";
 
 const SingleSignOn = (): ReactElement => {
   const { data, error, isPending } = useActiveOauthProvider();
   const { openSidePanel } = useSidePanel();
   const dispatch = useDispatch();
   const maasURLData = useSelector(maasURL.get);
+  const userEntitlements = useGetUserEntitlements();
+  const canEdit = hasPermissions(userEntitlements.data || [], [
+    Entitlement.CAN_EDIT_IDENTITIES,
+  ]);
 
   useEffect(() => {
     dispatch(generalActions.fetchMAASURL());
@@ -55,7 +65,7 @@ const SingleSignOn = (): ReactElement => {
               >
                 <Button
                   appearance="negative"
-                  disabled={!queryData}
+                  disabled={!queryData || !canEdit}
                   onClick={() => {
                     if (data) {
                       openSidePanel({
@@ -83,7 +93,11 @@ const SingleSignOn = (): ReactElement => {
                 {error.message}
               </NotificationBanner>
             ) : (
-              <SingleSignOnForm maasURL={maasURLData} provider={queryData} />
+              <SingleSignOnForm
+                canEdit={canEdit}
+                maasURL={maasURLData}
+                provider={queryData}
+              />
             )}
           </ContentSection.Content>
         </ContentSection.Header>

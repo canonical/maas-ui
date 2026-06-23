@@ -1,6 +1,7 @@
 import SingleSignOn from "./SingleSignOn";
 import ResetSingleSignOn from "./components/ResetSingleSignOn";
 
+import { Entitlement } from "@/app/settings/views/UserManagement/views/Groups/constants";
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
 import { authResolvers, mockOauthProvider } from "@/testing/resolvers/auth";
@@ -15,7 +16,8 @@ import {
 } from "@/testing/utils";
 
 const mockServer = setupMockServer(
-  authResolvers.getActiveOauthProvider.handler()
+  authResolvers.getActiveOauthProvider.handler(),
+  authResolvers.getCurrentUser.handler()
 );
 
 const { mockOpen } = await mockSidePanel();
@@ -167,5 +169,57 @@ describe("Single sign-on", () => {
         id: mockOauthProvider.id,
       },
     });
+  });
+
+  it("disables the form fields and 'Reset' button without edit permissions", async () => {
+    mockServer.use(
+      authResolvers.getCurrentUser.handler(
+        factory.userInfo({
+          entitlements: [
+            factory.entitlement({
+              entitlement: Entitlement.CAN_VIEW_IDENTITIES,
+            }),
+          ],
+        })
+      )
+    );
+
+    renderWithProviders(<SingleSignOn />, { state });
+
+    await waitFor(() => {
+      expect(
+        screen.getByRole("form", { name: "Single sign-on form" })
+      ).toBeInTheDocument();
+    });
+
+    expect(screen.getByRole("textbox", { name: /Name/i })).toBeDisabled();
+    expect(screen.getByRole("button", { name: /Reset/i })).toBeAriaDisabled();
+  });
+
+  it("enables the form fields with edit permissions", async () => {
+    mockServer.use(
+      authResolvers.getCurrentUser.handler(
+        factory.userInfo({
+          entitlements: [
+            factory.entitlement({
+              entitlement: Entitlement.CAN_EDIT_IDENTITIES,
+            }),
+          ],
+        })
+      )
+    );
+
+    renderWithProviders(<SingleSignOn />, { state });
+
+    await waitFor(() => {
+      expect(
+        screen.getByRole("form", { name: "Single sign-on form" })
+      ).toBeInTheDocument();
+    });
+
+    expect(screen.getByRole("textbox", { name: /Name/i })).toBeEnabled();
+    expect(
+      screen.getByRole("button", { name: /Reset/i })
+    ).not.toBeAriaDisabled();
   });
 });

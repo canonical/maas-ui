@@ -41,6 +41,7 @@ import SecretStorage from "@/app/settings/views/Security/SecretStorage";
 import SecurityProtocols from "@/app/settings/views/Security/SecurityProtocols";
 import SessionTimeout from "@/app/settings/views/Security/SessionTimeout";
 import StorageForm from "@/app/settings/views/Storage/StorageForm";
+import UserManagement from "@/app/settings/views/UserManagement";
 import SingleSignOn from "@/app/settings/views/UserManagement/views/SingleSignOn";
 import UsersList from "@/app/settings/views/UserManagement/views/UsersList/UsersList";
 import { MachineMeta } from "@/app/store/machine/types";
@@ -776,45 +777,54 @@ export const router = createBrowserRouter(
                   ),
                 },
                 {
-                  path: getRelativeRoute(
-                    urls.settings.userManagement.users,
-                    urls.settings.index
-                  ),
                   element: (
                     <ErrorBoundary>
-                      <UsersList />
+                      <UserManagement />
                     </ErrorBoundary>
                   ),
-                },
-                {
-                  path: getRelativeRoute(
-                    urls.settings.userManagement.groups,
-                    urls.settings.index
-                  ),
-                  element: (
-                    <ErrorBoundary>
-                      <GroupsList />
-                    </ErrorBoundary>
-                  ),
-                },
-                {
-                  path: `${urls.settings.userManagement.group.index(null)}/*`,
-                  element: (
-                    <ErrorBoundary>
-                      <GroupDetails />
-                    </ErrorBoundary>
-                  ),
-                },
-                {
-                  path: getRelativeRoute(
-                    urls.settings.userManagement.singleSignOn,
-                    urls.settings.index
-                  ),
-                  element: (
-                    <ErrorBoundary>
-                      <SingleSignOn />
-                    </ErrorBoundary>
-                  ),
+                  children: [
+                    {
+                      path: getRelativeRoute(
+                        urls.settings.userManagement.users,
+                        urls.settings.index
+                      ),
+                      element: (
+                        <ErrorBoundary>
+                          <UsersList />
+                        </ErrorBoundary>
+                      ),
+                    },
+                    {
+                      path: getRelativeRoute(
+                        urls.settings.userManagement.groups,
+                        urls.settings.index
+                      ),
+                      element: (
+                        <ErrorBoundary>
+                          <GroupsList />
+                        </ErrorBoundary>
+                      ),
+                    },
+                    {
+                      path: `${urls.settings.userManagement.group.index(null)}/*`,
+                      element: (
+                        <ErrorBoundary>
+                          <GroupDetails />
+                        </ErrorBoundary>
+                      ),
+                    },
+                    {
+                      path: getRelativeRoute(
+                        urls.settings.userManagement.singleSignOn,
+                        urls.settings.index
+                      ),
+                      element: (
+                        <ErrorBoundary>
+                          <SingleSignOn />
+                        </ErrorBoundary>
+                      ),
+                    },
+                  ],
                 },
                 {
                   path: getRelativeRoute(

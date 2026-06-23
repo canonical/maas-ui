@@ -21,6 +21,7 @@ import FormikForm from "@/app/base/components/FormikForm";
 type Props = {
   provider: WithHeaders<OAuthProviderResponse> | undefined;
   maasURL: string;
+  canEdit: boolean;
 };
 
 const SingleSignOnSchema = Yup.object().shape({
@@ -35,7 +36,11 @@ const SingleSignOnSchema = Yup.object().shape({
     .required("Token type is a required field."),
 });
 
-const SingleSignOnForm = ({ provider, maasURL }: Props): ReactElement => {
+const SingleSignOnForm = ({
+  provider,
+  maasURL,
+  canEdit,
+}: Props): ReactElement => {
   const [initialValues, setInitialValues] = useState<SingleSignOnFormValues>(
     provider ?? {
       name: "",
@@ -125,7 +130,11 @@ const SingleSignOnForm = ({ provider, maasURL }: Props): ReactElement => {
       saving={createOauthProvider.isPending || updateOauthProvider.isPending}
       validationSchema={SingleSignOnSchema}
     >
-      <SingleSignOnFormFields maasURL={maasURL} provider={provider} />
+      <SingleSignOnFormFields
+        canEdit={canEdit}
+        maasURL={maasURL}
+        provider={provider}
+      />
     </FormikForm>
   );
 };
