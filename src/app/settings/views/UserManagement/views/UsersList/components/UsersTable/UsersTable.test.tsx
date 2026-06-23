@@ -162,7 +162,7 @@ describe("UsersTable", () => {
           items: [user],
           total: 1,
         }),
-        authResolvers.getCurrentUser.handler(user)
+        authResolvers.getCurrentUser.handler(factory.userInfo({ id: 1 }))
       );
 
       renderWithProviders(<UsersTable />);

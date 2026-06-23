@@ -112,7 +112,7 @@ describe("GlobalSideNav", () => {
   it("hides nav links if not completed intro", async () => {
     mockServer.use(
       authResolvers.getCurrentUser.handler(
-        factory.user({
+        factory.userInfo({
           username: "koala",
         })
       ),

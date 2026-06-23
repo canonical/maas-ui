@@ -251,6 +251,7 @@ export type CurrentUserInfo = {
   id: number;
   username: string;
   entitlements: EntitlementResponse[];
+  headers?: Headers;
   statistics: WithHeaders<UserStatisticsResponse> | undefined;
 };
 

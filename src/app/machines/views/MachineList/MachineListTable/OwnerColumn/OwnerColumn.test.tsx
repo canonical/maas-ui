@@ -63,7 +63,7 @@ describe("OwnerColumn", () => {
   it("displays owner's username if showFullName is true and user doesn't have a full name", () => {
     mockServer.use(
       authResolvers.getCurrentUser.handler(
-        factory.user({ last_name: "", username: "user1" })
+        factory.userInfo({ username: "user1" })
       )
     );
     renderWithProviders(
