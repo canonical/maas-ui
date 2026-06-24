@@ -13,6 +13,7 @@ export const hasPermissions = (
   }
 
   return required_entitlements.every((entitlement) => {
+    // If the user has the edit entitlement, they also have the view entitlement
     const editEquivalent = entitlement.replace(/^can_view_/, "can_edit_");
     return current_entitlements.some(
       (current) =>
