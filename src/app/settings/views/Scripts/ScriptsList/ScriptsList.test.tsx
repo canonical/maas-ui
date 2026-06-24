@@ -4,17 +4,22 @@ import ScriptsList from ".";
 
 import ScriptDetails from "@/app/settings/views/Scripts/ScriptDetails";
 import DeleteScript from "@/app/settings/views/Scripts/ScriptsList/components/DeleteScript/DeleteScript";
+import { Entitlement } from "@/app/settings/views/UserManagement/views/Groups/constants";
 import type { RootState } from "@/app/store/root/types";
 import { ScriptType } from "@/app/store/script/types";
 import * as factory from "@/testing/factories";
+import { authResolvers } from "@/testing/resolvers/auth";
 import {
   mockSidePanel,
   renderWithProviders,
   screen,
+  setupMockServer,
   userEvent,
+  waitFor,
   within,
 } from "@/testing/utils";
 
+const mockServer = setupMockServer(authResolvers.getCurrentUser.handler());
 const { mockOpen } = await mockSidePanel();
 
 describe("ScriptsList", () => {
@@ -118,6 +123,11 @@ describe("ScriptsList", () => {
     renderWithProviders(<ScriptsList />, { state });
 
     const row = screen.getByRole("row", { name: /commissioning-script/ });
+    await waitFor(() => {
+      expect(
+        within(row).getByRole("button", { name: "Delete" })
+      ).not.toBeAriaDisabled();
+    });
     await userEvent.click(within(row).getByRole("button", { name: "Delete" }));
 
     expect(mockOpen).toHaveBeenCalledWith(
@@ -129,7 +139,7 @@ describe("ScriptsList", () => {
     );
   });
 
-  it("disables the delete button for default scripts", () => {
+  it("disables the delete button for default scripts", async () => {
     const state = factory.rootState({
       script: factory.scriptState({
         loaded: true,
@@ -155,14 +165,21 @@ describe("ScriptsList", () => {
       within(dataRows[0]).getByRole("button", { name: "Delete" })
     ).toBeAriaDisabled();
 
-    expect(
-      within(dataRows[1]).getByRole("button", { name: "Delete" })
-    ).not.toBeAriaDisabled();
+    await waitFor(() => {
+      expect(
+        within(dataRows[1]).getByRole("button", { name: "Delete" })
+      ).not.toBeAriaDisabled();
+    });
   });
 
   it("opens the script details side panel when the script name is clicked", async () => {
     renderWithProviders(<ScriptsList />, { state });
 
+    await waitFor(() => {
+      expect(
+        screen.getByRole("button", { name: "Upload script" })
+      ).not.toBeAriaDisabled();
+    });
     await userEvent.click(
       screen.getByRole("button", { name: "commissioning-script" })
     );
@@ -187,5 +204,31 @@ describe("ScriptsList", () => {
     renderWithProviders(<ScriptsList type="testing" />, { state });
 
     expect(screen.getByText(ScriptsListLabels.EmptyList)).toBeInTheDocument();
+  });
+
+  it("disables the action buttons without edit permissions", async () => {
+    mockServer.use(
+      authResolvers.getCurrentUser.handler(
+        factory.userInfo({
+          entitlements: [
+            factory.entitlement({
+              entitlement: Entitlement.CAN_VIEW_GLOBAL_ENTITIES,
+            }),
+          ],
+        })
+      )
+    );
+
+    renderWithProviders(<ScriptsList />, { state });
+
+    await waitFor(() => {
+      expect(
+        screen.getByRole("button", { name: "Upload script" })
+      ).toBeAriaDisabled();
+    });
+    const row = screen.getByRole("row", { name: /commissioning-script/ });
+    expect(
+      within(row).getByRole("button", { name: "Delete" })
+    ).toBeAriaDisabled();
   });
 });
