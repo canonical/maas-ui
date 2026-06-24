@@ -7,9 +7,8 @@ import { useSelector } from "react-redux";
 import AddStaticRouteForm from "./AddStaticRouteForm";
 import useStaticRoutesColumns from "./useStaticRoutesColumns/useStaticRoutesColumns";
 
-import { useGetUserEntitlements } from "@/app/api/query/auth";
 import TitledSection from "@/app/base/components/TitledSection";
-import { useFetchActions } from "@/app/base/hooks";
+import { useFetchActions, useHasEntitlements } from "@/app/base/hooks";
 import { useSidePanel } from "@/app/base/side-panel-context";
 import { Entitlement } from "@/app/settings/views/UserManagement/views/Groups/constants";
 import { staticRouteActions } from "@/app/store/staticroute";
@@ -17,7 +16,6 @@ import staticRouteSelectors from "@/app/store/staticroute/selectors";
 import { subnetActions } from "@/app/store/subnet";
 import subnetSelectors from "@/app/store/subnet/selectors";
 import type { Subnet, SubnetMeta } from "@/app/store/subnet/types";
-import { hasPermissions } from "@/app/utils/permissions";
 
 export type StaticRoutesProps = {
   subnetId: Subnet[SubnetMeta.PK];
@@ -37,10 +35,7 @@ const StaticRoutes = ({ subnetId }: StaticRoutesProps): ReactElement | null => {
     (staticRoute) => staticRoute.source === subnetId
   );
   const subnetsLoading = useSelector(subnetSelectors.loading);
-  const userEntitlements = useGetUserEntitlements();
-  const canEdit = hasPermissions(userEntitlements.data || [], [
-    Entitlement.CAN_EDIT_GLOBAL_ENTITIES,
-  ]);
+  const canEdit = useHasEntitlements([Entitlement.CAN_EDIT_GLOBAL_ENTITIES]);
 
   useFetchActions([staticRouteActions.fetch, subnetActions.fetch]);
 

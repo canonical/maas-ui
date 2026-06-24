@@ -4,16 +4,15 @@ import * as Yup from "yup";
 
 import { Entitlement } from "../../UserManagement/views/Groups/constants";
 
-import { useGetUserEntitlements } from "@/app/api/query/auth";
 import {
   useGetConfiguration,
   useSetConfiguration,
 } from "@/app/api/query/configurations";
 import FormikField from "@/app/base/components/FormikField";
 import FormikForm from "@/app/base/components/FormikForm";
+import { useHasEntitlements } from "@/app/base/hooks";
 import { configActions } from "@/app/store/config";
 import { ConfigNames } from "@/app/store/config/types";
-import { hasPermissions } from "@/app/utils/permissions";
 
 const ThirdPartyDriversSchema = Yup.object().shape({
   enable_third_party_drivers: Yup.boolean(),
@@ -31,10 +30,7 @@ const ThirdPartyDriversForm = (): ReactElement => {
   const eTag = data?.headers?.get("ETag");
   const enable_third_party_drivers = data?.value || false;
   const updateConfig = useSetConfiguration();
-  const userEntitlements = useGetUserEntitlements();
-  const canEdit = hasPermissions(userEntitlements.data || [], [
-    Entitlement.CAN_EDIT_BOOT_ENTITIES,
-  ]);
+  const canEdit = useHasEntitlements([Entitlement.CAN_EDIT_BOOT_ENTITIES]);
 
   return (
     <FormikForm

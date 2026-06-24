@@ -11,7 +11,6 @@ import * as Yup from "yup";
 
 import { Entitlement } from "../../UserManagement/views/Groups/constants";
 
-import { useGetUserEntitlements } from "@/app/api/query/auth";
 import {
   useConfigurations,
   useBulkSetConfigurations,
@@ -20,11 +19,10 @@ import type { PublicConfigName, SetConfigurationsError } from "@/app/apiclient";
 import FormikField from "@/app/base/components/FormikField";
 import FormikForm from "@/app/base/components/FormikForm";
 import PageContent from "@/app/base/components/PageContent";
-import { useWindowTitle } from "@/app/base/hooks";
+import { useWindowTitle, useHasEntitlements } from "@/app/base/hooks";
 import { useLogout } from "@/app/base/hooks/logout";
 import { configActions } from "@/app/store/config";
 import { ConfigNames } from "@/app/store/config/types";
-import { hasPermissions } from "@/app/utils/permissions";
 import {
   humanReadableToSeconds,
   secondsToDuration,
@@ -91,10 +89,7 @@ const SessionTimeout = (): ReactElement => {
   const updateConfig = useBulkSetConfigurations();
   useWindowTitle("Token Expiration");
   const logout = useLogout();
-  const userEntitlements = useGetUserEntitlements();
-  const canEdit = hasPermissions(userEntitlements.data || [], [
-    Entitlement.CAN_EDIT_CONFIGURATIONS,
-  ]);
+  const canEdit = useHasEntitlements([Entitlement.CAN_EDIT_CONFIGURATIONS]);
 
   if (isPending) {
     return <Spinner aria-label={Labels.Loading} text={Labels.Loading} />;

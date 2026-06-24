@@ -10,14 +10,12 @@ import { Entitlement } from "../../../UserManagement/views/Groups/constants";
 
 import type { NetworkDiscoveryValues } from "./types";
 
-import { useGetUserEntitlements } from "@/app/api/query/auth";
 import FormikField from "@/app/base/components/FormikField";
 import FormikForm from "@/app/base/components/FormikForm";
-import { useWindowTitle } from "@/app/base/hooks";
+import { useWindowTitle, useHasEntitlements } from "@/app/base/hooks";
 import { configActions } from "@/app/store/config";
 import configSelectors from "@/app/store/config/selectors";
 import { NetworkDiscovery } from "@/app/store/config/types";
-import { hasPermissions } from "@/app/utils/permissions";
 
 const NetworkDiscoverySchema = Yup.object().shape({
   active_discovery_interval: Yup.number().required(),
@@ -44,10 +42,7 @@ const NetworkDiscoveryForm = (): ReactElement => {
   const discoveryIntervalOptions = useSelector(
     configSelectors.discoveryIntervalOptions
   );
-  const userEntitlements = useGetUserEntitlements();
-  const canEdit = hasPermissions(userEntitlements.data || [], [
-    Entitlement.CAN_EDIT_CONFIGURATIONS,
-  ]);
+  const canEdit = useHasEntitlements([Entitlement.CAN_EDIT_CONFIGURATIONS]);
 
   useWindowTitle("Network discovery");
 

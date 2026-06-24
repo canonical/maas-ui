@@ -17,7 +17,11 @@ export enum Labels {
   Actions = "Actions",
 }
 
-const useScriptsTableColumns = (): ScriptColumnDef[] => {
+const useScriptsTableColumns = ({
+  canEdit,
+}: {
+  canEdit: boolean;
+}): ScriptColumnDef[] => {
   const { openSidePanel } = useSidePanel();
 
   return useMemo(
@@ -66,9 +70,13 @@ const useScriptsTableColumns = (): ScriptColumnDef[] => {
         header: Labels.Actions,
         cell: ({ row }) => (
           <TableActions
-            deleteDisabled={row.original.default}
+            deleteDisabled={!canEdit || row.original.default}
             deleteTooltip={
-              row.original.default ? "Default scripts cannot be deleted." : null
+              !canEdit
+                ? "You do not have permission to delete scripts."
+                : row.original.default
+                  ? "Default scripts cannot be deleted."
+                  : null
             }
             onDelete={() => {
               openSidePanel({
@@ -81,7 +89,7 @@ const useScriptsTableColumns = (): ScriptColumnDef[] => {
         ),
       },
     ],
-    [openSidePanel]
+    [openSidePanel, canEdit]
   );
 };
 

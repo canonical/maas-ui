@@ -4,7 +4,6 @@ import * as Yup from "yup";
 
 import { Entitlement } from "../../UserManagement/views/Groups/constants";
 
-import { useGetUserEntitlements } from "@/app/api/query/auth";
 import {
   useBulkSetConfigurations,
   useConfigurations,
@@ -12,10 +11,10 @@ import {
 import type { PublicConfigName } from "@/app/apiclient";
 import FormikField from "@/app/base/components/FormikField";
 import FormikForm from "@/app/base/components/FormikForm";
+import { useHasEntitlements } from "@/app/base/hooks";
 import { getConfigsFromResponse } from "@/app/settings/utils";
 import { configActions } from "@/app/store/config";
 import { ConfigNames } from "@/app/store/config/types";
-import { hasPermissions } from "@/app/utils/permissions";
 
 const VMWareSchema = Yup.object().shape({
   vcenter_server: Yup.string(),
@@ -50,10 +49,7 @@ const VMWareForm = (): ReactElement => {
     vcenter_datacenter,
   } = getConfigsFromResponse(data?.items || [], names);
   const updateConfig = useBulkSetConfigurations();
-  const userEntitlements = useGetUserEntitlements();
-  const canEdit = hasPermissions(userEntitlements.data || [], [
-    Entitlement.CAN_EDIT_BOOT_ENTITIES,
-  ]);
+  const canEdit = useHasEntitlements([Entitlement.CAN_EDIT_BOOT_ENTITIES]);
   return (
     <FormikForm
       aria-label={Labels.FormLabel}

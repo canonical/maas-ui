@@ -5,13 +5,12 @@ import { Entitlement } from "../../UserManagement/views/Groups/constants";
 
 import type { DeployFormValues } from "./types";
 
-import { useGetUserEntitlements } from "@/app/api/query/auth";
 import FormikForm from "@/app/base/components/FormikForm";
+import { useHasEntitlements } from "@/app/base/hooks";
 import DeployFormFields from "@/app/settings/views/Configuration/DeployFormFields";
 import { configActions } from "@/app/store/config";
 import configSelectors from "@/app/store/config/selectors";
 import { timeSpanToMinutes } from "@/app/utils";
-import { hasPermissions } from "@/app/utils/permissions";
 
 const DeploySchema = Yup.object().shape({
   default_osystem: Yup.string(),
@@ -36,10 +35,7 @@ const DeployForm = (): React.ReactElement => {
     configSelectors.hardwareSyncInterval
   );
   const hardwareSyncIntervalMinutes = timeSpanToMinutes(hardwareSyncInterval);
-  const userEntitlements = useGetUserEntitlements();
-  const canEdit = hasPermissions(userEntitlements.data || [], [
-    Entitlement.CAN_EDIT_CONFIGURATIONS,
-  ]);
+  const canEdit = useHasEntitlements([Entitlement.CAN_EDIT_CONFIGURATIONS]);
 
   return (
     <FormikForm<DeployFormValues>

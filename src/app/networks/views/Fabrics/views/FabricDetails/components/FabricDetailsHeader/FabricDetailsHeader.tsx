@@ -2,13 +2,12 @@ import type { ReactElement } from "react";
 
 import { Button } from "@canonical/react-components";
 
-import { useGetUserEntitlements } from "@/app/api/query/auth";
 import SectionHeader from "@/app/base/components/SectionHeader";
+import { useHasEntitlements } from "@/app/base/hooks";
 import { useSidePanel } from "@/app/base/side-panel-context";
 import { DeleteFabric } from "@/app/networks/views/Fabrics/components";
 import { Entitlement } from "@/app/settings/views/UserManagement/views/Groups/constants";
 import type { Fabric } from "@/app/store/fabric/types";
-import { hasPermissions } from "@/app/utils/permissions";
 
 type FabricDetailsHeaderProps = {
   fabric: Fabric | null;
@@ -18,10 +17,7 @@ const FabricDetailsHeader = ({
   fabric,
 }: FabricDetailsHeaderProps): ReactElement => {
   const { openSidePanel } = useSidePanel();
-  const userEntitlements = useGetUserEntitlements();
-  const canEdit = hasPermissions(userEntitlements.data || [], [
-    Entitlement.CAN_EDIT_GLOBAL_ENTITIES,
-  ]);
+  const canEdit = useHasEntitlements([Entitlement.CAN_EDIT_GLOBAL_ENTITIES]);
 
   return (
     <SectionHeader

@@ -6,14 +6,13 @@ import { Entitlement } from "../../../UserManagement/views/Groups/constants";
 
 import TLSEnabledFields from "./TLSEnabledFields";
 
-import { useGetUserEntitlements } from "@/app/api/query/auth";
 import CertificateMetadata from "@/app/base/components/CertificateMetadata";
 import FormikForm from "@/app/base/components/FormikForm";
+import { useHasEntitlements } from "@/app/base/hooks";
 import { configActions } from "@/app/store/config";
 import configSelectors from "@/app/store/config/selectors";
 import { TLSExpiryNotificationInterval } from "@/app/store/config/types";
 import { tlsCertificate as tlsCertificateSelectors } from "@/app/store/general/selectors";
-import { hasPermissions } from "@/app/utils/permissions";
 
 export type TLSEnabledValues = {
   notificationEnabled: boolean;
@@ -55,10 +54,7 @@ const TLSEnabled = (): React.ReactElement | null => {
   const tlsCertificate = useSelector(tlsCertificateSelectors.get);
   const saved = useSelector(configSelectors.saved);
   const saving = useSelector(configSelectors.saving);
-  const userEntitlements = useGetUserEntitlements();
-  const canEdit = hasPermissions(userEntitlements.data || [], [
-    Entitlement.CAN_EDIT_CONFIGURATIONS,
-  ]);
+  const canEdit = useHasEntitlements([Entitlement.CAN_EDIT_CONFIGURATIONS]);
 
   if (configLoading || tlsCertificateLoading) {
     return <Spinner aria-label={Labels.Loading} />;

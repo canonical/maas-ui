@@ -7,23 +7,19 @@ import { Entitlement } from "../../../Groups/constants";
 
 import useUsersTableColumns from "./useUsersTableColumns/useUsersTableColumns";
 
-import { useGetUserEntitlements } from "@/app/api/query/auth";
 import { useUsers } from "@/app/api/query/users";
 import SearchBox from "@/app/base/components/SearchBox";
+import { useHasEntitlements } from "@/app/base/hooks";
 import usePagination from "@/app/base/hooks/usePagination/usePagination";
 import { useSidePanel } from "@/app/base/side-panel-context";
 import { AddUser } from "@/app/settings/views/UserManagement/views/UsersList/components";
-import { hasPermissions } from "@/app/utils/permissions";
 
 const UsersTable = () => {
   const { openSidePanel } = useSidePanel();
   const [searchText, setSearchText] = useState("");
   const { page, debouncedPage, size, handlePageSizeChange, setPage } =
     usePagination();
-  const userEntitlements = useGetUserEntitlements();
-  const canEdit = hasPermissions(userEntitlements.data || [], [
-    Entitlement.CAN_EDIT_IDENTITIES,
-  ]);
+  const canEdit = useHasEntitlements([Entitlement.CAN_EDIT_IDENTITIES]);
   const users = useUsers({
     query: { page: debouncedPage, size, username_or_email: searchText },
   });

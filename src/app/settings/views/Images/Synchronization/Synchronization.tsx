@@ -11,7 +11,6 @@ import * as Yup from "yup";
 
 import { Entitlement } from "../../UserManagement/views/Groups/constants";
 
-import { useGetUserEntitlements } from "@/app/api/query/auth";
 import {
   useGetConfiguration,
   useSetConfiguration,
@@ -19,8 +18,8 @@ import {
 import FormikField from "@/app/base/components/FormikField";
 import FormikForm from "@/app/base/components/FormikForm";
 import PageContent from "@/app/base/components/PageContent";
+import { useHasEntitlements } from "@/app/base/hooks";
 import { ConfigNames } from "@/app/store/config/types";
-import { hasPermissions } from "@/app/utils/permissions";
 
 const SynchronizationSchema = Yup.object()
   .shape({
@@ -49,10 +48,7 @@ const Synchronization = (): ReactElement => {
   const syncInterval = (intervalConfig.data?.value as number) ?? 60;
 
   const updateConfig = useSetConfiguration();
-  const userEntitlements = useGetUserEntitlements();
-  const canEdit = hasPermissions(userEntitlements.data || [], [
-    Entitlement.CAN_EDIT_BOOT_ENTITIES,
-  ]);
+  const canEdit = useHasEntitlements([Entitlement.CAN_EDIT_BOOT_ENTITIES]);
 
   const initialValues: SynchronizationValues = {
     autoSync: autoImport,

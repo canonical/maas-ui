@@ -4,15 +4,19 @@ import {
   Notification as NotificationBanner,
 } from "@canonical/react-components";
 
+import { Entitlement } from "../../../UserManagement/views/Groups/constants";
+
 import useRepositoriesTableColumns from "./useRepositoriesTableColumns/useRepositoriesTableColumns";
 
 import { usePackageRepositories } from "@/app/api/query/packageRepositories";
+import { useHasEntitlements } from "@/app/base/hooks";
 import usePagination from "@/app/base/hooks/usePagination/usePagination";
 import { useSidePanel } from "@/app/base/side-panel-context";
 import { AddRepository } from "@/app/settings/views/Repositories/components";
 
 const RepositoriesTable = () => {
   const { openSidePanel } = useSidePanel();
+  const canEdit = useHasEntitlements([Entitlement.CAN_EDIT_GLOBAL_ENTITIES]);
   const { page, debouncedPage, size, handlePageSizeChange, setPage } =
     usePagination();
 
@@ -23,7 +27,7 @@ const RepositoriesTable = () => {
     },
   });
 
-  const columns = useRepositoriesTableColumns();
+  const columns = useRepositoriesTableColumns({ canEdit });
 
   return (
     <div className="repositories-table">
@@ -31,6 +35,7 @@ const RepositoriesTable = () => {
         <MainToolbar.Title>Package repositories</MainToolbar.Title>
         <MainToolbar.Controls>
           <Button
+            disabled={!canEdit}
             onClick={() => {
               openSidePanel({
                 component: AddRepository,
@@ -42,6 +47,7 @@ const RepositoriesTable = () => {
             Add PPA
           </Button>
           <Button
+            disabled={!canEdit}
             onClick={() => {
               openSidePanel({
                 component: AddRepository,

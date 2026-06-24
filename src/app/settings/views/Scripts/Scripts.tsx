@@ -5,12 +5,12 @@ import SectionHeader from "@/app/base/components/SectionHeader";
 import { useHasEntitlements } from "@/app/base/hooks";
 import { Entitlement } from "@/app/settings/views/UserManagement/views/Groups/constants";
 
-const Images = (): React.ReactElement => {
-  const canViewImages = useHasEntitlements([
-    Entitlement.CAN_VIEW_BOOT_ENTITIES,
+const Scripts = (): React.ReactElement => {
+  const canViewScripts = useHasEntitlements([
+    Entitlement.CAN_VIEW_GLOBAL_ENTITIES,
   ]);
 
-  if (!canViewImages) {
+  if (!canViewScripts) {
     return (
       <PageContent
         header={
@@ -23,4 +23,4 @@ const Images = (): React.ReactElement => {
   return <Outlet />;
 };
 
-export default Images;
+export default Scripts;

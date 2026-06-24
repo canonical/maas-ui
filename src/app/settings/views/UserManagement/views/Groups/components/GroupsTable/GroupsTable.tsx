@@ -8,19 +8,15 @@ import AddGroup from "../AddGroup";
 
 import useGroupsListColumns from "./useGroupsTableColumns/useGroupsTableColumns";
 
-import { useGetUserEntitlements } from "@/app/api/query/auth";
 import { useGroups } from "@/app/api/query/groups";
+import { useHasEntitlements } from "@/app/base/hooks";
 import usePagination from "@/app/base/hooks/usePagination/usePagination";
 import { useSidePanel } from "@/app/base/side-panel-context";
-import { hasPermissions } from "@/app/utils/permissions";
 
 const GroupsTable = () => {
   const [searchText, setSearchText] = useState("");
   const { openSidePanel } = useSidePanel();
-  const userEntitlements = useGetUserEntitlements();
-  const canEdit = hasPermissions(userEntitlements.data || [], [
-    Entitlement.CAN_EDIT_IDENTITIES,
-  ]);
+  const canEdit = useHasEntitlements([Entitlement.CAN_EDIT_IDENTITIES]);
   const { page, debouncedPage, size, handlePageSizeChange, setPage } =
     usePagination();
   const columns = useGroupsListColumns({ canEdit });

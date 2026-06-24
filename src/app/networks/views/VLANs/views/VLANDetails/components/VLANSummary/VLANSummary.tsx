@@ -1,11 +1,11 @@
 import { Button, Col, Row } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 
-import { useGetUserEntitlements } from "@/app/api/query/auth";
 import Definition from "@/app/base/components/Definition";
 import FabricLink from "@/app/base/components/FabricLink";
 import SpaceLink from "@/app/base/components/SpaceLink";
 import TitledSection from "@/app/base/components/TitledSection";
+import { useHasEntitlements } from "@/app/base/hooks";
 import { useSidePanel } from "@/app/base/side-panel-context";
 import {
   EditVLAN,
@@ -15,7 +15,6 @@ import { Entitlement } from "@/app/settings/views/UserManagement/views/Groups/co
 import type { RootState } from "@/app/store/root/types";
 import vlanSelectors from "@/app/store/vlan/selectors";
 import type { VLAN, VLANMeta } from "@/app/store/vlan/types";
-import { hasPermissions } from "@/app/utils/permissions";
 
 type Props = {
   id: VLAN[VLANMeta.PK] | null;
@@ -23,10 +22,7 @@ type Props = {
 
 const VLANSummary = ({ id }: Props): React.ReactElement | null => {
   const { openSidePanel } = useSidePanel();
-  const userEntitlements = useGetUserEntitlements();
-  const canEdit = hasPermissions(userEntitlements.data || [], [
-    Entitlement.CAN_EDIT_GLOBAL_ENTITIES,
-  ]);
+  const canEdit = useHasEntitlements([Entitlement.CAN_EDIT_GLOBAL_ENTITIES]);
   const vlan = useSelector((state: RootState) =>
     vlanSelectors.getById(state, id)
   );

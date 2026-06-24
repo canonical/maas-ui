@@ -12,7 +12,6 @@ import * as Yup from "yup";
 
 import { Entitlement } from "../../UserManagement/views/Groups/constants";
 
-import { useGetUserEntitlements } from "@/app/api/query/auth";
 import {
   useBulkSetConfigurations,
   useConfigurations,
@@ -21,12 +20,11 @@ import type { PublicConfigName } from "@/app/apiclient";
 import FormikField from "@/app/base/components/FormikField";
 import FormikForm from "@/app/base/components/FormikForm";
 import PageContent from "@/app/base/components/PageContent";
-import { useWindowTitle } from "@/app/base/hooks";
+import { useWindowTitle, useHasEntitlements } from "@/app/base/hooks";
 import { getConfigsFromResponse } from "@/app/settings/utils";
 import { configActions } from "@/app/store/config";
 import configSelectors from "@/app/store/config/selectors";
 import { ConfigNames } from "@/app/store/config/types";
-import { hasPermissions } from "@/app/utils/permissions";
 
 const DnsSchema = Yup.object().shape({
   // TODO: Client-side IP validation, or display error from server
@@ -52,10 +50,7 @@ const DnsForm = (): ReactElement => {
   const { dnssec_validation, dns_trusted_acl, upstream_dns } =
     getConfigsFromResponse(data?.items || [], names);
   const dnssecOptions = useSelector(configSelectors.dnssecOptions);
-  const userEntitlements = useGetUserEntitlements();
-  const canEdit = hasPermissions(userEntitlements.data || [], [
-    Entitlement.CAN_EDIT_CONFIGURATIONS,
-  ]);
+  const canEdit = useHasEntitlements([Entitlement.CAN_EDIT_CONFIGURATIONS]);
 
   const updateConfig = useBulkSetConfigurations();
 

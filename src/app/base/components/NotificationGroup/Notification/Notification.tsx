@@ -3,7 +3,7 @@ import type { NotificationProps } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router";
 
-import { useGetUserEntitlements } from "@/app/api/query/auth";
+import { useHasEntitlements } from "@/app/base/hooks";
 import type { SyncNavigateFunction } from "@/app/base/types";
 import settingsURLs from "@/app/settings/urls";
 import { Entitlement } from "@/app/settings/views/UserManagement/views/Groups/constants";
@@ -15,7 +15,6 @@ import {
   isUpgradeNotification,
 } from "@/app/store/notification/utils";
 import type { RootState } from "@/app/store/root/types";
-import { hasPermissions } from "@/app/utils/permissions";
 import { formatUtcDatetime } from "@/app/utils/time";
 
 type Props = {
@@ -31,18 +30,17 @@ const NotificationGroupNotification = ({
 }: Props): React.ReactElement | null => {
   const dispatch = useDispatch();
   const navigate: SyncNavigateFunction = useNavigate();
-  const userEntitlements = useGetUserEntitlements();
   const notification = useSelector((state: RootState) =>
     notificationSelectors.getById(state, id)
   );
   const createdTimestamp = formatUtcDatetime(notification?.created);
+  const canShowSettings = useHasEntitlements([
+    Entitlement.CAN_VIEW_GLOBAL_ENTITIES,
+  ]);
   if (!notification) {
     return null;
   }
 
-  const canShowSettings = hasPermissions(userEntitlements.data || [], [
-    Entitlement.CAN_VIEW_GLOBAL_ENTITIES,
-  ]);
   const showSettings = isReleaseNotification(notification) && canShowSettings;
   const showDate = isUpgradeNotification(notification);
   return (

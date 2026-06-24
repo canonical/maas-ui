@@ -4,11 +4,10 @@ import * as Yup from "yup";
 import { Entitlement } from "../../UserManagement/views/Groups/constants";
 import Fields from "../CommissioningFormFields";
 
-import { useGetUserEntitlements } from "@/app/api/query/auth";
 import FormikForm from "@/app/base/components/FormikForm";
+import { useHasEntitlements } from "@/app/base/hooks";
 import { configActions } from "@/app/store/config";
 import configSelectors from "@/app/store/config/selectors";
-import { hasPermissions } from "@/app/utils/permissions";
 
 const CommissioningSchema = Yup.object().shape({
   commissioning_distro_series: Yup.string(),
@@ -35,10 +34,7 @@ const CommissioningForm = (): React.ReactElement => {
   const defaultMinKernelVersion = useSelector(
     configSelectors.defaultMinKernelVersion
   );
-  const userEntitlements = useGetUserEntitlements();
-  const canEdit = hasPermissions(userEntitlements.data || [], [
-    Entitlement.CAN_EDIT_CONFIGURATIONS,
-  ]);
+  const canEdit = useHasEntitlements([Entitlement.CAN_EDIT_CONFIGURATIONS]);
 
   return (
     <FormikForm<CommissioningFormValues>

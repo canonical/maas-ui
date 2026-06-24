@@ -6,12 +6,11 @@ import type { RowSelectionState } from "@tanstack/react-table";
 
 import { Entitlement } from "../../constants";
 
-import { useGetUserEntitlements } from "@/app/api/query/auth";
 import { useGroupEntitlements } from "@/app/api/query/groups";
 import type { EntitlementResponse, UserGroupResponse } from "@/app/apiclient";
+import { useHasEntitlements } from "@/app/base/hooks";
 import usePagination from "@/app/base/hooks/usePagination/usePagination";
 import useGroupEntitlementsTableColumns from "@/app/settings/views/UserManagement/views/Groups/components/GroupEntitlementsTable/useGroupEntitlementsTableColumns/useGroupEntitlementsTableColumns";
-import { hasPermissions } from "@/app/utils/permissions";
 
 type GroupEntitlementsTableProps = {
   id: UserGroupResponse["id"];
@@ -26,10 +25,7 @@ const GroupEntitlementsTable = ({
 }: GroupEntitlementsTableProps): ReactElement => {
   const [rowSelection, setRowSelection] = useState<RowSelectionState>({});
   const { page, size, handlePageSizeChange, setPage } = usePagination();
-  const userEntitlements = useGetUserEntitlements();
-  const canEdit = hasPermissions(userEntitlements.data || [], [
-    Entitlement.CAN_EDIT_IDENTITIES,
-  ]);
+  const canEdit = useHasEntitlements([Entitlement.CAN_EDIT_IDENTITIES]);
 
   const columns = useGroupEntitlementsTableColumns({
     canEdit,

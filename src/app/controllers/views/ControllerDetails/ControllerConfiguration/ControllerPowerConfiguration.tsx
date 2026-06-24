@@ -8,12 +8,15 @@ import { useDispatch, useSelector } from "react-redux";
 import type { SchemaOf } from "yup";
 import * as Yup from "yup";
 
-import { useGetUserEntitlements } from "@/app/api/query/auth";
 import EditableSection from "@/app/base/components/EditableSection";
 import FormikForm from "@/app/base/components/FormikForm";
 import PowerTypeFields from "@/app/base/components/PowerTypeFields";
 import NodePowerParameters from "@/app/base/components/node/NodePowerParameters";
-import { useCanEdit, useWindowTitle } from "@/app/base/hooks";
+import {
+  useCanEdit,
+  useWindowTitle,
+  useHasEntitlements,
+} from "@/app/base/hooks";
 import { Entitlement } from "@/app/settings/views/UserManagement/views/Groups/constants";
 import { controllerActions } from "@/app/store/controller";
 import controllerSelectors from "@/app/store/controller/selectors";
@@ -33,7 +36,6 @@ import {
 } from "@/app/store/general/utils";
 import type { RootState } from "@/app/store/root/types";
 import type { PowerParameters } from "@/app/store/types/node";
-import { hasPermissions } from "@/app/utils/permissions";
 
 type Props = {
   systemId: Controller[ControllerMeta.PK];
@@ -70,7 +72,6 @@ const ControllerPowerConfiguration = ({
   const initialPowerParameters = useInitialPowerParameters(
     (isDetails && controller.power_parameters) || {}
   );
-  const userEntitlements = useGetUserEntitlements();
 
   const powerParametersSchema =
     generatePowerParametersSchema(selectedPowerType);
@@ -91,6 +92,8 @@ const ControllerPowerConfiguration = ({
     }
   }, [controller?.power_type, powerTypes]);
 
+  const canEditUser = useHasEntitlements([Entitlement.CAN_EDIT_CONTROLLERS]);
+
   if (!isDetails || powerTypesLoading) {
     return <Spinner text="Loading..." />;
   }
@@ -99,10 +102,6 @@ const ControllerPowerConfiguration = ({
     controller.power_bmc_node_count > 1
       ? controller.power_bmc_node_count - 1
       : 0;
-
-  const canEditUser = hasPermissions(userEntitlements.data || [], [
-    Entitlement.CAN_EDIT_CONTROLLERS,
-  ]);
 
   return (
     <EditableSection

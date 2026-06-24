@@ -4,13 +4,12 @@ import * as Yup from "yup";
 
 import { Entitlement } from "../../UserManagement/views/Groups/constants";
 
-import { useGetUserEntitlements } from "@/app/api/query/auth";
 import FormikField from "@/app/base/components/FormikField";
 import FormikForm from "@/app/base/components/FormikForm";
 import TooltipButton from "@/app/base/components/TooltipButton";
+import { useHasEntitlements } from "@/app/base/hooks";
 import { configActions } from "@/app/store/config";
 import configSelectors from "@/app/store/config/selectors";
-import { hasPermissions } from "@/app/utils/permissions";
 
 type KernelParametersValues = {
   kernel_opts: string;
@@ -41,10 +40,7 @@ const KernelParametersForm = (): React.ReactElement => {
   const enableKernelCrashDump = useSelector(
     configSelectors.enableKernelCrashDump
   );
-  const userEntitlements = useGetUserEntitlements();
-  const canEdit = hasPermissions(userEntitlements.data || [], [
-    Entitlement.CAN_EDIT_BOOT_ENTITIES,
-  ]);
+  const canEdit = useHasEntitlements([Entitlement.CAN_EDIT_BOOT_ENTITIES]);
 
   return (
     <FormikForm<KernelParametersValues>

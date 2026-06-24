@@ -3,9 +3,8 @@ import type { ReactElement } from "react";
 import { Button } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 
-import { useGetUserEntitlements } from "@/app/api/query/auth";
 import SectionHeader from "@/app/base/components/SectionHeader";
-import { useFetchActions } from "@/app/base/hooks";
+import { useFetchActions, useHasEntitlements } from "@/app/base/hooks";
 import { useSidePanel } from "@/app/base/side-panel-context";
 import { DeleteVLAN } from "@/app/networks/views/VLANs/components";
 import { Entitlement } from "@/app/settings/views/UserManagement/views/Groups/constants";
@@ -16,7 +15,6 @@ import type { RootState } from "@/app/store/root/types";
 import type { VLAN } from "@/app/store/vlan/types";
 import { VlanVid } from "@/app/store/vlan/types";
 import { isVLANDetails } from "@/app/store/vlan/utils";
-import { hasPermissions } from "@/app/utils/permissions";
 
 type Props = {
   vlan: VLAN | null;
@@ -47,10 +45,7 @@ const VLANDetailsHeader = ({ vlan }: Props): ReactElement => {
   const fabric = useSelector((state: RootState) =>
     fabricSelectors.getById(state, fabricId)
   );
-  const userEntitlements = useGetUserEntitlements();
-  const canEdit = hasPermissions(userEntitlements.data || [], [
-    Entitlement.CAN_EDIT_GLOBAL_ENTITIES,
-  ]);
+  const canEdit = useHasEntitlements([Entitlement.CAN_EDIT_GLOBAL_ENTITIES]);
 
   useFetchActions([fabricActions.fetch]);
 

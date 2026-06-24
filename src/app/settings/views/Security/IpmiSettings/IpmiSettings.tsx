@@ -11,7 +11,6 @@ import { Entitlement } from "../../UserManagement/views/Groups/constants";
 
 import Fields from "./IpmiFormFields";
 
-import { useGetUserEntitlements } from "@/app/api/query/auth";
 import {
   useBulkSetConfigurations,
   useConfigurations,
@@ -19,11 +18,10 @@ import {
 import type { PublicConfigName, SetConfigurationsError } from "@/app/apiclient";
 import FormikForm from "@/app/base/components/FormikForm";
 import PageContent from "@/app/base/components/PageContent";
-import { useWindowTitle } from "@/app/base/hooks";
+import { useWindowTitle, useHasEntitlements } from "@/app/base/hooks";
 import { getConfigsFromResponse } from "@/app/settings/utils";
 import { configActions } from "@/app/store/config";
 import { AutoIpmiPrivilegeLevel, ConfigNames } from "@/app/store/config/types";
-import { hasPermissions } from "@/app/utils/permissions";
 
 const IpmiSchema = Yup.object().shape({
   maas_auto_ipmi_user: Yup.string()
@@ -67,10 +65,7 @@ const IpmiSettings = (): ReactElement => {
   } = getConfigsFromResponse(data?.items || [], names);
   const updateConfig = useBulkSetConfigurations();
   useWindowTitle("IPMI settings");
-  const userEntitlements = useGetUserEntitlements();
-  const canEdit = hasPermissions(userEntitlements.data || [], [
-    Entitlement.CAN_EDIT_CONFIGURATIONS,
-  ]);
+  const canEdit = useHasEntitlements([Entitlement.CAN_EDIT_CONFIGURATIONS]);
 
   return (
     <PageContent>

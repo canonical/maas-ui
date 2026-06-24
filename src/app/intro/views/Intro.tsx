@@ -15,13 +15,16 @@ import UserIntro from "./UserIntro";
 import { useGetCurrentUser } from "@/app/api/query/auth";
 import PageContent from "@/app/base/components/PageContent";
 import SectionHeader from "@/app/base/components/SectionHeader";
-import { useCompletedIntro, useCompletedUserIntro } from "@/app/base/hooks";
+import {
+  useCompletedIntro,
+  useCompletedUserIntro,
+  useHasEntitlements,
+} from "@/app/base/hooks";
 import type { SyncNavigateFunction } from "@/app/base/types";
 import urls from "@/app/base/urls";
 import { Entitlement } from "@/app/settings/views/UserManagement/views/Groups/constants";
 import configSelectors from "@/app/store/config/selectors";
 import { getRelativeRoute } from "@/app/utils";
-import { hasPermissions } from "@/app/utils/permissions";
 
 const Intro = (): ReactElement => {
   const navigate: SyncNavigateFunction = useNavigate();
@@ -33,8 +36,17 @@ const Intro = (): ReactElement => {
   const viewingUserIntro = location.pathname.startsWith(urls.intro.user);
 
   const user = useGetCurrentUser();
-  const isSuperUser = hasPermissions(user.data?.entitlements || [], [
+  // We don't have a way to check if the user is a superuser, so we
+  // check if they have all the EDIT entitlements.
+  const isSuperUser = useHasEntitlements([
     Entitlement.CAN_EDIT_CONFIGURATIONS,
+    Entitlement.CAN_EDIT_GLOBAL_ENTITIES,
+    Entitlement.CAN_EDIT_IDENTITIES,
+    Entitlement.CAN_EDIT_MACHINES,
+    Entitlement.CAN_EDIT_BOOT_ENTITIES,
+    Entitlement.CAN_EDIT_LICENSE_KEYS,
+    Entitlement.CAN_EDIT_CONTROLLERS,
+    Entitlement.CAN_EDIT_NOTIFICATIONS,
   ]);
 
   const showIncomplete = !completedIntro && !completedUserIntro && !isSuperUser;

@@ -4,7 +4,7 @@ import { ContextualMenu, Tooltip } from "@canonical/react-components";
 import type { ColumnDef } from "@tanstack/react-table";
 import { Link } from "react-router";
 
-import { useGetUserEntitlements } from "@/app/api/query/auth";
+import { useHasEntitlements } from "@/app/base/hooks";
 import { useSidePanel } from "@/app/base/side-panel-context";
 import urls from "@/app/base/urls";
 import DeleteRecordForm from "@/app/domains/components/ResourceRecords/DeleteRecordForm";
@@ -12,7 +12,6 @@ import EditRecordForm from "@/app/domains/components/ResourceRecords/EditRecordF
 import { Entitlement } from "@/app/settings/views/UserManagement/views/Groups/constants";
 import type { Domain, DomainResource } from "@/app/store/domain/types";
 import { NodeType } from "@/app/store/types/node";
-import { hasPermissions } from "@/app/utils/permissions";
 
 export type ResourceRecordsColumnData = DomainResource & {
   id: number;
@@ -36,8 +35,7 @@ const useResourceRecordsColumns = ({
   id,
 }: Props): ResourceRecordsColumnDef[] => {
   const { openSidePanel } = useSidePanel();
-  const userEntitlements = useGetUserEntitlements();
-  const canEditGlobalEntities = hasPermissions(userEntitlements.data || [], [
+  const canEditGlobalEntities = useHasEntitlements([
     Entitlement.CAN_EDIT_GLOBAL_ENTITIES,
   ]);
   return useMemo(

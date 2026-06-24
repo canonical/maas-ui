@@ -11,15 +11,13 @@ import { Entitlement } from "../../UserManagement/views/Groups/constants";
 import ThemedRadioButton from "./ThemedRadioButton";
 import { ColorValues } from "./ThemedRadioButton/ThemedRadioButton";
 
-import { useGetUserEntitlements } from "@/app/api/query/auth";
 import FormikField from "@/app/base/components/FormikField";
 import FormikForm from "@/app/base/components/FormikForm";
-import { useSendAnalytics } from "@/app/base/hooks";
+import { useSendAnalytics, useHasEntitlements } from "@/app/base/hooks";
 import { useThemeContext } from "@/app/base/theme-context";
 import type { UsabillaLive } from "@/app/base/types";
 import { configActions } from "@/app/store/config";
 import configSelectors from "@/app/store/config/selectors";
-import { hasPermissions } from "@/app/utils/permissions";
 
 declare global {
   interface Window {
@@ -59,10 +57,7 @@ const GeneralForm = (): React.ReactElement => {
   const previousReleaseNotifications = useRef(releaseNotifications);
   const previousEnableAnalytics = usePrevious(analyticsEnabled);
   const { setTheme } = useThemeContext();
-  const userEntitlements = useGetUserEntitlements();
-  const canEdit = hasPermissions(userEntitlements.data || [], [
-    Entitlement.CAN_EDIT_CONFIGURATIONS,
-  ]);
+  const canEdit = useHasEntitlements([Entitlement.CAN_EDIT_CONFIGURATIONS]);
 
   useEffect(() => {
     // revert to persisted theme value on unmount

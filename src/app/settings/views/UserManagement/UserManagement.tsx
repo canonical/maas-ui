@@ -1,14 +1,12 @@
 import { Outlet } from "react-router";
 
-import { useGetUserEntitlements } from "@/app/api/query/auth";
 import PageContent from "@/app/base/components/PageContent";
 import SectionHeader from "@/app/base/components/SectionHeader";
+import { useHasEntitlements } from "@/app/base/hooks";
 import { Entitlement } from "@/app/settings/views/UserManagement/views/Groups/constants";
-import { hasPermissions } from "@/app/utils/permissions";
 
 const UserManagement = (): React.ReactElement => {
-  const userEntitlements = useGetUserEntitlements();
-  const canViewUserManagement = hasPermissions(userEntitlements.data || [], [
+  const canViewUserManagement = useHasEntitlements([
     Entitlement.CAN_VIEW_IDENTITIES,
   ]);
 

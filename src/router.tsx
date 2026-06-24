@@ -36,6 +36,7 @@ import NtpForm from "@/app/settings/views/Network/NtpForm";
 import ProxyForm from "@/app/settings/views/Network/ProxyForm";
 import SyslogForm from "@/app/settings/views/Network/SyslogForm";
 import RepositoriesList from "@/app/settings/views/Repositories/views";
+import Scripts from "@/app/settings/views/Scripts";
 import ScriptsList from "@/app/settings/views/Scripts/ScriptsList";
 import IpmiSettings from "@/app/settings/views/Security/IpmiSettings";
 import SecretStorage from "@/app/settings/views/Security/SecretStorage";
@@ -905,43 +906,52 @@ export const router = createBrowserRouter(
                   ),
                 },
                 {
-                  path: getRelativeRoute(
-                    urls.settings.scripts.commissioning.index,
-                    urls.settings.index
-                  ),
                   element: (
                     <ErrorBoundary>
-                      <PageContent>
-                        <ScriptsList type="commissioning" />
-                      </PageContent>
+                      <Scripts />
                     </ErrorBoundary>
                   ),
-                },
-                {
-                  path: getRelativeRoute(
-                    urls.settings.scripts.testing.index,
-                    urls.settings.index
-                  ),
-                  element: (
-                    <ErrorBoundary>
-                      <PageContent>
-                        <ScriptsList type="testing" />
-                      </PageContent>
-                    </ErrorBoundary>
-                  ),
-                },
-                {
-                  path: getRelativeRoute(
-                    urls.settings.scripts.deploying.index,
-                    urls.settings.index
-                  ),
-                  element: (
-                    <ErrorBoundary>
-                      <PageContent>
-                        <ScriptsList type="deployment" />
-                      </PageContent>
-                    </ErrorBoundary>
-                  ),
+                  children: [
+                    {
+                      path: getRelativeRoute(
+                        urls.settings.scripts.commissioning.index,
+                        urls.settings.index
+                      ),
+                      element: (
+                        <ErrorBoundary>
+                          <PageContent>
+                            <ScriptsList type="commissioning" />
+                          </PageContent>
+                        </ErrorBoundary>
+                      ),
+                    },
+                    {
+                      path: getRelativeRoute(
+                        urls.settings.scripts.testing.index,
+                        urls.settings.index
+                      ),
+                      element: (
+                        <ErrorBoundary>
+                          <PageContent>
+                            <ScriptsList type="testing" />
+                          </PageContent>
+                        </ErrorBoundary>
+                      ),
+                    },
+                    {
+                      path: getRelativeRoute(
+                        urls.settings.scripts.deploying.index,
+                        urls.settings.index
+                      ),
+                      element: (
+                        <ErrorBoundary>
+                          <PageContent>
+                            <ScriptsList type="deployment" />
+                          </PageContent>
+                        </ErrorBoundary>
+                      ),
+                    },
+                  ],
                 },
                 {
                   path: getRelativeRoute(

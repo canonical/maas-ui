@@ -5,14 +5,13 @@ import { Button } from "@canonical/react-components";
 
 import { Entitlement } from "../../UserManagement/views/Groups/constants";
 
-import { useGetUserEntitlements } from "@/app/api/query/auth";
 import type { BootSourceResponse } from "@/app/apiclient";
 import PageContent from "@/app/base/components/PageContent";
+import { useHasEntitlements } from "@/app/base/hooks";
 import { useSidePanel } from "@/app/base/side-panel-context";
 import type { BootResourceSourceType } from "@/app/images/types";
 import AddSource from "@/app/settings/views/Images/Sources/components/AddSource";
 import SourcesTable from "@/app/settings/views/Images/Sources/components/SourcesTable";
-import { hasPermissions } from "@/app/utils/permissions";
 
 export type ImageSource = BootSourceResponse & {
   type: BootResourceSourceType;
@@ -20,10 +19,7 @@ export type ImageSource = BootSourceResponse & {
 
 const Sources = (): ReactElement => {
   const { openSidePanel } = useSidePanel();
-  const userEntitlements = useGetUserEntitlements();
-  const canEdit = hasPermissions(userEntitlements.data || [], [
-    Entitlement.CAN_EDIT_BOOT_ENTITIES,
-  ]);
+  const canEdit = useHasEntitlements([Entitlement.CAN_EDIT_BOOT_ENTITIES]);
 
   return (
     <PageContent>
