@@ -1,6 +1,7 @@
 import GroupEntitlementsTable from "./GroupEntitlementsTable";
 
 import RemoveGroupEntitlement from "@/app/settings/views/UserManagement/views/Groups/components/RemoveGroupEntitlement";
+import { authResolvers } from "@/testing/resolvers/auth";
 import {
   groupsResolvers,
   mockGroupEntitlements,
@@ -19,6 +20,7 @@ import {
 const { mockOpen } = await mockSidePanel();
 
 const mockServer = setupMockServer(
+  authResolvers.getCurrentUser.handler(),
   groupsResolvers.listGroupEntitlements.handler(),
   poolsResolvers.getPool.handler()
 );
@@ -113,8 +115,8 @@ describe("GroupEntitlementsTable", () => {
 
       await waitFor(() => {
         expect(
-          screen.getAllByRole("button", { name: "Toggle menu" }).length
-        ).toBeGreaterThan(0);
+          screen.getAllByRole("button", { name: "Toggle menu" })[0]
+        ).not.toBeAriaDisabled();
       });
 
       await userEvent.click(

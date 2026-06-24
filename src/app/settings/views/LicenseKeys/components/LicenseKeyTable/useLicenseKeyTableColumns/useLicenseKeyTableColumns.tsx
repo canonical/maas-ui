@@ -10,7 +10,11 @@ import type { LicenseKeys } from "@/app/store/licensekeys/types";
 
 type LicenseKeysColumnDef = ColumnDef<LicenseKeys, Partial<LicenseKeys>>;
 
-const useLicenseKeyTableColumns = (): LicenseKeysColumnDef[] => {
+const useLicenseKeyTableColumns = ({
+  canEdit,
+}: {
+  canEdit: boolean;
+}): LicenseKeysColumnDef[] => {
   const { openSidePanel } = useSidePanel();
 
   return useMemo(
@@ -33,6 +37,8 @@ const useLicenseKeyTableColumns = (): LicenseKeysColumnDef[] => {
         header: "Actions",
         cell: ({ row: { original } }) => (
           <TableActions
+            deleteDisabled={!canEdit}
+            editDisabled={!canEdit}
             onDelete={() => {
               openSidePanel({
                 component: LicenseKeyDelete,
@@ -56,7 +62,7 @@ const useLicenseKeyTableColumns = (): LicenseKeysColumnDef[] => {
         ),
       },
     ],
-    [openSidePanel]
+    [canEdit, openSidePanel]
   );
 };
 

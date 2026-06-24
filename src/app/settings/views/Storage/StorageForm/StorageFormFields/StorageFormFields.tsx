@@ -9,7 +9,11 @@ import configSelectors from "@/app/store/config/selectors";
 import { StorageLayout } from "@/app/store/types/enum";
 import { isVMWareLayout } from "@/app/store/utils";
 
-const StorageFormFields = (): React.ReactElement => {
+const StorageFormFields = ({
+  canEdit,
+}: {
+  canEdit: boolean;
+}): React.ReactElement => {
   const { values } = useFormikContext<StorageFormValues>();
   const storageLayoutOptions =
     useSelector(configSelectors.storageLayoutOptions) || [];
@@ -18,6 +22,7 @@ const StorageFormFields = (): React.ReactElement => {
     <>
       <FormikField
         component={Select}
+        disabled={!canEdit}
         help="Storage layout that is applied to a node when it is commissioned."
         label="Default storage layout"
         name="default_storage_layout"
@@ -46,18 +51,21 @@ const StorageFormFields = (): React.ReactElement => {
         </p>
       )}
       <FormikField
+        disabled={!canEdit}
         help="Forces users to always erase disks when releasing."
         label="Erase nodes' disks prior to releasing"
         name="enable_disk_erasing_on_release"
         type="checkbox"
       />
       <FormikField
+        disabled={!canEdit}
         help="Will only be used on devices that support secure erase. Other devices will fall back to full wipe or quick erase depending on the selected options."
         label="Use secure erase by default when erasing disks"
         name="disk_erase_with_secure_erase"
         type="checkbox"
       />
       <FormikField
+        disabled={!canEdit}
         help="This is not a secure erase; it wipes only the beginning and end of each disk."
         label="Use quick erase by default when erasing disks"
         name="disk_erase_with_quick_erase"
