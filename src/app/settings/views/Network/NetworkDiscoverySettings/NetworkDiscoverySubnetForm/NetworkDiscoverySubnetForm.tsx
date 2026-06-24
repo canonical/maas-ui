@@ -4,6 +4,9 @@ import { Spinner, Strip } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router";
 
+import { Entitlement } from "../../../UserManagement/views/Groups/constants";
+
+import { useGetUserEntitlements } from "@/app/api/query/auth";
 import FormikField from "@/app/base/components/FormikField";
 import FormikForm from "@/app/base/components/FormikForm";
 import { useFetchActions } from "@/app/base/hooks";
@@ -16,6 +19,7 @@ import { subnetActions } from "@/app/store/subnet";
 import subnetSelectors from "@/app/store/subnet/selectors";
 import type { Subnet } from "@/app/store/subnet/types";
 import { simpleSortByKey } from "@/app/utils";
+import { hasPermissions } from "@/app/utils/permissions";
 
 type SubnetDiscoveryValues = Record<number, Subnet["active_discovery"]>;
 
@@ -34,6 +38,10 @@ const NetworkDiscoverySubnetForm = (): ReactElement => {
   const saving = useSelector(subnetSelectors.saving);
   const networkDiscovery = useSelector(configSelectors.networkDiscovery);
   const discoveryDisabled = networkDiscovery === NetworkDiscovery.DISABLED;
+  const userEntitlements = useGetUserEntitlements();
+  const canEdit = hasPermissions(userEntitlements.data || [], [
+    Entitlement.CAN_EDIT_CONFIGURATIONS,
+  ]);
 
   useFetchActions([subnetActions.fetch, fabricActions.fetch]);
 
@@ -50,6 +58,7 @@ const NetworkDiscoverySubnetForm = (): ReactElement => {
     content = (
       <FormikForm<SubnetDiscoveryValues>
         aria-label={Labels.FormLabel}
+        editable={canEdit}
         initialValues={initialValues}
         onSubmit={(values, { resetForm }) => {
           subnets.forEach((subnet) => {
@@ -76,7 +85,7 @@ const NetworkDiscoverySubnetForm = (): ReactElement => {
             return (
               <li className="p-list__item" key={`subnet-${subnet.id}`}>
                 <FormikField
-                  disabled={discoveryDisabled}
+                  disabled={discoveryDisabled || !canEdit}
                   label={
                     <>
                       <Link

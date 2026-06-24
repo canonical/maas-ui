@@ -70,7 +70,7 @@ describe("LicenseKeyTable", () => {
     // TODO: implement after v3
     it.skip("displays a message when an error is encountered", async () => {
       const state = { ...initialState };
-      renderWithProviders(<LicenseKeyTable />, { state });
+      renderWithProviders(<LicenseKeyTable canEdit={true} />, { state });
       await waitFor(() => {
         expect(
           screen.getByText(/Error while fetching package repositories/i)

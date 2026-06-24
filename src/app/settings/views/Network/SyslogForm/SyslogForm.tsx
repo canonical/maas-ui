@@ -7,6 +7,9 @@ import {
 } from "@canonical/react-components";
 import * as Yup from "yup";
 
+import { Entitlement } from "../../UserManagement/views/Groups/constants";
+
+import { useGetUserEntitlements } from "@/app/api/query/auth";
 import {
   useSetConfiguration,
   useGetConfiguration,
@@ -17,6 +20,7 @@ import PageContent from "@/app/base/components/PageContent";
 import { useWindowTitle } from "@/app/base/hooks";
 import { configActions } from "@/app/store/config";
 import { ConfigNames } from "@/app/store/config/types";
+import { hasPermissions } from "@/app/utils/permissions";
 
 const SyslogSchema = Yup.object().shape({
   remote_syslog: Yup.string(),
@@ -29,6 +33,10 @@ const SyslogForm = (): ReactElement => {
   const eTag = data?.headers?.get("ETag");
   const remote_syslog = data?.value || "";
   const updateConfig = useSetConfiguration();
+  const userEntitlements = useGetUserEntitlements();
+  const canEdit = hasPermissions(userEntitlements.data || [], [
+    Entitlement.CAN_EDIT_CONFIGURATIONS,
+  ]);
 
   useWindowTitle("Syslog");
 
@@ -51,6 +59,7 @@ const SyslogForm = (): ReactElement => {
           {isSuccess && (
             <FormikForm
               cleanup={configActions.cleanup}
+              editable={canEdit}
               errors={updateConfig.error}
               initialValues={{
                 remote_syslog,
@@ -77,6 +86,7 @@ const SyslogForm = (): ReactElement => {
               validationSchema={SyslogSchema}
             >
               <FormikField
+                disabled={!canEdit}
                 help="A remote syslog server that MAAS will set on enlisting, commissioning, testing, and deploying machines to send all log messages. Clearing this value will restore the default behaviour of forwarding syslog to MAAS."
                 label="Remote syslog server to forward machine logs"
                 name="remote_syslog"

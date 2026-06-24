@@ -10,6 +10,9 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 
+import { Entitlement } from "../../UserManagement/views/Groups/constants";
+
+import { useGetUserEntitlements } from "@/app/api/query/auth";
 import {
   useBulkSetConfigurations,
   useConfigurations,
@@ -23,6 +26,7 @@ import { getConfigsFromResponse } from "@/app/settings/utils";
 import { configActions } from "@/app/store/config";
 import configSelectors from "@/app/store/config/selectors";
 import { ConfigNames } from "@/app/store/config/types";
+import { hasPermissions } from "@/app/utils/permissions";
 
 const DnsSchema = Yup.object().shape({
   // TODO: Client-side IP validation, or display error from server
@@ -48,6 +52,10 @@ const DnsForm = (): ReactElement => {
   const { dnssec_validation, dns_trusted_acl, upstream_dns } =
     getConfigsFromResponse(data?.items || [], names);
   const dnssecOptions = useSelector(configSelectors.dnssecOptions);
+  const userEntitlements = useGetUserEntitlements();
+  const canEdit = hasPermissions(userEntitlements.data || [], [
+    Entitlement.CAN_EDIT_CONFIGURATIONS,
+  ]);
 
   const updateConfig = useBulkSetConfigurations();
 
@@ -78,6 +86,7 @@ const DnsForm = (): ReactElement => {
           {isSuccess && (
             <FormikForm
               cleanup={configActions.cleanup}
+              editable={canEdit}
               errors={updateConfig.error}
               initialValues={{
                 dnssec_validation: dnssec_validation || "",
@@ -118,6 +127,7 @@ const DnsForm = (): ReactElement => {
               validationSchema={DnsSchema}
             >
               <FormikField
+                disabled={!canEdit}
                 help="Only used when MAAS is running its own DNS server. This value is used as the value of 'forwarders' in the DNS server config."
                 label="Upstream DNS used to resolve domains not managed by this MAAS (space-separated IP addresses)"
                 name="upstream_dns"
@@ -125,12 +135,14 @@ const DnsForm = (): ReactElement => {
               />
               <FormikField
                 component={Select}
+                disabled={!canEdit}
                 help="Only used when MAAS is running its own DNS server. This value is used as the value of 'dnssec_validation' in the DNS server config."
                 label="Enable DNSSEC validation of upstream zones"
                 name="dnssec_validation"
                 options={dnssecOptions}
               />
               <FormikField
+                disabled={!canEdit}
                 help="MAAS keeps a list of networks that are allowed to use MAAS for DNS resolution. This option allows to add extra networks (not previously known) to the trusted ACL where this list of networks is kept. It also supports specifying IPs or ACL names."
                 label="List of external networks (not previously known), that will be allowed to use MAAS for DNS resolution"
                 name="dns_trusted_acl"
