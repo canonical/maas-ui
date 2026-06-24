@@ -1,13 +1,17 @@
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 
+import { Entitlement } from "../../UserManagement/views/Groups/constants";
+
 import type { DeployFormValues } from "./types";
 
+import { useGetUserEntitlements } from "@/app/api/query/auth";
 import FormikForm from "@/app/base/components/FormikForm";
 import DeployFormFields from "@/app/settings/views/Configuration/DeployFormFields";
 import { configActions } from "@/app/store/config";
 import configSelectors from "@/app/store/config/selectors";
 import { timeSpanToMinutes } from "@/app/utils";
+import { hasPermissions } from "@/app/utils/permissions";
 
 const DeploySchema = Yup.object().shape({
   default_osystem: Yup.string(),
@@ -32,11 +36,16 @@ const DeployForm = (): React.ReactElement => {
     configSelectors.hardwareSyncInterval
   );
   const hardwareSyncIntervalMinutes = timeSpanToMinutes(hardwareSyncInterval);
+  const userEntitlements = useGetUserEntitlements();
+  const canEdit = hasPermissions(userEntitlements.data || [], [
+    Entitlement.CAN_EDIT_CONFIGURATIONS,
+  ]);
 
   return (
     <FormikForm<DeployFormValues>
       aria-label="deploy configuration"
       cleanup={configActions.cleanup}
+      editable={canEdit}
       errors={errors}
       initialValues={{
         default_osystem: defaultOSystem || "",
@@ -62,7 +71,7 @@ const DeployForm = (): React.ReactElement => {
       saving={saving}
       validationSchema={DeploySchema}
     >
-      <DeployFormFields />
+      <DeployFormFields canEdit={canEdit} />
     </FormikForm>
   );
 };

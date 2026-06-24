@@ -119,6 +119,7 @@ const SingleSignOnForm = ({
   return (
     <FormikForm
       aria-label="Single sign-on form"
+      editable={canEdit}
       errors={createOauthProvider.error || updateOauthProvider.error}
       initialValues={initialValues}
       onCancel={(_, { resetForm }) => {

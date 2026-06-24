@@ -12,7 +12,11 @@ import configSelectors from "@/app/store/config/selectors";
 import { osInfo as osInfoSelectors } from "@/app/store/general/selectors";
 import type { RootState } from "@/app/store/root/types";
 
-const DeployFormFields = (): React.ReactElement => {
+const DeployFormFields = ({
+  canEdit,
+}: {
+  canEdit: boolean;
+}): React.ReactElement => {
   const formikProps = useFormikContext<DeployFormValues>();
   const defaultOSystemOptions = useSelector(
     configSelectors.defaultOSystemOptions
@@ -28,6 +32,7 @@ const DeployFormFields = (): React.ReactElement => {
     <>
       <FormikField
         component={Select}
+        disabled={!canEdit}
         label="Default operating system used for deployment"
         name="default_osystem"
         onChange={(e: ChangeEvent<HTMLSelectElement>) => {
@@ -67,11 +72,13 @@ const DeployFormFields = (): React.ReactElement => {
       />
       <FormikField
         component={Select}
+        disabled={!canEdit}
         label="Default OS release used for deployment"
         name="default_distro_series"
         options={distroSeriesOptions}
       />
       <FormikField
+        disabled={!canEdit}
         label="Default hardware sync interval (minutes)"
         name="hardware_sync_interval"
         type="text"

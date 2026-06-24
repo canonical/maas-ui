@@ -1,9 +1,19 @@
 import GeneralForm from "./GeneralForm";
 
+import { Entitlement } from "@/app/settings/views/UserManagement/views/Groups/constants";
 import { ConfigNames } from "@/app/store/config/types";
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
-import { userEvent, screen, renderWithProviders } from "@/testing/utils";
+import { authResolvers } from "@/testing/resolvers/auth";
+import {
+  userEvent,
+  screen,
+  renderWithProviders,
+  setupMockServer,
+  waitFor,
+} from "@/testing/utils";
+
+const mockServer = setupMockServer(authResolvers.getCurrentUser.handler());
 
 describe("GeneralForm", () => {
   let state: RootState;
@@ -73,7 +83,7 @@ describe("GeneralForm", () => {
     renderWithProviders(<GeneralForm />, { state });
 
     const redRadioButton = screen.getByRole("radio", { name: "Red" });
-    const saveButton = screen.getByRole("button", { name: "Save" });
+    const saveButton = await screen.findByRole("button", { name: "Save" });
 
     await userEvent.click(redRadioButton);
     await userEvent.click(saveButton);
@@ -89,11 +99,31 @@ describe("GeneralForm", () => {
       name: "Enable new release notifications",
     });
 
-    const saveButton = screen.getByRole("button", { name: "Save" });
+    const saveButton = await screen.findByRole("button", { name: "Save" });
 
     await userEvent.click(release_notifications_checkbox);
     await userEvent.click(saveButton);
 
     expect(window.usabilla_live).toHaveBeenCalled();
+  });
+
+  it("disables fields without edit permissions", async () => {
+    mockServer.use(
+      authResolvers.getCurrentUser.handler(
+        factory.userInfo({
+          entitlements: [
+            factory.entitlement({
+              entitlement: Entitlement.CAN_VIEW_CONFIGURATIONS,
+            }),
+          ],
+        })
+      )
+    );
+
+    renderWithProviders(<GeneralForm />, { state });
+
+    await waitFor(() => {
+      expect(screen.getByRole("textbox", { name: "MAAS name" })).toBeDisabled();
+    });
   });
 });

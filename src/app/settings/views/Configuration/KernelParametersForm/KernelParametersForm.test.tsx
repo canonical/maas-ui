@@ -2,15 +2,20 @@ import KernelParametersForm, {
   Labels as FormLabels,
 } from "./KernelParametersForm";
 
+import { Entitlement } from "@/app/settings/views/UserManagement/views/Groups/constants";
 import { ConfigNames } from "@/app/store/config/types";
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
+import { authResolvers } from "@/testing/resolvers/auth";
 import {
   screen,
   renderWithProviders,
+  setupMockServer,
   userEvent,
   waitFor,
 } from "@/testing/utils";
+
+const mockServer = setupMockServer(authResolvers.getCurrentUser.handler());
 
 describe("KernelParametersForm", () => {
   let state: RootState;
@@ -55,6 +60,12 @@ describe("KernelParametersForm", () => {
 
   it("dispatches an action to update kernel parameters", async () => {
     const { store } = renderWithProviders(<KernelParametersForm />, { state });
+
+    await waitFor(() => {
+      expect(
+        screen.getByRole("textbox", { name: FormLabels.GlobalBootParams })
+      ).toBeEnabled();
+    });
 
     await userEvent.clear(
       screen.getByRole("textbox", { name: FormLabels.GlobalBootParams })
@@ -117,6 +128,28 @@ describe("KernelParametersForm", () => {
       expect(screen.getByRole("tooltip")).toHaveTextContent(
         ">= 4 CPU threads, >= 6GB RAM, Reserve >5x RAM size as free disk space in /var."
       );
+    });
+  });
+
+  it("disables fields without edit permissions", async () => {
+    mockServer.use(
+      authResolvers.getCurrentUser.handler(
+        factory.userInfo({
+          entitlements: [
+            factory.entitlement({
+              entitlement: Entitlement.CAN_VIEW_CONFIGURATIONS,
+            }),
+          ],
+        })
+      )
+    );
+
+    renderWithProviders(<KernelParametersForm />, { state });
+
+    await waitFor(() => {
+      expect(
+        screen.getByRole("textbox", { name: FormLabels.GlobalBootParams })
+      ).toBeDisabled();
     });
   });
 });
