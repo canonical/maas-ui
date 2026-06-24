@@ -3,20 +3,27 @@ import { useState } from "react";
 import { GenericTable, MainToolbar } from "@canonical/maas-react-components";
 import { Button, SearchBox } from "@canonical/react-components";
 
+import { Entitlement } from "../../constants";
 import AddGroup from "../AddGroup";
 
 import useGroupsListColumns from "./useGroupsTableColumns/useGroupsTableColumns";
 
+import { useGetUserEntitlements } from "@/app/api/query/auth";
 import { useGroups } from "@/app/api/query/groups";
 import usePagination from "@/app/base/hooks/usePagination/usePagination";
 import { useSidePanel } from "@/app/base/side-panel-context";
+import { hasPermissions } from "@/app/utils/permissions";
 
 const GroupsTable = () => {
   const [searchText, setSearchText] = useState("");
   const { openSidePanel } = useSidePanel();
+  const userEntitlements = useGetUserEntitlements();
+  const canEdit = hasPermissions(userEntitlements.data || [], [
+    Entitlement.CAN_EDIT_IDENTITIES,
+  ]);
   const { page, debouncedPage, size, handlePageSizeChange, setPage } =
     usePagination();
-  const columns = useGroupsListColumns();
+  const columns = useGroupsListColumns({ canEdit });
   const groups = useGroups({
     query: { page: debouncedPage, size, group_name: searchText },
   });
@@ -25,6 +32,7 @@ const GroupsTable = () => {
     description: item.description as string | undefined,
     user_count: item.statistics?.user_count,
   }));
+
   return (
     <div className="groups-list">
       <MainToolbar>
@@ -36,6 +44,7 @@ const GroupsTable = () => {
             value={searchText}
           />
           <Button
+            disabled={!canEdit}
             onClick={() => {
               openSidePanel({
                 component: AddGroup,

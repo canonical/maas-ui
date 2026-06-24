@@ -12,11 +12,16 @@ export enum Labels {
   OperatorRadio = "Operator",
 }
 
-const IpmiFormFields = (): React.ReactElement => {
+const IpmiFormFields = ({
+  canEdit,
+}: {
+  canEdit: boolean;
+}): React.ReactElement => {
   return (
     <>
       <FormikField
         autoComplete="username"
+        disabled={!canEdit}
         label={Labels.IPMIUsername}
         name="maas_auto_ipmi_user"
         placeholder="maas"
@@ -25,6 +30,7 @@ const IpmiFormFields = (): React.ReactElement => {
       <FormikField
         aria-label={Labels.KGBMCKeyLabel}
         autoComplete="new-password"
+        disabled={!canEdit}
         help={
           <>
             Specify this key to encrypt all communication between IPMI clients
@@ -46,18 +52,21 @@ const IpmiFormFields = (): React.ReactElement => {
       />
       <p className="u-sv1">MAAS generated IPMI user privilege level</p>
       <FormikField
+        disabled={!canEdit}
         label={Labels.AdminRadio}
         name="maas_auto_ipmi_user_privilege_level"
         type="radio"
         value="ADMIN"
       />
       <FormikField
+        disabled={!canEdit}
         label={Labels.OperatorRadio}
         name="maas_auto_ipmi_user_privilege_level"
         type="radio"
         value="OPERATOR"
       />
       <FormikField
+        disabled={!canEdit}
         label={Labels.UserRadio}
         name="maas_auto_ipmi_user_privilege_level"
         type="radio"

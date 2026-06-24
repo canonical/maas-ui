@@ -9,12 +9,17 @@ import FormikField from "@/app/base/components/FormikField";
 import docsUrls from "@/app/base/docsUrls";
 import { TLSExpiryNotificationInterval } from "@/app/store/config/types";
 
-const TLSEnabledFields = (): React.ReactElement => {
+const TLSEnabledFields = ({
+  canEdit,
+}: {
+  canEdit: boolean;
+}): React.ReactElement => {
   const { setFieldValue, values } = useFormikContext<TLSEnabledValues>();
 
   return (
     <>
       <FormikField
+        disabled={!canEdit}
         label={Labels.NotificationCheckbox}
         name="notificationEnabled"
         type="checkbox"
@@ -22,7 +27,7 @@ const TLSEnabledFields = (): React.ReactElement => {
       <div className="p-slider--inline">
         <FormikField<typeof Slider>
           component={Slider}
-          disabled={!values.notificationEnabled}
+          disabled={!values.notificationEnabled || !canEdit}
           help={
             <>
               <span>{TLSExpiryNotificationInterval.MIN}</span>

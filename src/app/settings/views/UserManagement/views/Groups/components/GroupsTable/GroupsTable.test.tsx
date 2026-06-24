@@ -4,6 +4,9 @@ import EditGroup from "../EditGroup";
 
 import GroupsTable from "./GroupsTable";
 
+import { Entitlement } from "@/app/settings/views/UserManagement/views/Groups/constants";
+import * as factory from "@/testing/factories";
+import { authResolvers } from "@/testing/resolvers/auth";
 import { groupsResolvers } from "@/testing/resolvers/groups";
 import {
   renderWithProviders,
@@ -13,13 +16,15 @@ import {
   mockIsPending,
   waitFor,
   mockSidePanel,
+  waitForLoading,
 } from "@/testing/utils";
 
 const { mockOpen } = await mockSidePanel();
 
 const mockServer = setupMockServer(
   groupsResolvers.listGroups.handler(),
-  groupsResolvers.listGroupsStatistics.handler()
+  groupsResolvers.listGroupsStatistics.handler(),
+  authResolvers.getCurrentUser.handler()
 );
 
 describe("GroupsTable", () => {
@@ -59,6 +64,11 @@ describe("GroupsTable", () => {
   describe("actions", () => {
     it("opens the AddGroup side panel side panel", async () => {
       renderWithProviders(<GroupsTable />);
+      await waitFor(() => {
+        expect(
+          screen.getByRole("button", { name: "Add group" })
+        ).not.toBeAriaDisabled();
+      });
       await userEvent.click(screen.getByRole("button", { name: "Add group" }));
       expect(mockOpen).toHaveBeenCalledWith(
         expect.objectContaining({
@@ -70,7 +80,9 @@ describe("GroupsTable", () => {
     it("opens the EditGroup side panel when clicking edit action", async () => {
       renderWithProviders(<GroupsTable />);
       await waitFor(() => {
-        expect(screen.getAllByRole("button", { name: "Edit" }));
+        expect(
+          screen.getAllByRole("button", { name: "Edit" })[0]
+        ).not.toBeAriaDisabled();
       });
       await userEvent.click(screen.getAllByRole("button", { name: "Edit" })[0]);
       expect(mockOpen).toHaveBeenCalledWith(
@@ -84,7 +96,9 @@ describe("GroupsTable", () => {
     it("opens the DeleteGroup side panel when clicking delete action", async () => {
       renderWithProviders(<GroupsTable />);
       await waitFor(() => {
-        expect(screen.getAllByRole("button", { name: "Delete" }));
+        expect(
+          screen.getAllByRole("button", { name: "Delete" })[0]
+        ).not.toBeAriaDisabled();
       });
       await userEvent.click(
         screen.getAllByRole("button", { name: "Delete" })[0]
@@ -96,6 +110,37 @@ describe("GroupsTable", () => {
           title: "Delete group",
         })
       );
+    });
+
+    it("disables add and row actions without edit permissions", async () => {
+      mockServer.use(
+        authResolvers.getCurrentUser.handler(
+          factory.userInfo({
+            entitlements: [
+              factory.entitlement({
+                entitlement: Entitlement.CAN_VIEW_IDENTITIES,
+              }),
+            ],
+          })
+        )
+      );
+
+      renderWithProviders(<GroupsTable />);
+
+      await waitFor(() => {
+        expect(
+          screen.getByRole("button", { name: "Add group" })
+        ).toBeAriaDisabled();
+      });
+
+      await waitForLoading();
+
+      expect(
+        screen.getAllByRole("button", { name: "Edit" })[0]
+      ).toBeAriaDisabled();
+      expect(
+        screen.getAllByRole("button", { name: "Delete" })[0]
+      ).toBeAriaDisabled();
     });
   });
 });

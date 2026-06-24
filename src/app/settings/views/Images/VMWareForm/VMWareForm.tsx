@@ -58,6 +58,7 @@ const VMWareForm = (): ReactElement => {
     <FormikForm
       aria-label={Labels.FormLabel}
       cleanup={configActions.cleanup}
+      editable={canEdit}
       errors={updateConfig.error}
       initialValues={{
         vcenter_server: vcenter_server ?? "",

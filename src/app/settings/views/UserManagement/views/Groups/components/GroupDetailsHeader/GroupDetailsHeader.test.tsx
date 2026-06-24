@@ -36,6 +36,7 @@ describe("GroupDetailsHeader", () => {
     it("displays a spinner as the title when loading", () => {
       renderWithProviders(
         <GroupDetailsHeader
+          canEdit={true}
           entitlementSelection={[]}
           group={undefined}
           loading={true}
@@ -58,6 +59,7 @@ describe("GroupDetailsHeader", () => {
     it("displays the group name as the title when loaded", async () => {
       renderWithProviders(
         <GroupDetailsHeader
+          canEdit={true}
           entitlementSelection={[]}
           group={mockGroup}
           loading={false}
@@ -83,6 +85,7 @@ describe("GroupDetailsHeader", () => {
     it("renders tab links for Entitlements and Members", () => {
       renderWithProviders(
         <GroupDetailsHeader
+          canEdit={true}
           entitlementSelection={[]}
           group={mockGroup}
           loading={false}
@@ -106,6 +109,7 @@ describe("GroupDetailsHeader", () => {
     it("renders a Back to all groups link pointing to the groups url", async () => {
       renderWithProviders(
         <GroupDetailsHeader
+          canEdit={true}
           entitlementSelection={[]}
           group={mockGroup}
           loading={false}
@@ -129,6 +133,7 @@ describe("GroupDetailsHeader", () => {
     it("shows all action menu items when Take action is clicked", async () => {
       renderWithProviders(
         <GroupDetailsHeader
+          canEdit={true}
           entitlementSelection={[]}
           group={mockGroup}
           loading={false}
@@ -164,6 +169,7 @@ describe("GroupDetailsHeader", () => {
     it("disables the Remove entitlements button when no entitlements are selected", () => {
       renderWithProviders(
         <GroupDetailsHeader
+          canEdit={true}
           entitlementSelection={[]}
           group={mockGroup}
           loading={false}
@@ -186,6 +192,7 @@ describe("GroupDetailsHeader", () => {
     it("enables the Remove entitlements button when entitlements are selected", () => {
       renderWithProviders(
         <GroupDetailsHeader
+          canEdit={true}
           entitlementSelection={[
             {
               entitlement: "can_edit_machines",
@@ -214,6 +221,7 @@ describe("GroupDetailsHeader", () => {
     it("disables the Remove members button when no members are selected", () => {
       renderWithProviders(
         <GroupDetailsHeader
+          canEdit={true}
           entitlementSelection={[]}
           group={mockGroup}
           loading={false}
@@ -242,6 +250,7 @@ describe("GroupDetailsHeader", () => {
 
       renderWithProviders(
         <GroupDetailsHeader
+          canEdit={true}
           entitlementSelection={[]}
           group={mockGroup}
           loading={false}
@@ -266,6 +275,7 @@ describe("GroupDetailsHeader", () => {
     it("opens Add entitlement side panel on click", async () => {
       renderWithProviders(
         <GroupDetailsHeader
+          canEdit={true}
           entitlementSelection={[]}
           group={mockGroup}
           loading={false}
@@ -297,6 +307,7 @@ describe("GroupDetailsHeader", () => {
     it("opens Add members side panel on click", async () => {
       renderWithProviders(
         <GroupDetailsHeader
+          canEdit={true}
           entitlementSelection={[]}
           group={mockGroup}
           loading={false}
@@ -329,6 +340,7 @@ describe("GroupDetailsHeader", () => {
     it("opens Edit group side panel on click", async () => {
       renderWithProviders(
         <GroupDetailsHeader
+          canEdit={true}
           entitlementSelection={[]}
           group={mockGroup}
           loading={false}
@@ -362,6 +374,7 @@ describe("GroupDetailsHeader", () => {
     it("opens Delete group side panel on click with user count from statistics", async () => {
       renderWithProviders(
         <GroupDetailsHeader
+          canEdit={true}
           entitlementSelection={[]}
           group={mockGroup}
           loading={false}
@@ -410,6 +423,7 @@ describe("GroupDetailsHeader", () => {
 
       renderWithProviders(
         <GroupDetailsHeader
+          canEdit={true}
           entitlementSelection={entitlementSelection}
           group={mockGroup}
           loading={false}
@@ -449,6 +463,7 @@ describe("GroupDetailsHeader", () => {
 
       renderWithProviders(
         <GroupDetailsHeader
+          canEdit={true}
           entitlementSelection={[]}
           group={mockGroup}
           loading={false}

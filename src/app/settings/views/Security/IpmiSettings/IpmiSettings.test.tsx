@@ -2,9 +2,11 @@ import { Labels as FormFieldsLabels } from "./IpmiFormFields/IpmiFormFields";
 import IpmiSettings, { Labels as IpmiSettingsLabels } from "./IpmiSettings";
 
 import { Labels as FormikButtonLabels } from "@/app/base/components/FormikFormButtons/FormikFormButtons";
+import { Entitlement } from "@/app/settings/views/UserManagement/views/Groups/constants";
 import { AutoIpmiPrivilegeLevel, ConfigNames } from "@/app/store/config/types";
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
+import { authResolvers } from "@/testing/resolvers/auth";
 import { configurationsResolvers } from "@/testing/resolvers/configurations";
 import {
   screen,
@@ -17,6 +19,7 @@ import {
 } from "@/testing/utils";
 
 const mockServer = setupMockServer(
+  authResolvers.getCurrentUser.handler(),
   configurationsResolvers.listConfigurations.handler(),
   configurationsResolvers.setBulkConfigurations.handler()
 );
@@ -79,6 +82,9 @@ describe("IpmiSettings", () => {
     const maasAutoIpmiKGBmcKeyInput = screen.getByLabelText(
       FormFieldsLabels.KGBMCKeyLabel
     );
+    await waitFor(() => {
+      expect(maasAutoIpmiKGBmcKeyInput).not.toBeDisabled();
+    });
     await userEvent.clear(maasAutoIpmiKGBmcKeyInput);
     await userEvent.type(maasAutoIpmiKGBmcKeyInput, "password");
     await userEvent.click(
@@ -116,6 +122,11 @@ describe("IpmiSettings", () => {
     );
     renderWithProviders(<IpmiSettings />, { state: initialState });
     await waitForLoading();
+    await waitFor(() => {
+      expect(
+        screen.getByRole("radio", { name: FormFieldsLabels.UserRadio })
+      ).not.toBeDisabled();
+    });
     await userEvent.click(
       screen.getByRole("radio", { name: FormFieldsLabels.UserRadio })
     );
@@ -126,6 +137,28 @@ describe("IpmiSettings", () => {
       expect(
         screen.getByText("Failed to update configurations")
       ).toBeInTheDocument();
+    });
+  });
+
+  it("disables fields without edit permissions", async () => {
+    mockServer.use(
+      authResolvers.getCurrentUser.handler(
+        factory.userInfo({
+          entitlements: [
+            factory.entitlement({
+              entitlement: Entitlement.CAN_VIEW_CONFIGURATIONS,
+            }),
+          ],
+        })
+      ),
+      configurationsResolvers.listConfigurations.handler({ items: configItems })
+    );
+    renderWithProviders(<IpmiSettings />, { state: initialState });
+    await waitForLoading();
+    await waitFor(() => {
+      expect(
+        screen.getByRole("textbox", { name: FormFieldsLabels.IPMIUsername })
+      ).toBeDisabled();
     });
   });
 });

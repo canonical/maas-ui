@@ -2,16 +2,21 @@ import IpmiSettings from "../IpmiSettings";
 
 import { Labels as FormFieldsLabels } from "./IpmiFormFields";
 
+import { Entitlement } from "@/app/settings/views/UserManagement/views/Groups/constants";
 import { AutoIpmiPrivilegeLevel, ConfigNames } from "@/app/store/config/types";
+import * as factory from "@/testing/factories";
+import { authResolvers } from "@/testing/resolvers/auth";
 import { configurationsResolvers } from "@/testing/resolvers/configurations";
 import {
   screen,
   setupMockServer,
   renderWithProviders,
+  waitFor,
   waitForLoading,
 } from "@/testing/utils";
 
 const mockServer = setupMockServer(
+  authResolvers.getCurrentUser.handler(),
   configurationsResolvers.listConfigurations.handler()
 );
 describe("IpmiFormFields", () => {
@@ -50,5 +55,27 @@ describe("IpmiFormFields", () => {
     expect(
       screen.getByRole("radio", { name: FormFieldsLabels.OperatorRadio })
     ).toHaveProperty("checked", true);
+  });
+
+  it("disables fields without edit permissions", async () => {
+    mockServer.use(
+      authResolvers.getCurrentUser.handler(
+        factory.userInfo({
+          entitlements: [
+            factory.entitlement({
+              entitlement: Entitlement.CAN_VIEW_CONFIGURATIONS,
+            }),
+          ],
+        })
+      ),
+      configurationsResolvers.listConfigurations.handler({ items: configItems })
+    );
+    renderWithProviders(<IpmiSettings />);
+    await waitForLoading();
+    await waitFor(() => {
+      expect(
+        screen.getByRole("textbox", { name: FormFieldsLabels.IPMIUsername })
+      ).toBeDisabled();
+    });
   });
 });

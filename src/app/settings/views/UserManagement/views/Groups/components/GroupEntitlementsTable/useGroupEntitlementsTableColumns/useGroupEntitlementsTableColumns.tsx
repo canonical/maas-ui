@@ -36,9 +36,11 @@ const AppliesToCell = ({
 };
 
 const useGroupEntitlementsTableColumns = ({
+  canEdit,
   group_id,
   setEntitlementSelection,
 }: {
+  canEdit: boolean;
   group_id: UserGroupResponse["id"];
   setEntitlementSelection: Dispatch<SetStateAction<EntitlementResponse[]>>;
 }): EntitlementColumnDef[] => {
@@ -101,6 +103,7 @@ const useGroupEntitlementsTableColumns = ({
           ]}
           toggleAppearance="base"
           toggleClassName="u-no-margin--bottom is-small is-dense"
+          toggleDisabled={!canEdit}
         />
       ),
     },

@@ -4,7 +4,6 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useDispatch } from "react-redux";
 
 import { useWebsocketAwareQuery } from "@/app/api/query/base";
-// import type { UserWithStatistics } from "@/app/api/query/users";
 import type { WithHeaders } from "@/app/api/utils";
 import {
   mutationOptionsWithHeaders,

@@ -40,6 +40,7 @@ const ThirdPartyDriversForm = (): ReactElement => {
     <FormikForm
       aria-label={Labels.FormLabel}
       cleanup={configActions.cleanup}
+      editable={canEdit}
       errors={updateConfig.error}
       initialValues={{
         enable_third_party_drivers,

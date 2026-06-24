@@ -37,6 +37,7 @@ const WindowsForm = (): React.ReactElement => {
     <FormikForm
       aria-label={Labels.FormLabel}
       cleanup={configActions.cleanup}
+      editable={canEdit}
       errors={errors}
       initialValues={{
         windows_kms_host: windowsKmsHost ?? "",

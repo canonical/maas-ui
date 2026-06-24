@@ -20,7 +20,11 @@ export type GroupsListColumnDef = ColumnDef<
   Partial<GroupsListColumnData>
 >;
 
-const useGroupsTableColumns = (): GroupsListColumnDef[] => {
+const useGroupsTableColumns = ({
+  canEdit,
+}: {
+  canEdit: boolean;
+}): GroupsListColumnDef[] => {
   const { openSidePanel } = useSidePanel();
   return [
     {
@@ -59,6 +63,8 @@ const useGroupsTableColumns = (): GroupsListColumnDef[] => {
         },
       }) => (
         <TableActions
+          deleteDisabled={!canEdit}
+          editDisabled={!canEdit}
           onDelete={() => {
             openSidePanel({
               component: DeleteGroup,

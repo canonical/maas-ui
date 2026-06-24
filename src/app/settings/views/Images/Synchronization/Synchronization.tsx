@@ -98,6 +98,7 @@ const Synchronization = (): ReactElement => {
               {importConfig.isSuccess && importConfig.data && (
                 <FormikForm
                   aria-label="Synchronization"
+                  editable={canEdit}
                   enableReinitialize
                   errors={updateConfig.error}
                   initialValues={initialValues}

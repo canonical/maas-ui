@@ -4,6 +4,9 @@ import { useEffect, useState } from "react";
 import { GenericTable } from "@canonical/maas-react-components";
 import type { RowSelectionState } from "@tanstack/react-table";
 
+import { Entitlement } from "../../constants";
+
+import { useGetUserEntitlements } from "@/app/api/query/auth";
 import { useGroupMembers } from "@/app/api/query/groups";
 import type {
   UserGroupMemberResponse,
@@ -11,6 +14,7 @@ import type {
 } from "@/app/apiclient";
 import usePagination from "@/app/base/hooks/usePagination/usePagination";
 import useGroupMembersTableColumns from "@/app/settings/views/UserManagement/views/Groups/components/GroupMembersTable/useGroupMembersTableColumns/useGroupMembersTableColumns";
+import { hasPermissions } from "@/app/utils/permissions";
 
 type GroupMembersTableProps = {
   id: UserGroupResponse["id"];
@@ -25,8 +29,13 @@ const GroupMembersTable = ({
 }: GroupMembersTableProps): ReactElement => {
   const [rowSelection, setRowSelection] = useState<RowSelectionState>({});
   const { page, size, handlePageSizeChange, setPage } = usePagination();
+  const userEntitlements = useGetUserEntitlements();
+  const canEdit = hasPermissions(userEntitlements.data || [], [
+    Entitlement.CAN_EDIT_IDENTITIES,
+  ]);
 
   const columns = useGroupMembersTableColumns({
+    canEdit,
     groupId: id,
     setMemberSelection,
   });

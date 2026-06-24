@@ -22,8 +22,10 @@ type UsersColumnDef = ColumnDef<
 >;
 
 const useUsersTableColumns = ({
+  canEdit,
   statisticsPending,
 }: {
+  canEdit: boolean;
   statisticsPending: boolean;
 }): UsersColumnDef[] => {
   const { openSidePanel } = useSidePanel();
@@ -201,10 +203,11 @@ const useUsersTableColumns = ({
             return (
               <TableActions
                 data-testid="user-actions"
-                deleteDisabled={isAuthUser}
+                deleteDisabled={isAuthUser || !canEdit}
                 deleteTooltip={
                   isAuthUser ? "You cannot delete your own user." : null
                 }
+                editDisabled={isAuthUser ? false : !canEdit}
                 editPath={isAuthUser ? urls.preferences.details : undefined}
                 onDelete={() => {
                   openSidePanel({
@@ -229,7 +232,13 @@ const useUsersTableColumns = ({
           },
         },
       ] as UsersColumnDef[],
-    [authUser.data?.id, isDisplayingUsername, openSidePanel, statisticsPending]
+    [
+      authUser.data?.id,
+      canEdit,
+      isDisplayingUsername,
+      openSidePanel,
+      statisticsPending,
+    ]
   );
 };
 

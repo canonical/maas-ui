@@ -9,6 +9,9 @@ import {
 import { formatDuration } from "date-fns";
 import * as Yup from "yup";
 
+import { Entitlement } from "../../UserManagement/views/Groups/constants";
+
+import { useGetUserEntitlements } from "@/app/api/query/auth";
 import {
   useConfigurations,
   useBulkSetConfigurations,
@@ -21,6 +24,7 @@ import { useWindowTitle } from "@/app/base/hooks";
 import { useLogout } from "@/app/base/hooks/logout";
 import { configActions } from "@/app/store/config";
 import { ConfigNames } from "@/app/store/config/types";
+import { hasPermissions } from "@/app/utils/permissions";
 import {
   humanReadableToSeconds,
   secondsToDuration,
@@ -87,6 +91,10 @@ const SessionTimeout = (): ReactElement => {
   const updateConfig = useBulkSetConfigurations();
   useWindowTitle("Token Expiration");
   const logout = useLogout();
+  const userEntitlements = useGetUserEntitlements();
+  const canEdit = hasPermissions(userEntitlements.data || [], [
+    Entitlement.CAN_EDIT_CONFIGURATIONS,
+  ]);
 
   if (isPending) {
     return <Spinner aria-label={Labels.Loading} text={Labels.Loading} />;
@@ -110,6 +118,7 @@ const SessionTimeout = (): ReactElement => {
           <FormikForm<TokenExpirationFormValues, SetConfigurationsError>
             aria-label={Labels.ConfigureTokenExpiration}
             cleanup={configActions.cleanup}
+            editable={canEdit}
             errors={updateConfig.error}
             initialValues={{
               refresh_token_expiration: formatDuration(
@@ -153,6 +162,7 @@ const SessionTimeout = (): ReactElement => {
             validationSchema={TokenExpirationSchema}
           >
             <FormikField
+              disabled={!canEdit}
               help={
                 <span>
                   Maximum refresh token duration is 60 days. Format options are
