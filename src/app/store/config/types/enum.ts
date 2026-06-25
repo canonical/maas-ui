@@ -26,6 +26,7 @@ export enum ConfigNames {
   DNS_TRUSTED_ACL = "dns_trusted_acl",
   DNSSEC_VALIDATION = "dnssec_validation",
   ENABLE_ANALYTICS = "enable_analytics",
+  EXPERIMENTAL_SWITCH_PROVISIONING = "experimental_switch_provisioning",
   ENABLE_DISK_ERASING_ON_RELEASE = "enable_disk_erasing_on_release",
   ENABLE_HTTP_PROXY = "enable_http_proxy",
   ENABLE_KERNEL_CRASH_DUMP = "enable_kernel_crash_dump",
