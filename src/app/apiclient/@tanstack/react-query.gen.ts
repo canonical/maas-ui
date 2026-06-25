@@ -12,6 +12,7 @@ import {
   bulkDeleteSelections,
   bulkRemoveGroupEntitlements,
   bulkRemoveGroupMembers,
+  cancelOperation,
   changePasswordAdmin,
   changePasswordUser,
   clearAllDiscoveriesWithOptionalIpAndMac,
@@ -103,6 +104,7 @@ import {
   getNotification,
   getOauthProvider,
   getOauthProviderById,
+  getOperation,
   getPackageRepository,
   getRack,
   getRackAgent,
@@ -150,6 +152,7 @@ import {
   listMachineUsbDevices,
   listNotifications,
   listOauthProviders,
+  listOperations,
   listPackageRepositories,
   listRackAgents,
   listRacks,
@@ -223,6 +226,9 @@ import type {
   BulkRemoveGroupMembersData,
   BulkRemoveGroupMembersError,
   BulkRemoveGroupMembersResponse,
+  CancelOperationData,
+  CancelOperationError,
+  CancelOperationResponse,
   ChangePasswordAdminData,
   ChangePasswordAdminError,
   ChangePasswordAdminResponse,
@@ -494,6 +500,9 @@ import type {
   GetOauthProviderData,
   GetOauthProviderError,
   GetOauthProviderResponse,
+  GetOperationData,
+  GetOperationError,
+  GetOperationResponse,
   GetPackageRepositoryData,
   GetPackageRepositoryError,
   GetPackageRepositoryResponse,
@@ -635,6 +644,9 @@ import type {
   ListOauthProvidersData,
   ListOauthProvidersError,
   ListOauthProvidersResponse,
+  ListOperationsData,
+  ListOperationsError,
+  ListOperationsResponse,
   ListPackageRepositoriesData,
   ListPackageRepositoriesError,
   ListPackageRepositoriesResponse,
@@ -1100,8 +1112,7 @@ export const initiateAuthFlowQueryKey = (
 /**
  * Initiate Auth Flow
  *
- * Initiate the OAuth flow by generating the authorization URL and setting the necessary security cookies,
- * if the user is an OIDC user.
+ * Decide whether the login should proceed via OIDC or local password.
  */
 export const initiateAuthFlowOptions = (
   options: Options<InitiateAuthFlowData>
@@ -3143,6 +3154,9 @@ export const getNosInstallerQueryKey = (
  *
  * Serve NOS installer binary.
  *
+ * Experimental: this endpoint is part of an experimental feature set
+ * and may change in future releases.
+ *
  * This endpoint:
  * - Receives ONIE headers from the switch
  * - Checks if an installer is assigned to the switch
@@ -3328,6 +3342,89 @@ export const dismissNotificationMutation = (
   };
   return mutationOptions;
 };
+
+/**
+ * Cancel Operation
+ *
+ * Cancel a specific operation by UUID.
+ */
+export const cancelOperationMutation = (
+  options?: Partial<Options<CancelOperationData>>
+): UseMutationOptions<
+  CancelOperationResponse,
+  CancelOperationError,
+  Options<CancelOperationData>
+> => {
+  const mutationOptions: UseMutationOptions<
+    CancelOperationResponse,
+    CancelOperationError,
+    Options<CancelOperationData>
+  > = {
+    mutationFn: async (fnOptions) => {
+      const { data } = await cancelOperation({
+        ...options,
+        ...fnOptions,
+        throwOnError: true,
+      });
+      return data;
+    },
+  };
+  return mutationOptions;
+};
+
+export const getOperationQueryKey = (options: Options<GetOperationData>) =>
+  createQueryKey("getOperation", options);
+
+/**
+ * Get Operation
+ *
+ * Get a specific operation by UUID.
+ */
+export const getOperationOptions = (options: Options<GetOperationData>) =>
+  queryOptions<
+    GetOperationResponse,
+    GetOperationError,
+    GetOperationResponse,
+    ReturnType<typeof getOperationQueryKey>
+  >({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await getOperation({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: getOperationQueryKey(options),
+  });
+
+export const listOperationsQueryKey = (options?: Options<ListOperationsData>) =>
+  createQueryKey("listOperations", options);
+
+/**
+ * List Operations
+ *
+ * List all operations with pagination and filtering.
+ */
+export const listOperationsOptions = (options?: Options<ListOperationsData>) =>
+  queryOptions<
+    ListOperationsResponse,
+    ListOperationsError,
+    ListOperationsResponse,
+    ReturnType<typeof listOperationsQueryKey>
+  >({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await listOperations({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: listOperationsQueryKey(options),
+  });
 
 export const listPackageRepositoriesQueryKey = (
   options?: Options<ListPackageRepositoriesData>
@@ -4709,6 +4806,9 @@ export const listSwitchesQueryKey = (options?: Options<ListSwitchesData>) =>
  * List Switches
  *
  * List all switches with pagination.
+ *
+ * **Experimental**: this endpoint is part of an experimental feature set
+ * and may change in future releases.
  */
 export const listSwitchesOptions = (options?: Options<ListSwitchesData>) =>
   queryOptions<
@@ -4733,6 +4833,9 @@ export const listSwitchesOptions = (options?: Options<ListSwitchesData>) =>
  * Create Switch
  *
  * Create a new switch with its management interface.
+ *
+ * **Experimental**: this endpoint is part of an experimental feature set
+ * and may change in future releases.
  */
 export const createSwitchMutation = (
   options?: Partial<Options<CreateSwitchData>>
@@ -4762,6 +4865,9 @@ export const createSwitchMutation = (
  * Delete Switch
  *
  * Delete a switch and all related entries.
+ *
+ * **Experimental**: this endpoint is part of an experimental feature set
+ * and may change in future releases.
  */
 export const deleteSwitchMutation = (
   options?: Partial<Options<DeleteSwitchData>>
@@ -4794,6 +4900,9 @@ export const getSwitchQueryKey = (options: Options<GetSwitchData>) =>
  * Get Switch
  *
  * Get a specific switch by ID.
+ *
+ * **Experimental**: this endpoint is part of an experimental feature set
+ * and may change in future releases.
  */
 export const getSwitchOptions = (options: Options<GetSwitchData>) =>
   queryOptions<
@@ -4818,6 +4927,9 @@ export const getSwitchOptions = (options: Options<GetSwitchData>) =>
  * Update Switch
  *
  * Update a switch's target image.
+ *
+ * **Experimental**: this endpoint is part of an experimental feature set
+ * and may change in future releases.
  */
 export const updateSwitchMutation = (
   options?: Partial<Options<UpdateSwitchData>>

@@ -11,6 +11,7 @@ import type {
   ListUsersStatisticsError,
   ListUsersStatisticsResponse,
   UpdateUserError,
+  UserResponse,
 } from "@/app/apiclient";
 import {
   user as userFactory,
@@ -112,13 +113,15 @@ const usersResolvers = {
   },
   getUser: {
     resolved: false,
-    handler: () =>
+    handler: (data?: UserResponse) =>
       http.get(`${BASE_URL}MAAS/a/v3/users/:id`, ({ params }) => {
         const id = Number(params.id);
         if (!id) return HttpResponse.error();
 
-        const user = mockUsers.items.find((user) => user.id === id);
         usersResolvers.getUser.resolved = true;
+        if (data) return HttpResponse.json(data);
+
+        const user = mockUsers.items.find((user) => user.id === id);
         return user ? HttpResponse.json(user) : HttpResponse.error();
       }),
     error: (error: GetUserError = mockGetUserError) =>

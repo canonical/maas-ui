@@ -12,7 +12,11 @@ import configSelectors from "@/app/store/config/selectors";
 import { osInfo as osInfoSelectors } from "@/app/store/general/selectors";
 import type { RootState } from "@/app/store/root/types";
 
-const CommissioningFormFields = (): React.ReactElement => {
+const CommissioningFormFields = ({
+  canEdit,
+}: {
+  canEdit: boolean;
+}): React.ReactElement => {
   const formikProps = useFormikContext<CommissioningFormValues>();
   const distroSeriesOptions = useSelector(configSelectors.distroSeriesOptions);
 
@@ -32,6 +36,7 @@ const CommissioningFormFields = (): React.ReactElement => {
       <h5 className="u-sv1">Machine settings</h5>
       <FormikField
         component={Select}
+        disabled={!canEdit}
         label="Default Ubuntu release used for commissioning"
         name="commissioning_distro_series"
         onChange={(e: ChangeEvent<HTMLSelectElement>) => {
@@ -72,6 +77,7 @@ const CommissioningFormFields = (): React.ReactElement => {
       />
       <FormikField
         component={Select}
+        disabled={!canEdit}
         help="The default minimum kernel version used on all new and commissioned nodes"
         label="Default minimum kernel version"
         name="default_min_hwe_kernel"

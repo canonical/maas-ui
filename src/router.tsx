@@ -26,6 +26,7 @@ import Deploy from "@/app/settings/views/Configuration/Deploy";
 import General from "@/app/settings/views/Configuration/General";
 import KernelParameters from "@/app/settings/views/Configuration/KernelParameters";
 import DhcpList from "@/app/settings/views/Dhcp/DhcpList";
+import ImageSettings from "@/app/settings/views/Images";
 import ThirdPartyDrivers from "@/app/settings/views/Images/ThirdPartyDrivers";
 import VMWare from "@/app/settings/views/Images/VMWare";
 import Windows from "@/app/settings/views/Images/Windows";
@@ -35,12 +36,14 @@ import NtpForm from "@/app/settings/views/Network/NtpForm";
 import ProxyForm from "@/app/settings/views/Network/ProxyForm";
 import SyslogForm from "@/app/settings/views/Network/SyslogForm";
 import RepositoriesList from "@/app/settings/views/Repositories/views";
+import Scripts from "@/app/settings/views/Scripts";
 import ScriptsList from "@/app/settings/views/Scripts/ScriptsList";
 import IpmiSettings from "@/app/settings/views/Security/IpmiSettings";
 import SecretStorage from "@/app/settings/views/Security/SecretStorage";
 import SecurityProtocols from "@/app/settings/views/Security/SecurityProtocols";
 import SessionTimeout from "@/app/settings/views/Security/SessionTimeout";
 import StorageForm from "@/app/settings/views/Storage/StorageForm";
+import UserManagement from "@/app/settings/views/UserManagement";
 import SingleSignOn from "@/app/settings/views/UserManagement/views/SingleSignOn";
 import UsersList from "@/app/settings/views/UserManagement/views/UsersList/UsersList";
 import { MachineMeta } from "@/app/store/machine/types";
@@ -776,45 +779,54 @@ export const router = createBrowserRouter(
                   ),
                 },
                 {
-                  path: getRelativeRoute(
-                    urls.settings.userManagement.users,
-                    urls.settings.index
-                  ),
                   element: (
                     <ErrorBoundary>
-                      <UsersList />
+                      <UserManagement />
                     </ErrorBoundary>
                   ),
-                },
-                {
-                  path: getRelativeRoute(
-                    urls.settings.userManagement.groups,
-                    urls.settings.index
-                  ),
-                  element: (
-                    <ErrorBoundary>
-                      <GroupsList />
-                    </ErrorBoundary>
-                  ),
-                },
-                {
-                  path: `${urls.settings.userManagement.group.index(null)}/*`,
-                  element: (
-                    <ErrorBoundary>
-                      <GroupDetails />
-                    </ErrorBoundary>
-                  ),
-                },
-                {
-                  path: getRelativeRoute(
-                    urls.settings.userManagement.singleSignOn,
-                    urls.settings.index
-                  ),
-                  element: (
-                    <ErrorBoundary>
-                      <SingleSignOn />
-                    </ErrorBoundary>
-                  ),
+                  children: [
+                    {
+                      path: getRelativeRoute(
+                        urls.settings.userManagement.users,
+                        urls.settings.index
+                      ),
+                      element: (
+                        <ErrorBoundary>
+                          <UsersList />
+                        </ErrorBoundary>
+                      ),
+                    },
+                    {
+                      path: getRelativeRoute(
+                        urls.settings.userManagement.groups,
+                        urls.settings.index
+                      ),
+                      element: (
+                        <ErrorBoundary>
+                          <GroupsList />
+                        </ErrorBoundary>
+                      ),
+                    },
+                    {
+                      path: `${urls.settings.userManagement.group.index(null)}/*`,
+                      element: (
+                        <ErrorBoundary>
+                          <GroupDetails />
+                        </ErrorBoundary>
+                      ),
+                    },
+                    {
+                      path: getRelativeRoute(
+                        urls.settings.userManagement.singleSignOn,
+                        urls.settings.index
+                      ),
+                      element: (
+                        <ErrorBoundary>
+                          <SingleSignOn />
+                        </ErrorBoundary>
+                      ),
+                    },
+                  ],
                 },
                 {
                   path: getRelativeRoute(
@@ -894,43 +906,52 @@ export const router = createBrowserRouter(
                   ),
                 },
                 {
-                  path: getRelativeRoute(
-                    urls.settings.scripts.commissioning.index,
-                    urls.settings.index
-                  ),
                   element: (
                     <ErrorBoundary>
-                      <PageContent>
-                        <ScriptsList type="commissioning" />
-                      </PageContent>
+                      <Scripts />
                     </ErrorBoundary>
                   ),
-                },
-                {
-                  path: getRelativeRoute(
-                    urls.settings.scripts.testing.index,
-                    urls.settings.index
-                  ),
-                  element: (
-                    <ErrorBoundary>
-                      <PageContent>
-                        <ScriptsList type="testing" />
-                      </PageContent>
-                    </ErrorBoundary>
-                  ),
-                },
-                {
-                  path: getRelativeRoute(
-                    urls.settings.scripts.deploying.index,
-                    urls.settings.index
-                  ),
-                  element: (
-                    <ErrorBoundary>
-                      <PageContent>
-                        <ScriptsList type="deployment" />
-                      </PageContent>
-                    </ErrorBoundary>
-                  ),
+                  children: [
+                    {
+                      path: getRelativeRoute(
+                        urls.settings.scripts.commissioning.index,
+                        urls.settings.index
+                      ),
+                      element: (
+                        <ErrorBoundary>
+                          <PageContent>
+                            <ScriptsList type="commissioning" />
+                          </PageContent>
+                        </ErrorBoundary>
+                      ),
+                    },
+                    {
+                      path: getRelativeRoute(
+                        urls.settings.scripts.testing.index,
+                        urls.settings.index
+                      ),
+                      element: (
+                        <ErrorBoundary>
+                          <PageContent>
+                            <ScriptsList type="testing" />
+                          </PageContent>
+                        </ErrorBoundary>
+                      ),
+                    },
+                    {
+                      path: getRelativeRoute(
+                        urls.settings.scripts.deploying.index,
+                        urls.settings.index
+                      ),
+                      element: (
+                        <ErrorBoundary>
+                          <PageContent>
+                            <ScriptsList type="deployment" />
+                          </PageContent>
+                        </ErrorBoundary>
+                      ),
+                    },
+                  ],
                 },
                 {
                   path: getRelativeRoute(
@@ -958,59 +979,68 @@ export const router = createBrowserRouter(
                   ),
                 },
                 {
-                  path: getRelativeRoute(
-                    urls.settings.images.windows,
-                    urls.settings.index
-                  ),
                   element: (
                     <ErrorBoundary>
-                      <Windows />
+                      <ImageSettings />
                     </ErrorBoundary>
                   ),
-                },
-                {
-                  path: getRelativeRoute(
-                    urls.settings.images.vmware,
-                    urls.settings.index
-                  ),
-                  element: (
-                    <ErrorBoundary>
-                      <VMWare />
-                    </ErrorBoundary>
-                  ),
-                },
-                {
-                  path: getRelativeRoute(
-                    urls.settings.images.ubuntu,
-                    urls.settings.index
-                  ),
-                  element: (
-                    <ErrorBoundary>
-                      <ThirdPartyDrivers />
-                    </ErrorBoundary>
-                  ),
-                },
-                {
-                  path: getRelativeRoute(
-                    urls.settings.images.sources,
-                    urls.settings.index
-                  ),
-                  element: (
-                    <ErrorBoundary>
-                      <Sources />
-                    </ErrorBoundary>
-                  ),
-                },
-                {
-                  path: getRelativeRoute(
-                    urls.settings.images.sync,
-                    urls.settings.index
-                  ),
-                  element: (
-                    <ErrorBoundary>
-                      <Synchronization />
-                    </ErrorBoundary>
-                  ),
+                  children: [
+                    {
+                      path: getRelativeRoute(
+                        urls.settings.images.windows,
+                        urls.settings.index
+                      ),
+                      element: (
+                        <ErrorBoundary>
+                          <Windows />
+                        </ErrorBoundary>
+                      ),
+                    },
+                    {
+                      path: getRelativeRoute(
+                        urls.settings.images.vmware,
+                        urls.settings.index
+                      ),
+                      element: (
+                        <ErrorBoundary>
+                          <VMWare />
+                        </ErrorBoundary>
+                      ),
+                    },
+                    {
+                      path: getRelativeRoute(
+                        urls.settings.images.ubuntu,
+                        urls.settings.index
+                      ),
+                      element: (
+                        <ErrorBoundary>
+                          <ThirdPartyDrivers />
+                        </ErrorBoundary>
+                      ),
+                    },
+                    {
+                      path: getRelativeRoute(
+                        urls.settings.images.sources,
+                        urls.settings.index
+                      ),
+                      element: (
+                        <ErrorBoundary>
+                          <Sources />
+                        </ErrorBoundary>
+                      ),
+                    },
+                    {
+                      path: getRelativeRoute(
+                        urls.settings.images.sync,
+                        urls.settings.index
+                      ),
+                      element: (
+                        <ErrorBoundary>
+                          <Synchronization />
+                        </ErrorBoundary>
+                      ),
+                    },
+                  ],
                 },
                 {
                   path: getRelativeRoute("*", urls.settings.index),

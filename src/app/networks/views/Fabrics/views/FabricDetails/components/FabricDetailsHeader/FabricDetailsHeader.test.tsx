@@ -6,7 +6,6 @@ import { DeleteFabric } from "@/app/networks/views/Fabrics/components";
 import type { Fabric } from "@/app/store/fabric/types";
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
-import { user } from "@/testing/factories";
 import { authResolvers } from "@/testing/resolvers/auth";
 import {
   mockSidePanel,
@@ -46,7 +45,9 @@ describe("FabricDetailsHeader", () => {
 
   it("does not show the delete button if the user is not an admin", () => {
     mockServer.use(
-      authResolvers.getCurrentUser.handler(user({ is_superuser: false }))
+      authResolvers.getCurrentUser.handler(
+        factory.userInfo({ entitlements: [] })
+      )
     );
     renderWithProviders(<FabricDetailsHeader fabric={fabric} />, {
       state,

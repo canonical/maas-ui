@@ -19,7 +19,11 @@ type RepositoriesColumnDef = ColumnDef<
   Partial<PackageRepositoryResponse>
 >;
 
-const useRepositoriesTableColumns = (): RepositoriesColumnDef[] => {
+const useRepositoriesTableColumns = ({
+  canEdit,
+}: {
+  canEdit: boolean;
+}): RepositoriesColumnDef[] => {
   const { openSidePanel } = useSidePanel();
 
   return useMemo(
@@ -52,10 +56,18 @@ const useRepositoriesTableColumns = (): RepositoriesColumnDef[] => {
         header: "Actions",
         cell: ({ row: { original } }) => (
           <TableActions
-            deleteDisabled={getIsDefaultRepo(original)}
+            deleteDisabled={getIsDefaultRepo(original) || !canEdit}
             deleteTooltip={
               getIsDefaultRepo(original)
                 ? "Default repositories cannot be deleted."
+                : !canEdit
+                  ? "You do not have permission to delete repositories."
+                  : null
+            }
+            editDisabled={!canEdit}
+            editTooltip={
+              !canEdit
+                ? "You do not have permission to edit repositories."
                 : null
             }
             onDelete={() => {
@@ -81,7 +93,7 @@ const useRepositoriesTableColumns = (): RepositoriesColumnDef[] => {
         ),
       },
     ],
-    [openSidePanel]
+    [canEdit, openSidePanel]
   );
 };
 

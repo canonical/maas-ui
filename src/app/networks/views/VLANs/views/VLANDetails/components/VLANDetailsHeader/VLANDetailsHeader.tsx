@@ -3,11 +3,11 @@ import type { ReactElement } from "react";
 import { Button } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 
-import { useGetIsSuperUser } from "@/app/api/query/auth";
 import SectionHeader from "@/app/base/components/SectionHeader";
-import { useFetchActions } from "@/app/base/hooks";
+import { useFetchActions, useHasEntitlements } from "@/app/base/hooks";
 import { useSidePanel } from "@/app/base/side-panel-context";
 import { DeleteVLAN } from "@/app/networks/views/VLANs/components";
+import { Entitlement } from "@/app/settings/views/UserManagement/views/Groups/constants";
 import { fabricActions } from "@/app/store/fabric";
 import fabricSelectors from "@/app/store/fabric/selectors";
 import type { Fabric } from "@/app/store/fabric/types";
@@ -45,12 +45,12 @@ const VLANDetailsHeader = ({ vlan }: Props): ReactElement => {
   const fabric = useSelector((state: RootState) =>
     fabricSelectors.getById(state, fabricId)
   );
-  const isSuperUser = useGetIsSuperUser();
+  const canEdit = useHasEntitlements([Entitlement.CAN_EDIT_GLOBAL_ENTITIES]);
 
   useFetchActions([fabricActions.fetch]);
 
   const buttons = [];
-  if (isSuperUser.data) {
+  if (canEdit) {
     buttons.push(
       <Button
         data-testid="delete-vlan"

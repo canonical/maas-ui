@@ -1,8 +1,17 @@
 import LicenseKeyList from ".";
 
+import { Entitlement } from "@/app/settings/views/UserManagement/views/Groups/constants";
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
-import { renderWithProviders, screen } from "@/testing/utils";
+import { authResolvers } from "@/testing/resolvers/auth";
+import {
+  renderWithProviders,
+  screen,
+  setupMockServer,
+  waitFor,
+} from "@/testing/utils";
+
+const mockServer = setupMockServer(authResolvers.getCurrentUser.handler());
 
 describe("LicenseKeyList", () => {
   let initialState: RootState;
@@ -31,11 +40,35 @@ describe("LicenseKeyList", () => {
     });
   });
 
-  it("displays a message when there are no licennse keys", () => {
+  it("displays a message when there are no licennse keys", async () => {
     const state = { ...initialState };
     state.licensekeys.items = [];
 
     renderWithProviders(<LicenseKeyList />, { state });
-    expect(screen.getByText("No license keys available.")).toBeInTheDocument();
+    await waitFor(() => {
+      expect(
+        screen.getByText("No license keys available.")
+      ).toBeInTheDocument();
+    });
+  });
+
+  it("disables the Add button without edit permissions", async () => {
+    mockServer.use(
+      authResolvers.getCurrentUser.handler(
+        factory.userInfo({
+          entitlements: [
+            factory.entitlement({
+              entitlement: Entitlement.CAN_VIEW_LICENSE_KEYS,
+            }),
+          ],
+        })
+      )
+    );
+    renderWithProviders(<LicenseKeyList />, { state: initialState });
+    await waitFor(() => {
+      expect(
+        screen.getByRole("button", { name: "Add license key" })
+      ).toBeAriaDisabled();
+    });
   });
 });

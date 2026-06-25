@@ -10,9 +10,14 @@ import type { OAuthProviderResponse } from "@/app/apiclient";
 type Props = {
   provider: OAuthProviderResponse | undefined;
   maasURL: string;
+  canEdit: boolean;
 };
 
-const SingleSignOnFormFields = ({ provider, maasURL }: Props): ReactElement => {
+const SingleSignOnFormFields = ({
+  provider,
+  maasURL,
+  canEdit,
+}: Props): ReactElement => {
   const { resetForm } = useFormikContext<SingleSignOnFormValues>();
 
   useEffect(() => {
@@ -34,6 +39,7 @@ const SingleSignOnFormFields = ({ provider, maasURL }: Props): ReactElement => {
   return (
     <>
       <FormikField
+        disabled={!canEdit}
         help="A unique, human-readable name identifying the OIDC provider."
         label="Name"
         name="name"
@@ -41,6 +47,7 @@ const SingleSignOnFormFields = ({ provider, maasURL }: Props): ReactElement => {
         type="text"
       />
       <FormikField
+        disabled={!canEdit}
         help="The client ID issued by the OIDC provider to identify your application."
         label="Client ID"
         name="client_id"
@@ -48,6 +55,7 @@ const SingleSignOnFormFields = ({ provider, maasURL }: Props): ReactElement => {
         type="text"
       />
       <FormikField
+        disabled={!canEdit}
         help="The client secret issued by the OIDC provider, used to authenticate your application securely."
         label="Client secret"
         name="client_secret"
@@ -55,6 +63,7 @@ const SingleSignOnFormFields = ({ provider, maasURL }: Props): ReactElement => {
         type="text"
       />
       <FormikField
+        disabled={!canEdit}
         help="The base URL of the OIDC provider's authorization server."
         label="Issuer URL"
         name="issuer_url"
@@ -62,6 +71,7 @@ const SingleSignOnFormFields = ({ provider, maasURL }: Props): ReactElement => {
         type="text"
       />
       <FormikField
+        disabled
         help="The redirect URI in the application where the OIDC provider will redirect users after successful authentication. Unless you have specific requirements, this should be set to your MAAS URL followed by /r/login/oidc/callback."
         label="Redirect URI"
         name="redirect_uri"
@@ -69,6 +79,7 @@ const SingleSignOnFormFields = ({ provider, maasURL }: Props): ReactElement => {
         type="text"
       />
       <FormikField
+        disabled={!canEdit}
         help="A space-separated list of OIDC scopes defining the information requested from the provider."
         label="Scopes"
         name="scopes"
@@ -77,6 +88,7 @@ const SingleSignOnFormFields = ({ provider, maasURL }: Props): ReactElement => {
       />
       <FormikField
         component={Select}
+        disabled={!canEdit}
         help="The type of access tokens issued by the OIDC provider (e.g., JWT or opaque). Note that encrypted JWT tokens should be treated as opaque."
         label="Token type"
         name="token_type"

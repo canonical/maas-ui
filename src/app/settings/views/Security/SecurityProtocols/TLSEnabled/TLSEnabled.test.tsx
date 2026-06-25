@@ -1,15 +1,20 @@
 import TLSEnabled, { Labels } from "./TLSEnabled";
 
+import { Entitlement } from "@/app/settings/views/UserManagement/views/Groups/constants";
 import { configActions } from "@/app/store/config";
 import { ConfigNames } from "@/app/store/config/types";
 import * as factory from "@/testing/factories";
+import { authResolvers } from "@/testing/resolvers/auth";
 import {
   userEvent,
   fireEvent,
   screen,
+  setupMockServer,
   waitFor,
   renderWithProviders,
 } from "@/testing/utils";
+
+const mockServer = setupMockServer(authResolvers.getCurrentUser.handler());
 
 it("displays a spinner while loading config", () => {
   const state = factory.rootState({
@@ -78,6 +83,11 @@ it("disables the interval field if notification is not enabled", async () => {
   const slider = screen.getByRole("slider", { name: Labels.Interval });
   expect(slider).toBeDisabled();
 
+  await waitFor(() => {
+    expect(
+      screen.getByRole("checkbox", { name: Labels.NotificationCheckbox })
+    ).not.toBeDisabled();
+  });
   await userEvent.click(
     screen.getByRole("checkbox", { name: Labels.NotificationCheckbox })
   );
@@ -114,6 +124,9 @@ it("shows an error if TLS notification is enabled but interval is invalid", asyn
     name: Labels.Interval,
   });
 
+  await waitFor(() => {
+    expect(intervalInput).not.toBeDisabled();
+  });
   await userEvent.clear(intervalInput);
   await userEvent.tab();
 
@@ -148,6 +161,11 @@ it("dispatches an action to update TLS notification config with notification ena
   });
   const { store } = renderWithProviders(<TLSEnabled />, { state });
 
+  await waitFor(() => {
+    expect(
+      screen.getByRole("checkbox", { name: Labels.NotificationCheckbox })
+    ).not.toBeDisabled();
+  });
   await userEvent.click(
     screen.getByRole("checkbox", { name: Labels.NotificationCheckbox })
   );
@@ -199,6 +217,9 @@ it("dispatches an action to update TLS notification config with notification dis
   });
 
   // Change the notification interval, then disable the notification.
+  await waitFor(() => {
+    expect(intervalInput).not.toBeDisabled();
+  });
   await userEvent.clear(intervalInput);
   await userEvent.type(intervalInput, "90");
   await userEvent.click(notificationCheckbox);
@@ -213,5 +234,33 @@ it("dispatches an action to update TLS notification config with notification dis
     expect(
       actualActions.find((action) => action.type === expectedAction.type)
     ).toStrictEqual(expectedAction);
+  });
+});
+
+it("disables fields without edit permissions", async () => {
+  mockServer.use(
+    authResolvers.getCurrentUser.handler(
+      factory.userInfo({
+        entitlements: [
+          factory.entitlement({
+            entitlement: Entitlement.CAN_VIEW_CONFIGURATIONS,
+          }),
+        ],
+      })
+    )
+  );
+  const state = factory.rootState({
+    general: factory.generalState({
+      tlsCertificate: factory.tlsCertificateState({
+        data: factory.tlsCertificate(),
+        loaded: true,
+      }),
+    }),
+  });
+  renderWithProviders(<TLSEnabled />, { state });
+  await waitFor(() => {
+    expect(
+      screen.getByRole("checkbox", { name: Labels.NotificationCheckbox })
+    ).toBeDisabled();
   });
 });

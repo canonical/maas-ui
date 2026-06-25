@@ -1,10 +1,20 @@
 import CommissioningForm from "./CommissioningForm";
 
 import { Labels as FormikButtonLabels } from "@/app/base/components/FormikFormButtons/FormikFormButtons";
+import { Entitlement } from "@/app/settings/views/UserManagement/views/Groups/constants";
 import { ConfigNames } from "@/app/store/config/types";
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
-import { userEvent, screen, renderWithProviders } from "@/testing/utils";
+import { authResolvers } from "@/testing/resolvers/auth";
+import {
+  userEvent,
+  screen,
+  renderWithProviders,
+  setupMockServer,
+  waitFor,
+} from "@/testing/utils";
+
+const mockServer = setupMockServer(authResolvers.getCurrentUser.handler());
 
 describe("CommissioningForm", () => {
   let initialState: RootState;
@@ -57,6 +67,14 @@ describe("CommissioningForm", () => {
 
     const { store } = renderWithProviders(<CommissioningForm />, { state });
 
+    await waitFor(() => {
+      expect(
+        screen.getByRole("combobox", {
+          name: "Default Ubuntu release used for commissioning",
+        })
+      ).toBeEnabled();
+    });
+
     await userEvent.selectOptions(
       screen.getByRole("combobox", {
         name: "Default Ubuntu release used for commissioning",
@@ -65,7 +83,7 @@ describe("CommissioningForm", () => {
     );
 
     await userEvent.click(
-      screen.getByRole("button", { name: FormikButtonLabels.Submit })
+      await screen.findByRole("button", { name: FormikButtonLabels.Submit })
     );
 
     const updateConfigAction = store
@@ -80,6 +98,30 @@ describe("CommissioningForm", () => {
         model: "config",
         method: "bulk_update",
       },
+    });
+  });
+
+  it("disables fields without edit permissions", async () => {
+    mockServer.use(
+      authResolvers.getCurrentUser.handler(
+        factory.userInfo({
+          entitlements: [
+            factory.entitlement({
+              entitlement: Entitlement.CAN_VIEW_CONFIGURATIONS,
+            }),
+          ],
+        })
+      )
+    );
+
+    renderWithProviders(<CommissioningForm />, { state: initialState });
+
+    await waitFor(() => {
+      expect(
+        screen.getByRole("combobox", {
+          name: "Default Ubuntu release used for commissioning",
+        })
+      ).toBeDisabled();
     });
   });
 });

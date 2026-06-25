@@ -4,6 +4,8 @@ import { useState } from "react";
 import { Spinner } from "@canonical/react-components";
 import { Navigate, Route, Routes } from "react-router";
 
+import { Entitlement } from "../../constants";
+
 import { useGetGroup } from "@/app/api/query/groups";
 import type {
   EntitlementResponse,
@@ -11,7 +13,11 @@ import type {
 } from "@/app/apiclient";
 import ModelNotFound from "@/app/base/components/ModelNotFound";
 import PageContent from "@/app/base/components/PageContent/PageContent";
-import { useGetURLId, useWindowTitle } from "@/app/base/hooks";
+import {
+  useGetURLId,
+  useWindowTitle,
+  useHasEntitlements,
+} from "@/app/base/hooks";
 import urls from "@/app/settings/urls";
 import GroupDetailsHeader from "@/app/settings/views/UserManagement/views/Groups/components/GroupDetailsHeader";
 import GroupEntitlementsTable from "@/app/settings/views/UserManagement/views/Groups/components/GroupEntitlementsTable/GroupEntitlementsTable";
@@ -23,6 +29,7 @@ const GroupDetails = (): ReactElement => {
   const { data: group, isPending } = useGetGroup({
     path: { group_id: id! },
   });
+  const canEdit = useHasEntitlements([Entitlement.CAN_EDIT_IDENTITIES]);
 
   const isValidID = isId(id);
 
@@ -51,6 +58,7 @@ const GroupDetails = (): ReactElement => {
     <PageContent
       header={
         <GroupDetailsHeader
+          canEdit={canEdit}
           entitlementSelection={entitlementSelection}
           group={group}
           loading={isPending}

@@ -2,10 +2,13 @@ import { Icon, Spinner, Textarea } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 
+import { Entitlement } from "../../../UserManagement/views/Groups/constants";
+
 import TLSEnabledFields from "./TLSEnabledFields";
 
 import CertificateMetadata from "@/app/base/components/CertificateMetadata";
 import FormikForm from "@/app/base/components/FormikForm";
+import { useHasEntitlements } from "@/app/base/hooks";
 import { configActions } from "@/app/store/config";
 import configSelectors from "@/app/store/config/selectors";
 import { TLSExpiryNotificationInterval } from "@/app/store/config/types";
@@ -51,6 +54,7 @@ const TLSEnabled = (): React.ReactElement | null => {
   const tlsCertificate = useSelector(tlsCertificateSelectors.get);
   const saved = useSelector(configSelectors.saved);
   const saving = useSelector(configSelectors.saving);
+  const canEdit = useHasEntitlements([Entitlement.CAN_EDIT_CONFIGURATIONS]);
 
   if (configLoading || tlsCertificateLoading) {
     return <Spinner aria-label={Labels.Loading} />;
@@ -83,6 +87,7 @@ const TLSEnabled = (): React.ReactElement | null => {
       <FormikForm<TLSEnabledValues>
         allowUnchanged
         cleanup={configActions.cleanup}
+        editable={canEdit}
         initialValues={{
           notificationEnabled: notificationEnabled || false,
           notificationInterval: notificationInterval
@@ -113,7 +118,7 @@ const TLSEnabled = (): React.ReactElement | null => {
         saving={saving}
         validationSchema={TLSEnabledSchema}
       >
-        <TLSEnabledFields />
+        <TLSEnabledFields canEdit={canEdit} />
       </FormikForm>
     </>
   );

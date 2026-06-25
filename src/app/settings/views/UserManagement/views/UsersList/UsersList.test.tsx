@@ -1,5 +1,6 @@
 import { waitFor } from "@testing-library/react";
 
+import { Entitlement } from "@/app/settings/views/UserManagement/views/Groups/constants";
 import UsersList from "@/app/settings/views/UserManagement/views/UsersList";
 import * as factory from "@/testing/factories";
 import { authResolvers } from "@/testing/resolvers/auth";
@@ -11,9 +12,10 @@ import {
   userEvent,
 } from "@/testing/utils";
 
-setupMockServer(
+const mockServer = setupMockServer(
   usersResolvers.listUsers.handler(),
   usersResolvers.getUser.handler(),
+  usersResolvers.listUsersStatistics.handler(),
   authResolvers.getCurrentUser.handler(),
   authResolvers.getMeStatistics.handler()
 );
@@ -24,7 +26,24 @@ describe("UsersList", () => {
   });
 
   it("renders AddUser", async () => {
+    mockServer.use(
+      authResolvers.getCurrentUser.handler(
+        factory.userInfo({
+          id: 1,
+          entitlements: [
+            factory.entitlement({
+              entitlement: Entitlement.CAN_EDIT_IDENTITIES,
+            }),
+          ],
+        })
+      )
+    );
     renderWithProviders(<UsersList />, { state });
+    await waitFor(() => {
+      expect(
+        screen.getByRole("button", { name: "Add user" })
+      ).not.toBeAriaDisabled();
+    });
     await userEvent.click(screen.getByRole("button", { name: "Add user" }));
     expect(
       screen.getByRole("complementary", { name: "Add user" })
@@ -32,9 +51,23 @@ describe("UsersList", () => {
   });
 
   it("renders EditUser when a valid userId is provided", async () => {
+    mockServer.use(
+      authResolvers.getCurrentUser.handler(
+        factory.userInfo({
+          id: 99,
+          entitlements: [
+            factory.entitlement({
+              entitlement: Entitlement.CAN_EDIT_IDENTITIES,
+            }),
+          ],
+        })
+      )
+    );
     renderWithProviders(<UsersList />, { state });
     await waitFor(() => {
-      expect(screen.getAllByRole("button", { name: "Edit" }));
+      expect(
+        screen.getAllByRole("button", { name: "Edit" })[0]
+      ).not.toBeAriaDisabled();
     });
     await userEvent.click(screen.getAllByRole("button", { name: "Edit" })[0]);
     expect(
@@ -43,9 +76,23 @@ describe("UsersList", () => {
   });
 
   it("renders DeleteUser when a valid userId is provided", async () => {
+    mockServer.use(
+      authResolvers.getCurrentUser.handler(
+        factory.userInfo({
+          id: 99,
+          entitlements: [
+            factory.entitlement({
+              entitlement: Entitlement.CAN_EDIT_IDENTITIES,
+            }),
+          ],
+        })
+      )
+    );
     renderWithProviders(<UsersList />, { state });
     await waitFor(() => {
-      expect(screen.getAllByRole("button", { name: "Delete" }));
+      expect(
+        screen.getAllByRole("button", { name: "Delete" })[0]
+      ).not.toBeAriaDisabled();
     });
     await userEvent.click(screen.getAllByRole("button", { name: "Delete" })[0]);
     expect(
@@ -54,7 +101,24 @@ describe("UsersList", () => {
   });
 
   it("closes side panel form when canceled", async () => {
+    mockServer.use(
+      authResolvers.getCurrentUser.handler(
+        factory.userInfo({
+          id: 1,
+          entitlements: [
+            factory.entitlement({
+              entitlement: Entitlement.CAN_EDIT_IDENTITIES,
+            }),
+          ],
+        })
+      )
+    );
     renderWithProviders(<UsersList />, { state });
+    await waitFor(() => {
+      expect(
+        screen.getByRole("button", { name: "Add user" })
+      ).not.toBeAriaDisabled();
+    });
     await userEvent.click(screen.getByRole("button", { name: "Add user" }));
     expect(
       screen.getByRole("complementary", { name: "Add user" })

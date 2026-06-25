@@ -48,7 +48,7 @@ describe("LicenseKeyTable", () => {
     it("displays a loading component if license keys are loading", async () => {
       const state = { ...initialState };
       state.licensekeys.loading = true;
-      renderWithProviders(<LicenseKeyTable />, { state });
+      renderWithProviders(<LicenseKeyTable canEdit={true} />, { state });
 
       await waitFor(() => {
         expect(screen.getByText("Loading...")).toBeInTheDocument();
@@ -58,7 +58,7 @@ describe("LicenseKeyTable", () => {
     it("displays a message when rendering an empty list", async () => {
       const state = { ...initialState };
       state.licensekeys.items = [];
-      renderWithProviders(<LicenseKeyTable />, { state });
+      renderWithProviders(<LicenseKeyTable canEdit={true} />, { state });
 
       await waitFor(() => {
         expect(
@@ -70,7 +70,7 @@ describe("LicenseKeyTable", () => {
     // TODO: implement after v3
     it.skip("displays a message when an error is encountered", async () => {
       const state = { ...initialState };
-      renderWithProviders(<LicenseKeyTable />, { state });
+      renderWithProviders(<LicenseKeyTable canEdit={true} />, { state });
       await waitFor(() => {
         expect(
           screen.getByText(/Error while fetching package repositories/i)
@@ -80,7 +80,7 @@ describe("LicenseKeyTable", () => {
 
     it("displays the columns corretly", async () => {
       const state = { ...initialState };
-      renderWithProviders(<LicenseKeyTable />, { state });
+      renderWithProviders(<LicenseKeyTable canEdit={true} />, { state });
 
       ["Operating System", "Distro Series", "Actions"].forEach((column) => {
         expect(
@@ -90,20 +90,10 @@ describe("LicenseKeyTable", () => {
     });
   });
 
-  describe("permissions", () => {
-    it.todo(
-      "enables the action buttons if the user has the correct permissions"
-    );
-
-    it.todo(
-      "disables the action buttons if the user does not have the correct permissions"
-    );
-  });
-
   describe("actions", () => {
     it("opens the 'Add license key' side panel when the 'Add license key' button is clicked", async () => {
       const state = { ...initialState };
-      renderWithProviders(<LicenseKeyTable />, { state });
+      renderWithProviders(<LicenseKeyTable canEdit={true} />, { state });
       await userEvent.click(
         screen.getByRole("button", { name: "Add license key" })
       );
@@ -115,7 +105,7 @@ describe("LicenseKeyTable", () => {
 
     it("opens the 'Edit license key' side panel when the 'Edit' button is clicked", async () => {
       const state = { ...initialState };
-      renderWithProviders(<LicenseKeyTable />, { state });
+      renderWithProviders(<LicenseKeyTable canEdit={true} />, { state });
       await waitFor(() => {
         expect(screen.getAllByRole("button", { name: "Edit" }).length).toBe(1);
       });
@@ -133,7 +123,7 @@ describe("LicenseKeyTable", () => {
 
     it("opens the 'Delete license key' side panel when the 'Delete' button is clicked", async () => {
       const state = { ...initialState };
-      renderWithProviders(<LicenseKeyTable />, { state });
+      renderWithProviders(<LicenseKeyTable canEdit={true} />, { state });
       await waitFor(() => {
         expect(screen.getAllByRole("button", { name: "Delete" }).length).toBe(
           1
@@ -149,6 +139,27 @@ describe("LicenseKeyTable", () => {
         props: {
           licenseKey: state.licensekeys.items[0],
         },
+      });
+    });
+  });
+
+  describe("permissions", () => {
+    it.todo(
+      "enables the action buttons if the user has the correct permissions"
+    );
+
+    it.todo(
+      "disables the action buttons if the user does not have the correct permissions"
+    );
+
+    it("disables the Add button without edit permissions", async () => {
+      renderWithProviders(<LicenseKeyTable canEdit={false} />, {
+        state: initialState,
+      });
+      await waitFor(() => {
+        expect(
+          screen.getByRole("button", { name: "Add license key" })
+        ).toBeAriaDisabled();
       });
     });
   });

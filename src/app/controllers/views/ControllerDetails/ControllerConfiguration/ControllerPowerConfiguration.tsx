@@ -8,12 +8,16 @@ import { useDispatch, useSelector } from "react-redux";
 import type { SchemaOf } from "yup";
 import * as Yup from "yup";
 
-import { useGetIsSuperUser } from "@/app/api/query/auth";
 import EditableSection from "@/app/base/components/EditableSection";
 import FormikForm from "@/app/base/components/FormikForm";
 import PowerTypeFields from "@/app/base/components/PowerTypeFields";
 import NodePowerParameters from "@/app/base/components/node/NodePowerParameters";
-import { useCanEdit, useWindowTitle } from "@/app/base/hooks";
+import {
+  useCanEdit,
+  useWindowTitle,
+  useHasEntitlements,
+} from "@/app/base/hooks";
+import { Entitlement } from "@/app/settings/views/UserManagement/views/Groups/constants";
 import { controllerActions } from "@/app/store/controller";
 import controllerSelectors from "@/app/store/controller/selectors";
 import type {
@@ -68,7 +72,6 @@ const ControllerPowerConfiguration = ({
   const initialPowerParameters = useInitialPowerParameters(
     (isDetails && controller.power_parameters) || {}
   );
-  const isSuperUser = useGetIsSuperUser();
 
   const powerParametersSchema =
     generatePowerParametersSchema(selectedPowerType);
@@ -89,6 +92,8 @@ const ControllerPowerConfiguration = ({
     }
   }, [controller?.power_type, powerTypes]);
 
+  const canEditUser = useHasEntitlements([Entitlement.CAN_EDIT_CONTROLLERS]);
+
   if (!isDetails || powerTypesLoading) {
     return <Spinner text="Loading..." />;
   }
@@ -100,7 +105,7 @@ const ControllerPowerConfiguration = ({
 
   return (
     <EditableSection
-      canEdit={canEdit}
+      canEdit={canEdit && canEditUser}
       hasSidebarTitle
       renderContent={(editing, setEditing) =>
         editing ? (
@@ -157,7 +162,7 @@ const ControllerPowerConfiguration = ({
               </NotificationBanner>
             ) : null}
             <PowerTypeFields
-              disableSelect={!isSuperUser.data}
+              disableSelect={!canEditUser}
               powerParametersValueName="powerParameters"
               powerTypeValueName="powerType"
             />

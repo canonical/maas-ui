@@ -1,6 +1,9 @@
 import Sources from "@/app/settings/views/Images/Sources/Sources";
 import AddSource from "@/app/settings/views/Images/Sources/components/AddSource";
+import { Entitlement } from "@/app/settings/views/UserManagement/views/Groups/constants";
 import { ConfigNames } from "@/app/store/config/types";
+import * as factory from "@/testing/factories";
+import { authResolvers } from "@/testing/resolvers/auth";
 import { configurationsResolvers } from "@/testing/resolvers/configurations";
 import { imageSourceResolvers } from "@/testing/resolvers/imageSources";
 import { imageResolvers } from "@/testing/resolvers/images";
@@ -10,9 +13,10 @@ import {
   screen,
   setupMockServer,
   userEvent,
+  waitFor,
 } from "@/testing/utils";
 
-setupMockServer(
+const mockServer = setupMockServer(
   imageSourceResolvers.listImageSources.handler(),
   imageSourceResolvers.getImageSource.handler(),
   imageSourceResolvers.fetchImageSource.handler(),
@@ -25,7 +29,8 @@ setupMockServer(
     name: ConfigNames.BOOT_IMAGES_AUTO_IMPORT,
     value: true,
   }),
-  configurationsResolvers.setConfiguration.handler()
+  configurationsResolvers.setConfiguration.handler(),
+  authResolvers.getCurrentUser.handler()
 );
 const { mockOpen } = await mockSidePanel();
 
@@ -40,6 +45,28 @@ describe("Sources", () => {
     expect(mockOpen).toHaveBeenCalledWith({
       component: AddSource,
       title: "Add custom source",
+    });
+  });
+
+  it("disables the 'Add custom source' button without edit permissions", async () => {
+    mockServer.use(
+      authResolvers.getCurrentUser.handler(
+        factory.userInfo({
+          entitlements: [
+            factory.entitlement({
+              entitlement: Entitlement.CAN_VIEW_BOOT_ENTITIES,
+            }),
+          ],
+        })
+      )
+    );
+
+    renderWithProviders(<Sources />);
+
+    await waitFor(() => {
+      expect(
+        screen.getByRole("button", { name: "Add custom source" })
+      ).toBeAriaDisabled();
     });
   });
 });

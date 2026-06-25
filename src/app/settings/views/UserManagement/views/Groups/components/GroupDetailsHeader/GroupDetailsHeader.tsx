@@ -26,9 +26,11 @@ type GroupDetailsHeaderProps = {
   setEntitlementSelection: Dispatch<SetStateAction<EntitlementResponse[]>>;
   memberSelection: UserGroupMemberResponse[];
   setMemberSelection: Dispatch<SetStateAction<UserGroupMemberResponse[]>>;
+  canEdit: boolean;
 };
 
 const GroupDetailsHeader = ({
+  canEdit,
   group,
   loading,
   entitlementSelection,
@@ -53,7 +55,7 @@ const GroupDetailsHeader = ({
           ? [
               <Button
                 appearance="negative"
-                disabled={entitlementSelection.length <= 0}
+                disabled={entitlementSelection.length <= 0 || !canEdit}
                 onClick={() => {
                   openSidePanel({
                     component: RemoveGroupEntitlement,
@@ -70,6 +72,7 @@ const GroupDetailsHeader = ({
                 Remove entitlements
               </Button>,
               <Button
+                disabled={!canEdit}
                 onClick={() => {
                   openSidePanel({
                     component: AddEntitlement,
@@ -87,7 +90,7 @@ const GroupDetailsHeader = ({
           : [
               <Button
                 appearance="negative"
-                disabled={memberSelection.length <= 0}
+                disabled={memberSelection.length <= 0 || !canEdit}
                 onClick={() => {
                   openSidePanel({
                     component: RemoveGroupMember,
@@ -104,6 +107,7 @@ const GroupDetailsHeader = ({
                 Remove members
               </Button>,
               <Button
+                disabled={!canEdit}
                 onClick={() => {
                   openSidePanel({
                     component: AddMembers,
@@ -150,6 +154,7 @@ const GroupDetailsHeader = ({
           ]}
           position="right"
           toggleAppearance="positive"
+          toggleDisabled={!canEdit}
           toggleLabel="Take action"
         />,
       ]}

@@ -6,12 +6,14 @@ import { usePrevious } from "@canonical/react-components/dist/hooks";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 
+import { Entitlement } from "../../UserManagement/views/Groups/constants";
+
 import ThemedRadioButton from "./ThemedRadioButton";
 import { ColorValues } from "./ThemedRadioButton/ThemedRadioButton";
 
 import FormikField from "@/app/base/components/FormikField";
 import FormikForm from "@/app/base/components/FormikForm";
-import { useSendAnalytics } from "@/app/base/hooks";
+import { useSendAnalytics, useHasEntitlements } from "@/app/base/hooks";
 import { useThemeContext } from "@/app/base/theme-context";
 import type { UsabillaLive } from "@/app/base/types";
 import { configActions } from "@/app/store/config";
@@ -55,6 +57,7 @@ const GeneralForm = (): React.ReactElement => {
   const previousReleaseNotifications = useRef(releaseNotifications);
   const previousEnableAnalytics = usePrevious(analyticsEnabled);
   const { setTheme } = useThemeContext();
+  const canEdit = useHasEntitlements([Entitlement.CAN_EDIT_CONFIGURATIONS]);
 
   useEffect(() => {
     // revert to persisted theme value on unmount
@@ -79,6 +82,7 @@ const GeneralForm = (): React.ReactElement => {
     <FormikForm<GeneralFormValues>
       aria-label="Configuration - General"
       cleanup={configActions.cleanup}
+      editable={canEdit}
       errors={errors}
       initialValues={{
         maas_name: maasName || "",
@@ -124,6 +128,7 @@ const GeneralForm = (): React.ReactElement => {
       validationSchema={GeneralSchema}
     >
       <FormikField
+        disabled={!canEdit}
         help={
           <>
             Use MAAS name and unicode emoji(s) to describe your MAAS instance.{" "}
@@ -169,6 +174,7 @@ const GeneralForm = (): React.ReactElement => {
       </Row>
       <h5>Data analytics</h5>
       <FormikField
+        disabled={!canEdit}
         help={
           <>
             The analytics used in MAAS are Google Analytics, Usabilla and Sentry
@@ -185,6 +191,7 @@ const GeneralForm = (): React.ReactElement => {
       />
       <h5>Notifications</h5>
       <FormikField
+        disabled={!canEdit}
         help="This applies to all users of MAAS. "
         label="Enable new release notifications"
         name="release_notifications"

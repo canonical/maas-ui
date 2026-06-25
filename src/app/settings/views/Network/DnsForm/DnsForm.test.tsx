@@ -1,8 +1,10 @@
 import DnsForm from "./DnsForm";
 
+import { Entitlement } from "@/app/settings/views/UserManagement/views/Groups/constants";
 import { ConfigNames } from "@/app/store/config/types";
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
+import { authResolvers } from "@/testing/resolvers/auth";
 import { configurationsResolvers } from "@/testing/resolvers/configurations";
 import {
   screen,
@@ -28,6 +30,7 @@ const configItems = [
   { name: ConfigNames.UPSTREAM_DNS, value: "" },
 ];
 const mockServer = setupMockServer(
+  authResolvers.getCurrentUser.handler(),
   configurationsResolvers.listConfigurations.handler({ items: configItems }),
   configurationsResolvers.setBulkConfigurations.handler()
 );
@@ -80,6 +83,9 @@ describe("DnsForm", () => {
     const upstream_dns_input = screen.getByRole("textbox", {
       name: "Upstream DNS used to resolve domains not managed by this MAAS (space-separated IP addresses)",
     });
+    await waitFor(() => {
+      expect(upstream_dns_input).not.toBeDisabled();
+    });
 
     await userEvent.type(upstream_dns_input, "0.0.0.0");
     await userEvent.click(screen.getByRole("button", { name: "Save" }));
@@ -126,6 +132,9 @@ describe("DnsForm", () => {
     const upstream_dns_input = screen.getByRole("textbox", {
       name: "Upstream DNS used to resolve domains not managed by this MAAS (space-separated IP addresses)",
     });
+    await waitFor(() => {
+      expect(upstream_dns_input).not.toBeDisabled();
+    });
 
     await userEvent.type(upstream_dns_input, "0.0.0.0");
     await userEvent.click(screen.getByRole("button", { name: "Save" }));
@@ -135,5 +144,32 @@ describe("DnsForm", () => {
         screen.getByText("Failed to save configurations")
       ).toBeInTheDocument();
     });
+  });
+
+  it("disables fields without edit permissions", async () => {
+    mockServer.use(
+      authResolvers.getCurrentUser.handler(
+        factory.userInfo({
+          entitlements: [
+            factory.entitlement({
+              entitlement: Entitlement.CAN_VIEW_CONFIGURATIONS,
+            }),
+          ],
+        })
+      ),
+      configurationsResolvers.listConfigurations.handler({ items: configItems })
+    );
+    renderWithProviders(<DnsForm />, { state });
+    await waitForLoading();
+    await waitFor(() => {
+      expect(
+        screen.getByRole("textbox", {
+          name: "Upstream DNS used to resolve domains not managed by this MAAS (space-separated IP addresses)",
+        })
+      ).toBeDisabled();
+    });
+    expect(
+      screen.queryByRole("button", { name: "Save" })
+    ).not.toBeInTheDocument();
   });
 });

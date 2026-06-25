@@ -5,13 +5,14 @@ import { Spinner } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 
+import { Entitlement } from "../../UserManagement/views/Groups/constants";
 import ProxyFormFields from "../ProxyFormFields";
 
 import type { ProxyFormValues } from "./types";
 
 import FormikForm from "@/app/base/components/FormikForm";
 import PageContent from "@/app/base/components/PageContent";
-import { useWindowTitle } from "@/app/base/hooks";
+import { useWindowTitle, useHasEntitlements } from "@/app/base/hooks";
 import { UrlSchema } from "@/app/base/validation";
 import { configActions } from "@/app/store/config";
 import configSelectors from "@/app/store/config/selectors";
@@ -37,6 +38,7 @@ const ProxyForm = (): React.ReactElement => {
 
   const httpProxy = useSelector(configSelectors.httpProxy);
   const proxyType = useSelector(configSelectors.proxyType);
+  const canEdit = useHasEntitlements([Entitlement.CAN_EDIT_CONFIGURATIONS]);
 
   useWindowTitle("Proxy");
 
@@ -57,6 +59,7 @@ const ProxyForm = (): React.ReactElement => {
           {loaded && (
             <FormikForm<ProxyFormValues>
               cleanup={configActions.cleanup}
+              editable={canEdit}
               errors={errors}
               initialValues={{
                 httpProxy: httpProxy || "",
@@ -109,7 +112,7 @@ const ProxyForm = (): React.ReactElement => {
               saving={saving}
               validationSchema={ProxySchema}
             >
-              <ProxyFormFields />
+              <ProxyFormFields canEdit={canEdit} />
             </FormikForm>
           )}
         </ContentSection.Content>

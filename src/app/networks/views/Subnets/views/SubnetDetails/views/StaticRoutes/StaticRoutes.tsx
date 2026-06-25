@@ -7,10 +7,10 @@ import { useSelector } from "react-redux";
 import AddStaticRouteForm from "./AddStaticRouteForm";
 import useStaticRoutesColumns from "./useStaticRoutesColumns/useStaticRoutesColumns";
 
-import { useGetIsSuperUser } from "@/app/api/query/auth";
 import TitledSection from "@/app/base/components/TitledSection";
-import { useFetchActions } from "@/app/base/hooks";
+import { useFetchActions, useHasEntitlements } from "@/app/base/hooks";
 import { useSidePanel } from "@/app/base/side-panel-context";
+import { Entitlement } from "@/app/settings/views/UserManagement/views/Groups/constants";
 import { staticRouteActions } from "@/app/store/staticroute";
 import staticRouteSelectors from "@/app/store/staticroute/selectors";
 import { subnetActions } from "@/app/store/subnet";
@@ -35,7 +35,7 @@ const StaticRoutes = ({ subnetId }: StaticRoutesProps): ReactElement | null => {
     (staticRoute) => staticRoute.source === subnetId
   );
   const subnetsLoading = useSelector(subnetSelectors.loading);
-  const isSuperUser = useGetIsSuperUser();
+  const canEdit = useHasEntitlements([Entitlement.CAN_EDIT_GLOBAL_ENTITIES]);
 
   useFetchActions([staticRouteActions.fetch, subnetActions.fetch]);
 
@@ -44,7 +44,7 @@ const StaticRoutes = ({ subnetId }: StaticRoutesProps): ReactElement | null => {
   return (
     <TitledSection
       buttons={
-        isSuperUser.data ? (
+        canEdit ? (
           <Button
             disabled={isOpen}
             onClick={() => {

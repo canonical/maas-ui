@@ -32,7 +32,7 @@ describe("SingleSignOnForm", () => {
 
   it("doesn't pre-fill the data if no provider is present", () => {
     renderWithProviders(
-      <SingleSignOnForm maasURL={maasURL} provider={undefined} />
+      <SingleSignOnForm canEdit maasURL={maasURL} provider={undefined} />
     );
 
     expect(screen.getByRole("textbox", { name: /Name/i })).toHaveValue("");
@@ -55,7 +55,7 @@ describe("SingleSignOnForm", () => {
 
   it("pre-fills the data if a provider is present", () => {
     renderWithProviders(
-      <SingleSignOnForm maasURL={maasURL} provider={mockAuthProvider} />
+      <SingleSignOnForm canEdit maasURL={maasURL} provider={mockAuthProvider} />
     );
 
     expect(screen.getByRole("textbox", { name: /Name/i })).toHaveValue(
@@ -81,9 +81,34 @@ describe("SingleSignOnForm", () => {
     );
   });
 
+  it("disables the editable fields when the user cannot edit", () => {
+    renderWithProviders(
+      <SingleSignOnForm
+        canEdit={false}
+        maasURL={maasURL}
+        provider={mockAuthProvider}
+      />
+    );
+
+    expect(screen.getByRole("textbox", { name: /Name/i })).toBeDisabled();
+    expect(screen.getByRole("textbox", { name: /Client ID/i })).toBeDisabled();
+    expect(
+      screen.getByRole("textbox", { name: /Client secret/i })
+    ).toBeDisabled();
+    expect(screen.getByRole("textbox", { name: /Issuer URL/i })).toBeDisabled();
+    expect(screen.getByRole("textbox", { name: /Scopes/i })).toBeDisabled();
+    expect(
+      screen.getByRole("combobox", { name: /Token type/i })
+    ).toBeDisabled();
+    // The redirect URI is always disabled regardless of permissions.
+    expect(
+      screen.getByRole("textbox", { name: /Redirect URI/i })
+    ).toBeDisabled();
+  });
+
   it("calls the endpoint to create a provider if one is not given as a prop", async () => {
     renderWithProviders(
-      <SingleSignOnForm maasURL={maasURL} provider={undefined} />
+      <SingleSignOnForm canEdit maasURL={maasURL} provider={undefined} />
     );
 
     await userEvent.type(
@@ -127,7 +152,7 @@ describe("SingleSignOnForm", () => {
     mockAuthProvider = oAuthProviderFactory.build({ name: "red hat" });
 
     renderWithProviders(
-      <SingleSignOnForm maasURL={maasURL} provider={mockAuthProvider} />
+      <SingleSignOnForm canEdit maasURL={maasURL} provider={mockAuthProvider} />
     );
 
     await userEvent.clear(screen.getByRole("textbox", { name: /Name/i }));
@@ -155,7 +180,7 @@ describe("SingleSignOnForm", () => {
     );
 
     renderWithProviders(
-      <SingleSignOnForm maasURL={maasURL} provider={undefined} />
+      <SingleSignOnForm canEdit maasURL={maasURL} provider={undefined} />
     );
 
     await userEvent.type(
@@ -208,7 +233,7 @@ describe("SingleSignOnForm", () => {
     mockAuthProvider = oAuthProviderFactory.build({ name: "red hat" });
 
     renderWithProviders(
-      <SingleSignOnForm maasURL={maasURL} provider={mockAuthProvider} />
+      <SingleSignOnForm canEdit maasURL={maasURL} provider={mockAuthProvider} />
     );
 
     await userEvent.clear(screen.getByRole("textbox", { name: /Name/i }));
@@ -229,7 +254,7 @@ describe("SingleSignOnForm", () => {
 
   it("clears the form when 'Cancel' is clicked", async () => {
     renderWithProviders(
-      <SingleSignOnForm maasURL={maasURL} provider={undefined} />
+      <SingleSignOnForm canEdit maasURL={maasURL} provider={undefined} />
     );
 
     await userEvent.type(
@@ -250,14 +275,16 @@ describe("SingleSignOnForm", () => {
 
   it("resets the form to an empty state if 'provider' becomes undefined", async () => {
     const { rerender } = renderWithProviders(
-      <SingleSignOnForm maasURL={maasURL} provider={mockAuthProvider} />
+      <SingleSignOnForm canEdit maasURL={maasURL} provider={mockAuthProvider} />
     );
 
     expect(screen.getByRole("textbox", { name: "Name" })).toHaveValue(
       mockAuthProvider.name
     );
 
-    rerender(<SingleSignOnForm maasURL={maasURL} provider={undefined} />);
+    rerender(
+      <SingleSignOnForm canEdit maasURL={maasURL} provider={undefined} />
+    );
 
     await waitFor(() => {
       expect(screen.getByRole("textbox", { name: "Name" })).toHaveValue("");

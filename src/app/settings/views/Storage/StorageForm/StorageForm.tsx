@@ -5,6 +5,8 @@ import {
 } from "@canonical/react-components";
 import * as Yup from "yup";
 
+import { Entitlement } from "../../UserManagement/views/Groups/constants";
+
 import StorageFormFields from "./StorageFormFields";
 import type { StorageFormValues } from "./types";
 
@@ -15,7 +17,7 @@ import {
 import type { PublicConfigName, SetConfigurationsError } from "@/app/apiclient";
 import FormikForm from "@/app/base/components/FormikForm";
 import PageContent from "@/app/base/components/PageContent";
-import { useWindowTitle } from "@/app/base/hooks";
+import { useWindowTitle, useHasEntitlements } from "@/app/base/hooks";
 import { getConfigsFromResponse } from "@/app/settings/utils";
 import { configActions } from "@/app/store/config";
 import { ConfigNames } from "@/app/store/config/types";
@@ -47,6 +49,7 @@ const StorageForm = (): React.ReactElement => {
     enable_disk_erasing_on_release,
   } = getConfigsFromResponse(data?.items || [], names);
   const updateConfig = useBulkSetConfigurations();
+  const canEdit = useHasEntitlements([Entitlement.CAN_EDIT_CONFIGURATIONS]);
   useWindowTitle("Storage");
 
   return (
@@ -68,6 +71,7 @@ const StorageForm = (): React.ReactElement => {
           {isSuccess && (
             <FormikForm<StorageFormValues, SetConfigurationsError>
               cleanup={configActions.cleanup}
+              editable={canEdit}
               errors={updateConfig.error}
               initialValues={{
                 default_storage_layout:
@@ -116,7 +120,7 @@ const StorageForm = (): React.ReactElement => {
               saving={updateConfig.isPending}
               validationSchema={StorageSchema}
             >
-              <StorageFormFields />
+              <StorageFormFields canEdit={canEdit} />
             </FormikForm>
           )}
         </ContentSection.Content>

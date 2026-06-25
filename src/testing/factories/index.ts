@@ -195,7 +195,7 @@ export {
 } from "./subnet";
 export { tag } from "./tag";
 export { token } from "./token";
-export { user, userStatistics } from "./user";
+export { entitlement, user, userInfo, userStatistics } from "./user";
 export { vlan, vlanDetails } from "./vlan";
 export {
   virtualMachine,

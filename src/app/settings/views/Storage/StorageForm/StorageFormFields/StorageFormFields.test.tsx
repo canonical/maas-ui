@@ -1,8 +1,10 @@
 import StorageForm from "../StorageForm";
 
+import { Entitlement } from "@/app/settings/views/UserManagement/views/Groups/constants";
 import { ConfigNames } from "@/app/store/config/types";
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
+import { authResolvers } from "@/testing/resolvers/auth";
 import { configurationsResolvers } from "@/testing/resolvers/configurations";
 import {
   userEvent,
@@ -13,7 +15,10 @@ import {
   waitForLoading,
 } from "@/testing/utils";
 
-setupMockServer(configurationsResolvers.listConfigurations.handler());
+const mockServer = setupMockServer(
+  authResolvers.getCurrentUser.handler(),
+  configurationsResolvers.listConfigurations.handler()
+);
 describe("StorageFormFields", () => {
   let state: RootState;
 
@@ -42,6 +47,11 @@ describe("StorageFormFields", () => {
     renderWithProviders(<StorageForm />, { state });
     await waitForLoading();
 
+    await waitFor(() => {
+      expect(
+        screen.getByRole("combobox", { name: "Default storage layout" })
+      ).not.toBeDisabled();
+    });
     await userEvent.selectOptions(
       screen.getByRole("combobox", { name: "Default storage layout" }),
       "No storage (blank) layout"
@@ -57,12 +67,38 @@ describe("StorageFormFields", () => {
     renderWithProviders(<StorageForm />, { state });
     await waitForLoading();
 
+    await waitFor(() => {
+      expect(
+        screen.getByRole("combobox", { name: "Default storage layout" })
+      ).not.toBeDisabled();
+    });
     await userEvent.selectOptions(
       screen.getByRole("combobox", { name: "Default storage layout" }),
       "VMFS6 layout"
     );
     await waitFor(() => {
       expect(screen.getByTestId("vmfs6-layout-warning")).toBeInTheDocument();
+    });
+  });
+
+  it("disables fields without edit permissions", async () => {
+    mockServer.use(
+      authResolvers.getCurrentUser.handler(
+        factory.userInfo({
+          entitlements: [
+            factory.entitlement({
+              entitlement: Entitlement.CAN_VIEW_CONFIGURATIONS,
+            }),
+          ],
+        })
+      )
+    );
+    renderWithProviders(<StorageForm />, { state });
+    await waitForLoading();
+    await waitFor(() => {
+      expect(
+        screen.getByRole("combobox", { name: "Default storage layout" })
+      ).toBeDisabled();
     });
   });
 });

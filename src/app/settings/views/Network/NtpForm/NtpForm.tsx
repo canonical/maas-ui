@@ -7,6 +7,8 @@ import {
 } from "@canonical/react-components";
 import * as Yup from "yup";
 
+import { Entitlement } from "../../UserManagement/views/Groups/constants";
+
 import {
   useBulkSetConfigurations,
   useConfigurations,
@@ -14,7 +16,7 @@ import {
 import FormikField from "@/app/base/components/FormikField";
 import FormikForm from "@/app/base/components/FormikForm";
 import PageContent from "@/app/base/components/PageContent";
-import { useWindowTitle } from "@/app/base/hooks";
+import { useWindowTitle, useHasEntitlements } from "@/app/base/hooks";
 import { getConfigsFromResponse } from "@/app/settings/utils";
 import { configActions } from "@/app/store/config";
 import { ConfigNames } from "@/app/store/config/types";
@@ -30,6 +32,7 @@ const NtpForm = (): ReactElement => {
   });
   const eTag = data?.headers?.get("ETag");
   const updateConfig = useBulkSetConfigurations();
+  const canEdit = useHasEntitlements([Entitlement.CAN_EDIT_CONFIGURATIONS]);
 
   useWindowTitle("NTP");
 
@@ -63,6 +66,7 @@ const NtpForm = (): ReactElement => {
         <ContentSection.Content>
           <FormikForm
             cleanup={configActions.cleanup}
+            editable={canEdit}
             errors={updateConfig.error}
             initialValues={{
               ntp_external_only: ntpExternalOnly ?? false,
@@ -101,12 +105,14 @@ const NtpForm = (): ReactElement => {
             validationSchema={NtpSchema}
           >
             <FormikField
+              disabled={!canEdit}
               help="NTP servers, specified as IP addresses or hostnames delimited by commas and/or spaces, to be used as time references for MAAS itself, the machines MAAS deploys, and devices that make use of MAAS's DHCP services."
               label="Addresses of NTP servers"
               name="ntp_servers"
               type="text"
             />
             <FormikField
+              disabled={!canEdit}
               help="Configure all region controller hosts, rack controller hosts, and subsequently deployed machines to refer directly to the configured external NTP servers. Otherwise only region controller hosts will be configured to use those external NTP servers, rack contoller hosts will in turn refer to the regions' NTP servers, and deployed machines will refer to the racks' NTP servers."
               label="Use external NTP servers only"
               name="ntp_external_only"

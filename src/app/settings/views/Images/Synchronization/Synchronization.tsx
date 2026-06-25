@@ -9,6 +9,8 @@ import {
 } from "@canonical/react-components";
 import * as Yup from "yup";
 
+import { Entitlement } from "../../UserManagement/views/Groups/constants";
+
 import {
   useGetConfiguration,
   useSetConfiguration,
@@ -16,6 +18,7 @@ import {
 import FormikField from "@/app/base/components/FormikField";
 import FormikForm from "@/app/base/components/FormikForm";
 import PageContent from "@/app/base/components/PageContent";
+import { useHasEntitlements } from "@/app/base/hooks";
 import { ConfigNames } from "@/app/store/config/types";
 
 const SynchronizationSchema = Yup.object()
@@ -45,6 +48,7 @@ const Synchronization = (): ReactElement => {
   const syncInterval = (intervalConfig.data?.value as number) ?? 60;
 
   const updateConfig = useSetConfiguration();
+  const canEdit = useHasEntitlements([Entitlement.CAN_EDIT_BOOT_ENTITIES]);
 
   const initialValues: SynchronizationValues = {
     autoSync: autoImport,
@@ -90,6 +94,7 @@ const Synchronization = (): ReactElement => {
               {importConfig.isSuccess && importConfig.data && (
                 <FormikForm
                   aria-label="Synchronization"
+                  editable={canEdit}
                   enableReinitialize
                   errors={updateConfig.error}
                   initialValues={initialValues}
@@ -104,6 +109,7 @@ const Synchronization = (): ReactElement => {
                       <>
                         <FormikField
                           data-testid="auto-sync-switch"
+                          disabled={!canEdit}
                           help="Enables image updates by a given synchronization interval."
                           id="auto-sync-switch"
                           label="Automatically sync images"
@@ -112,6 +118,7 @@ const Synchronization = (): ReactElement => {
                         />
                         {values.autoSync ? (
                           <FormikField
+                            disabled={!canEdit}
                             help="Image synchronization interval, in minutes."
                             label="Sync interval"
                             name="syncInterval"

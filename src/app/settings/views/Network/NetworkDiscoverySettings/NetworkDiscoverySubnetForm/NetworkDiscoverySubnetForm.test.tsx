@@ -2,10 +2,20 @@ import NetworkDiscoverySubnetForm, {
   Labels as SubnetFormLabels,
 } from "./NetworkDiscoverySubnetForm";
 
+import { Entitlement } from "@/app/settings/views/UserManagement/views/Groups/constants";
 import { ConfigNames, NetworkDiscovery } from "@/app/store/config/types";
 import { subnetActions } from "@/app/store/subnet";
 import * as factory from "@/testing/factories";
-import { userEvent, screen, renderWithProviders } from "@/testing/utils";
+import { authResolvers } from "@/testing/resolvers/auth";
+import {
+  userEvent,
+  screen,
+  renderWithProviders,
+  setupMockServer,
+  waitFor,
+} from "@/testing/utils";
+
+const mockServer = setupMockServer(authResolvers.getCurrentUser.handler());
 
 describe("NetworkDiscoverySubnetForm", () => {
   it("displays a spinner if subnets have not loaded", () => {
@@ -44,7 +54,7 @@ describe("NetworkDiscoverySubnetForm", () => {
     ).toBeInTheDocument();
   });
 
-  it("disables the form if discovery is disabled", () => {
+  it("disables the form if discovery is disabled", async () => {
     const state = factory.rootState({
       config: factory.configState({
         items: [
@@ -61,7 +71,9 @@ describe("NetworkDiscoverySubnetForm", () => {
       state,
     });
 
-    expect(screen.getByRole("button", { name: "Save" })).toBeAriaDisabled();
+    await waitFor(() => {
+      expect(screen.getByRole("button", { name: "Save" })).toBeAriaDisabled();
+    });
     const checkboxes = screen.getAllByRole("checkbox");
     checkboxes.forEach((checkbox) => {
       expect(checkbox).toBeAriaDisabled();
@@ -107,6 +119,10 @@ describe("NetworkDiscoverySubnetForm", () => {
 
     const checkboxes = screen.getAllByRole("checkbox");
 
+    await waitFor(() => {
+      expect(checkboxes[1]).not.toBeAriaDisabled();
+    });
+
     await userEvent.click(checkboxes[1]);
     await userEvent.click(checkboxes[2]);
     await userEvent.click(screen.getByRole("button", { name: "Save" }));
@@ -119,5 +135,33 @@ describe("NetworkDiscoverySubnetForm", () => {
     expect(
       actualActions.filter((action) => action.type === "subnet/update")
     ).toStrictEqual(expectedActions);
+  });
+
+  it("disables the form without edit permissions", async () => {
+    mockServer.use(
+      authResolvers.getCurrentUser.handler(
+        factory.userInfo({
+          entitlements: [
+            factory.entitlement({
+              entitlement: Entitlement.CAN_VIEW_CONFIGURATIONS,
+            }),
+          ],
+        })
+      )
+    );
+    const state = factory.rootState({
+      fabric: factory.fabricState({ loaded: true }),
+      subnet: factory.subnetState({ items: [factory.subnet()], loaded: true }),
+    });
+    renderWithProviders(<NetworkDiscoverySubnetForm />, {
+      state,
+    });
+
+    await waitFor(() => {
+      expect(screen.getAllByRole("checkbox")[0]).toBeAriaDisabled();
+    });
+    expect(
+      screen.queryByRole("button", { name: "Save" })
+    ).not.toBeInTheDocument();
   });
 });

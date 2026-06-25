@@ -1,9 +1,19 @@
 import NetworkDiscoveryForm from "./NetworkDiscoveryForm";
 
+import { Entitlement } from "@/app/settings/views/UserManagement/views/Groups/constants";
 import { ConfigNames } from "@/app/store/config/types";
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
-import { userEvent, screen, renderWithProviders } from "@/testing/utils";
+import { authResolvers } from "@/testing/resolvers/auth";
+import {
+  userEvent,
+  screen,
+  renderWithProviders,
+  setupMockServer,
+  waitFor,
+} from "@/testing/utils";
+
+const mockServer = setupMockServer(authResolvers.getCurrentUser.handler());
 
 describe("NetworkDiscoveryForm", () => {
   let state: RootState;
@@ -52,9 +62,13 @@ describe("NetworkDiscoveryForm", () => {
     state.config.loading = true;
     renderWithProviders(<NetworkDiscoveryForm />, { state });
 
-    expect(
-      screen.queryByRole("combobox", { name: "Active subnet mapping interval" })
-    ).not.toBeDisabled();
+    await waitFor(() => {
+      expect(
+        screen.getByRole("combobox", {
+          name: "Active subnet mapping interval",
+        })
+      ).not.toBeDisabled();
+    });
 
     await userEvent.selectOptions(
       screen.getByRole("combobox", { name: "Network discovery" }),
@@ -68,6 +82,14 @@ describe("NetworkDiscoveryForm", () => {
 
   it("dispatches an action to update config on save button click", async () => {
     const { store } = renderWithProviders(<NetworkDiscoveryForm />, { state });
+
+    await waitFor(() => {
+      expect(
+        screen.getByRole("combobox", {
+          name: "Active subnet mapping interval",
+        })
+      ).not.toBeDisabled();
+    });
 
     await userEvent.selectOptions(
       screen.getByRole("combobox", { name: "Active subnet mapping interval" }),
@@ -113,5 +135,32 @@ describe("NetworkDiscoveryForm", () => {
         payload: null,
       },
     ]);
+  });
+
+  it("disables fields without edit permissions", async () => {
+    mockServer.use(
+      authResolvers.getCurrentUser.handler(
+        factory.userInfo({
+          entitlements: [
+            factory.entitlement({
+              entitlement: Entitlement.CAN_VIEW_CONFIGURATIONS,
+            }),
+          ],
+        })
+      )
+    );
+    renderWithProviders(<NetworkDiscoveryForm />, { state });
+
+    await waitFor(() => {
+      expect(
+        screen.getByRole("combobox", { name: "Network discovery" })
+      ).toBeDisabled();
+    });
+    expect(
+      screen.getByRole("combobox", { name: "Active subnet mapping interval" })
+    ).toBeDisabled();
+    expect(
+      screen.queryByRole("button", { name: "Save" })
+    ).not.toBeInTheDocument();
   });
 });

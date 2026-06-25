@@ -10,7 +10,7 @@ import {
   useExtendSession,
   useGetCallback,
   useGetCurrentUser,
-  useGetIsSuperUser,
+  useGetUserEntitlements,
   useIsOIDCUser,
   usePreLogin,
   useUpdateOauthProvider,
@@ -299,14 +299,14 @@ describe("useGetCurrentUser", () => {
   });
 });
 
-describe("useGetIsSuperUser", () => {
-  it("should return the correct authorization", async () => {
+describe("useGetUserEntitlements", () => {
+  it("should return the user's entitlements", async () => {
     const expectedUser = mockAuth;
-    const { result } = renderHookWithProviders(() => useGetIsSuperUser());
+    const { result } = renderHookWithProviders(() => useGetUserEntitlements());
     await waitFor(() => {
       expect(result.current.isSuccess).toBe(true);
     });
-    expect(result.current.data).toEqual(expectedUser.is_superuser);
+    expect(result.current.data).toEqual(expectedUser.entitlements);
   });
 });
 

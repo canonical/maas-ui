@@ -3,14 +3,14 @@ import type { ReactElement } from "react";
 import { Notification as NotificationBanner } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 
-import { useGetIsSuperUser } from "@/app/api/query/auth";
 import PageContent from "@/app/base/components/PageContent";
 import SectionHeader from "@/app/base/components/SectionHeader";
-import { useWindowTitle } from "@/app/base/hooks";
+import { useWindowTitle, useHasEntitlements } from "@/app/base/hooks";
 import {
   DiscoveriesTable,
   NetworkDiscoveryHeader,
 } from "@/app/networkDiscovery/components";
+import { Entitlement } from "@/app/settings/views/UserManagement/views/Groups/constants";
 import configSelectors from "@/app/store/config/selectors";
 
 export enum Labels {
@@ -24,11 +24,11 @@ export enum Labels {
 
 const DiscoveriesList = (): ReactElement => {
   const networkDiscovery = useSelector(configSelectors.networkDiscovery);
-  const isSuperUser = useGetIsSuperUser();
+  const canView = useHasEntitlements([Entitlement.CAN_VIEW_CONFIGURATIONS]);
 
   useWindowTitle("Network discovery");
 
-  if (!isSuperUser.data) {
+  if (!canView) {
     return (
       <PageContent header={<SectionHeader title={Labels.Permissions} />} />
     );

@@ -1,9 +1,11 @@
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 
+import { Entitlement } from "../../UserManagement/views/Groups/constants";
 import Fields from "../CommissioningFormFields";
 
 import FormikForm from "@/app/base/components/FormikForm";
+import { useHasEntitlements } from "@/app/base/hooks";
 import { configActions } from "@/app/store/config";
 import configSelectors from "@/app/store/config/selectors";
 
@@ -32,11 +34,13 @@ const CommissioningForm = (): React.ReactElement => {
   const defaultMinKernelVersion = useSelector(
     configSelectors.defaultMinKernelVersion
   );
+  const canEdit = useHasEntitlements([Entitlement.CAN_EDIT_CONFIGURATIONS]);
 
   return (
     <FormikForm<CommissioningFormValues>
       aria-label={Labels.FormLabel}
       cleanup={configActions.cleanup}
+      editable={canEdit}
       errors={errors}
       initialValues={{
         commissioning_distro_series: commissioningDistroSeries || "",
@@ -55,7 +59,7 @@ const CommissioningForm = (): React.ReactElement => {
       saving={saving}
       validationSchema={CommissioningSchema}
     >
-      <Fields />
+      <Fields canEdit={canEdit} />
     </FormikForm>
   );
 };

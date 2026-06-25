@@ -1,8 +1,10 @@
 import SyslogForm from "./SyslogForm";
 
+import { Entitlement } from "@/app/settings/views/UserManagement/views/Groups/constants";
 import { ConfigNames } from "@/app/store/config/types";
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
+import { authResolvers } from "@/testing/resolvers/auth";
 import { configurationsResolvers } from "@/testing/resolvers/configurations";
 import {
   screen,
@@ -15,6 +17,7 @@ import {
 } from "@/testing/utils";
 
 const mockServer = setupMockServer(
+  authResolvers.getCurrentUser.handler(),
   configurationsResolvers.getConfiguration.handler({
     name: ConfigNames.REMOTE_SYSLOG,
     value: "",
@@ -43,12 +46,13 @@ describe("SyslogForm", () => {
   it("updates the syslog form", async () => {
     renderWithProviders(<SyslogForm />, { state });
     await waitForLoading();
-    await userEvent.type(
-      screen.getByRole("textbox", {
-        name: "Remote syslog server to forward machine logs",
-      }),
-      "0.0.0.0"
-    );
+    const syslogInput = screen.getByRole("textbox", {
+      name: "Remote syslog server to forward machine logs",
+    });
+    await waitFor(() => {
+      expect(syslogInput).not.toBeDisabled();
+    });
+    await userEvent.type(syslogInput, "0.0.0.0");
 
     await userEvent.click(screen.getByRole("button", { name: "Save" }));
     await waitFor(() => {
@@ -89,12 +93,13 @@ describe("SyslogForm", () => {
 
     renderWithProviders(<SyslogForm />, { state });
     await waitForLoading();
-    await userEvent.type(
-      screen.getByRole("textbox", {
-        name: "Remote syslog server to forward machine logs",
-      }),
-      "0.0.0.0"
-    );
+    const syslogInput = screen.getByRole("textbox", {
+      name: "Remote syslog server to forward machine logs",
+    });
+    await waitFor(() => {
+      expect(syslogInput).not.toBeDisabled();
+    });
+    await userEvent.type(syslogInput, "0.0.0.0");
 
     await userEvent.click(screen.getByRole("button", { name: "Save" }));
 
@@ -103,5 +108,31 @@ describe("SyslogForm", () => {
         screen.getByText("Failed to save configurations")
       ).toBeInTheDocument();
     });
+  });
+
+  it("disables fields without edit permissions", async () => {
+    mockServer.use(
+      authResolvers.getCurrentUser.handler(
+        factory.userInfo({
+          entitlements: [
+            factory.entitlement({
+              entitlement: Entitlement.CAN_VIEW_CONFIGURATIONS,
+            }),
+          ],
+        })
+      )
+    );
+    renderWithProviders(<SyslogForm />, { state });
+    await waitForLoading();
+    await waitFor(() => {
+      expect(
+        screen.getByRole("textbox", {
+          name: "Remote syslog server to forward machine logs",
+        })
+      ).toBeDisabled();
+    });
+    expect(
+      screen.queryByRole("button", { name: "Save" })
+    ).not.toBeInTheDocument();
   });
 });

@@ -2,6 +2,8 @@ import type { ReactElement } from "react";
 
 import * as Yup from "yup";
 
+import { Entitlement } from "../../UserManagement/views/Groups/constants";
+
 import {
   useBulkSetConfigurations,
   useConfigurations,
@@ -9,6 +11,7 @@ import {
 import type { PublicConfigName } from "@/app/apiclient";
 import FormikField from "@/app/base/components/FormikField";
 import FormikForm from "@/app/base/components/FormikForm";
+import { useHasEntitlements } from "@/app/base/hooks";
 import { getConfigsFromResponse } from "@/app/settings/utils";
 import { configActions } from "@/app/store/config";
 import { ConfigNames } from "@/app/store/config/types";
@@ -46,10 +49,12 @@ const VMWareForm = (): ReactElement => {
     vcenter_datacenter,
   } = getConfigsFromResponse(data?.items || [], names);
   const updateConfig = useBulkSetConfigurations();
+  const canEdit = useHasEntitlements([Entitlement.CAN_EDIT_BOOT_ENTITIES]);
   return (
     <FormikForm
       aria-label={Labels.FormLabel}
       cleanup={configActions.cleanup}
+      editable={canEdit}
       errors={updateConfig.error}
       initialValues={{
         vcenter_server: vcenter_server ?? "",
@@ -95,24 +100,28 @@ const VMWareForm = (): ReactElement => {
       validationSchema={VMWareSchema}
     >
       <FormikField
+        disabled={!canEdit}
         help="VMware vCenter server FQDN or IP address which is passed to a deployed VMware ESXi host."
         label={Labels.ServerLabel}
         name="vcenter_server"
         type="text"
       />
       <FormikField
+        disabled={!canEdit}
         help="VMware vCenter server username which is passed to a deployed VMware ESXi host."
         label={Labels.UsernameLabel}
         name="vcenter_username"
         type="text"
       />
       <FormikField
+        disabled={!canEdit}
         help="VMware vCenter server password which is passed to a deployed VMware ESXi host."
         label={Labels.PasswordLabel}
         name="vcenter_password"
         type="password"
       />
       <FormikField
+        disabled={!canEdit}
         help="VMware vCenter datacenter which is passed to a deployed VMware ESXi host."
         label={Labels.DatacenterLabel}
         name="vcenter_datacenter"

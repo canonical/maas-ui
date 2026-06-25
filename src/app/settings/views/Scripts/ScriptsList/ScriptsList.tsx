@@ -8,10 +8,12 @@ import {
 import { Button } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 
+import { Entitlement } from "../../UserManagement/views/Groups/constants";
+
 import useScriptsTableColumns from "./hooks/useScriptsTableColumns/useScriptsTableColumns";
 
 import SearchBox from "@/app/base/components/SearchBox";
-import { useWindowTitle } from "@/app/base/hooks";
+import { useHasEntitlements, useWindowTitle } from "@/app/base/hooks";
 import { useSidePanel } from "@/app/base/side-panel-context";
 import ScriptsUpload from "@/app/settings/views/Scripts/ScriptsUpload";
 import type { RootState } from "@/app/store/root/types";
@@ -31,6 +33,7 @@ const ScriptsList = ({ type = "commissioning" }: Props): React.ReactElement => {
   const dispatch = useDispatch();
   const { openSidePanel } = useSidePanel();
   const [searchText, setSearchText] = useState("");
+  const canEdit = useHasEntitlements([Entitlement.CAN_EDIT_GLOBAL_ENTITIES]);
 
   const scriptsLoading = useSelector(scriptSelectors.loading);
   const scriptsLoaded = useSelector(scriptSelectors.loaded);
@@ -39,7 +42,7 @@ const ScriptsList = ({ type = "commissioning" }: Props): React.ReactElement => {
     scriptSelectors.search(state, searchText, type)
   );
 
-  const columns = useScriptsTableColumns();
+  const columns = useScriptsTableColumns({ canEdit });
 
   useWindowTitle(`${type[0].toUpperCase()}${type.slice(1)} scripts`);
 
@@ -66,6 +69,7 @@ const ScriptsList = ({ type = "commissioning" }: Props): React.ReactElement => {
                 value={searchText}
               />
               <Button
+                disabled={!canEdit}
                 onClick={() => {
                   openSidePanel({
                     component: ScriptsUpload,

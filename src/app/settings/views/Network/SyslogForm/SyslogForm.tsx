@@ -7,6 +7,8 @@ import {
 } from "@canonical/react-components";
 import * as Yup from "yup";
 
+import { Entitlement } from "../../UserManagement/views/Groups/constants";
+
 import {
   useSetConfiguration,
   useGetConfiguration,
@@ -14,7 +16,7 @@ import {
 import FormikField from "@/app/base/components/FormikField";
 import FormikForm from "@/app/base/components/FormikForm";
 import PageContent from "@/app/base/components/PageContent";
-import { useWindowTitle } from "@/app/base/hooks";
+import { useWindowTitle, useHasEntitlements } from "@/app/base/hooks";
 import { configActions } from "@/app/store/config";
 import { ConfigNames } from "@/app/store/config/types";
 
@@ -29,6 +31,7 @@ const SyslogForm = (): ReactElement => {
   const eTag = data?.headers?.get("ETag");
   const remote_syslog = data?.value || "";
   const updateConfig = useSetConfiguration();
+  const canEdit = useHasEntitlements([Entitlement.CAN_EDIT_CONFIGURATIONS]);
 
   useWindowTitle("Syslog");
 
@@ -51,6 +54,7 @@ const SyslogForm = (): ReactElement => {
           {isSuccess && (
             <FormikForm
               cleanup={configActions.cleanup}
+              editable={canEdit}
               errors={updateConfig.error}
               initialValues={{
                 remote_syslog,
@@ -77,6 +81,7 @@ const SyslogForm = (): ReactElement => {
               validationSchema={SyslogSchema}
             >
               <FormikField
+                disabled={!canEdit}
                 help="A remote syslog server that MAAS will set on enlisting, commissioning, testing, and deploying machines to send all log messages. Clearing this value will restore the default behaviour of forwarding syslog to MAAS."
                 label="Remote syslog server to forward machine logs"
                 name="remote_syslog"

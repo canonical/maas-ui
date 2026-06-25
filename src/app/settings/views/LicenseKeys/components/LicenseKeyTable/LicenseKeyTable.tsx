@@ -15,7 +15,7 @@ import { licenseKeysActions } from "@/app/store/licensekeys";
 import licenseKeysSelectors from "@/app/store/licensekeys/selectors";
 import type { RootState } from "@/app/store/root/types";
 
-const LicenseKeyTable = () => {
+const LicenseKeyTable = ({ canEdit }: { canEdit: boolean }) => {
   const { openSidePanel } = useSidePanel();
   const [searchText, setSearchText] = useState("");
 
@@ -30,12 +30,15 @@ const LicenseKeyTable = () => {
 
   useFetchActions([licenseKeysActions.fetch, generalActions.fetchOsInfo]);
 
-  const addBtnDisabled = osystems.length === 0;
-  const tooltip = addBtnDisabled
-    ? "No available licensed operating systems."
-    : null;
+  const noneAvailable = osystems.length === 0;
 
-  const columns = useLicenseKeyTableColumns();
+  const tooltip = !canEdit
+    ? "You do not have permission to add license keys."
+    : noneAvailable
+      ? "No available licensed operating systems."
+      : null;
+
+  const columns = useLicenseKeyTableColumns({ canEdit });
 
   return (
     <div className="license-key-list">
@@ -49,7 +52,7 @@ const LicenseKeyTable = () => {
           />
           <Tooltip message={tooltip} position="left">
             <Button
-              disabled={addBtnDisabled}
+              disabled={noneAvailable || !canEdit}
               onClick={() => {
                 openSidePanel({
                   component: LicenseKeyAdd,

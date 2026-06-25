@@ -12,11 +12,13 @@ import {
 } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 
+import { Entitlement } from "../../UserManagement/views/Groups/constants";
+
 import useDHCPListColumns from "./useDHCPListColumns/useDHCPListColumns";
 
 import SearchBox from "@/app/base/components/SearchBox";
 import docsUrls from "@/app/base/docsUrls";
-import { useWindowTitle } from "@/app/base/hooks";
+import { useHasEntitlements, useWindowTitle } from "@/app/base/hooks";
 import usePagination from "@/app/base/hooks/usePagination/usePagination";
 import { useSidePanel } from "@/app/base/side-panel-context";
 import DhcpAdd from "@/app/settings/views/Dhcp/DhcpAdd";
@@ -37,7 +39,8 @@ const DhcpList = (): React.ReactElement => {
     dhcpsnippetSelectors.search(state, searchText)
   );
   const { page, size, handlePageSizeChange, setPage } = usePagination(50);
-  const columns = useDHCPListColumns();
+  const canEdit = useHasEntitlements([Entitlement.CAN_EDIT_GLOBAL_ENTITIES]);
+  const columns = useDHCPListColumns({ canEdit });
 
   const dispatch = useDispatch();
 
@@ -65,6 +68,7 @@ const DhcpList = (): React.ReactElement => {
                 value={searchText}
               />
               <Button
+                disabled={!canEdit}
                 onClick={() => {
                   openSidePanel({
                     component: DhcpAdd,

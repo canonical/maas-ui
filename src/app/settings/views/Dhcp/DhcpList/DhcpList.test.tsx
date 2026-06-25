@@ -3,16 +3,21 @@ import DhcpEdit from "../DhcpEdit";
 
 import DhcpList from "./DhcpList";
 
+import { Entitlement } from "@/app/settings/views/UserManagement/views/Groups/constants";
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
+import { authResolvers } from "@/testing/resolvers/auth";
 import {
   userEvent,
   screen,
   within,
   renderWithProviders,
   mockSidePanel,
+  setupMockServer,
+  waitFor,
 } from "@/testing/utils";
 
+const mockServer = setupMockServer(authResolvers.getCurrentUser.handler());
 const { mockOpen } = await mockSidePanel();
 
 describe("DhcpList", () => {
@@ -105,6 +110,11 @@ describe("DhcpList", () => {
   describe("table actions", () => {
     it("can show a delete side panel", async () => {
       renderWithProviders(<DhcpList />, { state });
+      await waitFor(() => {
+        expect(
+          screen.getAllByRole("button", { name: "Delete" })[0]
+        ).not.toBeAriaDisabled();
+      });
       await userEvent.click(
         screen.getAllByRole("button", { name: "Delete" })[0]
       );
@@ -122,6 +132,13 @@ describe("DhcpList", () => {
 
     it("can show an edit side panel to edit and view details", async () => {
       renderWithProviders(<DhcpList />, { state });
+      await waitFor(() => {
+        expect(
+          within(screen.getAllByRole("row")[1]).getByRole("button", {
+            name: "Edit",
+          })
+        ).not.toBeAriaDisabled();
+      });
       await userEvent.click(
         within(screen.getAllByRole("row")[1]).getByRole("button", {
           name: "Edit",
@@ -137,6 +154,35 @@ describe("DhcpList", () => {
           },
         })
       );
+    });
+  });
+
+  describe("permissions", () => {
+    it("disables the action buttons without edit permissions", async () => {
+      mockServer.use(
+        authResolvers.getCurrentUser.handler(
+          factory.userInfo({
+            entitlements: [
+              factory.entitlement({
+                entitlement: Entitlement.CAN_VIEW_GLOBAL_ENTITIES,
+              }),
+            ],
+          })
+        )
+      );
+      renderWithProviders(<DhcpList />, { state });
+
+      await waitFor(() => {
+        expect(
+          screen.getByRole("button", { name: "Add snippet" })
+        ).toBeAriaDisabled();
+      });
+      screen.getAllByRole("button", { name: "Edit" }).forEach((button) => {
+        expect(button).toBeAriaDisabled();
+      });
+      screen.getAllByRole("button", { name: "Delete" }).forEach((button) => {
+        expect(button).toBeAriaDisabled();
+      });
     });
   });
 });

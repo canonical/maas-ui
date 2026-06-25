@@ -8,14 +8,15 @@ import type { SideNavigationProps } from "../AppSideNavigation";
 import type { NavGroup } from "../types";
 import { isSelected } from "../utils";
 
-import type { UserResponse } from "@/app/apiclient";
+import type { CurrentUserInfo } from "@/app/api/query/auth";
 import { useId } from "@/app/base/hooks/base";
 import urls from "@/app/base/urls";
+import { Entitlement } from "@/app/settings/views/UserManagement/views/Groups/constants";
+import { hasPermissions } from "@/app/utils/permissions";
 
 type Props = {
-  authUser: UserResponse | null;
+  authUser: CurrentUserInfo | undefined;
   groups: NavGroup[];
-  isAdmin: boolean;
   isAuthenticated: boolean;
   logout: () => void;
   path: string;
@@ -26,11 +27,11 @@ type Props = {
 
 const AppSideNavItemGroup = ({
   group,
-  isAdmin,
+  authUser,
   vaultIncomplete,
   path,
   setIsCollapsed,
-}: Pick<Props, "isAdmin" | "path" | "setIsCollapsed" | "vaultIncomplete"> & {
+}: Pick<Props, "authUser" | "path" | "setIsCollapsed" | "vaultIncomplete"> & {
   group: NavGroup;
 }) => {
   const id = useId();
@@ -43,6 +44,10 @@ const AppSideNavItemGroup = ({
     return false;
   }, [group, path]);
 
+  const canViewControllersLink = hasPermissions(authUser?.entitlements, [
+    Entitlement.CAN_VIEW_CONTROLLERS,
+  ]);
+
   return (
     <>
       <Navigation.Item hasActiveChild={hasActiveChild}>
@@ -54,7 +59,7 @@ const AppSideNavItemGroup = ({
         </Navigation.Text>
         <Navigation.List aria-labelledby={`${group.groupTitle}-${id}`}>
           {group.navLinks.map((navLink) => {
-            if (!navLink.adminOnly || isAdmin) {
+            if (!navLink.adminOnly || canViewControllersLink) {
               return (
                 <AppSideNavItem
                   icon={
@@ -83,7 +88,6 @@ const AppSideNavItemGroup = ({
 export const AppSideNavItems = ({
   authUser,
   groups,
-  isAdmin,
   isAuthenticated,
   logout,
   path,
@@ -91,14 +95,17 @@ export const AppSideNavItems = ({
   showLinks,
   vaultIncomplete,
 }: Props): React.ReactElement => {
+  const canViewSettingsLink = hasPermissions(authUser?.entitlements, [
+    Entitlement.CAN_VIEW_GLOBAL_ENTITIES,
+  ]);
   return (
     <>
       {showLinks ? (
         <ul className="p-side-navigation__list">
           {groups.map((group, i) => (
             <AppSideNavItemGroup
+              authUser={authUser}
               group={group}
-              isAdmin={isAdmin}
               key={`${i}-${group.groupTitle}`}
               path={path}
               setIsCollapsed={setIsCollapsed}
@@ -109,7 +116,7 @@ export const AppSideNavItems = ({
       ) : null}
       {isAuthenticated ? (
         <>
-          {isAdmin && showLinks ? (
+          {canViewSettingsLink && showLinks ? (
             <ul className="p-side-navigation__list">
               <>
                 <AppSideNavItem

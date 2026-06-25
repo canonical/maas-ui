@@ -16,9 +16,11 @@ export type MemberColumnDef = ColumnDef<
 >;
 
 const useGroupMembersTableColumns = ({
+  canEdit,
   groupId,
   setMemberSelection,
 }: {
+  canEdit: boolean;
   groupId: UserGroupResponse["id"];
   setMemberSelection: Dispatch<SetStateAction<UserGroupMemberResponse[]>>;
 }): MemberColumnDef[] => {
@@ -63,6 +65,7 @@ const useGroupMembersTableColumns = ({
           ]}
           toggleAppearance="base"
           toggleClassName="u-no-margin--bottom is-small is-dense"
+          toggleDisabled={!canEdit}
         />
       ),
     },

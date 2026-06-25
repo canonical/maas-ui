@@ -1,6 +1,7 @@
 import GroupMembersTable from "./GroupMembersTable";
 
 import RemoveGroupMember from "@/app/settings/views/UserManagement/views/Groups/components/RemoveGroupMember";
+import { authResolvers } from "@/testing/resolvers/auth";
 import { groupsResolvers, mockGroupMembers } from "@/testing/resolvers/groups";
 import {
   renderWithProviders,
@@ -14,7 +15,10 @@ import {
 
 const { mockOpen } = await mockSidePanel();
 
-const mockServer = setupMockServer(groupsResolvers.listGroupMembers.handler());
+const mockServer = setupMockServer(
+  authResolvers.getCurrentUser.handler(),
+  groupsResolvers.listGroupMembers.handler()
+);
 
 describe("GroupMembersTable", () => {
   describe("display", () => {
@@ -104,8 +108,8 @@ describe("GroupMembersTable", () => {
 
       await waitFor(() => {
         expect(
-          screen.getAllByRole("button", { name: "Toggle menu" }).length
-        ).toBeGreaterThan(0);
+          screen.getAllByRole("button", { name: "Toggle menu" })[0]
+        ).not.toBeAriaDisabled();
       });
 
       await userEvent.click(

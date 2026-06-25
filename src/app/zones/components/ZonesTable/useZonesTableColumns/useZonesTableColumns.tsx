@@ -3,11 +3,12 @@ import { useMemo } from "react";
 import type { ColumnDef, Row } from "@tanstack/react-table";
 import { Link } from "react-router";
 
-import { useGetIsSuperUser } from "@/app/api/query/auth";
 import type { ZoneResponse, ZoneWithStatisticsResponse } from "@/app/apiclient";
 import TableActions from "@/app/base/components/TableActions";
+import { useHasEntitlements } from "@/app/base/hooks";
 import { useSidePanel } from "@/app/base/side-panel-context";
 import urls from "@/app/base/urls";
+import { Entitlement } from "@/app/settings/views/UserManagement/views/Groups/constants";
 import { FilterDevices } from "@/app/store/device/utils";
 import { FilterMachines } from "@/app/store/machine/utils";
 import { DeleteZone, EditZone } from "@/app/zones/components";
@@ -33,7 +34,7 @@ const machinesFilter = (name: string) =>
 
 const useZonesTableColumns = (): ZoneColumnDef[] => {
   const { openSidePanel } = useSidePanel();
-  const isSuperUser = useGetIsSuperUser();
+  const canEdit = useHasEntitlements([Entitlement.CAN_EDIT_GLOBAL_ENTITIES]);
   return useMemo(
     () => [
       {
@@ -111,7 +112,7 @@ const useZonesTableColumns = (): ZoneColumnDef[] => {
         enableSorting: false,
         header: "Actions",
         cell: ({ row }: { row: Row<ZonesColumnData> }) => {
-          const canBeDeleted = isSuperUser.data && row.original.id !== 1;
+          const canBeDeleted = canEdit && row.original.id !== 1;
           return (
             <TableActions
               data-testid="zone-actions"
@@ -140,7 +141,7 @@ const useZonesTableColumns = (): ZoneColumnDef[] => {
         },
       },
     ],
-    [isSuperUser.data, openSidePanel]
+    [canEdit, openSidePanel]
   );
 };
 

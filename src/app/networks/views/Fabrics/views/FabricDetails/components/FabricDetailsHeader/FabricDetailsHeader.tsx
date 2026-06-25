@@ -2,10 +2,11 @@ import type { ReactElement } from "react";
 
 import { Button } from "@canonical/react-components";
 
-import { useGetIsSuperUser } from "@/app/api/query/auth";
 import SectionHeader from "@/app/base/components/SectionHeader";
+import { useHasEntitlements } from "@/app/base/hooks";
 import { useSidePanel } from "@/app/base/side-panel-context";
 import { DeleteFabric } from "@/app/networks/views/Fabrics/components";
+import { Entitlement } from "@/app/settings/views/UserManagement/views/Groups/constants";
 import type { Fabric } from "@/app/store/fabric/types";
 
 type FabricDetailsHeaderProps = {
@@ -16,12 +17,12 @@ const FabricDetailsHeader = ({
   fabric,
 }: FabricDetailsHeaderProps): ReactElement => {
   const { openSidePanel } = useSidePanel();
-  const isSuperUser = useGetIsSuperUser();
+  const canEdit = useHasEntitlements([Entitlement.CAN_EDIT_GLOBAL_ENTITIES]);
 
   return (
     <SectionHeader
       buttons={
-        isSuperUser.data
+        canEdit
           ? [
               <Button
                 appearance="neutral"

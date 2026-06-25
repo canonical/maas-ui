@@ -252,7 +252,7 @@ describe("DeployFormFields", () => {
   it("displays a warning if user has no SSH keys", async () => {
     const userId = 1;
     mockServer.use(
-      authResolvers.getCurrentUser.handler(factory.user({ id: userId })),
+      authResolvers.getCurrentUser.handler(factory.userInfo({ id: userId })),
       authResolvers.getMeStatistics.handler(
         factory.userStatistics({ id: userId, sshkeys_count: 0 })
       )

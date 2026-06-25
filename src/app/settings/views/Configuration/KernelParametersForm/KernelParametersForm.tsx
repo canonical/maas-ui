@@ -2,9 +2,12 @@ import { ExternalLink } from "@canonical/maas-react-components";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 
+import { Entitlement } from "../../UserManagement/views/Groups/constants";
+
 import FormikField from "@/app/base/components/FormikField";
 import FormikForm from "@/app/base/components/FormikForm";
 import TooltipButton from "@/app/base/components/TooltipButton";
+import { useHasEntitlements } from "@/app/base/hooks";
 import { configActions } from "@/app/store/config";
 import configSelectors from "@/app/store/config/selectors";
 
@@ -37,11 +40,13 @@ const KernelParametersForm = (): React.ReactElement => {
   const enableKernelCrashDump = useSelector(
     configSelectors.enableKernelCrashDump
   );
+  const canEdit = useHasEntitlements([Entitlement.CAN_EDIT_BOOT_ENTITIES]);
 
   return (
     <FormikForm<KernelParametersValues>
       aria-label={Labels.FormLabel}
       cleanup={configActions.cleanup}
+      editable={canEdit}
       errors={errors}
       initialValues={{
         kernel_opts: kernelParams || "",
@@ -67,12 +72,14 @@ const KernelParametersForm = (): React.ReactElement => {
     >
       <span className="p-heading--5">General</span>
       <FormikField
+        disabled={!canEdit}
         label={Labels.GlobalBootParams}
         name="kernel_opts"
         type="text"
       />
       <span className="p-heading--5">Kernel crash dump</span>
       <FormikField
+        disabled={!canEdit}
         help={
           <>
             To enable kernel crash dump, the hardware{" "}

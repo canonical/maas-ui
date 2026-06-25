@@ -1,9 +1,12 @@
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 
+import { Entitlement } from "../../UserManagement/views/Groups/constants";
+
 import type { DeployFormValues } from "./types";
 
 import FormikForm from "@/app/base/components/FormikForm";
+import { useHasEntitlements } from "@/app/base/hooks";
 import DeployFormFields from "@/app/settings/views/Configuration/DeployFormFields";
 import { configActions } from "@/app/store/config";
 import configSelectors from "@/app/store/config/selectors";
@@ -32,11 +35,13 @@ const DeployForm = (): React.ReactElement => {
     configSelectors.hardwareSyncInterval
   );
   const hardwareSyncIntervalMinutes = timeSpanToMinutes(hardwareSyncInterval);
+  const canEdit = useHasEntitlements([Entitlement.CAN_EDIT_CONFIGURATIONS]);
 
   return (
     <FormikForm<DeployFormValues>
       aria-label="deploy configuration"
       cleanup={configActions.cleanup}
+      editable={canEdit}
       errors={errors}
       initialValues={{
         default_osystem: defaultOSystem || "",
@@ -62,7 +67,7 @@ const DeployForm = (): React.ReactElement => {
       saving={saving}
       validationSchema={DeploySchema}
     >
-      <DeployFormFields />
+      <DeployFormFields canEdit={canEdit} />
     </FormikForm>
   );
 };

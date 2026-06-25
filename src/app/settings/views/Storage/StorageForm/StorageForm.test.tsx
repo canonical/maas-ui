@@ -1,8 +1,10 @@
 import StorageForm from "./StorageForm";
 
+import { Entitlement } from "@/app/settings/views/UserManagement/views/Groups/constants";
 import { ConfigNames } from "@/app/store/config/types";
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
+import { authResolvers } from "@/testing/resolvers/auth";
 import { configurationsResolvers } from "@/testing/resolvers/configurations";
 import {
   userEvent,
@@ -15,6 +17,7 @@ import {
 } from "@/testing/utils";
 
 const mockServer = setupMockServer(
+  authResolvers.getCurrentUser.handler(),
   configurationsResolvers.listConfigurations.handler(),
   configurationsResolvers.setBulkConfigurations.handler()
 );
@@ -91,6 +94,11 @@ describe("StorageForm", () => {
   it("can update storage configuration", async () => {
     renderWithProviders(<StorageForm />, { state });
     await waitForLoading();
+    await waitFor(() => {
+      expect(
+        screen.getByRole("combobox", { name: "Default storage layout" })
+      ).not.toBeDisabled();
+    });
     await userEvent.selectOptions(
       screen.getByRole("combobox", { name: "Default storage layout" }),
       "Bcache layout"
@@ -137,6 +145,11 @@ describe("StorageForm", () => {
 
     renderWithProviders(<StorageForm />, { state });
     await waitForLoading();
+    await waitFor(() => {
+      expect(
+        screen.getByRole("combobox", { name: "Default storage layout" })
+      ).not.toBeDisabled();
+    });
     await userEvent.selectOptions(
       screen.getByRole("combobox", { name: "Default storage layout" }),
       "Bcache layout"
@@ -147,6 +160,28 @@ describe("StorageForm", () => {
       expect(
         screen.getByText("Failed to save configurations")
       ).toBeInTheDocument();
+    });
+  });
+
+  it("disables fields without edit permissions", async () => {
+    mockServer.use(
+      authResolvers.getCurrentUser.handler(
+        factory.userInfo({
+          entitlements: [
+            factory.entitlement({
+              entitlement: Entitlement.CAN_VIEW_CONFIGURATIONS,
+            }),
+          ],
+        })
+      ),
+      configurationsResolvers.listConfigurations.handler({ items: configItems })
+    );
+    renderWithProviders(<StorageForm />, { state });
+    await waitForLoading();
+    await waitFor(() => {
+      expect(
+        screen.getByRole("combobox", { name: "Default storage layout" })
+      ).toBeDisabled();
     });
   });
 });

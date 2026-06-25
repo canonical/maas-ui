@@ -1,15 +1,20 @@
 import DeployForm from "./DeployForm";
 
+import { Entitlement } from "@/app/settings/views/UserManagement/views/Groups/constants";
 import { ConfigNames } from "@/app/store/config/types";
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
+import { authResolvers } from "@/testing/resolvers/auth";
 import {
   userEvent,
   screen,
+  setupMockServer,
   within,
   waitFor,
   renderWithProviders,
 } from "@/testing/utils";
+
+const mockServer = setupMockServer(authResolvers.getCurrentUser.handler());
 
 describe("DeployFormFields", () => {
   let state: RootState;
@@ -97,6 +102,12 @@ describe("DeployFormFields", () => {
   it("adds a hardware_sync_interval field to the request on submit", async () => {
     const { store } = renderWithProviders(<DeployForm />, { state });
 
+    await waitFor(() => {
+      expect(
+        screen.getByRole("textbox", { name: /Default hardware sync interval/ })
+      ).toBeEnabled();
+    });
+
     await userEvent.clear(
       screen.getByRole("textbox", { name: /Default hardware sync interval/ })
     );
@@ -131,6 +142,9 @@ describe("DeployFormFields", () => {
     const hardwareSyncInput = screen.getByRole("textbox", {
       name: /Default hardware sync interval/,
     });
+    await waitFor(() => {
+      expect(hardwareSyncInput).toBeEnabled();
+    });
     await userEvent.clear(hardwareSyncInput);
     await userEvent.type(hardwareSyncInput, "0");
     await userEvent.tab();
@@ -138,6 +152,30 @@ describe("DeployFormFields", () => {
       expect(hardwareSyncInput).toHaveAccessibleErrorMessage(
         /Hardware sync interval must be at least 1 minute/
       );
+    });
+  });
+
+  it("disables fields without edit permissions", async () => {
+    mockServer.use(
+      authResolvers.getCurrentUser.handler(
+        factory.userInfo({
+          entitlements: [
+            factory.entitlement({
+              entitlement: Entitlement.CAN_VIEW_CONFIGURATIONS,
+            }),
+          ],
+        })
+      )
+    );
+
+    renderWithProviders(<DeployForm />, { state });
+
+    await waitFor(() => {
+      expect(
+        screen.getByRole("combobox", {
+          name: /Default operating system used for deployment/,
+        })
+      ).toBeDisabled();
     });
   });
 });

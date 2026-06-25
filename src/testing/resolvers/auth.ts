@@ -22,14 +22,13 @@ import type {
   PreLoginResponse,
   UpdateOauthProviderError,
   UpdateUserError,
-  UserResponse,
+  UserInfoResponse,
   UserStatisticsResponse,
 } from "@/app/apiclient";
-import { user, userStatistics } from "@/testing/factories";
+import { userInfo, userStatistics } from "@/testing/factories";
 
-const mockAuth: UserResponse = user({
+const mockAuth: UserInfoResponse = userInfo({
   id: 1,
-  email: "user1@example.com",
   username: "user1",
 });
 

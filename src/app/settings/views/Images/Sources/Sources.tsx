@@ -3,8 +3,11 @@ import type { ReactElement } from "react";
 import { ContentSection, MainToolbar } from "@canonical/maas-react-components";
 import { Button } from "@canonical/react-components";
 
+import { Entitlement } from "../../UserManagement/views/Groups/constants";
+
 import type { BootSourceResponse } from "@/app/apiclient";
 import PageContent from "@/app/base/components/PageContent";
+import { useHasEntitlements } from "@/app/base/hooks";
 import { useSidePanel } from "@/app/base/side-panel-context";
 import type { BootResourceSourceType } from "@/app/images/types";
 import AddSource from "@/app/settings/views/Images/Sources/components/AddSource";
@@ -16,6 +19,7 @@ export type ImageSource = BootSourceResponse & {
 
 const Sources = (): ReactElement => {
   const { openSidePanel } = useSidePanel();
+  const canEdit = useHasEntitlements([Entitlement.CAN_EDIT_BOOT_ENTITIES]);
 
   return (
     <PageContent>
@@ -25,6 +29,7 @@ const Sources = (): ReactElement => {
             <MainToolbar.Title>Sources</MainToolbar.Title>
             <MainToolbar.Controls>
               <Button
+                disabled={!canEdit}
                 onClick={() => {
                   openSidePanel({
                     component: AddSource,
@@ -38,7 +43,7 @@ const Sources = (): ReactElement => {
           </MainToolbar>
         </ContentSection.Header>
         <ContentSection.Content>
-          <SourcesTable />
+          <SourcesTable canEdit={canEdit} />
         </ContentSection.Content>
       </ContentSection>
     </PageContent>

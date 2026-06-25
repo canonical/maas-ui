@@ -14,7 +14,11 @@ import { formatUtcDatetime } from "@/app/utils/time";
 
 export type DHCPListColumnDef = ColumnDef<DHCPSnippet, Partial<DHCPSnippet>>;
 
-const useDHCPListColumns = (): DHCPListColumnDef[] => {
+const useDHCPListColumns = ({
+  canEdit,
+}: {
+  canEdit: boolean;
+}): DHCPListColumnDef[] => {
   const { openSidePanel } = useSidePanel();
   return useMemo(
     () => [
@@ -77,6 +81,8 @@ const useDHCPListColumns = (): DHCPListColumnDef[] => {
           },
         }) => (
           <TableActions
+            deleteDisabled={!canEdit}
+            editDisabled={!canEdit}
             onDelete={() => {
               openSidePanel({
                 component: DhcpDelete,
@@ -99,7 +105,7 @@ const useDHCPListColumns = (): DHCPListColumnDef[] => {
         ),
       },
     ],
-    [openSidePanel]
+    [canEdit, openSidePanel]
   );
 };
 

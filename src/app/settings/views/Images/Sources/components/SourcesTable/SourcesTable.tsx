@@ -31,7 +31,11 @@ const getSourceType = (url: string): BootResourceSourceType => {
     : BootResourceSourceType.CUSTOM;
 };
 
-const SourcesTable = (): ReactElement => {
+type Props = {
+  canEdit: boolean;
+};
+
+const SourcesTable = ({ canEdit }: Props): ReactElement => {
   const { page, debouncedPage, size, handlePageSizeChange, setPage } =
     usePagination();
 
@@ -62,7 +66,7 @@ const SourcesTable = (): ReactElement => {
     customImageStatusesError ||
     importConfig.error;
 
-  const columns = useSourcesTableColumns({ canChangeSource });
+  const columns = useSourcesTableColumns({ canChangeSource, canEdit });
 
   const data = useMemo((): ImageSource[] => {
     if (!sources.data) {

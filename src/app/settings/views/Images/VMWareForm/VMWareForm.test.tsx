@@ -2,19 +2,23 @@ import VMWare from "../VMWare";
 
 import { Labels as VMWareFormLabels } from "./VMWareForm";
 
+import { Entitlement } from "@/app/settings/views/UserManagement/views/Groups/constants";
 import { ConfigNames } from "@/app/store/config/types";
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
+import { authResolvers } from "@/testing/resolvers/auth";
 import { configurationsResolvers } from "@/testing/resolvers/configurations";
 import {
   screen,
   setupMockServer,
   renderWithProviders,
+  waitFor,
   waitForLoading,
 } from "@/testing/utils";
 
 const mockServer = setupMockServer(
-  configurationsResolvers.listConfigurations.handler()
+  configurationsResolvers.listConfigurations.handler(),
+  authResolvers.getCurrentUser.handler()
 );
 describe("VMWareForm", () => {
   let state: RootState;
@@ -70,5 +74,29 @@ describe("VMWareForm", () => {
     expect(
       screen.getByRole("textbox", { name: VMWareFormLabels.DatacenterLabel })
     ).toHaveValue("my datacenter");
+  });
+
+  it("disables the fields without edit permissions", async () => {
+    mockServer.use(
+      configurationsResolvers.listConfigurations.handler({
+        items: configItems,
+      }),
+      authResolvers.getCurrentUser.handler(
+        factory.userInfo({
+          entitlements: [
+            factory.entitlement({
+              entitlement: Entitlement.CAN_VIEW_BOOT_ENTITIES,
+            }),
+          ],
+        })
+      )
+    );
+    renderWithProviders(<VMWare />, { state });
+    await waitForLoading();
+    await waitFor(() => {
+      expect(
+        screen.getByRole("textbox", { name: VMWareFormLabels.ServerLabel })
+      ).toBeDisabled();
+    });
   });
 });

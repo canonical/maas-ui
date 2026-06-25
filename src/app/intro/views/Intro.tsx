@@ -15,7 +15,11 @@ import UserIntro from "./UserIntro";
 import { useGetCurrentUser } from "@/app/api/query/auth";
 import PageContent from "@/app/base/components/PageContent";
 import SectionHeader from "@/app/base/components/SectionHeader";
-import { useCompletedIntro, useCompletedUserIntro } from "@/app/base/hooks";
+import {
+  useCompletedIntro,
+  useCompletedUserIntro,
+  useIsSuperUser,
+} from "@/app/base/hooks";
 import type { SyncNavigateFunction } from "@/app/base/types";
 import urls from "@/app/base/urls";
 import configSelectors from "@/app/store/config/selectors";
@@ -31,9 +35,9 @@ const Intro = (): ReactElement => {
   const viewingUserIntro = location.pathname.startsWith(urls.intro.user);
 
   const user = useGetCurrentUser();
+  const isSuperUser = useIsSuperUser();
 
-  const showIncomplete =
-    !completedIntro && !completedUserIntro && !user.data?.is_superuser;
+  const showIncomplete = !completedIntro && !completedUserIntro && !isSuperUser;
 
   useEffect(() => {
     if (!user.isPending && !configLoading && !showIncomplete) {

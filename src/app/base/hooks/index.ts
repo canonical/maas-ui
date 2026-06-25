@@ -24,3 +24,4 @@ export { useTableSort } from "./tables";
 export type { TableSort } from "./tables";
 export { useGetURLId } from "./urls";
 export { useFetchActions } from "./dataFetching";
+export { useHasEntitlements, useIsSuperUser } from "./permissions";

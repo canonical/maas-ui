@@ -21,7 +21,7 @@ describe("IntroSection", () => {
 
   it("can redirect to close the intro", () => {
     mockServer.use(
-      authResolvers.getCurrentUser.handler(factory.user()),
+      authResolvers.getCurrentUser.handler(factory.userInfo()),
       authResolvers.getMeStatistics.handler(
         factory.userStatistics({ completed_intro: true })
       )
@@ -35,9 +35,7 @@ describe("IntroSection", () => {
 
   it("redirects to the machine list for admins", () => {
     mockServer.use(
-      authResolvers.getCurrentUser.handler(
-        factory.user({ is_superuser: true })
-      ),
+      authResolvers.getCurrentUser.handler(factory.userInfo()),
       authResolvers.getMeStatistics.handler(
         factory.userStatistics({ completed_intro: true })
       )
@@ -52,7 +50,7 @@ describe("IntroSection", () => {
   it("redirects to the machine list for non-admins", () => {
     mockServer.use(
       authResolvers.getCurrentUser.handler(
-        factory.user({ is_superuser: false })
+        factory.userInfo({ entitlements: [] })
       ),
       authResolvers.getMeStatistics.handler(
         factory.userStatistics({ completed_intro: true })

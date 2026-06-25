@@ -7,6 +7,8 @@ import {
 } from "@canonical/react-components";
 import * as Yup from "yup";
 
+import { Entitlement } from "../../UserManagement/views/Groups/constants";
+
 import Fields from "./IpmiFormFields";
 
 import {
@@ -16,7 +18,7 @@ import {
 import type { PublicConfigName, SetConfigurationsError } from "@/app/apiclient";
 import FormikForm from "@/app/base/components/FormikForm";
 import PageContent from "@/app/base/components/PageContent";
-import { useWindowTitle } from "@/app/base/hooks";
+import { useWindowTitle, useHasEntitlements } from "@/app/base/hooks";
 import { getConfigsFromResponse } from "@/app/settings/utils";
 import { configActions } from "@/app/store/config";
 import { AutoIpmiPrivilegeLevel, ConfigNames } from "@/app/store/config/types";
@@ -63,6 +65,7 @@ const IpmiSettings = (): ReactElement => {
   } = getConfigsFromResponse(data?.items || [], names);
   const updateConfig = useBulkSetConfigurations();
   useWindowTitle("IPMI settings");
+  const canEdit = useHasEntitlements([Entitlement.CAN_EDIT_CONFIGURATIONS]);
 
   return (
     <PageContent>
@@ -84,6 +87,7 @@ const IpmiSettings = (): ReactElement => {
             <FormikForm<IpmiFormValues, SetConfigurationsError>
               aria-label={Labels.FormLabel}
               cleanup={configActions.cleanup}
+              editable={canEdit}
               errors={updateConfig.error}
               initialValues={{
                 maas_auto_ipmi_user: (maas_auto_ipmi_user as string) || "maas",
@@ -126,7 +130,7 @@ const IpmiSettings = (): ReactElement => {
               saving={updateConfig.isPending}
               validationSchema={IpmiSchema}
             >
-              <Fields />
+              <Fields canEdit={canEdit} />
             </FormikForm>
           )}
         </ContentSection.Content>

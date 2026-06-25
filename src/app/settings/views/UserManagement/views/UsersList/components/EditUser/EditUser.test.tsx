@@ -1,11 +1,14 @@
 import EditUser from "./EditUser";
 
+import * as factory from "@/testing/factories";
 import { authResolvers } from "@/testing/resolvers/auth";
+import { groupsResolvers, mockGroups } from "@/testing/resolvers/groups";
 import { mockUsers, usersResolvers } from "@/testing/resolvers/users";
 import {
   userEvent,
   screen,
   waitFor,
+  waitForLoading,
   setupMockServer,
   renderWithProviders,
   mockSidePanel,
@@ -14,7 +17,9 @@ import {
 const mockServer = setupMockServer(
   authResolvers.authenticate.handler(),
   usersResolvers.getUser.handler(),
-  usersResolvers.updateUser.handler()
+  usersResolvers.updateUser.handler(),
+  groupsResolvers.listGroups.handler(),
+  groupsResolvers.listGroupsStatistics.handler()
 );
 const { mockClose } = await mockSidePanel();
 
@@ -55,6 +60,66 @@ describe("EditUser", () => {
     await userEvent.type(screen.getByLabelText("Password"), "123");
 
     await userEvent.type(screen.getByLabelText("Password (again)"), "123");
+
+    await userEvent.click(screen.getByRole("button", { name: /Save user/i }));
+
+    await waitFor(() => {
+      expect(usersResolvers.updateUser.resolved).toBeTruthy();
+    });
+  });
+
+  it("pre-populates the groups the user belongs to", async () => {
+    mockServer.use(
+      usersResolvers.getUser.handler(
+        factory.user({
+          id: testUserId,
+          groups: [
+            { id: mockGroups.items[0].id, name: mockGroups.items[0].name },
+          ],
+        })
+      )
+    );
+
+    renderWithProviders(<EditUser id={testUserId} />);
+
+    await waitForLoading();
+
+    await waitFor(() => {
+      expect(
+        screen.getByRole("combobox", { name: "Groups" })
+      ).toHaveTextContent(new RegExp(mockGroups.items[0].name));
+    });
+  });
+
+  it("does not display the groups field when self-editing", async () => {
+    renderWithProviders(
+      <EditUser id={mockUsers.items[0].id} isSelfEditing={true} />
+    );
+
+    await waitForLoading();
+
+    expect(
+      screen.queryByRole("combobox", { name: "Groups" })
+    ).not.toBeInTheDocument();
+  });
+
+  it("can update a user's groups on save click", async () => {
+    mockServer.use(
+      usersResolvers.getUser.handler(
+        factory.user({ id: testUserId, groups: [] })
+      )
+    );
+    renderWithProviders(<EditUser id={testUserId} />);
+
+    await waitForLoading();
+
+    await userEvent.click(screen.getByRole("combobox", { name: "Groups" }));
+
+    await userEvent.click(
+      screen.getByRole("checkbox", {
+        name: new RegExp(mockGroups.items[0].name),
+      })
+    );
 
     await userEvent.click(screen.getByRole("button", { name: /Save user/i }));
 

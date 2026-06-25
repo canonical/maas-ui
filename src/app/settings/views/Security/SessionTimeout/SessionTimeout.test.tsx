@@ -5,8 +5,11 @@ import SessionTimeout, {
 } from "./SessionTimeout";
 
 import * as configurationsQueryHooks from "@/app/api/query/configurations";
+import { Entitlement } from "@/app/settings/views/UserManagement/views/Groups/constants";
 import type { RootState } from "@/app/store/root/types";
+import * as factory from "@/testing/factories";
 import { mockFormikFormSaved } from "@/testing/mockFormikFormSaved";
+import { authResolvers } from "@/testing/resolvers/auth";
 import { configurationsResolvers } from "@/testing/resolvers/configurations";
 import {
   userEvent,
@@ -20,6 +23,7 @@ import {
 } from "@/testing/utils";
 
 const mockServer = setupMockServer(
+  authResolvers.getCurrentUser.handler(),
   configurationsResolvers.listConfigurations.handler(),
   configurationsResolvers.setBulkConfigurations.handler()
 );
@@ -61,6 +65,11 @@ describe("SessionTimeout", () => {
     );
     renderWithProviders(<SessionTimeout />, { state });
     await waitForLoading();
+    await waitFor(() => {
+      expect(
+        screen.getByRole("textbox", { name: SessionTimeoutLabels.Expiration })
+      ).not.toBeDisabled();
+    });
     await userEvent.clear(
       screen.getByRole("textbox", { name: SessionTimeoutLabels.Expiration })
     );
@@ -89,6 +98,11 @@ describe("SessionTimeout", () => {
     );
     renderWithProviders(<SessionTimeout />, { state });
     await waitForLoading();
+    await waitFor(() => {
+      expect(
+        screen.getByRole("textbox", { name: SessionTimeoutLabels.Expiration })
+      ).not.toBeDisabled();
+    });
     await userEvent.clear(
       screen.getByRole("textbox", { name: SessionTimeoutLabels.Expiration })
     );
@@ -166,6 +180,11 @@ describe("SessionTimeout", () => {
     );
     renderWithProviders(<SessionTimeout />, { state });
     await waitForLoading();
+    await waitFor(() => {
+      expect(
+        screen.getByRole("textbox", { name: SessionTimeoutLabels.Expiration })
+      ).not.toBeDisabled();
+    });
     await userEvent.clear(
       screen.getByRole("textbox", { name: SessionTimeoutLabels.Expiration })
     );
@@ -193,6 +212,28 @@ describe("SessionTimeout", () => {
           ],
         },
       });
+    });
+  });
+
+  it("disables fields without edit permissions", async () => {
+    mockServer.use(
+      authResolvers.getCurrentUser.handler(
+        factory.userInfo({
+          entitlements: [
+            factory.entitlement({
+              entitlement: Entitlement.CAN_VIEW_CONFIGURATIONS,
+            }),
+          ],
+        })
+      ),
+      configurationsResolvers.listConfigurations.handler({ items: configItems })
+    );
+    renderWithProviders(<SessionTimeout />, { state });
+    await waitForLoading();
+    await waitFor(() => {
+      expect(
+        screen.getByRole("textbox", { name: SessionTimeoutLabels.Expiration })
+      ).toBeDisabled();
     });
   });
 });

@@ -36,7 +36,7 @@ describe("MaasIntroSuccess", () => {
 
   it("links to the user intro if not yet completed", () => {
     mockServer.use(
-      authResolvers.getCurrentUser.handler(factory.user()),
+      authResolvers.getCurrentUser.handler(factory.userInfo()),
       authResolvers.getMeStatistics.handler(
         factory.userStatistics({ completed_intro: false })
       )
@@ -52,9 +52,7 @@ describe("MaasIntroSuccess", () => {
 
   it("links to the machine list if an admin that has completed the user intro", async () => {
     mockServer.use(
-      authResolvers.getCurrentUser.handler(
-        factory.user({ is_superuser: true })
-      ),
+      authResolvers.getCurrentUser.handler(factory.userInfo()),
       authResolvers.getMeStatistics.handler(
         factory.userStatistics({ completed_intro: true })
       )
@@ -73,7 +71,7 @@ describe("MaasIntroSuccess", () => {
   it("links to the machine list if a non-admin that has completed the user intro", async () => {
     mockServer.use(
       authResolvers.getCurrentUser.handler(
-        factory.user({ is_superuser: false })
+        factory.userInfo({ entitlements: [] })
       ),
       authResolvers.getMeStatistics.handler(
         factory.userStatistics({ completed_intro: true })

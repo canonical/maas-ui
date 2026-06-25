@@ -3,6 +3,7 @@ import { describe } from "vitest";
 
 import UsersTable from "./UsersTable";
 
+import { Entitlement } from "@/app/settings/views/UserManagement/views/Groups/constants";
 import {
   AddUser,
   DeleteUser,
@@ -25,7 +26,8 @@ const mockServer = setupMockServer(
   usersResolvers.listUsers.handler(),
   usersResolvers.getUser.handler(),
   usersResolvers.listUsersStatistics.handler(),
-  authResolvers.getCurrentUser.handler()
+  authResolvers.getCurrentUser.handler(),
+  authResolvers.getMeStatistics.handler()
 );
 const { mockOpen } = await mockSidePanel();
 
@@ -58,7 +60,7 @@ describe("UsersTable", () => {
         "Machines",
         "Local",
         "Last seen",
-        "Role",
+        "Groups",
         "MAAS keys",
         "Action",
       ].forEach((column) => {
@@ -68,6 +70,51 @@ describe("UsersTable", () => {
           })
         ).toBeInTheDocument();
       });
+    });
+
+    it("displays a user's groups as links to the group members page", async () => {
+      const user = factory.user({
+        id: 1,
+        groups: [
+          { id: 2, name: "admins" },
+          { id: 3, name: "developers" },
+        ],
+      });
+
+      mockServer.use(
+        usersResolvers.listUsers.handler({ items: [user], total: 1 })
+      );
+      renderWithProviders(<UsersTable />);
+
+      await waitForLoading();
+
+      const adminsLink = screen.getByRole("link", { name: "admins" });
+      expect(adminsLink).toHaveAttribute(
+        "href",
+        "/settings/user-management/group/2/members"
+      );
+
+      const developersLink = screen.getByRole("link", { name: "developers" });
+      expect(developersLink).toHaveAttribute(
+        "href",
+        "/settings/user-management/group/3/members"
+      );
+    });
+
+    it("displays an em dash when a user has no groups", async () => {
+      const user = factory.user({ id: 1, groups: [] });
+
+      mockServer.use(
+        usersResolvers.listUsers.handler({ items: [user], total: 1 })
+      );
+      renderWithProviders(<UsersTable />);
+
+      await waitForLoading();
+
+      expect(
+        screen.queryByRole("link", { name: /admins|developers/ })
+      ).not.toBeInTheDocument();
+      expect(screen.getByText("\u2014")).toBeInTheDocument();
     });
 
     it("can switch between username and real name displays", async () => {
@@ -104,9 +151,37 @@ describe("UsersTable", () => {
   });
 
   describe("permissions", () => {
-    it.todo("enables the action buttons with correct permissions");
+    it("disables add and row action buttons without edit permissions", async () => {
+      const user = factory.user({ id: 2 });
+      mockServer.use(
+        usersResolvers.listUsers.handler({
+          items: [user],
+          total: 1,
+        }),
+        authResolvers.getCurrentUser.handler(
+          factory.userInfo({
+            id: 1,
+            entitlements: [
+              factory.entitlement({
+                entitlement: Entitlement.CAN_VIEW_IDENTITIES,
+              }),
+            ],
+          })
+        )
+      );
 
-    it.todo("disables the action buttons without permissions");
+      renderWithProviders(<UsersTable />);
+      await waitForLoading();
+
+      await waitFor(() => {
+        expect(
+          screen.getByRole("button", { name: "Add user" })
+        ).toBeAriaDisabled();
+      });
+
+      expect(screen.getByRole("button", { name: "Edit" })).toBeAriaDisabled();
+      expect(screen.getByRole("button", { name: "Delete" })).toBeAriaDisabled();
+    });
 
     it("disables the delete button for current user", async () => {
       const user = factory.user({
@@ -117,7 +192,7 @@ describe("UsersTable", () => {
           items: [user],
           total: 1,
         }),
-        authResolvers.getCurrentUser.handler(user)
+        authResolvers.getCurrentUser.handler(factory.userInfo({ id: 1 }))
       );
 
       renderWithProviders(<UsersTable />);
@@ -132,7 +207,25 @@ describe("UsersTable", () => {
 
   describe("actions", () => {
     it("displays the form when Add user is clicked", async () => {
+      mockServer.use(
+        authResolvers.getCurrentUser.handler(
+          factory.userInfo({
+            id: 1,
+            entitlements: [
+              factory.entitlement({
+                entitlement: Entitlement.CAN_EDIT_IDENTITIES,
+              }),
+            ],
+          })
+        )
+      );
       renderWithProviders(<UsersTable />);
+
+      await waitFor(() => {
+        expect(
+          screen.getByRole("button", { name: "Add user" })
+        ).not.toBeAriaDisabled();
+      });
 
       await userEvent.click(screen.getByRole("button", { name: "Add user" }));
 
@@ -145,9 +238,19 @@ describe("UsersTable", () => {
     it("opens edit user side panel form", async () => {
       mockServer.use(
         usersResolvers.listUsers.handler({
-          items: [factory.user({ id: 1 })],
+          items: [factory.user({ id: 2 })],
           total: 1,
-        })
+        }),
+        authResolvers.getCurrentUser.handler(
+          factory.userInfo({
+            id: 1,
+            entitlements: [
+              factory.entitlement({
+                entitlement: Entitlement.CAN_EDIT_IDENTITIES,
+              }),
+            ],
+          })
+        )
       );
 
       renderWithProviders(<UsersTable />);
@@ -155,7 +258,7 @@ describe("UsersTable", () => {
       await waitFor(() => {
         expect(
           screen.getByRole("button", { name: "Edit" })
-        ).toBeInTheDocument();
+        ).not.toBeAriaDisabled();
       });
 
       await userEvent.click(screen.getByRole("button", { name: "Edit" }));
@@ -163,16 +266,26 @@ describe("UsersTable", () => {
       expect(mockOpen).toHaveBeenCalledWith({
         component: EditUser,
         title: "Edit user",
-        props: { id: 1 },
+        props: { id: 2 },
       });
     });
 
     it("opens delete user side panel form", async () => {
       mockServer.use(
         usersResolvers.listUsers.handler({
-          items: [factory.user({ id: 1 })],
+          items: [factory.user({ id: 2 })],
           total: 1,
-        })
+        }),
+        authResolvers.getCurrentUser.handler(
+          factory.userInfo({
+            id: 1,
+            entitlements: [
+              factory.entitlement({
+                entitlement: Entitlement.CAN_EDIT_IDENTITIES,
+              }),
+            ],
+          })
+        )
       );
 
       renderWithProviders(<UsersTable />);
@@ -180,7 +293,7 @@ describe("UsersTable", () => {
       await waitFor(() => {
         expect(
           screen.getByRole("button", { name: "Delete" })
-        ).toBeInTheDocument();
+        ).not.toBeAriaDisabled();
       });
 
       await userEvent.click(screen.getByRole("button", { name: "Delete" }));
@@ -188,7 +301,7 @@ describe("UsersTable", () => {
       expect(mockOpen).toHaveBeenCalledWith({
         component: DeleteUser,
         title: "Delete user",
-        props: { id: 1 },
+        props: { id: 2 },
       });
     });
   });

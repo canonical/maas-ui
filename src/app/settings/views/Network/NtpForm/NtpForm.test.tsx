@@ -1,6 +1,9 @@
 import NtpForm from "./NtpForm";
 
+import { Entitlement } from "@/app/settings/views/UserManagement/views/Groups/constants";
 import { ConfigNames } from "@/app/store/config/types";
+import * as factory from "@/testing/factories";
+import { authResolvers } from "@/testing/resolvers/auth";
 import { configurationsResolvers } from "@/testing/resolvers/configurations";
 import {
   userEvent,
@@ -13,6 +16,7 @@ import {
 } from "@/testing/utils";
 
 const mockServer = setupMockServer(
+  authResolvers.getCurrentUser.handler(),
   configurationsResolvers.listConfigurations.handler({
     items: [
       { name: ConfigNames.NTP_EXTERNAL_ONLY, value: false },
@@ -51,13 +55,41 @@ describe("NtpForm", () => {
 
     await waitForLoading();
 
-    await userEvent.type(
-      screen.getByRole("textbox", { name: "Addresses of NTP servers" }),
-      "ntp.test"
-    );
+    const ntpServersInput = screen.getByRole("textbox", {
+      name: "Addresses of NTP servers",
+    });
+    await waitFor(() => {
+      expect(ntpServersInput).not.toBeDisabled();
+    });
+
+    await userEvent.type(ntpServersInput, "ntp.test");
 
     await userEvent.click(screen.getByRole("button", { name: "Save" }));
 
     expect(configurationsResolvers.setBulkConfigurations.resolved).toBe(true);
+  });
+
+  it("disables fields without edit permissions", async () => {
+    mockServer.use(
+      authResolvers.getCurrentUser.handler(
+        factory.userInfo({
+          entitlements: [
+            factory.entitlement({
+              entitlement: Entitlement.CAN_VIEW_CONFIGURATIONS,
+            }),
+          ],
+        })
+      )
+    );
+    renderWithProviders(<NtpForm />);
+    await waitForLoading();
+    await waitFor(() => {
+      expect(
+        screen.getByRole("textbox", { name: "Addresses of NTP servers" })
+      ).toBeDisabled();
+    });
+    expect(
+      screen.queryByRole("button", { name: "Save" })
+    ).not.toBeInTheDocument();
   });
 });
