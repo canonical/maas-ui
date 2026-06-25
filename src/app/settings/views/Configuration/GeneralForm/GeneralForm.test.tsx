@@ -18,6 +18,10 @@ describe("GeneralForm", () => {
             name: ConfigNames.RELEASE_NOTIFICATIONS,
             value: true,
           }),
+          factory.config({
+            name: ConfigNames.EXPERIMENTAL_SWITCH_PROVISIONING,
+            value: false,
+          }),
         ],
       }),
     });
@@ -79,6 +83,14 @@ describe("GeneralForm", () => {
     await userEvent.click(saveButton);
 
     expect(redRadioButton).toHaveProperty("checked", true);
+  });
+
+  it("sets experimental_switch_provisioning value", () => {
+    renderWithProviders(<GeneralForm />, { state });
+
+    expect(
+      screen.getByRole("checkbox", { name: "Switch commissioning" })
+    ).toHaveProperty("checked", false);
   });
 
   it("can trigger usabilla when the notifications are turned off", async () => {

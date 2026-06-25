@@ -556,6 +556,13 @@ const enableKernelCrashDump = createSelector([all], (configs) =>
   getValueFromName<boolean>(configs, ConfigNames.ENABLE_KERNEL_CRASH_DUMP)
 );
 
+const experimentalSwitchProvisioning = createSelector([all], (configs) =>
+  getValueFromName<boolean>(
+    configs,
+    ConfigNames.EXPERIMENTAL_SWITCH_PROVISIONING
+  )
+);
+
 const config = {
   activeDiscoveryInterval,
   all,
@@ -578,6 +585,7 @@ const config = {
   enableHttpProxy,
   enableKernelCrashDump,
   errors,
+  experimentalSwitchProvisioning,
   hardwareSyncInterval,
   httpProxy,
   kernelParams,

@@ -32,6 +32,7 @@ const GeneralSchema = Yup.object().shape({
   theme: Yup.string(),
   enable_analytics: Yup.boolean(),
   release_notifications: Yup.boolean(),
+  experimental_switch_provisioning: Yup.boolean(),
 });
 
 type GeneralFormValues = {
@@ -39,6 +40,7 @@ type GeneralFormValues = {
   theme: string;
   enable_analytics: boolean;
   release_notifications: boolean;
+  experimental_switch_provisioning: boolean;
 };
 
 const GeneralForm = (): React.ReactElement => {
@@ -48,6 +50,9 @@ const GeneralForm = (): React.ReactElement => {
   const analyticsEnabled = useSelector(configSelectors.analyticsEnabled);
   const releaseNotifications = useSelector(
     configSelectors.releaseNotifications
+  );
+  const experimentalSwitchProvisioning = useSelector(
+    configSelectors.experimentalSwitchProvisioning
   );
   const saved = useSelector(configSelectors.saved);
   const saving = useSelector(configSelectors.saving);
@@ -85,6 +90,8 @@ const GeneralForm = (): React.ReactElement => {
         theme: maasTheme || ColorValues.Default,
         enable_analytics: analyticsEnabled || false,
         release_notifications: releaseNotifications || false,
+        experimental_switch_provisioning:
+          experimentalSwitchProvisioning || false,
       }}
       onCancel={(values, { resetForm }) => {
         resetForm();
@@ -188,6 +195,14 @@ const GeneralForm = (): React.ReactElement => {
         help="This applies to all users of MAAS. "
         label="Enable new release notifications"
         name="release_notifications"
+        type="checkbox"
+        wrapperClassName="u-sv3"
+      />
+      <h5>Experimental features</h5>
+      <FormikField
+        help="Enable experimental switch commissioning and commissioning scripts"
+        label="Switch commissioning"
+        name="experimental_switch_provisioning"
         type="checkbox"
         wrapperClassName="u-sv3"
       />
