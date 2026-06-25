@@ -1,5 +1,5 @@
 import type { ReactElement } from "react";
-import { useMemo, useState } from "react";
+import { useState } from "react";
 
 import {
   Button,
@@ -7,21 +7,17 @@ import {
   Spinner,
 } from "@canonical/react-components";
 import { useQueryClient } from "@tanstack/react-query";
-import type { FormikContextType } from "formik";
 import * as Yup from "yup";
 
 import { Labels } from "../../constants";
+import GroupMultiSelect from "../GroupMultiSelect";
 
 import { useAuthenticate } from "@/app/api/query/auth";
-import { useGroups } from "@/app/api/query/groups";
 import { useGetUser, useUpdateUser } from "@/app/api/query/users";
 import type { UpdateUserError, UserUpdateRequest } from "@/app/apiclient";
 import { getUserQueryKey } from "@/app/apiclient/@tanstack/react-query.gen";
 import FormikField from "@/app/base/components/FormikField";
-import { FormikFieldChangeError } from "@/app/base/components/FormikField/FormikField";
 import FormikForm from "@/app/base/components/FormikForm";
-import TagSelector from "@/app/base/components/TagSelector";
-import type { Tag } from "@/app/base/components/TagSelector/TagSelector";
 import { useSidePanel } from "@/app/base/side-panel-context";
 
 type EditUserProps = {
@@ -68,19 +64,6 @@ const EditUser = ({
   const user = useGetUser({ path: { user_id: id } });
   const eTag = user.data?.headers?.get("ETag");
   const updateUser = useUpdateUser();
-
-  const { data: groups } = useGroups();
-
-  const groupTags = useMemo(
-    (): Tag[] =>
-      groups?.items.map((group) => ({
-        id: group.id,
-        name: group.name,
-        description:
-          typeof group.description === "string" ? group.description : undefined,
-      })) ?? [],
-    [groups]
-  );
 
   const combinedErrors = {
     ...(updateUser.error || {}),
@@ -171,14 +154,7 @@ const EditUser = ({
             isSelfEditing && passwordVisible ? SelfEditUserSchema : UserSchema
           }
         >
-          {({
-            setFieldValue,
-          }: FormikContextType<
-            UserUpdateRequest & {
-              passwordConfirm: UserUpdateRequest["password"];
-              oldPassword: UserUpdateRequest["password"];
-            }
-          >) => (
+          {() => (
             <>
               <FormikField
                 autoComplete="username"
@@ -200,27 +176,9 @@ const EditUser = ({
                 type="email"
               />
               {!isSelfEditing && (
-                <FormikField
-                  component={TagSelector}
-                  initialSelected={groupTags.filter((tag) =>
-                    user.data.groups.some((group) => group.id === tag.id)
-                  )}
-                  label="Groups"
+                <GroupMultiSelect
+                  help="Select authorization groups for this user"
                   name="groups"
-                  onTagsUpdate={(selectedGroups: Tag[]) => {
-                    setFieldValue(
-                      "groups",
-                      selectedGroups.map((group) => group.id)
-                    ).catch((reason: unknown) => {
-                      throw new FormikFieldChangeError(
-                        "groups",
-                        "setFieldValue",
-                        reason as string
-                      );
-                    });
-                  }}
-                  placeholder="Select groups"
-                  tags={groupTags}
                 />
               )}
               {!passwordVisible && (

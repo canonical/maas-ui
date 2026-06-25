@@ -56,11 +56,11 @@ describe("AddUser", () => {
 
     await waitForLoading();
 
-    await userEvent.click(screen.getByRole("textbox", { name: "Groups" }));
+    await userEvent.click(screen.getByRole("combobox", { name: /Groups/ }));
 
     for (const group of mockGroups.items) {
       expect(
-        screen.getByRole("option", { name: new RegExp(group.name) })
+        screen.getByRole("checkbox", { name: new RegExp(group.name) })
       ).toBeInTheDocument();
     }
   });
@@ -80,10 +80,12 @@ describe("AddUser", () => {
       "test@example.com"
     );
 
-    await userEvent.click(screen.getByRole("textbox", { name: "Groups" }));
+    await userEvent.click(screen.getByRole("combobox", { name: /Groups/ }));
 
     await userEvent.click(
-      screen.getByRole("option", { name: new RegExp(mockGroups.items[0].name) })
+      screen.getByRole("checkbox", {
+        name: new RegExp(mockGroups.items[0].name),
+      })
     );
 
     await userEvent.type(screen.getByLabelText("Password"), "123");

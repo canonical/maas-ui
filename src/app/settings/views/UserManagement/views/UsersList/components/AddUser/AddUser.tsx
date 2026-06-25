@@ -1,17 +1,13 @@
 import type { ReactElement } from "react";
-import { useMemo } from "react";
 
-import type { FormikContextType } from "formik";
 import * as Yup from "yup";
 
-import { useGroups } from "@/app/api/query/groups";
+import GroupMultiSelect from "../GroupMultiSelect";
+
 import { useCreateUser } from "@/app/api/query/users";
 import type { CreateUserError, UserCreateRequest } from "@/app/apiclient";
 import FormikField from "@/app/base/components/FormikField";
-import { FormikFieldChangeError } from "@/app/base/components/FormikField/FormikField";
 import FormikForm from "@/app/base/components/FormikForm";
-import TagSelector from "@/app/base/components/TagSelector";
-import type { Tag } from "@/app/base/components/TagSelector/TagSelector";
 import { useSidePanel } from "@/app/base/side-panel-context";
 import { Labels } from "@/app/settings/views/UserManagement/views/UsersList/constants";
 
@@ -37,19 +33,6 @@ const UserSchema = Yup.object().shape({
 const AddUser = (): ReactElement => {
   const { closeSidePanel } = useSidePanel();
   const createUser = useCreateUser();
-
-  const { data: groups } = useGroups();
-
-  const groupTags = useMemo(
-    (): Tag[] =>
-      groups?.items.map((group) => ({
-        id: group.id,
-        name: group.name,
-        description:
-          typeof group.description === "string" ? group.description : undefined,
-      })) ?? [],
-    [groups]
-  );
 
   return (
     <FormikForm<UserCreateRequest, CreateUserError>
@@ -84,7 +67,7 @@ const AddUser = (): ReactElement => {
       submitLabel="Save user"
       validationSchema={UserSchema}
     >
-      {({ setFieldValue }: FormikContextType<UserCreateRequest>) => (
+      {() => (
         <>
           <FormikField
             autoComplete="username"
@@ -101,25 +84,10 @@ const AddUser = (): ReactElement => {
             required={true}
             type="email"
           />
-          <FormikField
-            component={TagSelector}
+          <GroupMultiSelect
             help="Select authorization groups for this user."
-            label="Groups"
+            label="Groups (optional)"
             name="groups"
-            onTagsUpdate={(selectedGroups: Tag[]) => {
-              setFieldValue(
-                "groups",
-                selectedGroups.map((group) => group.id)
-              ).catch((reason: unknown) => {
-                throw new FormikFieldChangeError(
-                  "groups",
-                  "setFieldValue",
-                  reason as string
-                );
-              });
-            }}
-            placeholder="Select groups"
-            tags={groupTags}
           />
           <FormikField
             autoComplete="new-password"

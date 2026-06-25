@@ -86,10 +86,8 @@ describe("EditUser", () => {
 
     await waitFor(() => {
       expect(
-        screen.getByRole("button", {
-          name: new RegExp(mockGroups.items[0].name),
-        })
-      ).toBeInTheDocument();
+        screen.getByRole("combobox", { name: "Groups" })
+      ).toHaveTextContent(new RegExp(mockGroups.items[0].name));
     });
   });
 
@@ -101,7 +99,7 @@ describe("EditUser", () => {
     await waitForLoading();
 
     expect(
-      screen.queryByRole("textbox", { name: "Groups" })
+      screen.queryByRole("combobox", { name: "Groups" })
     ).not.toBeInTheDocument();
   });
 
@@ -115,10 +113,12 @@ describe("EditUser", () => {
 
     await waitForLoading();
 
-    await userEvent.click(screen.getByRole("textbox", { name: "Groups" }));
+    await userEvent.click(screen.getByRole("combobox", { name: "Groups" }));
 
     await userEvent.click(
-      screen.getByRole("option", { name: new RegExp(mockGroups.items[0].name) })
+      screen.getByRole("checkbox", {
+        name: new RegExp(mockGroups.items[0].name),
+      })
     );
 
     await userEvent.click(screen.getByRole("button", { name: /Save user/i }));
