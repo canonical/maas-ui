@@ -71,7 +71,7 @@ const SingleSignOnFormFields = ({
         type="text"
       />
       <FormikField
-        disabled
+        disabled={!canEdit}
         help="The redirect URI in the application where the OIDC provider will redirect users after successful authentication. Unless you have specific requirements, this should be set to your MAAS URL followed by /r/login/oidc/callback."
         label="Redirect URI"
         name="redirect_uri"
