@@ -33,7 +33,7 @@ SidePanelContextProvider
 ## Opening a Side Panel
 
 ```tsx
-import { useSidePanel } from "@/app/base/side-panel-context";
+import { useSidePanel } from "@canonical/maas-react-components";
 import { AddPool } from "@/app/pools/components";
 
 const { openSidePanel } = useSidePanel();
@@ -73,14 +73,16 @@ openSidePanel({ component: AddPool, title: "Add pool" });
 ```tsx
 const { closeSidePanel } = useSidePanel();
 
-<Button onClick={closeSidePanel}>Cancel</Button>
+<Button onClick={closeSidePanel}>Cancel</Button>;
 ```
 
 Call `closeSidePanel` explicitly:
+
 - In a cancel button handler.
 - In an `onSuccess` callback after a successful mutation.
 
 The panel also closes automatically when:
+
 - The URL changes (any route navigation — `pathname`, `search`, or `hash`).
 - The user presses Escape.
 
@@ -88,11 +90,11 @@ The panel also closes automatically when:
 
 ## Panel Sizes
 
-| Size | When to use |
-|---|---|
-| `regular` | Default — standard add/edit forms |
-| `wide` | Complex forms with multiple sections |
-| `large` | Full-width content, data-heavy panels |
+| Size      | When to use                           |
+| --------- | ------------------------------------- |
+| `regular` | Default — standard add/edit forms     |
+| `wide`    | Complex forms with multiple sections  |
+| `large`   | Full-width content, data-heavy panels |
 
 Pass `size` in `openSidePanel` to set it at open time:
 
@@ -121,7 +123,12 @@ setSidePanelSize("large");
 ```tsx
 import { AddPool } from "@/app/pools/components";
 import PoolsListHeader from "@/app/pools/components/PoolsListHeader/PoolsListHeader";
-import { mockSidePanel, renderWithProviders, screen, userEvent } from "@/testing/utils";
+import {
+  mockSidePanel,
+  renderWithProviders,
+  screen,
+  userEvent,
+} from "@/testing/utils";
 
 const { mockOpen } = await mockSidePanel();
 
@@ -148,7 +155,13 @@ expect(mockOpen).toHaveBeenCalledWith(
 
 ```tsx
 import DeletePool from "./DeletePool";
-import { mockSidePanel, renderWithProviders, screen, userEvent, waitForLoading } from "@/testing/utils";
+import {
+  mockSidePanel,
+  renderWithProviders,
+  screen,
+  userEvent,
+  waitForLoading,
+} from "@/testing/utils";
 
 const { mockClose } = await mockSidePanel();
 
@@ -186,7 +199,7 @@ openSidePanel({ component: <AddPool />, title: "Add pool" });
 
 ```tsx
 const { closeSidePanel } = useSidePanel();
-<Button onClick={closeSidePanel}>Cancel</Button>
+<Button onClick={closeSidePanel}>Cancel</Button>;
 ```
 
 **Don't** leave the panel open after an action completes.

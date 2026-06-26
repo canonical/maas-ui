@@ -4,6 +4,7 @@ import {
   ExternalLink,
   GenericTable,
   MainToolbar,
+  useSidePanel,
 } from "@canonical/maas-react-components";
 import {
   Button,
@@ -13,7 +14,6 @@ import {
 import { useListSshKeys } from "@/app/api/query/sshKeys";
 import type { SshKeyResponse } from "@/app/apiclient";
 import docsUrls from "@/app/base/docsUrls";
-import { useSidePanel } from "@/app/base/side-panel-context";
 import { AddSSHKey } from "@/app/preferences/views/SSHKeys/components";
 import useSSHKeysTableColumns from "@/app/preferences/views/SSHKeys/components/SSHKeysTable/useSSHKeysTableColumns/useSSHKeysTableColumns";
 

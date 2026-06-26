@@ -1,5 +1,6 @@
 import { useMemo } from "react";
 
+import { useSidePanel } from "@canonical/maas-react-components";
 import type { ColumnDef, Row } from "@tanstack/react-table";
 
 import TableMenu from "@/app/base/components/TableMenu";
@@ -7,7 +8,6 @@ import DeleteFilesystem from "@/app/base/components/node/StorageTables/Filesyste
 import DeleteSpecialFilesystem from "@/app/base/components/node/StorageTables/FilesystemsTable/DeleteSpecialFilesystem";
 import type { FilesystemRow } from "@/app/base/components/node/StorageTables/FilesystemsTable/FilesystemsTable";
 import UnmountFilesystem from "@/app/base/components/node/StorageTables/FilesystemsTable/UnmountFilesystem";
-import { useSidePanel } from "@/app/base/side-panel-context";
 import { formatSize, usesStorage } from "@/app/store/utils";
 
 export type FilesystemsColumnDef = ColumnDef<

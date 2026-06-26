@@ -1,3 +1,4 @@
+import { useSidePanel } from "@canonical/maas-react-components";
 import { Col, Row } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router";
@@ -6,7 +7,6 @@ import DeleteTagFormWarnings from "./DeleteTagFormWarnings";
 
 import FormikForm from "@/app/base/components/FormikForm";
 import { useScrollToTop } from "@/app/base/hooks";
-import { useSidePanel } from "@/app/base/side-panel-context";
 import type { EmptyObject, SyncNavigateFunction } from "@/app/base/types";
 import urls from "@/app/base/urls";
 import type { RootState } from "@/app/store/root/types";

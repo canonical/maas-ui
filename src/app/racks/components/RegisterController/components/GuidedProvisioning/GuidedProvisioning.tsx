@@ -1,13 +1,12 @@
 import type { ChangeEvent, ReactElement } from "react";
 import { useState } from "react";
 
-import { ExternalLink } from "@canonical/maas-react-components";
+import { ExternalLink, useSidePanel } from "@canonical/maas-react-components";
 import { Button, CodeSnippet } from "@canonical/react-components";
 
 import { useGenerateToken } from "@/app/api/query/racks";
 import CopyButton from "@/app/base/components/CopyButton";
 import docsUrls from "@/app/base/docsUrls";
-import { useSidePanel } from "@/app/base/side-panel-context";
 import "./_index.scss";
 
 type GuidedProvisioningProps = {

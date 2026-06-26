@@ -1,11 +1,11 @@
 import type { ReactElement } from "react";
 
+import { useSidePanel } from "@canonical/maas-react-components";
 import { Button, Icon, ICONS, Tooltip } from "@canonical/react-components";
 import { Link } from "react-router";
 
 import { HardwareType } from "@/app/base/enum";
 import { useSendAnalytics } from "@/app/base/hooks";
-import { useSidePanel } from "@/app/base/side-panel-context";
 import TestMachineForm from "@/app/machines/components/MachineForms/MachineActionFormWrapper/TestMachineForm";
 import type { MachineDetails } from "@/app/store/machine/types";
 import type { TestStatus } from "@/app/store/types/node";

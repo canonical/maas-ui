@@ -1,6 +1,7 @@
 import type { ReactElement } from "react";
 import { useState } from "react";
 
+import { useSidePanel } from "@canonical/maas-react-components";
 import { NotificationSeverity, Spinner } from "@canonical/react-components";
 import { useQueryClient } from "@tanstack/react-query";
 import { useDispatch, useSelector } from "react-redux";
@@ -15,7 +16,6 @@ import type { DiscoveryResponse } from "@/app/apiclient";
 import { listDiscoveriesQueryKey } from "@/app/apiclient/@tanstack/react-query.gen";
 import FormikForm from "@/app/base/components/FormikForm";
 import { useCycled, useFetchActions } from "@/app/base/hooks";
-import { useSidePanel } from "@/app/base/side-panel-context";
 import urls from "@/app/base/urls";
 import { hostnameValidation } from "@/app/base/validation";
 import { deviceActions } from "@/app/store/device";

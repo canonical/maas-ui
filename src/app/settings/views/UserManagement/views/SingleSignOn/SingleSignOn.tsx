@@ -1,6 +1,10 @@
 import { useEffect, useMemo, type ReactElement } from "react";
 
-import { ContentSection, MainToolbar } from "@canonical/maas-react-components";
+import {
+  ContentSection,
+  MainToolbar,
+  useSidePanel,
+} from "@canonical/maas-react-components";
 import {
   Button,
   Notification as NotificationBanner,
@@ -16,8 +20,7 @@ import SingleSignOnForm from "./components/SingleSignOnForm";
 
 import { useActiveOauthProvider } from "@/app/api/query/auth";
 import PageContent from "@/app/base/components/PageContent";
-import { useWindowTitle, useHasEntitlements } from "@/app/base/hooks";
-import { useSidePanel } from "@/app/base/side-panel-context";
+import { useHasEntitlements, useWindowTitle } from "@/app/base/hooks";
 import { generalActions } from "@/app/store/general";
 import { maasURL } from "@/app/store/general/selectors";
 

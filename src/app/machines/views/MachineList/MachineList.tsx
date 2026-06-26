@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 
+import { useSidePanel } from "@canonical/maas-react-components";
 import type { ValueOf } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -10,7 +11,6 @@ import { usePageSize, type useResponsiveColumns } from "./hooks";
 
 import VaultNotification from "@/app/base/components/VaultNotification";
 import { useFetchActions, useWindowTitle } from "@/app/base/hooks";
-import { useSidePanel } from "@/app/base/side-panel-context";
 import type { SortDirection } from "@/app/base/types";
 import { controllerActions } from "@/app/store/controller";
 import { generalActions } from "@/app/store/general";

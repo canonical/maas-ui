@@ -1,6 +1,7 @@
 import type { ReactElement, ReactNode } from "react";
 import { useEffect } from "react";
 
+import { useSidePanel } from "@canonical/maas-react-components";
 import type { ClassName } from "@canonical/react-components";
 import { usePrevious } from "@canonical/react-components/dist/hooks";
 import classNames from "classnames";
@@ -8,7 +9,6 @@ import { useLocation } from "react-router";
 
 import type { SectionHeaderProps } from "@/app/base/components/SectionHeader";
 import SectionHeader from "@/app/base/components/SectionHeader";
-import { useSidePanel } from "@/app/base/side-panel-context";
 
 type TitleBlock = {
   title: ReactNode;

@@ -1,5 +1,6 @@
 import type { ReactElement } from "react";
 
+import { useSidePanel } from "@canonical/maas-react-components";
 import { Textarea } from "@canonical/react-components";
 import * as Yup from "yup";
 
@@ -7,7 +8,6 @@ import { useCreateZone } from "@/app/api/query/zones";
 import type { CreateZoneError, ZoneRequest } from "@/app/apiclient";
 import FormikField from "@/app/base/components/FormikField";
 import FormikForm from "@/app/base/components/FormikForm";
-import { useSidePanel } from "@/app/base/side-panel-context";
 
 const ZoneSchema = Yup.object().shape({
   name: Yup.string().required("name is required"),

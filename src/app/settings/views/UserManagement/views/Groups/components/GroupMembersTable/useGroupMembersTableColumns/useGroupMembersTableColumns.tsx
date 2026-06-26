@@ -1,5 +1,6 @@
 import type { Dispatch, SetStateAction } from "react";
 
+import { useSidePanel } from "@canonical/maas-react-components";
 import { ContextualMenu } from "@canonical/react-components";
 import type { ColumnDef } from "@tanstack/react-table";
 
@@ -7,7 +8,6 @@ import type {
   UserGroupMemberResponse,
   UserGroupResponse,
 } from "@/app/apiclient";
-import { useSidePanel } from "@/app/base/side-panel-context";
 import RemoveGroupMember from "@/app/settings/views/UserManagement/views/Groups/components/RemoveGroupMember";
 
 export type MemberColumnDef = ColumnDef<

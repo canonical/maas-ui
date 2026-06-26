@@ -1,5 +1,6 @@
 import { useMemo } from "react";
 
+import { useSidePanel } from "@canonical/maas-react-components";
 import type { ColumnDef } from "@tanstack/react-table";
 
 import EditInterface from "../../EditInterface";
@@ -8,7 +9,6 @@ import RemoveInterface from "../RemoveInterface";
 import MacAddressDisplay from "@/app/base/components/MacAddressDisplay";
 import TableActions from "@/app/base/components/TableActions";
 import SubnetColumn from "@/app/base/components/node/networking/SubnetColumn";
-import { useSidePanel } from "@/app/base/side-panel-context";
 import type { Device, DeviceMeta } from "@/app/store/device/types";
 import type { Subnet } from "@/app/store/subnet/types";
 import type { NetworkInterface, NetworkLink } from "@/app/store/types/node";

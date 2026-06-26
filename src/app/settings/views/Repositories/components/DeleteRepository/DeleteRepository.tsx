@@ -1,3 +1,4 @@
+import { useSidePanel } from "@canonical/maas-react-components";
 import {
   Notification as NotificationBanner,
   Spinner,
@@ -11,7 +12,6 @@ import {
 import type { PackageRepositoryResponse } from "@/app/apiclient";
 import { getPackageRepositoryQueryKey } from "@/app/apiclient/@tanstack/react-query.gen";
 import ModelActionForm from "@/app/base/components/ModelActionForm";
-import { useSidePanel } from "@/app/base/side-panel-context";
 
 type Props = {
   id: PackageRepositoryResponse["id"];

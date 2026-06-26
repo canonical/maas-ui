@@ -1,3 +1,4 @@
+import { useSidePanel } from "@canonical/maas-react-components";
 import { Button, Col, Row } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 
@@ -6,7 +7,6 @@ import FabricLink from "@/app/base/components/FabricLink";
 import SpaceLink from "@/app/base/components/SpaceLink";
 import TitledSection from "@/app/base/components/TitledSection";
 import { useHasEntitlements } from "@/app/base/hooks";
-import { useSidePanel } from "@/app/base/side-panel-context";
 import {
   EditVLAN,
   VLANControllers,

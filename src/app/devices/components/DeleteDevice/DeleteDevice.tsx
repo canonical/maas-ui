@@ -1,12 +1,12 @@
 import type { ReactElement } from "react";
 
+import { useSidePanel } from "@canonical/maas-react-components";
 import { useDispatch, useSelector } from "react-redux";
 import type { Action, Dispatch } from "redux";
 
 import ActionForm from "@/app/base/components/ActionForm";
 import NodeActionConfirmationText from "@/app/base/components/NodeActionConfirmationText";
 import NodeActionWarning from "@/app/base/components/node/NodeActionWarning";
-import { useSidePanel } from "@/app/base/side-panel-context";
 import type { EmptyObject } from "@/app/base/types";
 import urls from "@/app/base/urls";
 import { deviceActions } from "@/app/store/device";

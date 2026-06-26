@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 
+import { useSidePanel } from "@canonical/maas-react-components";
 import {
   Notification as NotificationBanner,
   Spinner,
@@ -29,7 +30,6 @@ import type {
   UpdatePackageRepositoryError,
 } from "@/app/apiclient";
 import FormikForm from "@/app/base/components/FormikForm";
-import { useSidePanel } from "@/app/base/side-panel-context";
 import { generalActions } from "@/app/store/general";
 import {
   componentsToDisable as componentsToDisableSelectors,

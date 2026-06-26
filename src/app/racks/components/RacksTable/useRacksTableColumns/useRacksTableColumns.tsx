@@ -1,5 +1,6 @@
 import { useMemo } from "react";
 
+import { useSidePanel } from "@canonical/maas-react-components";
 import type { ColumnDef, Row } from "@tanstack/react-table";
 import pluralize from "pluralize";
 import { Link } from "react-router";
@@ -11,7 +12,6 @@ import RemoveControllers from "../../RemoveControllers";
 
 import type { RackWithSummaryResponse } from "@/app/apiclient";
 import TableMenu from "@/app/base/components/TableMenu";
-import { useSidePanel } from "@/app/base/side-panel-context";
 import urls from "@/app/base/urls";
 import { FilterControllers } from "@/app/store/controller/utils";
 

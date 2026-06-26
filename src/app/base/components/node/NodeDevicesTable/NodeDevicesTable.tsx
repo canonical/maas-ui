@@ -1,7 +1,7 @@
 import type { ReactElement } from "react";
 import { useEffect } from "react";
 
-import { GenericTable } from "@canonical/maas-react-components";
+import { GenericTable, useSidePanel } from "@canonical/maas-react-components";
 import { Button } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -9,7 +9,6 @@ import useNodeDevicesTableColumns, {
   filterCells,
 } from "@/app/base/components/node/NodeDevicesTable/useNodeDevicesTableColumns/useNodeDevicesTableColumns";
 import { HardwareType } from "@/app/base/enum";
-import { useSidePanel } from "@/app/base/side-panel-context";
 import CommissionForm from "@/app/machines/components/MachineForms/MachineActionFormWrapper/CommissionForm";
 import type { ControllerDetails } from "@/app/store/controller/types";
 import type { MachineDetails } from "@/app/store/machine/types";

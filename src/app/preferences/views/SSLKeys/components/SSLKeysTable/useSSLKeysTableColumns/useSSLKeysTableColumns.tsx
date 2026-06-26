@@ -1,10 +1,10 @@
 import { useMemo } from "react";
 
+import { useSidePanel } from "@canonical/maas-react-components";
 import type { ColumnDef } from "@tanstack/react-table";
 
 import type { SslKeyResponse } from "@/app/apiclient";
 import TableActions from "@/app/base/components/TableActions";
-import { useSidePanel } from "@/app/base/side-panel-context";
 import { DeleteSSLKey } from "@/app/preferences/views/SSLKeys/components";
 
 type SSLKeysColumnDef = ColumnDef<SslKeyResponse, Partial<SslKeyResponse>>;

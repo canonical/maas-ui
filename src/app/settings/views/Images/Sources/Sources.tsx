@@ -1,6 +1,10 @@
 import type { ReactElement } from "react";
 
-import { ContentSection, MainToolbar } from "@canonical/maas-react-components";
+import {
+  ContentSection,
+  MainToolbar,
+  useSidePanel,
+} from "@canonical/maas-react-components";
 import { Button } from "@canonical/react-components";
 
 import { Entitlement } from "../../UserManagement/views/Groups/constants";
@@ -8,7 +12,6 @@ import { Entitlement } from "../../UserManagement/views/Groups/constants";
 import type { BootSourceResponse } from "@/app/apiclient";
 import PageContent from "@/app/base/components/PageContent";
 import { useHasEntitlements } from "@/app/base/hooks";
-import { useSidePanel } from "@/app/base/side-panel-context";
 import type { BootResourceSourceType } from "@/app/images/types";
 import AddSource from "@/app/settings/views/Images/Sources/components/AddSource";
 import SourcesTable from "@/app/settings/views/Images/Sources/components/SourcesTable";

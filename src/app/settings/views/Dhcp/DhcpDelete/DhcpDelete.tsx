@@ -1,7 +1,7 @@
+import { useSidePanel } from "@canonical/maas-react-components";
 import { useDispatch } from "react-redux";
 
 import ModelActionForm from "@/app/base/components/ModelActionForm";
-import { useSidePanel } from "@/app/base/side-panel-context";
 import { dhcpsnippetActions } from "@/app/store/dhcpsnippet";
 
 type Props = {

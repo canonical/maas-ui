@@ -1,6 +1,6 @@
 import type { Dispatch, ReactElement, SetStateAction } from "react";
 
-import { MainToolbar } from "@canonical/maas-react-components";
+import { MainToolbar, useSidePanel } from "@canonical/maas-react-components";
 import { Button, Spinner } from "@canonical/react-components";
 import type { RowSelectionState } from "@tanstack/react-table";
 import pluralize from "pluralize";
@@ -8,7 +8,6 @@ import pluralize from "pluralize";
 import { useImageSources } from "@/app/api/query/imageSources";
 import { useSelectionStatuses } from "@/app/api/query/images";
 import type { BootSourceResponse } from "@/app/apiclient";
-import { useSidePanel } from "@/app/base/side-panel-context";
 import DeleteImages from "@/app/images/components/DeleteImages";
 import SelectUpstreamImagesForm from "@/app/images/components/SelectUpstreamImagesForm";
 import UploadCustomImage from "@/app/images/components/UploadCustomImage";

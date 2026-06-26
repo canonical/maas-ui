@@ -1,7 +1,7 @@
 import type { ReactElement } from "react";
 import { useEffect, useState } from "react";
 
-import { ExternalLink } from "@canonical/maas-react-components";
+import { ExternalLink, useSidePanel } from "@canonical/maas-react-components";
 import { Spinner } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
@@ -11,7 +11,6 @@ import CloneResults from "./CloneResults";
 
 import ActionForm from "@/app/base/components/ActionForm";
 import NodeActionWarning from "@/app/base/components/node/NodeActionWarning";
-import { useSidePanel } from "@/app/base/side-panel-context";
 import type { SetSearchFilter } from "@/app/base/types";
 import { machineActions } from "@/app/store/machine";
 import machineSelectors from "@/app/store/machine/selectors";

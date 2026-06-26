@@ -1,12 +1,10 @@
 import type { ReactElement } from "react";
 import { useEffect } from "react";
 
-import { ContentSection } from "@canonical/maas-react-components";
+import { ContentSection, useSidePanel } from "@canonical/maas-react-components";
 import { AppAside, useOnEscapePressed } from "@canonical/react-components";
 import classNames from "classnames";
 import { useLocation } from "react-router";
-
-import { useSidePanel } from "@/app/base/side-panel-context";
 
 const useCloseSidePanelOnRouteChange = (): void => {
   const location = useLocation();

@@ -1,12 +1,11 @@
 import { useEffect, useState } from "react";
 
-import { MainToolbar } from "@canonical/maas-react-components";
+import { MainToolbar, useSidePanel } from "@canonical/maas-react-components";
 import { Button } from "@canonical/react-components";
 
 import AddRack from "../AddRack/AddRack";
 
 import DebounceSearchBox from "@/app/base/components/DebounceSearchBox";
-import { useSidePanel } from "@/app/base/side-panel-context";
 import type { SetSearchFilter } from "@/app/base/types";
 
 type Props = {

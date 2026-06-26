@@ -1,12 +1,12 @@
 import type { ReactElement } from "react";
 import { useCallback } from "react";
 
+import { useSidePanel } from "@canonical/maas-react-components";
 import { Notification as NotificationBanner } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 
 import FabricLink from "@/app/base/components/FabricLink";
 import FormikForm from "@/app/base/components/FormikForm";
-import { useSidePanel } from "@/app/base/side-panel-context";
 import type { EmptyObject } from "@/app/base/types";
 import urls from "@/app/networks/urls";
 import fabricSelectors from "@/app/store/fabric/selectors";

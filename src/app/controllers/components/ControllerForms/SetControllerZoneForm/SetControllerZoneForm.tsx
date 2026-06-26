@@ -1,3 +1,4 @@
+import { useSidePanel } from "@canonical/maas-react-components";
 import { Col, Row } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
@@ -5,7 +6,6 @@ import * as Yup from "yup";
 import type { ZoneResponse } from "@/app/apiclient";
 import ActionForm from "@/app/base/components/ActionForm";
 import ZoneSelect from "@/app/base/components/ZoneSelect";
-import { useSidePanel } from "@/app/base/side-panel-context";
 import { getProcessingCount } from "@/app/controllers/utils";
 import { controllerActions } from "@/app/store/controller";
 import controllerSelectors, {

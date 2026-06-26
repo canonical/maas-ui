@@ -1,8 +1,9 @@
 import { useState } from "react";
 
+import { useSidePanel } from "@canonical/maas-react-components";
+
 import BaseDhcpForm from "@/app/base/components/DhcpForm";
 import type { DHCPFormValues } from "@/app/base/components/DhcpForm/types";
-import { useSidePanel } from "@/app/base/side-panel-context";
 import type { DHCPSnippet } from "@/app/store/dhcpsnippet/types";
 
 type Props = {

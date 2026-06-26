@@ -1,6 +1,10 @@
 import { useState } from "react";
 
-import { GenericTable, MainToolbar } from "@canonical/maas-react-components";
+import {
+  GenericTable,
+  MainToolbar,
+  useSidePanel,
+} from "@canonical/maas-react-components";
 import { Button } from "@canonical/react-components";
 
 import { Entitlement } from "../../../Groups/constants";
@@ -11,7 +15,6 @@ import { useUsers } from "@/app/api/query/users";
 import SearchBox from "@/app/base/components/SearchBox";
 import { useHasEntitlements } from "@/app/base/hooks";
 import usePagination from "@/app/base/hooks/usePagination/usePagination";
-import { useSidePanel } from "@/app/base/side-panel-context";
 import { AddUser } from "@/app/settings/views/UserManagement/views/UsersList/components";
 
 const UsersTable = () => {

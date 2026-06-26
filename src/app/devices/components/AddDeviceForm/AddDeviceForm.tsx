@@ -1,5 +1,6 @@
 import { useState } from "react";
 
+import { useSidePanel } from "@canonical/maas-react-components";
 import { Col, Row, Spinner, Strip } from "@canonical/react-components";
 import ipaddr from "ipaddr.js";
 import { isIP, isIPv4 } from "is-ip";
@@ -16,7 +17,6 @@ import FormikForm from "@/app/base/components/FormikForm";
 import { formatIpAddress } from "@/app/base/components/PrefixedIpInput";
 import ZoneSelect from "@/app/base/components/ZoneSelect";
 import { useFetchActions } from "@/app/base/hooks";
-import { useSidePanel } from "@/app/base/side-panel-context";
 import { hostnameValidation, MAC_ADDRESS_REGEX } from "@/app/base/validation";
 import { deviceActions } from "@/app/store/device";
 import deviceSelectors from "@/app/store/device/selectors";

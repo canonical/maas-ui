@@ -1,3 +1,4 @@
+import { useSidePanel } from "@canonical/maas-react-components";
 import { useDispatch, useSelector } from "react-redux";
 
 import SetControllerZoneForm from "../SetControllerZoneForm";
@@ -6,7 +7,6 @@ import TestControllerForm from "../TestControllerForm";
 import FieldlessForm from "@/app/base/components/node/FieldlessForm";
 import NodeActionFormWrapper from "@/app/base/components/node/NodeActionFormWrapper";
 import type { HardwareType } from "@/app/base/enum";
-import { useSidePanel } from "@/app/base/side-panel-context";
 import DeleteController from "@/app/controllers/components/ControllerForms/DeleteController";
 import { getProcessingCount } from "@/app/controllers/utils";
 import { controllerActions } from "@/app/store/controller";

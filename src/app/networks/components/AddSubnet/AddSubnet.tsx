@@ -1,5 +1,6 @@
 import type { ReactElement } from "react";
 
+import { useSidePanel } from "@canonical/maas-react-components";
 import { Col, Input, Row } from "@canonical/react-components";
 import { useFormikContext } from "formik";
 import { useDispatch, useSelector } from "react-redux";
@@ -9,7 +10,6 @@ import FabricSelect from "@/app/base/components/FabricSelect";
 import FormikField from "@/app/base/components/FormikField";
 import FormikForm from "@/app/base/components/FormikForm";
 import VLANSelect from "@/app/base/components/VLANSelect";
-import { useSidePanel } from "@/app/base/side-panel-context";
 import { subnetActions } from "@/app/store/subnet";
 import subnetSelectors from "@/app/store/subnet/selectors";
 import { toFormikNumber } from "@/app/utils";

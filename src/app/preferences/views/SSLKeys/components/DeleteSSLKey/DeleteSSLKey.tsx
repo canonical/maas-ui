@@ -1,8 +1,9 @@
 import type { ReactElement } from "react";
 
+import { useSidePanel } from "@canonical/maas-react-components";
+
 import { useDeleteSslKey } from "@/app/api/query/sslKeys";
 import ModelActionForm from "@/app/base/components/ModelActionForm";
-import { useSidePanel } from "@/app/base/side-panel-context";
 
 type DeleteSSLKeyProps = {
   id: number;

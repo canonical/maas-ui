@@ -1,3 +1,4 @@
+import { useSidePanel } from "@canonical/maas-react-components";
 import {
   Notification as NotificationBanner,
   Spinner,
@@ -10,7 +11,6 @@ import type { UpdateGroupError, UserGroupRequest } from "@/app/apiclient";
 import { getGroupQueryKey } from "@/app/apiclient/@tanstack/react-query.gen";
 import FormikField from "@/app/base/components/FormikField";
 import FormikForm from "@/app/base/components/FormikForm";
-import { useSidePanel } from "@/app/base/side-panel-context";
 
 type Props = {
   id: number;

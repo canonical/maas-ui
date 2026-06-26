@@ -1,6 +1,7 @@
 import type { ReactElement } from "react";
 import { useEffect, useMemo, useState } from "react";
 
+import { useSidePanel } from "@canonical/maas-react-components";
 import type { MultiSelectItem } from "@canonical/react-components";
 import {
   Notification as NotificationBanner,
@@ -24,7 +25,6 @@ import type {
   UiSourceAvailableImageResponse,
 } from "@/app/apiclient";
 import FormikForm from "@/app/base/components/FormikForm";
-import { useSidePanel } from "@/app/base/side-panel-context";
 
 import "./_index.scss";
 

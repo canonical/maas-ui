@@ -1,3 +1,4 @@
+import { useSidePanel } from "@canonical/maas-react-components";
 import type { ColumnDef } from "@tanstack/react-table";
 import { Link } from "react-router";
 
@@ -6,7 +7,6 @@ import EditGroup from "../../EditGroup";
 
 import type { UserGroupResponse } from "@/app/apiclient";
 import TableActions from "@/app/base/components/TableActions";
-import { useSidePanel } from "@/app/base/side-panel-context";
 import urls from "@/app/settings/urls";
 
 type GroupsListColumnData = UserGroupResponse & {

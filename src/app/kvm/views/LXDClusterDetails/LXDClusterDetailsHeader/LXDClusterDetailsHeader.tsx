@@ -1,12 +1,12 @@
 import type { ReactNode } from "react";
 
+import { useSidePanel } from "@canonical/maas-react-components";
 import { Button, Icon, Spinner } from "@canonical/react-components";
 import pluralize from "pluralize";
 import { useSelector } from "react-redux";
 import { Link, useLocation } from "react-router";
 
 import { useGetZone } from "@/app/api/query/zones";
-import { useSidePanel } from "@/app/base/side-panel-context";
 import urls from "@/app/base/urls";
 import KVMDetailsHeader from "@/app/kvm/components/KVMDetailsHeader";
 import RefreshForm from "@/app/kvm/components/RefreshForm";

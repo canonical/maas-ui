@@ -1,6 +1,7 @@
 import type { ReactElement } from "react";
 import { useCallback } from "react";
 
+import { useSidePanel } from "@canonical/maas-react-components";
 import {
   Notification as NotificationBanner,
   Spinner,
@@ -11,7 +12,6 @@ import { Link } from "react-router";
 
 import FormikForm from "@/app/base/components/FormikForm";
 import { useCycled } from "@/app/base/hooks";
-import { useSidePanel } from "@/app/base/side-panel-context";
 import type { EmptyObject } from "@/app/base/types";
 import urls from "@/app/base/urls";
 import type { RootState } from "@/app/store/root/types";

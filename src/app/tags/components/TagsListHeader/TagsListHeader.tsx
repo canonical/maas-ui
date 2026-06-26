@@ -1,11 +1,10 @@
-import { MainToolbar } from "@canonical/maas-react-components";
+import { MainToolbar, useSidePanel } from "@canonical/maas-react-components";
 import { Button } from "@canonical/react-components";
 
 import AddTagForm from "../AddTagForm";
 
 import SearchBox from "@/app/base/components/SearchBox";
 import SegmentedControl from "@/app/base/components/SegmentedControl";
-import { useSidePanel } from "@/app/base/side-panel-context";
 import { TagSearchFilter } from "@/app/store/tag/selectors";
 
 export type Props = {

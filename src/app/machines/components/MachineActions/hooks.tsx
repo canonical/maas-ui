@@ -1,3 +1,4 @@
+import { useSidePanel } from "@canonical/maas-react-components";
 import { Button, Icon, Switch } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -17,7 +18,6 @@ import type { MachineActionGroup } from "./types";
 
 import FieldlessForm from "@/app/base/components/node/FieldlessForm";
 import PowerOffForm from "@/app/base/components/node/PowerOffForm";
-import { useSidePanel } from "@/app/base/side-panel-context";
 import { machineActions } from "@/app/store/machine";
 import machineSelectors from "@/app/store/machine/selectors";
 import type { Machine } from "@/app/store/machine/types";

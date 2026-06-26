@@ -1,5 +1,6 @@
 import type { ReactElement } from "react";
 
+import { useSidePanel } from "@canonical/maas-react-components";
 import {
   Notification as NotificationBanner,
   Spinner,
@@ -9,7 +10,6 @@ import { useQueryClient } from "@tanstack/react-query";
 import { useDeletePool, useGetPool } from "@/app/api/query/pools";
 import { listResourcePoolsStatisticsQueryKey } from "@/app/apiclient/@tanstack/react-query.gen";
 import ModelActionForm from "@/app/base/components/ModelActionForm";
-import { useSidePanel } from "@/app/base/side-panel-context";
 
 type DeletePoolProps = {
   id: number;

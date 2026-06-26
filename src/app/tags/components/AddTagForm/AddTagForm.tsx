@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 
+import { useSidePanel } from "@canonical/maas-react-components";
 import { Col, NotificationSeverity, Row } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router";
@@ -8,7 +9,6 @@ import * as Yup from "yup";
 import FormikField from "@/app/base/components/FormikField";
 import FormikForm from "@/app/base/components/FormikForm";
 import { useSendAnalytics } from "@/app/base/hooks";
-import { useSidePanel } from "@/app/base/side-panel-context";
 import type { SyncNavigateFunction } from "@/app/base/types";
 import urls from "@/app/base/urls";
 import { TAG_NAME_REGEX } from "@/app/base/validation";

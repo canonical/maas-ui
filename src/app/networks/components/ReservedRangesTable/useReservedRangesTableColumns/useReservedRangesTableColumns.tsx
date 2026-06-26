@@ -1,5 +1,6 @@
 import { useMemo } from "react";
 
+import { useSidePanel } from "@canonical/maas-react-components";
 import type { ColumnDef } from "@tanstack/react-table";
 
 import AddReservedRange from "../../AddReservedRange";
@@ -8,7 +9,6 @@ import { Labels } from "../ReservedRangesTable";
 
 import SubnetLink from "@/app/base/components/SubnetLink";
 import TableActions from "@/app/base/components/TableActions";
-import { useSidePanel } from "@/app/base/side-panel-context";
 import type { IPRangeType } from "@/app/store/iprange/types";
 
 export type ReservedRangesTableData = {

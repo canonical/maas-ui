@@ -1,12 +1,12 @@
 import { useMemo } from "react";
 
+import { useSidePanel } from "@canonical/maas-react-components";
 import type { ColumnDef, Row } from "@tanstack/react-table";
 import { Link } from "react-router";
 
 import type { ZoneResponse, ZoneWithStatisticsResponse } from "@/app/apiclient";
 import TableActions from "@/app/base/components/TableActions";
 import { useHasEntitlements } from "@/app/base/hooks";
-import { useSidePanel } from "@/app/base/side-panel-context";
 import urls from "@/app/base/urls";
 import { Entitlement } from "@/app/settings/views/UserManagement/views/Groups/constants";
 import { FilterDevices } from "@/app/store/device/utils";

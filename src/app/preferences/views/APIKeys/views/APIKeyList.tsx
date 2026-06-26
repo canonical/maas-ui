@@ -1,11 +1,14 @@
-import { ContentSection, MainToolbar } from "@canonical/maas-react-components";
+import {
+  ContentSection,
+  MainToolbar,
+  useSidePanel,
+} from "@canonical/maas-react-components";
 import { Button } from "@canonical/react-components";
 
 import { APIKeyAdd, APIKeyTable } from "../components";
 
 import PageContent from "@/app/base/components/PageContent";
 import { useWindowTitle } from "@/app/base/hooks";
-import { useSidePanel } from "@/app/base/side-panel-context";
 
 const APIKeyList = () => {
   useWindowTitle("API keys");

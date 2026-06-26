@@ -1,5 +1,6 @@
 import type { Dispatch, ReactElement, SetStateAction } from "react";
 
+import { useSidePanel } from "@canonical/maas-react-components";
 import { ContextualMenu } from "@canonical/react-components";
 import type { ColumnDef } from "@tanstack/react-table";
 import { Link } from "react-router";
@@ -10,7 +11,6 @@ import type {
   OpenFgaEntitlementResourceType,
   UserGroupResponse,
 } from "@/app/apiclient";
-import { useSidePanel } from "@/app/base/side-panel-context";
 import urls from "@/app/pools/urls";
 import RemoveGroupEntitlement from "@/app/settings/views/UserManagement/views/Groups/components/RemoveGroupEntitlement";
 

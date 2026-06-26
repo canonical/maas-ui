@@ -1,12 +1,12 @@
 import type { Dispatch, ReactElement, SetStateAction } from "react";
 
+import { useSidePanel } from "@canonical/maas-react-components";
 import type { RowSelectionState } from "@tanstack/react-table";
 import { useSelector } from "react-redux";
 
 import SetZoneForm from "../SetDeviceZoneForm";
 
 import NodeActionFormWrapper from "@/app/base/components/node/NodeActionFormWrapper";
-import { useSidePanel } from "@/app/base/side-panel-context";
 import DeleteDevice from "@/app/devices/components/DeleteDevice";
 import deviceSelectors from "@/app/store/device/selectors";
 import type { Device, DeviceActions } from "@/app/store/device/types";

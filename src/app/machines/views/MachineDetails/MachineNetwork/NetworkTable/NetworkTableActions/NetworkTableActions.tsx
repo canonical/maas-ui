@@ -1,5 +1,6 @@
 import type { ComponentType, ReactElement } from "react";
 
+import { useSidePanel } from "@canonical/maas-react-components";
 import { useSelector } from "react-redux";
 
 import EditInterface from "../../EditInterface";
@@ -12,7 +13,6 @@ import type {
   SetSelected,
 } from "@/app/base/components/node/networking/types";
 import { useIsAllNetworkingDisabled } from "@/app/base/hooks";
-import { useSidePanel } from "@/app/base/side-panel-context";
 import AddAliasOrVlan from "@/app/machines/views/MachineDetails/MachineNetwork/AddAliasOrVlan";
 import MarkConnectedForm from "@/app/machines/views/MachineDetails/MachineNetwork/MarkConnectedForm";
 import { ConnectionState } from "@/app/machines/views/MachineDetails/MachineNetwork/MarkConnectedForm/MarkConnectedForm";

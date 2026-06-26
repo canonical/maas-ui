@@ -4,6 +4,7 @@ import path from "path";
 import type { ProfilerOnRenderCallback, ReactNode } from "react";
 import { Profiler } from "react";
 
+import { SidePanelContextProvider } from "@canonical/maas-react-components";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import type { RenderOptions, RenderResult } from "@testing-library/react";
 import { render, renderHook, screen } from "@testing-library/react";
@@ -18,7 +19,6 @@ import configureStore from "redux-mock-store";
 import { vi } from "vitest";
 
 import { client } from "@/app/apiclient/client.gen";
-import NewSidePanelContextProvider from "@/app/base/side-panel-context";
 import { WebSocketProvider } from "@/app/base/websocket-context";
 import { ConfigNames } from "@/app/store/config/types";
 import type { RootState } from "@/app/store/root/types";
@@ -356,9 +356,9 @@ export const renderWithProviders = (
       <Profiler id="TestComponent" onRender={onRender}>
         <QueryClientProvider client={queryClient}>
           <WebSocketProvider>
-            <NewSidePanelContextProvider>
+            <SidePanelContextProvider>
               <Provider store={store}>{children}</Provider>
-            </NewSidePanelContextProvider>
+            </SidePanelContextProvider>
           </WebSocketProvider>
         </QueryClientProvider>
       </Profiler>
@@ -437,9 +437,9 @@ export const renderHookWithProviders = <T,>(
       wrapper: ({ children }) => (
         <QueryClientProvider client={queryClient}>
           <WebSocketProvider>
-            <NewSidePanelContextProvider>
+            <SidePanelContextProvider>
               <Provider store={store}>{children}</Provider>
-            </NewSidePanelContextProvider>
+            </SidePanelContextProvider>
           </WebSocketProvider>
         </QueryClientProvider>
       ),
@@ -531,7 +531,7 @@ export const spyOnMutation = (obj: unknown, methodName: string) => {
  */
 export const mockSidePanel = async () => {
   const mockUseSidePanel = vi.spyOn(
-    await import("@/app/base/side-panel-context"),
+    await import("@canonical/maas-react-components"),
     "useSidePanel"
   );
 

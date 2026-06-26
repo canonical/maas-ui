@@ -1,8 +1,8 @@
 import type { ReactElement } from "react";
 
+import { useSidePanel } from "@canonical/maas-react-components";
 import { ContextualMenu } from "@canonical/react-components";
 
-import { useSidePanel } from "@/app/base/side-panel-context";
 import ComposeForm from "@/app/kvm/components/ComposeForm";
 import DeleteForm from "@/app/kvm/components/DeleteForm";
 import RefreshForm from "@/app/kvm/components/RefreshForm";

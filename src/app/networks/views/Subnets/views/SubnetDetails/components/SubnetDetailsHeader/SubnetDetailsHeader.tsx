@@ -1,5 +1,6 @@
 import type { ReactElement } from "react";
 
+import { useSidePanel } from "@canonical/maas-react-components";
 import { ContextualMenu } from "@canonical/react-components";
 import { Link, useLocation } from "react-router";
 
@@ -8,7 +9,6 @@ import EditBootArchitectures from "../EditBootArchitectures";
 import MapSubnet from "../MapSubnet";
 
 import SectionHeader from "@/app/base/components/SectionHeader";
-import { useSidePanel } from "@/app/base/side-panel-context";
 import type { Subnet } from "@/app/store/subnet/types";
 import { isSubnetDetails } from "@/app/store/subnet/utils";
 

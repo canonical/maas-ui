@@ -1,5 +1,6 @@
 import { useMemo } from "react";
 
+import { useSidePanel } from "@canonical/maas-react-components";
 import type { ColumnDef } from "@tanstack/react-table";
 import { Link } from "react-router";
 
@@ -7,7 +8,6 @@ import DeleteDHCPLease from "../../DeleteDHCPLease";
 import ReserveDHCPLease from "../../ReserveDHCPLease";
 
 import TableActions from "@/app/base/components/TableActions";
-import { useSidePanel } from "@/app/base/side-panel-context";
 import type { ReservedIpNodeSummary } from "@/app/store/reservedip/types/base";
 import { getNodeUrl } from "@/app/store/reservedip/utils";
 import type { NodeType } from "@/app/store/types/node";

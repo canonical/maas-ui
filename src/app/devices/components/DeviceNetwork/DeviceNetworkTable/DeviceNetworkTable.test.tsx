@@ -18,14 +18,6 @@ import {
 
 const { mockOpen } = await mockSidePanel();
 
-vi.mock("@/app/base/side-panel-context", async () => {
-  const actual = await vi.importActual("@/app/base/side-panel-context");
-  return {
-    ...actual,
-    useSidePanel: vi.fn(),
-  };
-});
-
 describe("DeviceNetworkTable", () => {
   let state: RootState;
   beforeEach(() => {

@@ -1,11 +1,11 @@
 import { useMemo } from "react";
 
+import { useSidePanel } from "@canonical/maas-react-components";
 import { ContextualMenu, Tooltip } from "@canonical/react-components";
 import type { ColumnDef } from "@tanstack/react-table";
 import { Link } from "react-router";
 
 import { useHasEntitlements } from "@/app/base/hooks";
-import { useSidePanel } from "@/app/base/side-panel-context";
 import urls from "@/app/base/urls";
 import DeleteRecordForm from "@/app/domains/components/ResourceRecords/DeleteRecordForm";
 import EditRecordForm from "@/app/domains/components/ResourceRecords/EditRecordForm";

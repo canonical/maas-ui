@@ -1,5 +1,6 @@
 import { useCallback } from "react";
 
+import { useSidePanel } from "@canonical/maas-react-components";
 import { Col, Icon, NotificationSeverity } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router";
@@ -7,7 +8,6 @@ import * as Yup from "yup";
 
 import ActionForm from "@/app/base/components/ActionForm";
 import FormikField from "@/app/base/components/FormikField";
-import { useSidePanel } from "@/app/base/side-panel-context";
 import type { SyncNavigateFunction } from "@/app/base/types";
 import urls from "@/app/base/urls";
 import { machineActions } from "@/app/store/machine";

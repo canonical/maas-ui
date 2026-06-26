@@ -1,11 +1,10 @@
 import type { ReactElement } from "react";
 
-import { GenericTable } from "@canonical/maas-react-components";
+import { GenericTable, useSidePanel } from "@canonical/maas-react-components";
 import { Button, Tooltip } from "@canonical/react-components";
 
 import AddSpecialFilesystem from "@/app/base/components/node/StorageTables/FilesystemsTable/AddSpecialFilesystem";
 import useFileSystemsTableColumns from "@/app/base/components/node/StorageTables/FilesystemsTable/useFilesystemsTableColumns/useFileSystemsTableColumns";
-import { useSidePanel } from "@/app/base/side-panel-context";
 import type { ControllerDetails } from "@/app/store/controller/types";
 import type { MachineDetails } from "@/app/store/machine/types";
 import type { Disk, Partition } from "@/app/store/types/node";

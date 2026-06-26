@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 
-import { GenericTable } from "@canonical/maas-react-components";
+import { GenericTable, useSidePanel } from "@canonical/maas-react-components";
 import type { ColumnDef, RowSelectionState } from "@tanstack/react-table";
 import type { FormikContextType } from "formik";
 import pluralize from "pluralize";
@@ -13,7 +13,6 @@ import type { AddGroupMemberError, UserGroupResponse } from "@/app/apiclient";
 import FormikForm from "@/app/base/components/FormikForm";
 import SearchBox from "@/app/base/components/SearchBox";
 import usePagination from "@/app/base/hooks/usePagination/usePagination";
-import { useSidePanel } from "@/app/base/side-panel-context";
 
 import "./_index.scss";
 

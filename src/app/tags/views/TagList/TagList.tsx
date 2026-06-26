@@ -1,5 +1,6 @@
 import { useId, useState } from "react";
 
+import { useSidePanel } from "@canonical/maas-react-components";
 import { useSelector } from "react-redux";
 
 import DeleteTagForm from "../../components/DeleteTagForm";
@@ -9,7 +10,6 @@ import UpdateTagForm from "../../components/UpdateTagForm";
 
 import PageContent from "@/app/base/components/PageContent";
 import { useWindowTitle } from "@/app/base/hooks";
-import { useSidePanel } from "@/app/base/side-panel-context";
 import type { RootState } from "@/app/store/root/types";
 import tagSelectors, { TagSearchFilter } from "@/app/store/tag/selectors";
 import type { Tag, TagMeta } from "@/app/store/tag/types";
