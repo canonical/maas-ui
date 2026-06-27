@@ -3188,6 +3188,18 @@
     "@redux-saga/types" "^1.3.1"
     typescript-tuple "^2.2.1"
 
+"@redux-saga/core@^1.5.0":
+  version "1.5.0"
+  resolved "https://registry.yarnpkg.com/@redux-saga/core/-/core-1.5.0.tgz#e18d9cc0f75711ff0d3bc426ff7df39cb9c32d1c"
+  integrity sha512-oMWpQntvVikLhr+wZsvGDzkjW79HphBgEb6Hncz8OkM0azsT3uUnP1Her/W5QZhcDG+tWmjDhah8uDbPSRLs/Q==
+  dependencies:
+    "@babel/runtime" "^7.28.4"
+    "@redux-saga/deferred" "^1.3.1"
+    "@redux-saga/delay-p" "^1.3.1"
+    "@redux-saga/is" "^1.2.1"
+    "@redux-saga/symbols" "^1.2.1"
+    "@redux-saga/types" "^1.4.0"
+
 "@redux-saga/deferred@^1.3.1":
   version "1.3.1"
   resolved "https://registry.yarnpkg.com/@redux-saga/deferred/-/deferred-1.3.1.tgz#f274c9df9a1e8b837dc912188fff3dfdf7fd24e8"
@@ -3217,6 +3229,11 @@
   version "1.3.1"
   resolved "https://registry.yarnpkg.com/@redux-saga/types/-/types-1.3.1.tgz#7cda9b29dca868a9689a7105aec7c21d54575489"
   integrity sha512-YRCrJdhQLobGIQ8Cj1sta3nn6DrZDTSUnrIYhS2e5V590BmfVDleKoAquclAiKSBKWJwmuXTb+b4BL6rSHnahw==
+
+"@redux-saga/types@^1.4.0":
+  version "1.4.0"
+  resolved "https://registry.yarnpkg.com/@redux-saga/types/-/types-1.4.0.tgz#93c02aa2172f31f861066a6aad81c594d51c3e43"
+  integrity sha512-fq3Vy0TRl0mEb+1CyTx5wPBY3jxDi7yD4GL1Kz4S6ud7/leGEgRq1NYJDIiVbHMRBJd5rU/BB0Z+akrXSR0DJg==
 
 "@reduxjs/toolkit@2.12.0":
   version "2.12.0"
@@ -13419,13 +13436,21 @@ redux-saga-test-plan@4.0.6:
     lodash.isequal "^4.5.0"
     lodash.ismatch "^4.4.0"
 
-redux-saga@*, redux-saga@1.4.3:
+redux-saga@*:
   version "1.4.3"
   resolved "https://registry.yarnpkg.com/redux-saga/-/redux-saga-1.4.3.tgz#5d4ef2cadbd46a526fbc47c385144cd49dcc8857"
   integrity sha512-l2XfhI/BphvE+egITxJFei0K6FoW5yOnMwkTaH+oGi+7I+nEXVu5KWRdHYShhND1kE3yotMPPFFPwfsSwhSajQ==
   dependencies:
     "@babel/runtime" "^7.28.4"
     "@redux-saga/core" "^1.4.3"
+
+redux-saga@1.5.0:
+  version "1.5.0"
+  resolved "https://registry.yarnpkg.com/redux-saga/-/redux-saga-1.5.0.tgz#af0c9a15a268ae486fd6f1fde846b765ff2bfb3d"
+  integrity sha512-IdnDBfgt/XuBhSwWMGwjtcOOQAmiqOc1nRGxNst2MWP9yLN0zOvaPpinm8rtKoL00kMZgczZFPNNQgy2hoBIBw==
+  dependencies:
+    "@babel/runtime" "^7.28.4"
+    "@redux-saga/core" "^1.5.0"
 
 redux-thunk@^3.1.0:
   version "3.1.0"

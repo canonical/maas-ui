@@ -91,7 +91,7 @@
     "reduce-reducers": "1.0.4",
     "redux": "5.0.1",
     "redux-first-history": "5.2.0",
-    "redux-saga": "1.4.3",
+    "redux-saga": "1.5.0",
     "typed-redux-saga": "1.5.0",
     "typescript": "5.9.3",
     "vanilla-framework": "4.51.0",
