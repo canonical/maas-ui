@@ -138,7 +138,7 @@ jobs:
         with:
           node-version-file: ".nvmrc"
       - name: Install Cypress
-        uses: cypress-io/github-action@v7.3.0
+        uses: cypress-io/github-action@v7.4.1
         with:
           runTests: false
           install-command: yarn install
@@ -175,7 +175,7 @@ jobs:
           lxc file push /tmp/maas-certs/cert.pem maas-backend/usr/local/share/ca-certificates/maas-selfsigned.crt
           lxc exec maas-backend -- update-ca-certificates
       - name: Run Cypress tests
-        uses: cypress-io/github-action@v7.3.0
+        uses: cypress-io/github-action@v7.4.1
         env:
           HTTPS_CERT: /tmp/maas-certs/cert.pem
           HTTPS_KEY: /tmp/maas-certs/key.pem
@@ -304,7 +304,7 @@ jobs:
         with:
           node-version-file: ".nvmrc"
       - name: Install Cypress
-        uses: cypress-io/github-action@v7.3.0
+        uses: cypress-io/github-action@v7.4.1
         with:
           runTests: false
           install-command: yarn install
@@ -381,7 +381,7 @@ jobs:
             echo "pattern=${{ needs.detect-changes.outputs.spec_glob }}" >> "$GITHUB_OUTPUT"
           fi
       - name: Run Cypress tests
-        uses: cypress-io/github-action@v7.3.0
+        uses: cypress-io/github-action@v7.4.1
         env:
           HTTPS_CERT: /tmp/maas-certs/cert.pem
           HTTPS_KEY: /tmp/maas-certs/key.pem
