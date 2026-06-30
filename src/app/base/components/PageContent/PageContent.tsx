@@ -12,7 +12,7 @@ import SecondaryNavigation from "../SecondaryNavigation";
 import SidePanel from "@/app/base/components/SidePanel";
 import { useThemeContext } from "@/app/base/theme-context";
 import { preferencesNavItems } from "@/app/preferences/constants";
-import { useSettingsNavItems } from "@/app/settings/hooks";
+import { useSettingsNavItems } from "@/app/settings/useSettingsNavItems";
 import status from "@/app/store/status/selectors";
 
 export type PageContentProps = HTMLProps<HTMLDivElement> & {

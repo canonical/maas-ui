@@ -1,11 +1,6 @@
 import { useSelector } from "react-redux";
 
-import { settingsNavItems } from "./constants";
-import settingsURLs from "./urls";
-
-import type { NavItem } from "@/app/base/components/SecondaryNavigation/SecondaryNavigation";
 import { useFetchActions } from "@/app/base/hooks";
-import configSelectors from "@/app/store/config/selectors";
 import { controllerActions } from "@/app/store/controller";
 import controllerSelectors from "@/app/store/controller/selectors";
 import type { Controller } from "@/app/store/controller/types";
@@ -83,23 +78,4 @@ export const useDhcpTarget = (
       (machine && "machine") ||
       null,
   };
-};
-
-export const useSettingsNavItems = (): NavItem[] => {
-  const switchProvisioningEnabled = useSelector(
-    configSelectors.experimentalSwitchProvisioning
-  );
-
-  if (!switchProvisioningEnabled) return settingsNavItems;
-
-  return settingsNavItems.map((section) => {
-    if (section.label !== "Scripts") return section;
-    return {
-      ...section,
-      items: [
-        ...(section.items ?? []),
-        { path: settingsURLs.scripts.switch.index, label: "Switch scripts" },
-      ],
-    };
-  });
 };
