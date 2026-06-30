@@ -1,8 +1,8 @@
 import { createSelector } from "@reduxjs/toolkit";
 
 import type { RootState } from "@/app/store/root/types";
-import { ScriptMeta, ScriptType } from "@/app/store/script/types";
 import type { Script, ScriptState } from "@/app/store/script/types";
+import { ScriptMeta, ScriptType } from "@/app/store/script/types";
 import { generateBaseSelectors } from "@/app/store/utils";
 
 type ScriptTypeName = keyof typeof ScriptType;
@@ -47,6 +47,17 @@ const preselectedCommissioning = createSelector(
   [commissioning],
   (commissioningItems: Script[]): Script[] =>
     commissioningItems.filter((item) => !item.tags.includes("noauto"))
+);
+
+/**
+ * Returns all switch scripts
+ * @param {RootState} state - Redux state
+ * @returns {Script[]} Switch scripts
+ */
+const switchScripts = createSelector(
+  [defaultSelectors.all],
+  (scriptItems: Script[]) =>
+    scriptItems.filter((item: Script) => item.script_type === ScriptType.SWITCH)
 );
 
 /**
@@ -120,6 +131,7 @@ const scripts = {
   preselectedCommissioning,
   hasErrors,
   search,
+  switchScripts,
   testing,
   defaultTesting,
   testingWithUrl,

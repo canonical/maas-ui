@@ -12,7 +12,7 @@ import SecondaryNavigation from "../SecondaryNavigation";
 import SidePanel from "@/app/base/components/SidePanel";
 import { useThemeContext } from "@/app/base/theme-context";
 import { preferencesNavItems } from "@/app/preferences/constants";
-import { settingsNavItems } from "@/app/settings/constants";
+import { useSettingsNavItems } from "@/app/settings/hooks";
 import status from "@/app/store/status/selectors";
 
 export type PageContentProps = HTMLProps<HTMLDivElement> & {
@@ -35,6 +35,7 @@ const PageContent = ({
   const connected = useSelector(status.connected);
   const hasSecondaryNav = isSettingsPage || isPreferencesPage;
   const isSecondaryNavVisible = hasSecondaryNav && authenticated && connected;
+  const settingsNavItems = useSettingsNavItems();
   const { theme } = useThemeContext();
 
   return (

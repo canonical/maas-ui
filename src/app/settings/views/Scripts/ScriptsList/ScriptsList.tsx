@@ -26,7 +26,7 @@ export enum Labels {
 }
 
 type Props = {
-  type?: "commissioning" | "deployment" | "testing";
+  type?: "commissioning" | "deployment" | "switch" | "testing";
 };
 
 const ScriptsList = ({ type = "commissioning" }: Props): React.ReactElement => {
@@ -42,7 +42,7 @@ const ScriptsList = ({ type = "commissioning" }: Props): React.ReactElement => {
     scriptSelectors.search(state, searchText, type)
   );
 
-  const columns = useScriptsTableColumns({ canEdit });
+  const columns = useScriptsTableColumns({ canEdit, type });
 
   useWindowTitle(`${type[0].toUpperCase()}${type.slice(1)} scripts`);
 
@@ -60,7 +60,7 @@ const ScriptsList = ({ type = "commissioning" }: Props): React.ReactElement => {
         <div className="settings-table">
           <MainToolbar>
             <MainToolbar.Title>
-              {`${type === "commissioning" ? "Commissioning" : type === "testing" ? "Testing" : "Deployment"} scripts`}
+              {`${type === "commissioning" ? "Commissioning" : type === "testing" ? "Testing" : type === "switch" ? "Switch" : "Deployment"} scripts`}
             </MainToolbar.Title>
             <MainToolbar.Controls>
               <SearchBox
@@ -70,15 +70,17 @@ const ScriptsList = ({ type = "commissioning" }: Props): React.ReactElement => {
               />
               <Button
                 disabled={!canEdit}
-                onClick={() => {
-                  openSidePanel({
-                    component: ScriptsUpload,
-                    title: `Upload ${type} script`,
-                    props: {
-                      type,
-                    },
-                  });
-                }}
+                onClick={
+                  type !== "switch"
+                    ? () => {
+                        openSidePanel({
+                          component: ScriptsUpload,
+                          title: `Upload ${type} script`,
+                          props: { type },
+                        });
+                      }
+                    : undefined
+                }
               >
                 Upload script
               </Button>
