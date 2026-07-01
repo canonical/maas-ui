@@ -1,9 +1,8 @@
 import { useSelector } from "react-redux";
 
-import { settingsNavItems } from "./constants";
-import settingsURLs from "./urls";
-
 import type { NavItem } from "@/app/base/components/SecondaryNavigation/SecondaryNavigation";
+import { settingsNavItems } from "@/app/settings/constants";
+import settingsURLs from "@/app/settings/urls";
 import configSelectors from "@/app/store/config/selectors";
 
 export const useSettingsNavItems = (): NavItem[] => {

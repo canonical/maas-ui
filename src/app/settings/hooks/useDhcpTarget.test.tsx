@@ -6,7 +6,7 @@ import { Provider } from "react-redux";
 import configureStore from "redux-mock-store";
 import type { MockStoreEnhanced } from "redux-mock-store";
 
-import { useDhcpTarget } from "./hooks";
+import { useDhcpTarget } from "./useDhcpTarget";
 
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";

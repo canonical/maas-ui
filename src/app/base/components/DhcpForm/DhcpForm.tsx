@@ -8,7 +8,7 @@ import DhcpFormFields from "@/app/base/components/DhcpFormFields";
 import FormikForm from "@/app/base/components/FormikForm";
 import type { Props as FormikFormProps } from "@/app/base/components/FormikForm/FormikForm";
 import { useFetchActions } from "@/app/base/hooks";
-import { useDhcpTarget } from "@/app/settings/hooks";
+import { useDhcpTarget } from "@/app/settings/hooks/useDhcpTarget";
 import { controllerActions } from "@/app/store/controller";
 import { deviceActions } from "@/app/store/device";
 import { dhcpsnippetActions } from "@/app/store/dhcpsnippet";
