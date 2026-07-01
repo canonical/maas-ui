@@ -4,7 +4,7 @@ import { Spinner } from "@canonical/react-components";
 import { Link } from "react-router";
 
 import urls from "@/app/base/urls";
-import { useDhcpTarget } from "@/app/settings/hooks";
+import { useDhcpTarget } from "@/app/settings/hooks/useDhcpTarget";
 import type { DHCPSnippet } from "@/app/store/dhcpsnippet/types";
 
 type Props = {

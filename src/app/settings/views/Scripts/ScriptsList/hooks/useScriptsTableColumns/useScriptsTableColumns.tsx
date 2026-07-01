@@ -19,8 +19,10 @@ export enum Labels {
 
 const useScriptsTableColumns = ({
   canEdit,
+  type,
 }: {
   canEdit: boolean;
+  type: "commissioning" | "deployment" | "switch" | "testing";
 }): ScriptColumnDef[] => {
   const { openSidePanel } = useSidePanel();
 
@@ -85,11 +87,12 @@ const useScriptsTableColumns = ({
                 props: { id: row.original.id },
               });
             }}
+            onEdit={type === "switch" ? () => {} : undefined}
           />
         ),
       },
     ],
-    [openSidePanel, canEdit]
+    [openSidePanel, canEdit, type]
   );
 };
 
