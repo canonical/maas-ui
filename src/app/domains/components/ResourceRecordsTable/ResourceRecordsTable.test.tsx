@@ -56,7 +56,7 @@ describe("ResourceRecordsTable", () => {
     renderWithProviders(<ResourceRecordsTable domain={items} id={1} />);
 
     expect(
-      screen.getByRole("cell", { name: "Domain contains no records." })
+      screen.getByRole("gridcell", { name: "Domain contains no records." })
     ).toBeInTheDocument();
   });
 
@@ -65,10 +65,10 @@ describe("ResourceRecordsTable", () => {
 
     const row = within(screen.getAllByRole("row")[1]);
 
-    expect(row.getAllByRole("cell")[0]).toHaveTextContent("abc");
-    expect(row.getAllByRole("cell")[1]).toHaveTextContent(RecordType.A);
-    expect(row.getAllByRole("cell")[2]).toHaveTextContent("20");
-    expect(row.getAllByRole("cell")[3]).toHaveTextContent("192.168.1.1");
+    expect(row.getAllByRole("gridcell")[0]).toHaveTextContent("abc");
+    expect(row.getAllByRole("gridcell")[1]).toHaveTextContent(RecordType.A);
+    expect(row.getAllByRole("gridcell")[2]).toHaveTextContent("20");
+    expect(row.getAllByRole("gridcell")[3]).toHaveTextContent("192.168.1.1");
   });
 
   it("renders a link in the name column when id is auto-generated", () => {
@@ -76,7 +76,7 @@ describe("ResourceRecordsTable", () => {
     renderWithProviders(<ResourceRecordsTable domain={items} id={1} />);
 
     expect(
-      screen.getByRole("cell", { name: "abc" }).firstChild
+      screen.getByRole("gridcell", { name: "abc" }).firstChild
     ).toHaveAttribute(
       "href",
       expect.stringMatching(/^\/(machine|controller|device)\/132$/)

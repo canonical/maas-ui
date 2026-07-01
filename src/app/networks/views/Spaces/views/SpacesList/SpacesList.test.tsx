@@ -22,7 +22,7 @@ describe("SpacesList", () => {
     renderWithProviders(<SpacesList />);
 
     expect(
-      screen.getByRole("grid", { name: "Spaces table" })
+      screen.getByRole("treegrid", { name: "Spaces table" })
     ).toBeInTheDocument();
   });
 

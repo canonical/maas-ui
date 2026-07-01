@@ -86,7 +86,7 @@ describe("AvailableStorageTable", () => {
       expect(rows).toHaveLength(1);
 
       // The first cell is the checkbox, so the second cell should have the name
-      expect(within(rows[0]).getAllByRole("cell")[1]).toHaveTextContent(
+      expect(within(rows[0]).getAllByRole("gridcell")[1]).toHaveTextContent(
         availableDisk.name
       );
     });

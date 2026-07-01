@@ -34,7 +34,7 @@ describe("CloneNetworkTable", () => {
     });
 
     // should only be the single empty state cell from GenericTable
-    expect(screen.getAllByRole("cell")).toHaveLength(1);
+    expect(screen.getAllByRole("gridcell")).toHaveLength(1);
   });
 
   it("renders machine network details if machine is provided", () => {
@@ -81,7 +81,7 @@ describe("CloneNetworkTable", () => {
     });
 
     expect(
-      within(screen.getAllByRole("row")[1]).getAllByRole("cell")[0]
+      within(screen.getAllByRole("row")[1]).getAllByRole("gridcell")[0]
     ).toHaveTextContent("Unconfigured");
   });
 
@@ -115,7 +115,7 @@ describe("CloneNetworkTable", () => {
     });
 
     expect(
-      within(screen.getAllByRole("row")[1]).getAllByRole("cell")[0]
+      within(screen.getAllByRole("row")[1]).getAllByRole("gridcell")[0]
     ).toHaveTextContent("subnet-cidr");
   });
 
@@ -156,7 +156,9 @@ describe("CloneNetworkTable", () => {
       state,
     });
 
-    const cell = within(screen.getAllByRole("row")[2]).getAllByRole("cell")[0];
+    const cell = within(screen.getAllByRole("row")[2]).getAllByRole(
+      "gridcell"
+    )[0];
 
     expect(within(cell).getByTestId("primary")).toHaveTextContent("alias:1");
     expect(within(cell).getByTestId("secondary")).toHaveTextContent(
@@ -218,7 +220,7 @@ describe("CloneNetworkTable", () => {
     );
     const names = dataRows.map(
       (row) =>
-        within(within(row).getAllByRole("cell")[0]).getByTestId("primary")
+        within(within(row).getAllByRole("gridcell")[0]).getByTestId("primary")
           .textContent
     );
 

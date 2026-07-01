@@ -84,7 +84,7 @@ describe("EditBondForm", () => {
       />,
       { state }
     );
-    expect(screen.getByRole("grid")).toBeInTheDocument();
+    expect(screen.getByRole("treegrid")).toBeInTheDocument();
   });
 
   it("displays the selected interfaces when not editing members", () => {

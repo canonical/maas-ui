@@ -30,7 +30,7 @@ describe("VLANsList", () => {
     renderWithProviders(<VLANsList />, { state });
 
     expect(
-      screen.getByRole("grid", { name: "VLANs table" })
+      screen.getByRole("treegrid", { name: "VLANs table" })
     ).toBeInTheDocument();
   });
 

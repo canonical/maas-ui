@@ -86,7 +86,7 @@ describe("GroupMembersTable", () => {
       );
 
       await waitFor(() => {
-        expect(screen.getAllByRole("checkbox").length).toBeGreaterThan(0);
+        expect(screen.getAllByRole("checkbox").length).toBeGreaterThan(1);
       });
 
       const [, firstRowCheckbox] = screen.getAllByRole("checkbox");

@@ -200,7 +200,7 @@ describe("DHCPReservedRanges", () => {
         { state }
       );
 
-      const subnetCell = screen.getByRole("cell", {
+      const subnetCell = screen.getByRole("gridcell", {
         name: new RegExp(subnet.name),
       });
       expect(within(subnetCell).getByRole("link")).toHaveAttribute(
@@ -209,13 +209,13 @@ describe("DHCPReservedRanges", () => {
       );
 
       expect(
-        screen.getByRole("cell", { name: ipRange.start_ip })
+        screen.getByRole("gridcell", { name: ipRange.start_ip })
       ).toBeInTheDocument();
       expect(
-        screen.getByRole("cell", { name: ipRange.end_ip })
+        screen.getByRole("gridcell", { name: ipRange.end_ip })
       ).toBeInTheDocument();
       expect(
-        screen.getByRole("cell", { name: `${subnet.gateway_ip}` })
+        screen.getByRole("gridcell", { name: `${subnet.gateway_ip}` })
       ).toBeInTheDocument();
     });
 
@@ -239,14 +239,13 @@ describe("DHCPReservedRanges", () => {
       );
 
       expect(
-        within(screen.getByRole("cell", { name: /Select subnet/i })).getByRole(
-          "combobox",
-          { name: "Subnet" }
-        )
+        within(
+          screen.getByRole("gridcell", { name: /Select subnet/i })
+        ).getByRole("combobox", { name: "Subnet" })
       ).toBeInTheDocument();
 
       // all the other cells should be empty
-      expect(screen.getAllByRole("cell", { name: "" })).toHaveLength(3);
+      expect(screen.getAllByRole("gridcell", { name: "" })).toHaveLength(3);
     });
 
     it("renders a subnet select field and prepopulated fields for a reserved range if no IP ranges exist and a subnet is selected", async () => {

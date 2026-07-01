@@ -13,7 +13,7 @@ describe("DeviceNetwork", () => {
 
     renderWithProviders(<DeviceNetwork systemId="abc123" />, { state });
     expect(screen.queryByLabelText("Device network")).not.toBeInTheDocument();
-    expect(screen.queryByRole("grid")).not.toBeInTheDocument();
+    expect(screen.queryByRole("treegrid")).not.toBeInTheDocument();
     expect(screen.getByText("Loading...")).toBeInTheDocument();
   });
 
@@ -26,9 +26,9 @@ describe("DeviceNetwork", () => {
 
     renderWithProviders(<DeviceNetwork systemId="abc123" />, { state });
     expect(screen.getByLabelText("Device network")).toBeInTheDocument();
-    expect(screen.getByRole("grid", { name: /DHCP/ })).toBeInTheDocument();
+    expect(screen.getByRole("treegrid", { name: /DHCP/ })).toBeInTheDocument();
     expect(
-      screen.getByRole("grid", { name: "Interfaces" })
+      screen.getByRole("treegrid", { name: "Interfaces" })
     ).toBeInTheDocument();
     expect(screen.queryByText("Loading...")).not.toBeInTheDocument();
   });

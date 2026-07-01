@@ -22,7 +22,7 @@ describe("FabricsList", () => {
     renderWithProviders(<FabricsList />);
 
     expect(
-      screen.getByRole("grid", { name: "Fabrics table" })
+      screen.getByRole("treegrid", { name: "Fabrics table" })
     ).toBeInTheDocument();
   });
 

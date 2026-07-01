@@ -29,7 +29,7 @@ describe("APIKeyList", () => {
   it("can render the table", () => {
     renderWithProviders(<APIKeyList />, { state });
     expect(
-      screen.getByRole("grid", { name: APIKeyListLabels.Title })
+      screen.getByRole("treegrid", { name: APIKeyListLabels.Title })
     ).toBeInTheDocument();
   });
 

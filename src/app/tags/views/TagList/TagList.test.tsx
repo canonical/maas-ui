@@ -24,5 +24,5 @@ beforeEach(() => {
 it("renders", () => {
   renderWithProviders(<TagList />, { state, initialEntries: ["/tags"] });
   expect(screen.getByLabelText("pagination")).toBeInTheDocument();
-  expect(screen.getByRole("grid")).toBeInTheDocument();
+  expect(screen.getByRole("treegrid")).toBeInTheDocument();
 });

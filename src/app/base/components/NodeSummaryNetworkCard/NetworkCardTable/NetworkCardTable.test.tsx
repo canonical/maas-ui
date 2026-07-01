@@ -38,7 +38,7 @@ describe("NetworkCardTable", () => {
       );
 
       expect(
-        screen.getByRole("cell", { name: "No interfaces available." })
+        screen.getByRole("gridcell", { name: "No interfaces available." })
       ).toBeInTheDocument();
     });
 
@@ -52,7 +52,7 @@ describe("NetworkCardTable", () => {
       );
 
       expect(
-        screen.getByRole("cell", { name: /fabric-name/ })
+        screen.getByRole("gridcell", { name: /fabric-name/ })
       ).toBeInTheDocument();
     });
 
@@ -61,7 +61,9 @@ describe("NetworkCardTable", () => {
       renderWithProviders(
         <NetworkCardTable interfaces={[iface]} node={state.device.items[0]} />
       );
-      expect(screen.getByRole("cell", { name: "10 Gbps" })).toBeInTheDocument();
+      expect(
+        screen.getByRole("gridcell", { name: "10 Gbps" })
+      ).toBeInTheDocument();
     });
   });
 
@@ -77,7 +79,7 @@ describe("NetworkCardTable", () => {
       );
 
       expect(
-        screen.getByRole("cell", { name: "External (192.168.1.1)" })
+        screen.getByRole("gridcell", { name: "External (192.168.1.1)" })
       ).toBeInTheDocument();
     });
 
@@ -90,7 +92,7 @@ describe("NetworkCardTable", () => {
       );
 
       expect(
-        screen.getByRole("cell", { name: "MAAS-provided" })
+        screen.getByRole("gridcell", { name: "MAAS-provided" })
       ).toBeInTheDocument();
     });
 
@@ -107,11 +109,11 @@ describe("NetworkCardTable", () => {
       );
 
       expect(
-        screen.getByRole("cell", { name: /Relayed/i })
+        screen.getByRole("gridcell", { name: /Relayed/i })
       ).toBeInTheDocument();
 
       await userEvent.click(
-        within(screen.getByRole("cell", { name: /Relayed/i })).getByRole(
+        within(screen.getByRole("gridcell", { name: /Relayed/i })).getByRole(
           "button",
           { name: "information" }
         )
@@ -129,7 +131,9 @@ describe("NetworkCardTable", () => {
         { state }
       );
 
-      expect(screen.getByRole("cell", { name: "No DHCP" })).toBeInTheDocument();
+      expect(
+        screen.getByRole("gridcell", { name: "No DHCP" })
+      ).toBeInTheDocument();
     });
   });
 
@@ -140,6 +144,6 @@ describe("NetworkCardTable", () => {
       { state }
     );
 
-    expect(screen.getByRole("cell", { name: "Yes" })).toBeInTheDocument();
+    expect(screen.getByRole("gridcell", { name: "Yes" })).toBeInTheDocument();
   });
 });

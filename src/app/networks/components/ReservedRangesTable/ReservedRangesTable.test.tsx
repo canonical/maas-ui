@@ -58,7 +58,7 @@ describe("ReservedRangesTable", () => {
       screen.getByRole("region", {
         name: "Reserved ranges",
       })
-    ).getByRole("grid");
+    ).getByRole("treegrid");
 
     [
       Labels.Actions,
@@ -99,7 +99,7 @@ describe("ReservedRangesTable", () => {
       screen.getByRole("region", {
         name: "Reserved ranges",
       })
-    ).getByRole("grid");
+    ).getByRole("treegrid");
 
     [
       Labels.Actions,
@@ -169,14 +169,18 @@ describe("ReservedRangesTable", () => {
       screen.getByRole("region", {
         name: "Reserved ranges",
       })
-    ).getByRole("grid");
+    ).getByRole("treegrid");
 
     expect(
-      within(ReservedRangesTableTable).getAllByRole("cell", { name: "Dynamic" })
+      within(ReservedRangesTableTable).getAllByRole("gridcell", {
+        name: "Dynamic",
+      })
     ).toHaveLength(2);
 
     expect(
-      within(ReservedRangesTableTable).getAllByRole("cell", { name: "MAAS" })
+      within(ReservedRangesTableTable).getAllByRole("gridcell", {
+        name: "MAAS",
+      })
     ).toHaveLength(1);
   });
 
@@ -191,16 +195,18 @@ describe("ReservedRangesTable", () => {
       screen.getByRole("region", {
         name: "Reserved ranges",
       })
-    ).getByRole("grid");
+    ).getByRole("treegrid");
 
     expect(
-      within(ReservedRangesTableTable).getAllByRole("cell", {
+      within(ReservedRangesTableTable).getAllByRole("gridcell", {
         name: "Reserved",
       })
     ).toHaveLength(1);
 
     expect(
-      within(ReservedRangesTableTable).getAllByRole("cell", { name: "wombat" })
+      within(ReservedRangesTableTable).getAllByRole("gridcell", {
+        name: "wombat",
+      })
     ).toHaveLength(1);
   });
 

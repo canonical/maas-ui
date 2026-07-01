@@ -75,7 +75,7 @@ describe("AddBondForm", () => {
     expect(
       screen.getByRole("form", { name: "Create bond" })
     ).toBeInTheDocument();
-    expect(screen.getByRole("grid")).toBeInTheDocument();
+    expect(screen.getByRole("treegrid")).toBeInTheDocument();
   });
 
   it("displays the selected interfaces when not editing members", async () => {
@@ -106,7 +106,7 @@ describe("AddBondForm", () => {
       />,
       { state }
     );
-    const table = screen.getByRole("grid");
+    const table = screen.getByRole("treegrid");
     expect(within(table).getByText("test-interface-1")).toBeInTheDocument();
     expect(within(table).getByText("test-interface-2")).toBeInTheDocument();
   });
@@ -169,7 +169,7 @@ describe("AddBondForm", () => {
       />,
       { state }
     );
-    let table = screen.getByRole("grid");
+    let table = screen.getByRole("treegrid");
     // Check that selected interfaces are shown
     expect(within(table).getByText("test-interface-1")).toBeInTheDocument();
     expect(within(table).getByText("test-interface-2")).toBeInTheDocument();
@@ -191,7 +191,7 @@ describe("AddBondForm", () => {
       within(table).queryByText("test-interface-7")
     ).not.toBeInTheDocument();
     await userEvent.click(screen.getByTestId("edit-members"));
-    table = screen.getByRole("grid");
+    table = screen.getByRole("treegrid");
 
     // Check that only valid interfaces are shown
     expect(within(table).getByText("test-interface-1")).toBeInTheDocument();

@@ -133,11 +133,11 @@ describe("DatastoresTable", () => {
         state,
       });
 
-      expect(screen.getByRole("cell", { name: dsDisk.name })).toHaveClass(
+      expect(screen.getByRole("gridcell", { name: dsDisk.name })).toHaveClass(
         "name"
       );
       expect(
-        screen.queryByRole("cell", { name: notDsDisk.name })
+        screen.queryByRole("gridcell", { name: notDsDisk.name })
       ).not.toBeInTheDocument();
     });
   });

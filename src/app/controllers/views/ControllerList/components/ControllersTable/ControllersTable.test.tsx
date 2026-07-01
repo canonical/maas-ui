@@ -93,13 +93,13 @@ describe("ControllersTable", () => {
 
       let rows = within(screen.getAllByRole("rowgroup")[1]).getAllByRole("row");
 
-      expect(within(rows[0]).getAllByRole("cell")[1]).toHaveTextContent(
+      expect(within(rows[0]).getAllByRole("gridcell")[1]).toHaveTextContent(
         /anaconda/i
       );
-      expect(within(rows[1]).getAllByRole("cell")[1]).toHaveTextContent(
+      expect(within(rows[1]).getAllByRole("gridcell")[1]).toHaveTextContent(
         /lion/i
       );
-      expect(within(rows[2]).getAllByRole("cell")[1]).toHaveTextContent(
+      expect(within(rows[2]).getAllByRole("gridcell")[1]).toHaveTextContent(
         /zebra/i
       );
 
@@ -108,13 +108,13 @@ describe("ControllersTable", () => {
 
       rows = within(screen.getAllByRole("rowgroup")[1]).getAllByRole("row");
 
-      expect(within(rows[0]).getAllByRole("cell")[1]).toHaveTextContent(
+      expect(within(rows[0]).getAllByRole("gridcell")[1]).toHaveTextContent(
         /zebra/i
       );
-      expect(within(rows[1]).getAllByRole("cell")[1]).toHaveTextContent(
+      expect(within(rows[1]).getAllByRole("gridcell")[1]).toHaveTextContent(
         /lion/i
       );
-      expect(within(rows[2]).getAllByRole("cell")[1]).toHaveTextContent(
+      expect(within(rows[2]).getAllByRole("gridcell")[1]).toHaveTextContent(
         /anaconda/i
       );
     });

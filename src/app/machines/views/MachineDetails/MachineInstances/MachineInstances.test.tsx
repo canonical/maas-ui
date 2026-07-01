@@ -50,7 +50,7 @@ describe("MachineInstances", () => {
     });
 
     expect(
-      screen.getByRole("grid", { name: /machine instances/i })
+      screen.getByRole("treegrid", { name: /machine instances/i })
     ).toBeInTheDocument();
   });
 
