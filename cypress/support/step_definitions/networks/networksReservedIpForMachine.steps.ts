@@ -1,11 +1,11 @@
 import { Given, Then, When } from "@badeball/cypress-cucumber-preprocessor";
 import { LONG_TIMEOUT } from "../../../constants";
 import {
-  generateCidr,
-  generateId,
-  generateMAASURL,
-  generateMac,
-  generateVid,
+    generateCidr,
+    generateId,
+    generateMAASURL,
+    generateMac,
+    generateVid,
 } from "../../../e2e/utils";
 import { completeAddVlanForm, completeForm } from "./add.helpers";
 
@@ -73,7 +73,7 @@ When("the user reserves a static DHCP lease", function () {
 });
 
 Then("the new static DHCP lease appears in the table", function () {
-  cy.findByRole("table", { name: /static dhcp leases/i }).within(() => {
+  cy.findByRole("treegrid", { name: /static dhcp leases/i }).within(() => {
     cy.findByText(new RegExp(this.reservedMac, "i")).should("exist");
   });
 });
@@ -81,7 +81,7 @@ Then("the new static DHCP lease appears in the table", function () {
 When("the user edits the static DHCP lease comment", function () {
   this.updatedComment = `cy-updated-${generateId()}`;
 
-  cy.findByRole("table", { name: /static dhcp leases/i }).within(() => {
+  cy.findByRole("treegrid", { name: /static dhcp leases/i }).within(() => {
     cy.findByText(new RegExp(this.reservedMac, "i"))
       .closest("tr")
       .findByRole("button", { name: /edit/i })
@@ -105,14 +105,14 @@ When("the user edits the static DHCP lease comment", function () {
 Then(
   "the updated comment is visible in the static DHCP leases table",
   function () {
-    cy.findByRole("table", { name: /static dhcp leases/i }).within(() => {
+    cy.findByRole("treegrid", { name: /static dhcp leases/i }).within(() => {
       cy.findByText(this.updatedComment).should("exist");
     });
   }
 );
 
 When("the user deletes the static DHCP lease", function () {
-  cy.findByRole("table", { name: /static dhcp leases/i }).within(() => {
+  cy.findByRole("treegrid", { name: /static dhcp leases/i }).within(() => {
     cy.findByText(new RegExp(this.reservedMac, "i"))
       .closest("tr")
       .findByRole("button", { name: /delete/i })
@@ -129,7 +129,7 @@ When("the user deletes the static DHCP lease", function () {
 });
 
 Then("the static DHCP lease should not exist", function () {
-  cy.findByRole("table", { name: /static dhcp leases/i }).within(() => {
+  cy.findByRole("treegrid", { name: /static dhcp leases/i }).within(() => {
     cy.findByText(new RegExp(this.reservedMac, "i")).should("not.exist");
   });
 });
@@ -181,7 +181,7 @@ Then(
   "the machine is linked to the static DHCP lease in the table",
   function () {
     cy.reload();
-    cy.findByRole("table", { name: /static dhcp leases/i }).within(() => {
+    cy.findByRole("treegrid", { name: /static dhcp leases/i }).within(() => {
       cy.findByText(new RegExp(this.reservedMac, "i"))
         .closest("tr")
         .within(() => {

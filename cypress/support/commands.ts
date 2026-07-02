@@ -2,11 +2,11 @@ import "@testing-library/cypress/add-commands";
 import type { Result } from "axe-core";
 import { LONG_TIMEOUT } from "../constants";
 import {
-  generateId,
-  generateMAASURL,
-  generateMac,
-  generateName,
-  generateVid,
+    generateId,
+    generateMAASURL,
+    generateMac,
+    generateName,
+    generateVid,
 } from "../e2e/utils";
 import type { A11yPageContext } from "./e2e";
 
@@ -134,7 +134,7 @@ Cypress.Commands.add(
     vlan = `cy-vlan-${vid}`,
   }) => {
     cy.visit(generateMAASURL("/networks"));
-    cy.waitForTableToLoad({ name: "Subnets by fabric" });
+    cy.waitForTableToLoad({ name: "Subnets by fabric", role: "treegrid" });
     cy.findByRole("button", { name: "Add" }).click();
     cy.findByRole("menuitem", { name: "Subnet" }).click();
     cy.findByRole("textbox", { name: "CIDR" }).type(cidr);
@@ -193,12 +193,15 @@ Cypress.Commands.add("waitForPageToLoad", () => {
   cy.findAllByRole("heading", { level: 1 }).should("have.length.at.least", 1);
 });
 
-Cypress.Commands.add("waitForTableToLoad", ({ name } = { name: undefined }) => {
-  cy.findByRole("grid", { name: /Loading/i, timeout: LONG_TIMEOUT }).should(
-    "not.exist"
-  );
-  return cy.findByRole("grid", { name }).should("exist");
-});
+Cypress.Commands.add(
+  "waitForTableToLoad",
+  ({ name, role = "grid" } = { name: undefined }) => {
+    cy.findByRole(role, { name: /Loading/i, timeout: LONG_TIMEOUT }).should(
+      "not.exist"
+    );
+    return cy.findByRole(role, { name }).should("exist");
+  }
+);
 
 Cypress.Commands.add("getMainNavigation", () => {
   return cy.findByRole("banner", { name: /main navigation/i });

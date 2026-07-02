@@ -2,7 +2,7 @@ import { Then, When } from "@badeball/cypress-cucumber-preprocessor";
 import { LONG_TIMEOUT } from "../../../constants";
 
 When("the user opens the first subnet", () => {
-  cy.findByRole("grid", { name: "Subnets by fabric" }).within(() => {
+  cy.findByRole("treegrid", { name: "Subnets by fabric" }).within(() => {
     cy.get("tbody")
       .find('tr[class="p-generic-table__individual-row"]')
       .find("a")

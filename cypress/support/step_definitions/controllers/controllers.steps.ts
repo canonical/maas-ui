@@ -2,7 +2,7 @@ import { Given, Then, When } from "@badeball/cypress-cucumber-preprocessor";
 import { generateId } from "../../../e2e/utils";
 
 Given("the user navigates to details page of the first controller", () => {
-  cy.findByRole("grid", { name: /controllers list/i }).within(() =>
+  cy.findByRole("treegrid", { name: /controllers list/i }).within(() =>
     cy.findAllByRole("link").first().click()
   );
   cy.waitForPageToLoad();
@@ -43,7 +43,7 @@ When("the user clicks the created tag", () => {
 });
 
 When("the user clicks name of the first script", () => {
-  cy.findByRole("grid").within(() => {
+  cy.findByRole("treegrid").within(() => {
     cy.get("tbody tr")
       .first()
       .within(() => {
@@ -62,7 +62,7 @@ Then("the correct tag is displayed in the searchbox", () => {
 });
 
 Then("the correct number of controllers is displayed", () => {
-  cy.findByRole("grid", { name: "controllers list" }).within(() => {
+  cy.findByRole("treegrid", { name: "controllers list" }).within(() => {
     cy.get("tbody tr").should("have.length", 1);
   });
 });

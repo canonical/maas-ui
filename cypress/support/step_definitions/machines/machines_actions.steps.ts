@@ -1,12 +1,12 @@
 import {
-  Before,
-  DataTable,
-  Given,
-  Then,
-  When,
+    Before,
+    DataTable,
+    Given,
+    Then,
+    When,
 } from "@badeball/cypress-cucumber-preprocessor";
-import { generateName } from "../../../e2e/utils";
 import { LONG_TIMEOUT } from "../../../constants";
+import { generateName } from "../../../e2e/utils";
 
 let machineName = "";
 let newPoolName = "";
@@ -146,12 +146,16 @@ Then("the new pool name should be visible in the machines grid", () => {
 Then(
   "the {string} table should contain the new tag marked {string}",
   (tableName: string, status: string) => {
-    cy.findByRole("grid", { name: new RegExp(tableName, "i") }).within(() => {
-      cy.findByRole("cell", { name: new RegExp(status, "i") }).should("exist");
-      cy.findByRole("cell", { name: new RegExp(newTagName, "i") }).should(
-        "exist"
-      );
-    });
+    cy.findByRole("treegrid", { name: new RegExp(tableName, "i") }).within(
+      () => {
+        cy.findByRole("gridcell", { name: new RegExp(status, "i") }).should(
+          "exist"
+        );
+        cy.findByRole("gridcell", { name: new RegExp(newTagName, "i") }).should(
+          "exist"
+        );
+      }
+    );
   }
 );
 

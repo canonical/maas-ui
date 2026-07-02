@@ -17,7 +17,7 @@ When("the user selects grouping by space", () => {
 Then("correct headers exist", () => {
   const expectedHeaders = ["VLAN", "DHCP", "Subnet", "Available IPs", "Space"];
 
-  cy.findByRole("grid", { name: "Subnets by fabric" }).within(() => {
+  cy.findByRole("treegrid", { name: "Subnets by fabric" }).within(() => {
     expectedHeaders.forEach((name) => {
       cy.findByRole("columnheader", { name }).should("exist");
     });
@@ -34,7 +34,7 @@ Then("the URL gets updated to default grouping", () => {
 });
 
 Then("subnets are by default grouped by fabric", () => {
-  cy.findByRole("grid", { name: "Subnets by fabric" }).within(() => {
+  cy.findByRole("treegrid", { name: "Subnets by fabric" }).within(() => {
     cy.get("tbody tr").first().should("include.text", "fabric");
   });
 
@@ -50,7 +50,7 @@ Then("subnets are by default grouped by fabric", () => {
 });
 
 Then("subnets are grouped by space", () => {
-  cy.findByRole("grid", { name: "Subnets by space" }).within(() => {
+  cy.findByRole("treegrid", { name: "Subnets by space" }).within(() => {
     cy.get("tbody tr").first().should("include.text", "space");
   });
 

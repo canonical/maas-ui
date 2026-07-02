@@ -14,7 +14,7 @@ When("the user enters a record name", () => {
 });
 
 When("the DNS default domain row is opened", () => {
-  cy.findByRole("grid", { name: "Domains table" }).within(() => {
+  cy.findByRole("treegrid", { name: "Domains table" }).within(() => {
     cy.get("[data-testid='domain-name']").first().click();
   });
 });
