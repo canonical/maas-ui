@@ -79,6 +79,9 @@ describe("SingleSignOnForm", () => {
     expect(screen.getByRole("combobox", { name: /Token type/i })).toHaveValue(
       mockAuthProvider.token_type
     );
+    expect(screen.getByRole("combobox", { name: /Vendor/i })).toHaveValue(
+      mockAuthProvider.vendor
+    );
   });
 
   it("disables the editable fields when the user cannot edit", () => {
@@ -138,6 +141,10 @@ describe("SingleSignOnForm", () => {
     await userEvent.selectOptions(
       screen.getByRole("combobox", { name: /Token type/i }),
       mockAuthProvider.token_type
+    );
+    await userEvent.selectOptions(
+      screen.getByRole("combobox", { name: /Vendor/i }),
+      mockAuthProvider.vendor
     );
 
     await userEvent.click(screen.getByRole("button", { name: "Save" }));
@@ -210,6 +217,10 @@ describe("SingleSignOnForm", () => {
     await userEvent.selectOptions(
       screen.getByRole("combobox", { name: /Token type/i }),
       mockAuthProvider.token_type
+    );
+    await userEvent.selectOptions(
+      screen.getByRole("combobox", { name: /Vendor/i }),
+      mockAuthProvider.vendor
     );
 
     await userEvent.click(screen.getByRole("button", { name: "Save" }));

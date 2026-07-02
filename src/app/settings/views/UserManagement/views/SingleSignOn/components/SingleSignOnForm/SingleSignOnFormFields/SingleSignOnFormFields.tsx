@@ -31,6 +31,7 @@ const SingleSignOnFormFields = ({
           redirect_uri: maasURL + "/r/login/oidc/callback",
           scopes: "",
           token_type: "JWT",
+          vendor: "Generic",
         },
       });
     }
@@ -45,6 +46,21 @@ const SingleSignOnFormFields = ({
         name="name"
         required
         type="text"
+      />
+      <FormikField
+        component={Select}
+        disabled={!canEdit}
+        help="The OIDC provider vendor. Select from predefined vendors or use 'Generic' for other providers."
+        label="Vendor"
+        name="vendor"
+        options={[
+          { label: "Select vendor", value: "", disabled: true },
+          { label: "Auth0", value: "Auth0" },
+          { label: "Microsoft Entra ID", value: "EntraID" },
+          { label: "Keycloak", value: "Keycloak" },
+          { label: "Generic", value: "Generic" },
+        ]}
+        required
       />
       <FormikField
         disabled={!canEdit}

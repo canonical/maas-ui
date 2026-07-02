@@ -105,6 +105,7 @@ import {
   getOauthProvider,
   getOauthProviderById,
   getOperation,
+  getOperationTasks,
   getPackageRepository,
   getRack,
   getRackAgent,
@@ -503,6 +504,9 @@ import type {
   GetOperationData,
   GetOperationError,
   GetOperationResponse,
+  GetOperationTasksData,
+  GetOperationTasksError,
+  GetOperationTasksResponse,
   GetPackageRepositoryData,
   GetPackageRepositoryError,
   GetPackageRepositoryResponse,
@@ -3397,6 +3401,36 @@ export const getOperationOptions = (options: Options<GetOperationData>) =>
       return data;
     },
     queryKey: getOperationQueryKey(options),
+  });
+
+export const getOperationTasksQueryKey = (
+  options: Options<GetOperationTasksData>
+) => createQueryKey("getOperationTasks", options);
+
+/**
+ * Get Operation Tasks
+ *
+ * Get a paginated list of tasks for a specific operation.
+ */
+export const getOperationTasksOptions = (
+  options: Options<GetOperationTasksData>
+) =>
+  queryOptions<
+    GetOperationTasksResponse,
+    GetOperationTasksError,
+    GetOperationTasksResponse,
+    ReturnType<typeof getOperationTasksQueryKey>
+  >({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await getOperationTasks({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: getOperationTasksQueryKey(options),
   });
 
 export const listOperationsQueryKey = (options?: Options<ListOperationsData>) =>

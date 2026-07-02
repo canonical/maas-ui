@@ -14,6 +14,7 @@ import type { WithHeaders } from "@/app/api/utils";
 import type {
   OAuthProviderResponse,
   OAuthTokenTypeChoices,
+  OAuthVendorChoices,
 } from "@/app/apiclient";
 import { getOauthProviderQueryKey } from "@/app/apiclient/@tanstack/react-query.gen";
 import FormikForm from "@/app/base/components/FormikForm";
@@ -50,6 +51,7 @@ const SingleSignOnForm = ({
       redirect_uri: maasURL + "/r/login/oidc/callback",
       scopes: "",
       token_type: "JWT",
+      vendor: "Generic",
     }
   );
 
@@ -69,6 +71,7 @@ const SingleSignOnForm = ({
         redirect_uri: maasURL + "/r/login/oidc/callback",
         scopes: "",
         token_type: "JWT",
+        vendor: "Generic",
       }
     );
   };
@@ -89,6 +92,7 @@ const SingleSignOnForm = ({
             scopes: values.scopes,
             enabled: true,
             token_type: values.token_type as OAuthTokenTypeChoices,
+            vendor: values.vendor as OAuthVendorChoices,
           },
           path: { provider_id: provider.id },
         },
@@ -111,6 +115,7 @@ const SingleSignOnForm = ({
           scopes: values.scopes,
           enabled: true,
           token_type: values.token_type as OAuthTokenTypeChoices,
+          vendor: values.vendor as OAuthVendorChoices,
         },
       });
     }

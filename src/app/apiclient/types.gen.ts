@@ -2343,6 +2343,7 @@ export type OAuthProviderRequest = {
    */
   redirect_uri: string;
   token_type: OAuthTokenTypeChoices;
+  vendor: OAuthVendorChoices;
   /**
    * Scopes
    *
@@ -2403,6 +2404,7 @@ export type OAuthProviderResponse = {
    */
   user_count?: number;
   token_type: OAuthTokenTypeChoices;
+  vendor: OAuthVendorChoices;
 };
 
 /**
@@ -2431,6 +2433,11 @@ export type OAuthProvidersListResponse = {
  * OAuthTokenTypeChoices
  */
 export type OAuthTokenTypeChoices = "JWT" | "Opaque";
+
+/**
+ * OAuthVendorChoices
+ */
+export type OAuthVendorChoices = "Auth0" | "EntraID" | "Generic" | "Keycloak";
 
 /**
  * OpenFGAEntitlementResourceType
@@ -2519,6 +2526,82 @@ export type OperationStatus =
   | "COMPLETED"
   | "FAILED"
   | "RUNNING";
+
+/**
+ * OperationTaskResponse
+ */
+export type OperationTaskResponse = {
+  _links?: BaseHal;
+  /**
+   * Embedded
+   */
+  _embedded?: Record<string, unknown>;
+  /**
+   * Kind
+   */
+  kind?: string;
+  /**
+   * Id
+   */
+  id: number;
+  /**
+   * Started At
+   */
+  started_at?: string;
+  /**
+   * Finished At
+   */
+  finished_at?: string;
+  /**
+   * Name
+   */
+  name: string;
+  status: OperationTaskStatus;
+  /**
+   * Result
+   */
+  result?: Record<string, unknown>;
+  /**
+   * Task Number
+   */
+  task_number: number;
+  /**
+   * Operation Uuid
+   */
+  operation_uuid: string;
+};
+
+/**
+ * OperationTaskStatus
+ */
+export type OperationTaskStatus =
+  | "CANCELLED"
+  | "COMPLETED"
+  | "FAILED"
+  | "RUNNING"
+  | "WAITING";
+
+/**
+ * OperationTasksListResponse
+ */
+export type OperationTasksListResponse = {
+  /**
+   * Items
+   */
+  items: OperationTaskResponse[];
+  /**
+   * Total
+   */
+  total: number;
+  /**
+   * Next
+   */
+  next?: string;
+  /**
+   * Kind
+   */
+  kind?: string;
+};
 
 /**
  * OperationType
@@ -2996,6 +3079,7 @@ export type PublicConfigName =
   | "enable_kernel_crash_dump"
   | "enable_third_party_drivers"
   | "enlist_commissioning"
+  | "experimental_switch_provisioning"
   | "force_v1_network_yaml"
   | "hardware_sync_interval"
   | "http_proxy"
@@ -8910,7 +8994,14 @@ export type CancelOperationData = {
      */
     operation_uuid: string;
   };
-  query?: never;
+  query?: {
+    /**
+     * Force
+     *
+     * If true, force termination of the related workflow instead of requesting cancellation.
+     */
+    force?: boolean;
+  };
   url: "/MAAS/a/v3/operations/{operation_uuid}";
 };
 
@@ -8976,6 +9067,51 @@ export type GetOperationResponses = {
 
 export type GetOperationResponse =
   GetOperationResponses[keyof GetOperationResponses];
+
+export type GetOperationTasksData = {
+  body?: never;
+  path: {
+    /**
+     * Operation Uuid
+     */
+    operation_uuid: string;
+  };
+  query?: {
+    /**
+     * Page
+     */
+    page?: number;
+    /**
+     * Size
+     */
+    size?: number;
+  };
+  url: "/MAAS/a/v3/operations/{operation_uuid}/tasks";
+};
+
+export type GetOperationTasksErrors = {
+  /**
+   * Not Found
+   */
+  404: NotFoundBodyResponse;
+  /**
+   * Unprocessable Content
+   */
+  422: ValidationErrorBodyResponse;
+};
+
+export type GetOperationTasksError =
+  GetOperationTasksErrors[keyof GetOperationTasksErrors];
+
+export type GetOperationTasksResponses = {
+  /**
+   * Successful Response
+   */
+  200: OperationTasksListResponse;
+};
+
+export type GetOperationTasksResponse =
+  GetOperationTasksResponses[keyof GetOperationTasksResponses];
 
 export type ListOperationsData = {
   body?: never;
