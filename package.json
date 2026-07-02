@@ -107,7 +107,7 @@
     "@eslint/compat": "1.4.1",
     "@eslint/eslintrc": "3.3.5",
     "@eslint/js": "9.39.4",
-    "@hey-api/openapi-ts": "0.97.2",
+    "@hey-api/openapi-ts": "0.97.3",
     "@percy/cli": "1.31.13",
     "@percy/cypress": "3.1.8",
     "@playwright/test": "1.60.0",
