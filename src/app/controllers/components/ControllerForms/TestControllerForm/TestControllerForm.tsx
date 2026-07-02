@@ -1,5 +1,6 @@
 import { useEffect, type ReactElement } from "react";
 
+import { useSidePanel } from "@canonical/maas-react-components";
 import { useDispatch, useSelector } from "react-redux";
 
 import ActionForm from "@/app/base/components/ActionForm";
@@ -9,7 +10,6 @@ import {
   type TestFormValues,
 } from "@/app/base/components/node/TestFormFields/TestFormFields";
 import type { HardwareType } from "@/app/base/enum";
-import { useSidePanel } from "@/app/base/side-panel-context";
 import type { ActionStatuses } from "@/app/base/types";
 import { controllerActions } from "@/app/store/controller";
 import controllerSelectors, {

@@ -1,5 +1,6 @@
 import type { ReactElement } from "react";
 
+import { useSidePanel } from "@canonical/maas-react-components";
 import { Spinner, Strip } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 import { useStorageState } from "react-storage-hooks";
@@ -8,7 +9,6 @@ import LXDHostToolbar from "../LXDHostToolbar";
 
 import NumaResources from "./NumaResources";
 
-import { useSidePanel } from "@/app/base/side-panel-context";
 import type { SetSearchFilter } from "@/app/base/types";
 import ComposeForm from "@/app/kvm/components/ComposeForm";
 import LXDVMsSummaryCard from "@/app/kvm/components/LXDVMsSummaryCard";

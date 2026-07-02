@@ -1,4 +1,4 @@
-import { MainToolbar } from "@canonical/maas-react-components";
+import { MainToolbar, useSidePanel } from "@canonical/maas-react-components";
 import { Button, Spinner } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 
@@ -6,7 +6,6 @@ import DomainListHeaderForm from "./DomainListHeaderForm";
 
 import ModelListSubtitle from "@/app/base/components/ModelListSubtitle";
 import { useFetchActions } from "@/app/base/hooks";
-import { useSidePanel } from "@/app/base/side-panel-context";
 import { domainActions } from "@/app/store/domain";
 import domainSelectors from "@/app/store/domain/selectors";
 

@@ -1,10 +1,10 @@
 import { useMemo } from "react";
 
+import { useSidePanel } from "@canonical/maas-react-components";
 import { Icon } from "@canonical/react-components";
 import type { ColumnDef } from "@tanstack/react-table";
 import { useLocation, Link } from "react-router";
 
-import { useSidePanel } from "@/app/base/side-panel-context";
 import type { SetSearchFilter } from "@/app/base/types";
 import type { FormattedCloneError } from "@/app/machines/components/MachineForms/MachineActionFormWrapper/CloneForm/CloneResults/CloneResults";
 import { FilterMachines } from "@/app/store/machine/utils";

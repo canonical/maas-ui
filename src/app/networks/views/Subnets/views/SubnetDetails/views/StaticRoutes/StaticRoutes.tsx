@@ -1,6 +1,6 @@
 import type { ReactElement } from "react";
 
-import { GenericTable } from "@canonical/maas-react-components";
+import { GenericTable, useSidePanel } from "@canonical/maas-react-components";
 import { Button } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 
@@ -9,7 +9,6 @@ import useStaticRoutesColumns from "./useStaticRoutesColumns/useStaticRoutesColu
 
 import TitledSection from "@/app/base/components/TitledSection";
 import { useFetchActions, useHasEntitlements } from "@/app/base/hooks";
-import { useSidePanel } from "@/app/base/side-panel-context";
 import { Entitlement } from "@/app/settings/views/UserManagement/views/Groups/constants";
 import { staticRouteActions } from "@/app/store/staticroute";
 import staticRouteSelectors from "@/app/store/staticroute/selectors";

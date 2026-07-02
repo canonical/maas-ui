@@ -1,6 +1,7 @@
 import type { ReactElement } from "react";
 import React, { useEffect, useState } from "react";
 
+import { useSidePanel } from "@canonical/maas-react-components";
 import { Select, Textarea } from "@canonical/react-components";
 import type { FormikContextType } from "formik";
 import { useDispatch, useSelector } from "react-redux";
@@ -18,7 +19,6 @@ import type {
 import FormikField from "@/app/base/components/FormikField";
 import { FormikFieldChangeError } from "@/app/base/components/FormikField/FormikField";
 import FormikForm from "@/app/base/components/FormikForm";
-import { useSidePanel } from "@/app/base/side-panel-context";
 import { MAAS_IO_DEFAULT_KEYRING_FILE_PATHS } from "@/app/images/constants";
 import { Labels } from "@/app/settings/views/Images/Sources/constants";
 import { generalActions } from "@/app/store/general";

@@ -1,10 +1,10 @@
 import { useMemo } from "react";
 
+import { useSidePanel } from "@canonical/maas-react-components";
 import type { ColumnDef, Row } from "@tanstack/react-table";
 
 import TableMenu from "@/app/base/components/TableMenu";
 import DeleteCacheSet from "@/app/base/components/node/StorageTables/AvailableStorageTable/DeleteCacheSet";
-import { useSidePanel } from "@/app/base/side-panel-context";
 import type { Disk, Node } from "@/app/store/types/node";
 import { formatSize } from "@/app/store/utils";
 

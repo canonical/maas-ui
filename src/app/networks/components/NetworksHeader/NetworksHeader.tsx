@@ -1,5 +1,6 @@
 import type { ReactElement } from "react";
 
+import { useSidePanel } from "@canonical/maas-react-components";
 import { ContextualMenu } from "@canonical/react-components";
 import { Link, useLocation } from "react-router";
 
@@ -9,7 +10,6 @@ import AddSubnet from "../AddSubnet";
 import AddVlan from "../AddVlan";
 
 import SectionHeader from "@/app/base/components/SectionHeader";
-import { useSidePanel } from "@/app/base/side-panel-context";
 import urls from "@/app/base/urls";
 
 type Props = {

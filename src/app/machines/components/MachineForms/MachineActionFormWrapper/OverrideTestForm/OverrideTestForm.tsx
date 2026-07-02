@@ -1,5 +1,6 @@
 import type { ChangeEvent, ReactElement } from "react";
 
+import { useSidePanel } from "@canonical/maas-react-components";
 import { Col, Row, Spinner } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useLocation } from "react-router";
@@ -9,7 +10,6 @@ import ActionForm from "@/app/base/components/ActionForm";
 import FormikField from "@/app/base/components/FormikField";
 import NodeActionWarning from "@/app/base/components/node/NodeActionWarning";
 import { useSendAnalytics } from "@/app/base/hooks";
-import { useSidePanel } from "@/app/base/side-panel-context";
 import urls from "@/app/base/urls";
 import { machineActions } from "@/app/store/machine";
 import machineSelectors from "@/app/store/machine/selectors";

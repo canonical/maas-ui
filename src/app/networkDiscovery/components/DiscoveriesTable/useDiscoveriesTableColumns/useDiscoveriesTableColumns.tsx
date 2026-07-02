@@ -1,5 +1,6 @@
 import { useMemo } from "react";
 
+import { useSidePanel } from "@canonical/maas-react-components";
 import { ContextualMenu } from "@canonical/react-components";
 import type { ColumnDef } from "@tanstack/react-table";
 
@@ -7,7 +8,6 @@ import type { DiscoveryResponse } from "@/app/apiclient";
 import DoubleRow from "@/app/base/components/DoubleRow/DoubleRow";
 import MacAddressDisplay from "@/app/base/components/MacAddressDisplay";
 import TooltipButton from "@/app/base/components/TooltipButton";
-import { useSidePanel } from "@/app/base/side-panel-context";
 import {
   DiscoveryAddForm,
   DiscoveryDeleteForm,

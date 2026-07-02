@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 
+import { useSidePanel } from "@canonical/maas-react-components";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 
@@ -9,7 +10,6 @@ import type { SetPoolFormValues } from "./types";
 import { useCreatePool, usePools } from "@/app/api/query/pools";
 import type { ResourcePoolResponse } from "@/app/apiclient";
 import ActionForm from "@/app/base/components/ActionForm";
-import { useSidePanel } from "@/app/base/side-panel-context";
 import type { APIError } from "@/app/base/types";
 import { machineActions } from "@/app/store/machine";
 import machineSelectors from "@/app/store/machine/selectors";

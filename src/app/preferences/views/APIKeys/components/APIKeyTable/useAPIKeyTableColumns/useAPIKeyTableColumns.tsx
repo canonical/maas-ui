@@ -1,12 +1,12 @@
 import { useMemo } from "react";
 
+import { useSidePanel } from "@canonical/maas-react-components";
 import type { ColumnDef } from "@tanstack/react-table";
 
 import APIKeyDelete from "../../APIKeyDelete";
 import APIKeyEdit from "../../APIKeyEdit";
 
 import TableActions from "@/app/base/components/TableActions";
-import { useSidePanel } from "@/app/base/side-panel-context";
 import type { Token } from "@/app/store/token/types";
 
 export type TokenRowData = {

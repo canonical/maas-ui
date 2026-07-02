@@ -1,5 +1,6 @@
 import { useMemo } from "react";
 
+import { useSidePanel } from "@canonical/maas-react-components";
 import type { ColumnDef, Row } from "@tanstack/react-table";
 
 import DeleteStaticRouteForm from "../DeleteStaticRouteform";
@@ -7,7 +8,6 @@ import EditStaticRouteForm from "../EditStaticRouteForm";
 
 import SubnetLink from "@/app/base/components/SubnetLink";
 import TableActions from "@/app/base/components/TableActions";
-import { useSidePanel } from "@/app/base/side-panel-context";
 import type { StaticRoute } from "@/app/store/staticroute/types";
 
 export type StaticRouteColumnDef = ColumnDef<StaticRoute, Partial<StaticRoute>>;

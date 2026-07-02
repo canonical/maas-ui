@@ -1,5 +1,6 @@
 import type { HTMLProps, ReactElement, ReactNode } from "react";
 
+import { SidePanel } from "@canonical/maas-react-components";
 import { AppMain } from "@canonical/react-components";
 import classNames from "classnames";
 import { useSelector } from "react-redux";
@@ -9,7 +10,6 @@ import ErrorBoundary from "../ErrorBoundary/ErrorBoundary";
 import MainContentSection from "../MainContentSection";
 import SecondaryNavigation from "../SecondaryNavigation";
 
-import SidePanel from "@/app/base/components/SidePanel";
 import { useThemeContext } from "@/app/base/theme-context";
 import { preferencesNavItems } from "@/app/preferences/constants";
 import { useSettingsNavItems } from "@/app/settings/hooks/useSettingsNavItems";

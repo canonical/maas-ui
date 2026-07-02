@@ -1,5 +1,6 @@
 import { useState } from "react";
 
+import { useSidePanel } from "@canonical/maas-react-components";
 import { useSelector } from "react-redux";
 import { Link, useLocation } from "react-router";
 
@@ -8,7 +9,6 @@ import ControllerName from "./ControllerName";
 import NodeActionMenu from "@/app/base/components/NodeActionMenu";
 import SectionHeader from "@/app/base/components/SectionHeader";
 import { useSendAnalytics } from "@/app/base/hooks";
-import { useSidePanel } from "@/app/base/side-panel-context";
 import urls from "@/app/base/urls";
 import ControllerActionFormWrapper from "@/app/controllers/components/ControllerForms/ControllerActionFormWrapper";
 import { ControllerDetailsTabLabels } from "@/app/controllers/constants";

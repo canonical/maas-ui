@@ -1,5 +1,6 @@
 import type { Dispatch, ReactElement, SetStateAction } from "react";
 
+import { useSidePanel } from "@canonical/maas-react-components";
 import {
   Notification as NotificationBanner,
   Spinner,
@@ -13,7 +14,6 @@ import {
   useImages,
 } from "@/app/api/query/images";
 import ModelActionForm from "@/app/base/components/ModelActionForm";
-import { useSidePanel } from "@/app/base/side-panel-context";
 
 type DeleteImagesProps = {
   rowSelection: RowSelectionState;

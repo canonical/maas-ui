@@ -1,10 +1,9 @@
 import type { ReactElement } from "react";
 
-import { MainToolbar } from "@canonical/maas-react-components";
+import { MainToolbar, useSidePanel } from "@canonical/maas-react-components";
 import { Button } from "@canonical/react-components";
 
 import { useNetworkDiscoveries } from "@/app/api/query/networkDiscovery";
-import { useSidePanel } from "@/app/base/side-panel-context";
 import { ClearAllForm } from "@/app/networkDiscovery/components";
 
 export enum Labels {

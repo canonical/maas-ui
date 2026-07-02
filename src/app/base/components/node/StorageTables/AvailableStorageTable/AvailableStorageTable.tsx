@@ -1,14 +1,13 @@
 import { useState } from "react";
 import "./_index.scss";
 
-import { GenericTable } from "@canonical/maas-react-components";
+import { GenericTable, useSidePanel } from "@canonical/maas-react-components";
 import type { RowSelectionState } from "@tanstack/react-table";
 
 import BulkActions from "./BulkActions";
 import type { AvailableStorageRow } from "./useAvailableStorageColumns/useAvailableStorageColumns";
 import useAvailableStorageColumns from "./useAvailableStorageColumns/useAvailableStorageColumns";
 
-import { useSidePanel } from "@/app/base/side-panel-context";
 import type { ControllerDetails } from "@/app/store/controller/types";
 import type { MachineDetails } from "@/app/store/machine/types";
 import {

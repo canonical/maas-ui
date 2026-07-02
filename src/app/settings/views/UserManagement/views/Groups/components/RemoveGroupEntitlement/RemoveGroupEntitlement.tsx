@@ -1,5 +1,6 @@
 import type { Dispatch, SetStateAction } from "react";
 
+import { useSidePanel } from "@canonical/maas-react-components";
 import pluralize from "pluralize";
 
 import { useRemoveGroupEntitlements } from "@/app/api/query/groups";
@@ -9,7 +10,6 @@ import type {
   UserGroupResponse,
 } from "@/app/apiclient";
 import ModelActionForm from "@/app/base/components/ModelActionForm";
-import { useSidePanel } from "@/app/base/side-panel-context";
 
 type RemoveGroupEntitlementProps = {
   group_id: UserGroupResponse["id"];

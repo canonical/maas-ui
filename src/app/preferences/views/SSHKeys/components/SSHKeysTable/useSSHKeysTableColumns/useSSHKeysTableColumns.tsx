@@ -1,10 +1,10 @@
 import { useMemo } from "react";
 
+import { useSidePanel } from "@canonical/maas-react-components";
 import type { ColumnDef } from "@tanstack/react-table";
 
 import type { SshKeyResponse } from "@/app/apiclient";
 import TableActions from "@/app/base/components/TableActions";
-import { useSidePanel } from "@/app/base/side-panel-context";
 import { DeleteSSHKey } from "@/app/preferences/views/SSHKeys/components";
 import type { SSHKeyValue } from "@/app/preferences/views/SSHKeys/components/SSHKeysTable/SSHKeysTable";
 

@@ -1,12 +1,12 @@
 import { useMemo } from "react";
 
+import { useSidePanel } from "@canonical/maas-react-components";
 import type { ColumnDef } from "@tanstack/react-table";
 
 import FabricLink from "@/app/base/components/FabricLink";
 import SpaceLink from "@/app/base/components/SpaceLink";
 import TableActions from "@/app/base/components/TableActions";
 import VLANLink from "@/app/base/components/VLANLink";
-import { useSidePanel } from "@/app/base/side-panel-context";
 import { DeleteVLAN, EditVLAN } from "@/app/networks/views/VLANs/components";
 import type { VLAN } from "@/app/store/vlan/types";
 

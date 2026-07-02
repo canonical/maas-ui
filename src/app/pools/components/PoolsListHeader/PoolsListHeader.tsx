@@ -1,12 +1,11 @@
 import type { ReactNode } from "react";
 
-import { MainToolbar } from "@canonical/maas-react-components";
+import { MainToolbar, useSidePanel } from "@canonical/maas-react-components";
 import { Button } from "@canonical/react-components";
 import pluralize from "pluralize";
 import { Link } from "react-router";
 
 import { usePoolCount } from "@/app/api/query/pools";
-import { useSidePanel } from "@/app/base/side-panel-context";
 import urls from "@/app/base/urls";
 import { AddPool } from "@/app/pools/components";
 import { useFetchMachineCount } from "@/app/store/machine/utils/hooks";

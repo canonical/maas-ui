@@ -1,10 +1,10 @@
 import type { ReactElement } from "react";
 
+import { useSidePanel } from "@canonical/maas-react-components";
 import { Button } from "@canonical/react-components";
 
 import SectionHeader from "@/app/base/components/SectionHeader";
 import { useHasEntitlements } from "@/app/base/hooks";
-import { useSidePanel } from "@/app/base/side-panel-context";
 import { DeleteFabric } from "@/app/networks/views/Fabrics/components";
 import { Entitlement } from "@/app/settings/views/UserManagement/views/Groups/constants";
 import type { Fabric } from "@/app/store/fabric/types";

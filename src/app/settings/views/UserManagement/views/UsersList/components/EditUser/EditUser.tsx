@@ -1,6 +1,7 @@
 import type { ReactElement } from "react";
 import { useState } from "react";
 
+import { useSidePanel } from "@canonical/maas-react-components";
 import {
   Button,
   Notification as NotificationBanner,
@@ -18,7 +19,6 @@ import type { UpdateUserError, UserUpdateRequest } from "@/app/apiclient";
 import { getUserQueryKey } from "@/app/apiclient/@tanstack/react-query.gen";
 import FormikField from "@/app/base/components/FormikField";
 import FormikForm from "@/app/base/components/FormikForm";
-import { useSidePanel } from "@/app/base/side-panel-context";
 
 type EditUserProps = {
   id: number;

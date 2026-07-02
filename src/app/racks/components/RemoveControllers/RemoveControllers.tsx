@@ -1,13 +1,12 @@
 import { useMemo, useState } from "react";
 
-import { GenericTable } from "@canonical/maas-react-components";
+import { GenericTable, useSidePanel } from "@canonical/maas-react-components";
 import type { ColumnDef, RowSelectionState } from "@tanstack/react-table";
 import pluralize from "pluralize";
 
 import { useGetRack } from "@/app/api/query/racks";
 import ControllerLink from "@/app/base/components/ControllerLink";
 import FormikForm from "@/app/base/components/FormikForm";
-import { useSidePanel } from "@/app/base/side-panel-context";
 import type { Controller } from "@/app/store/controller/types";
 import "./_index.scss";
 

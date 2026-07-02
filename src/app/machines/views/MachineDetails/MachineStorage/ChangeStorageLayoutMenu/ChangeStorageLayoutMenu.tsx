@@ -1,8 +1,8 @@
 import type { ReactElement } from "react";
 
+import { useSidePanel } from "@canonical/maas-react-components";
 import { ContextualMenu } from "@canonical/react-components";
 
-import { useSidePanel } from "@/app/base/side-panel-context";
 import ChangeStorageLayout from "@/app/machines/views/MachineDetails/MachineStorage/ChangeStorageLayout";
 import type { Machine, StorageLayoutOption } from "@/app/store/machine/types";
 import { StorageLayout } from "@/app/store/types/enum";

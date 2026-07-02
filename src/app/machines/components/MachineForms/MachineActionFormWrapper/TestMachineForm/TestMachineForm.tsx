@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 
+import { useSidePanel } from "@canonical/maas-react-components";
 import { Spinner } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -9,7 +10,6 @@ import TestFormFields, {
   type TestFormValues,
 } from "@/app/base/components/node/TestFormFields/TestFormFields";
 import type { HardwareType } from "@/app/base/enum";
-import { useSidePanel } from "@/app/base/side-panel-context";
 import { machineActions } from "@/app/store/machine";
 import machineSelectors from "@/app/store/machine/selectors";
 import type { MachineEventErrors } from "@/app/store/machine/types";

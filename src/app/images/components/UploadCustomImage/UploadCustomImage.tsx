@@ -1,6 +1,6 @@
 import type { ReactElement } from "react";
 
-import { FileUpload } from "@canonical/maas-react-components";
+import { FileUpload, useSidePanel } from "@canonical/maas-react-components";
 import type { SelectProps } from "@canonical/react-components";
 import { Input, Label, Select, Strip } from "@canonical/react-components";
 import classNames from "classnames";
@@ -19,7 +19,6 @@ import FormikField, {
   FormikFieldChangeError,
 } from "@/app/base/components/FormikField/FormikField";
 import FormikForm from "@/app/base/components/FormikForm";
-import { useSidePanel } from "@/app/base/side-panel-context";
 import {
   ARCHITECTURES,
   BASE_IMAGE_OPERATING_SYSTEM_NAMES,

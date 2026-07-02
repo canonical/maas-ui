@@ -1,6 +1,7 @@
 import type { ReactElement } from "react";
 import { useCallback } from "react";
 
+import { useSidePanel } from "@canonical/maas-react-components";
 import { Spinner } from "@canonical/react-components";
 import * as ipaddr from "ipaddr.js";
 import { isIP, isIPv4 } from "is-ip";
@@ -15,7 +16,6 @@ import type { EditPhysicalValues } from "./types";
 import FormikForm from "@/app/base/components/FormikForm";
 import { formatIpAddress } from "@/app/base/components/PrefixedIpInput";
 import { useFetchActions, useIsAllNetworkingDisabled } from "@/app/base/hooks";
-import { useSidePanel } from "@/app/base/side-panel-context";
 import { MAC_ADDRESS_REGEX } from "@/app/base/validation";
 import { useMachineDetailsForm } from "@/app/machines/hooks";
 import { fabricActions } from "@/app/store/fabric";

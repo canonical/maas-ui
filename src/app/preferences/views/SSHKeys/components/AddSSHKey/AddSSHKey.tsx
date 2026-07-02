@@ -1,5 +1,6 @@
 import type { ReactElement } from "react";
 
+import { useSidePanel } from "@canonical/maas-react-components";
 import * as Yup from "yup";
 
 import { useCreateSshKeys, useImportSshKeys } from "@/app/api/query/sshKeys";
@@ -11,7 +12,6 @@ import type {
   SshKeysProtocolType,
 } from "@/app/apiclient";
 import FormikForm from "@/app/base/components/FormikForm";
-import { useSidePanel } from "@/app/base/side-panel-context";
 import SSHKeyFormFields from "@/app/preferences/views/SSHKeys/components/AddSSHKey/SSHKeyFormFields";
 
 type AddSSHKeyProps = {

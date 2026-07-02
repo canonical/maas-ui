@@ -1,11 +1,11 @@
 import { useMemo } from "react";
 
+import { useSidePanel } from "@canonical/maas-react-components";
 import type { ColumnDef } from "@tanstack/react-table";
 
 import DhcpSnippetType from "../../DhcpSnippetType";
 import TableActions from "../../TableActions";
 
-import { useSidePanel } from "@/app/base/side-panel-context";
 import DhcpEdit from "@/app/settings/views/Dhcp/DhcpEdit";
 import type { DHCPSnippet } from "@/app/store/dhcpsnippet/types";
 import type { IPRange } from "@/app/store/iprange/types";

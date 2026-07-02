@@ -1,5 +1,6 @@
 import { useContext, useEffect, useRef } from "react";
 
+import { useSidePanel } from "@canonical/maas-react-components";
 import {
   Button,
   CodeSnippet,
@@ -11,7 +12,6 @@ import { nanoid } from "@reduxjs/toolkit";
 import { useDispatch, useSelector } from "react-redux";
 
 import FileContext from "@/app/base/file-context";
-import { useSidePanel } from "@/app/base/side-panel-context";
 import { scriptActions } from "@/app/store/script";
 import scriptSelectors from "@/app/store/script/selectors";
 import type { Script } from "@/app/store/script/types";

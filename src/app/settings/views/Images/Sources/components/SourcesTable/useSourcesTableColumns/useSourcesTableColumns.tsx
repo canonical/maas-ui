@@ -1,10 +1,10 @@
 import { useMemo } from "react";
 
+import { useSidePanel } from "@canonical/maas-react-components";
 import { ContextualMenu, Icon, Tooltip } from "@canonical/react-components";
 import type { Column, ColumnDef, Header, Row } from "@tanstack/react-table";
 import pluralize from "pluralize";
 
-import { useSidePanel } from "@/app/base/side-panel-context";
 import { MAAS_IO_URLS } from "@/app/images/constants";
 import { BootResourceSourceType } from "@/app/images/types";
 import type { ImageSource } from "@/app/settings/views/Images/Sources/Sources";

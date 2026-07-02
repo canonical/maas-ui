@@ -56,6 +56,17 @@ export default defineConfig(({ mode }) => {
     server: { port: 8401, hmr: process.env.CI ? false : { port: 8402 } },
     resolve: {
       alias: { "@": path.resolve(__dirname, "src") },
+      // Ensure a single copy of these packages is used, even when
+      // @canonical/maas-react-components is linked locally and ships its own
+      // nested copies in node_modules. Without this, Vite may resolve an older
+      // nested @canonical/react-components (or a duplicate react-router),
+      // breaking shared context and missing newer exports.
+      dedupe: [
+        "@canonical/react-components",
+        "react",
+        "react-dom",
+        "react-router",
+      ],
     },
   };
 });

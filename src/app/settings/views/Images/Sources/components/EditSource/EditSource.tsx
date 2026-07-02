@@ -1,6 +1,7 @@
 import type { ReactElement } from "react";
 import React, { useMemo, useState } from "react";
 
+import { useSidePanel } from "@canonical/maas-react-components";
 import {
   Icon,
   Notification as NotificationBanner,
@@ -24,7 +25,6 @@ import type {
 import FormikField from "@/app/base/components/FormikField";
 import { FormikFieldChangeError } from "@/app/base/components/FormikField/FormikField";
 import FormikForm from "@/app/base/components/FormikForm";
-import { useSidePanel } from "@/app/base/side-panel-context";
 import type { SourceValues } from "@/app/settings/views/Images/Sources/components/AddSource/AddSource";
 import { SourceSchema } from "@/app/settings/views/Images/Sources/components/AddSource/AddSource";
 import { Labels } from "@/app/settings/views/Images/Sources/constants";

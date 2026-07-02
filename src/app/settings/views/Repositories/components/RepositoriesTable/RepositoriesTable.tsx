@@ -1,4 +1,8 @@
-import { GenericTable, MainToolbar } from "@canonical/maas-react-components";
+import {
+  GenericTable,
+  MainToolbar,
+  useSidePanel,
+} from "@canonical/maas-react-components";
 import {
   Button,
   Notification as NotificationBanner,
@@ -11,7 +15,6 @@ import useRepositoriesTableColumns from "./useRepositoriesTableColumns/useReposi
 import { usePackageRepositories } from "@/app/api/query/packageRepositories";
 import { useHasEntitlements } from "@/app/base/hooks";
 import usePagination from "@/app/base/hooks/usePagination/usePagination";
-import { useSidePanel } from "@/app/base/side-panel-context";
 import { AddRepository } from "@/app/settings/views/Repositories/components";
 
 const RepositoriesTable = () => {

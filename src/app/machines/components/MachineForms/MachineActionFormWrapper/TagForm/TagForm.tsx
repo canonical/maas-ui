@@ -1,6 +1,7 @@
 import type { ReactElement } from "react";
 import { useEffect, useState } from "react";
 
+import { useSidePanel } from "@canonical/maas-react-components";
 import { Col, NotificationSeverity, Row } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
@@ -10,7 +11,6 @@ import TagFormFields from "./TagFormFields";
 import type { TagFormValues } from "./types";
 
 import ActionForm from "@/app/base/components/ActionForm";
-import { useSidePanel } from "@/app/base/side-panel-context";
 import { machineActions } from "@/app/store/machine";
 import machineSelectors from "@/app/store/machine/selectors";
 import type { MachineEventErrors } from "@/app/store/machine/types";

@@ -1,5 +1,6 @@
 import { useMemo } from "react";
 
+import { useSidePanel } from "@canonical/maas-react-components";
 import type { ColumnDef } from "@tanstack/react-table";
 
 import DhcpDelete from "../../DhcpDelete";
@@ -8,7 +9,6 @@ import DhcpTarget from "../../DhcpTarget";
 
 import DhcpSnippetType from "@/app/base/components/DhcpSnippetType";
 import TableActions from "@/app/base/components/TableActions";
-import { useSidePanel } from "@/app/base/side-panel-context";
 import type { DHCPSnippet } from "@/app/store/dhcpsnippet/types";
 import { formatUtcDatetime } from "@/app/utils/time";
 

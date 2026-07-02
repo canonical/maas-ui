@@ -1,5 +1,6 @@
 import { type Dispatch, type SetStateAction, useMemo } from "react";
 
+import { useSidePanel } from "@canonical/maas-react-components";
 import type { MenuLink } from "@canonical/react-components";
 import {
   Button,
@@ -27,7 +28,6 @@ import {
 } from "@/app/api/query/images";
 import type { BootSourceResponse } from "@/app/apiclient";
 import DoubleRow from "@/app/base/components/DoubleRow/DoubleRow";
-import { useSidePanel } from "@/app/base/side-panel-context";
 import DeleteImages from "@/app/images/components/DeleteImages";
 import { OPERATING_SYSTEM_NAMES } from "@/app/images/constants";
 import type { Image } from "@/app/images/types";

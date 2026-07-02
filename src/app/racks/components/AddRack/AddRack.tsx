@@ -1,10 +1,10 @@
+import { useSidePanel } from "@canonical/maas-react-components";
 import * as Yup from "yup";
 
 import { useCreateRack } from "@/app/api/query/racks";
 import type { CreateRackError, RackRequest } from "@/app/apiclient";
 import FormikField from "@/app/base/components/FormikField/FormikField";
 import FormikForm from "@/app/base/components/FormikForm";
-import { useSidePanel } from "@/app/base/side-panel-context";
 
 const RackSchema = Yup.object().shape({
   name: Yup.string().required("'Name' is a required field."),

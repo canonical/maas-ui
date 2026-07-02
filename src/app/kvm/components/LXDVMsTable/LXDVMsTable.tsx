@@ -1,7 +1,7 @@
 import type { ReactElement } from "react";
 import { useCallback, useEffect, useState } from "react";
 
-import { GenericTable } from "@canonical/maas-react-components";
+import { GenericTable, useSidePanel } from "@canonical/maas-react-components";
 import { usePrevious } from "@canonical/react-components";
 import type { RowSelectionState, SortingState } from "@tanstack/react-table";
 import { useDispatch, useSelector } from "react-redux";
@@ -13,7 +13,6 @@ import type {
 } from "./useVMsTableColumns/useVMsTableColumns";
 import useVMsTableColumns from "./useVMsTableColumns/useVMsTableColumns";
 
-import { useSidePanel } from "@/app/base/side-panel-context";
 import type { SetSearchFilter } from "@/app/base/types";
 import { SortDirection } from "@/app/base/types";
 import { machineActions } from "@/app/store/machine";

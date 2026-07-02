@@ -1,5 +1,6 @@
 import { useMemo } from "react";
 
+import { useSidePanel } from "@canonical/maas-react-components";
 import type { ColumnDef } from "@tanstack/react-table";
 import { useSelector } from "react-redux";
 
@@ -20,7 +21,6 @@ import SetBootDisk from "../SetBootDisk";
 import DoubleRow from "@/app/base/components/DoubleRow";
 import TableMenu from "@/app/base/components/TableMenu";
 import TagLinks from "@/app/base/components/TagLinks";
-import { useSidePanel } from "@/app/base/side-panel-context";
 import urls from "@/app/base/urls";
 import { FilterControllers } from "@/app/store/controller/utils";
 import machineSelectors from "@/app/store/machine/selectors";

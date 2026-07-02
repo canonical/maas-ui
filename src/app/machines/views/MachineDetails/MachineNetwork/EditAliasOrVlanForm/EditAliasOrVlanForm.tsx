@@ -1,6 +1,7 @@
 import type { ReactElement } from "react";
 import { useCallback } from "react";
 
+import { useSidePanel } from "@canonical/maas-react-components";
 import { Col, Row, Spinner } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
@@ -13,7 +14,6 @@ import NetworkFields, {
 import FormikForm from "@/app/base/components/FormikForm";
 import TagNameField from "@/app/base/components/TagNameField";
 import { useFetchActions, useIsAllNetworkingDisabled } from "@/app/base/hooks";
-import { useSidePanel } from "@/app/base/side-panel-context";
 import { useMachineDetailsForm } from "@/app/machines/hooks";
 import { fabricActions } from "@/app/store/fabric";
 import fabricSelectors from "@/app/store/fabric/selectors";

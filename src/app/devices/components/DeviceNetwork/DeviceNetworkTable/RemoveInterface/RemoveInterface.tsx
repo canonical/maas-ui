@@ -1,11 +1,11 @@
 import { useEffect } from "react";
 
+import { useSidePanel } from "@canonical/maas-react-components";
 import { Notification as NotificationBanner } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 
 import ModelActionForm from "@/app/base/components/ModelActionForm";
 import { useCycled, useSendAnalyticsWhen } from "@/app/base/hooks";
-import { useSidePanel } from "@/app/base/side-panel-context";
 import { deviceActions } from "@/app/store/device";
 import deviceSelectors from "@/app/store/device/selectors";
 import type {

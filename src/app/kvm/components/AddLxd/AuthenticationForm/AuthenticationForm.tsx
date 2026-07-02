@@ -1,7 +1,7 @@
 import type { ReactElement } from "react";
 import { useEffect, useState } from "react";
 
-import { ExternalLink } from "@canonical/maas-react-components";
+import { ExternalLink, useSidePanel } from "@canonical/maas-react-components";
 import { Spinner } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
@@ -12,7 +12,6 @@ import type { AddLxdStepValues, NewPodValues } from "../types";
 import AuthenticationFormFields from "./AuthenticationFormFields";
 
 import FormikForm from "@/app/base/components/FormikForm";
-import { useSidePanel } from "@/app/base/side-panel-context";
 import { generatedCertificate as generatedCertificateSelectors } from "@/app/store/general/selectors";
 import { podActions } from "@/app/store/pod";
 import { PodType } from "@/app/store/pod/constants";

@@ -1,10 +1,10 @@
 import type { ReactElement } from "react";
 import { useCallback } from "react";
 
+import { useSidePanel } from "@canonical/maas-react-components";
 import { useDispatch, useSelector } from "react-redux";
 
 import ActionForm from "@/app/base/components/ActionForm";
-import { useSidePanel } from "@/app/base/side-panel-context";
 import type { EmptyObject } from "@/app/base/types";
 import { podActions } from "@/app/store/pod";
 import podSelectors from "@/app/store/pod/selectors";

@@ -1,6 +1,10 @@
 import { useState } from "react";
 
-import { GenericTable, MainToolbar } from "@canonical/maas-react-components";
+import {
+  GenericTable,
+  MainToolbar,
+  useSidePanel,
+} from "@canonical/maas-react-components";
 import { Button, SearchBox } from "@canonical/react-components";
 
 import { Entitlement } from "../../constants";
@@ -11,7 +15,6 @@ import useGroupsListColumns from "./useGroupsTableColumns/useGroupsTableColumns"
 import { useGroups } from "@/app/api/query/groups";
 import { useHasEntitlements } from "@/app/base/hooks";
 import usePagination from "@/app/base/hooks/usePagination/usePagination";
-import { useSidePanel } from "@/app/base/side-panel-context";
 
 const GroupsTable = () => {
   const [searchText, setSearchText] = useState("");

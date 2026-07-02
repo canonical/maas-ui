@@ -1,6 +1,7 @@
 import type { ReactElement } from "react";
 import { useCallback } from "react";
 
+import { useSidePanel } from "@canonical/maas-react-components";
 import { Spinner, Strip } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 import type { SchemaOf } from "yup";
@@ -12,7 +13,6 @@ import { usePools } from "@/app/api/query/pools";
 import { useZones } from "@/app/api/query/zones";
 import FormikForm from "@/app/base/components/FormikForm";
 import { useFetchActions } from "@/app/base/hooks";
-import { useSidePanel } from "@/app/base/side-panel-context";
 import { generalActions } from "@/app/store/general";
 import { powerTypes as powerTypesSelectors } from "@/app/store/general/selectors";
 import { PowerFieldScope } from "@/app/store/general/types";

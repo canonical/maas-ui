@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 
+import { useSidePanel } from "@canonical/maas-react-components";
 import { Spinner } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
@@ -9,7 +10,6 @@ import LicenseKeyFormFields from "../LicenseKeyFormFields";
 import type { LicenseKeyFormValues } from "./types";
 
 import FormikForm from "@/app/base/components/FormikForm";
-import { useSidePanel } from "@/app/base/side-panel-context";
 import settingsURLs from "@/app/settings/urls";
 import { generalActions } from "@/app/store/general";
 import { osInfo as osInfoSelectors } from "@/app/store/general/selectors";

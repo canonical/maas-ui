@@ -1,10 +1,10 @@
 import { useMemo } from "react";
 
+import { useSidePanel } from "@canonical/maas-react-components";
 import { Button, Icon } from "@canonical/react-components";
 import type { ColumnDef, Row } from "@tanstack/react-table";
 import { Link, useLocation } from "react-router";
 
-import { useSidePanel } from "@/app/base/side-panel-context";
 import urls from "@/app/base/urls";
 import CPUColumn from "@/app/kvm/components/CPUColumn";
 import ComposeForm from "@/app/kvm/components/ComposeForm";

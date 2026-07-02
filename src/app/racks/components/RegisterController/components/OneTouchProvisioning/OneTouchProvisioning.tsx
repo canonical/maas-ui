@@ -1,12 +1,11 @@
 import type { ReactElement } from "react";
 
-import { ExternalLink } from "@canonical/maas-react-components";
+import { ExternalLink, useSidePanel } from "@canonical/maas-react-components";
 import { FormikField } from "@canonical/react-components";
 import * as Yup from "yup";
 
 import FormikForm from "@/app/base/components/FormikForm";
 import docsUrls from "@/app/base/docsUrls";
-import { useSidePanel } from "@/app/base/side-panel-context";
 
 //TODO when endpoint is ready
 export type OneTouchProvisioning = {

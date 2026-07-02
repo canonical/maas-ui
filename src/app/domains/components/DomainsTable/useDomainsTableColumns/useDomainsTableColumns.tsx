@@ -1,5 +1,6 @@
 import { useMemo } from "react";
 
+import { useSidePanel } from "@canonical/maas-react-components";
 import { ContextualMenu } from "@canonical/react-components";
 import type { ColumnDef } from "@tanstack/react-table";
 import { useDispatch } from "react-redux";
@@ -7,7 +8,6 @@ import { Link } from "react-router";
 
 import { Labels } from "../DomainsTable";
 
-import { useSidePanel } from "@/app/base/side-panel-context";
 import urls from "@/app/base/urls";
 import { SetDefaultForm } from "@/app/domains/components";
 import { domainActions } from "@/app/store/domain";

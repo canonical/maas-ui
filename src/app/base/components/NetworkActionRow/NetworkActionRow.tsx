@@ -1,5 +1,6 @@
 import type { ReactElement, ReactNode } from "react";
 
+import { useSidePanel } from "@canonical/maas-react-components";
 import { Button, Col, List, Row, Tooltip } from "@canonical/react-components";
 import { useLocation } from "react-router";
 
@@ -10,7 +11,6 @@ import type {
   SetSelected,
 } from "@/app/base/components/node/networking/types";
 import { useIsAllNetworkingDisabled } from "@/app/base/hooks";
-import { useSidePanel } from "@/app/base/side-panel-context";
 import { default as AddDeviceInterface } from "@/app/devices/components/DeviceNetwork/AddInterface";
 import AddBondForm from "@/app/machines/views/MachineDetails/MachineNetwork/AddBondForm";
 import AddBridgeForm from "@/app/machines/views/MachineDetails/MachineNetwork/AddBridgeForm";

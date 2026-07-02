@@ -1,3 +1,4 @@
+import { useSidePanel } from "@canonical/maas-react-components";
 import { NotificationSeverity, Spinner } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
@@ -6,7 +7,6 @@ import UpdateTagFormFields from "./UpdateTagFormFields";
 
 import FormikForm from "@/app/base/components/FormikForm";
 import { useFetchActions } from "@/app/base/hooks";
-import { useSidePanel } from "@/app/base/side-panel-context";
 import { messageActions } from "@/app/store/message";
 import type { RootState } from "@/app/store/root/types";
 import { tagActions } from "@/app/store/tag";

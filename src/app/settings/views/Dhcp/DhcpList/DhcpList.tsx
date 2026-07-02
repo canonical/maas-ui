@@ -4,6 +4,7 @@ import {
   ContentSection,
   GenericTable,
   MainToolbar,
+  useSidePanel,
 } from "@canonical/maas-react-components";
 import {
   Button,
@@ -20,7 +21,6 @@ import SearchBox from "@/app/base/components/SearchBox";
 import docsUrls from "@/app/base/docsUrls";
 import { useHasEntitlements, useWindowTitle } from "@/app/base/hooks";
 import usePagination from "@/app/base/hooks/usePagination/usePagination";
-import { useSidePanel } from "@/app/base/side-panel-context";
 import DhcpAdd from "@/app/settings/views/Dhcp/DhcpAdd";
 import { controllerActions } from "@/app/store/controller";
 import { deviceActions } from "@/app/store/device";

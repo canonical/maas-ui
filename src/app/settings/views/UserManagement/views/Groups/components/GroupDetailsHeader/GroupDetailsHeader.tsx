@@ -1,5 +1,6 @@
 import type { Dispatch, ReactElement, SetStateAction } from "react";
 
+import { useSidePanel } from "@canonical/maas-react-components";
 import { Button, ContextualMenu } from "@canonical/react-components";
 import { Link, useLocation } from "react-router";
 
@@ -10,7 +11,6 @@ import type {
   UserGroupResponse,
 } from "@/app/apiclient";
 import SectionHeader from "@/app/base/components/SectionHeader";
-import { useSidePanel } from "@/app/base/side-panel-context";
 import urls from "@/app/settings/urls";
 import AddEntitlement from "@/app/settings/views/UserManagement/views/Groups/components/AddEntitlement";
 import AddMembers from "@/app/settings/views/UserManagement/views/Groups/components/AddMembers/AddMembers";
