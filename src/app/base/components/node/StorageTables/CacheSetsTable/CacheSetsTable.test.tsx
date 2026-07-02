@@ -40,7 +40,7 @@ describe("CacheSetsTable", () => {
 
     const rows = within(screen.getAllByRole("rowgroup")[1]).getAllByRole("row");
     expect(rows).toHaveLength(1);
-    expect(within(rows[0]).getAllByRole("cell")[0]).toHaveTextContent(
+    expect(within(rows[0]).getAllByRole("gridcell")[0]).toHaveTextContent(
       cacheSet.name
     );
   });

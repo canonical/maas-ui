@@ -81,7 +81,7 @@ describe("MachineSelectTable", () => {
 
     // have to click through to the span that has the click handler
     await userEvent.click(
-      screen.getByRole("cell", { name: new RegExp(machines[0].hostname) })
+      screen.getByRole("gridcell", { name: new RegExp(machines[0].hostname) })
         .firstChild as Element
     );
     expect(onMachineClick).toHaveBeenCalledWith(machines[0]);
@@ -111,6 +111,6 @@ describe("MachineSelectTable", () => {
       />,
       { state }
     );
-    expect(screen.getByRole("grid")).toBeInTheDocument();
+    expect(screen.getByRole("treegrid")).toBeInTheDocument();
   });
 });

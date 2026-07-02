@@ -38,19 +38,19 @@ it("renders correct details", () => {
   ).toBeInTheDocument();
 
   expect(
-    screen.getByRole("cell", { name: new RegExp(vlan.name) })
+    screen.getByRole("gridcell", { name: new RegExp(vlan.name) })
   ).toBeInTheDocument();
 
   expect(
-    screen.getByRole("cell", { name: new RegExp(space.name) })
+    screen.getByRole("gridcell", { name: new RegExp(space.name) })
   ).toBeInTheDocument();
 
   expect(
-    screen.getByRole("cell", { name: new RegExp(subnet.name) })
+    screen.getByRole("gridcell", { name: new RegExp(subnet.name) })
   ).toBeInTheDocument();
 
   expect(
-    screen.getByRole("cell", { name: subnet.statistics.available_string })
+    screen.getByRole("gridcell", { name: subnet.statistics.available_string })
   ).toBeInTheDocument();
 });
 
@@ -71,7 +71,9 @@ it("handles a VLAN without any subnets", () => {
   });
   renderWithProviders(<FabricVLANsTable fabric={fabric} />, { state });
 
-  expect(screen.getByRole("cell", { name: "No subnets" })).toBeInTheDocument();
+  expect(
+    screen.getByRole("gridcell", { name: "No subnets" })
+  ).toBeInTheDocument();
 });
 
 it("handles a VLAN with multiple subnets", () => {
@@ -109,8 +111,8 @@ it("handles a VLAN with multiple subnets", () => {
     "row"
   );
 
-  const firstRowCells = within(dataRows[0]).getAllByRole("cell");
-  const secondRowCells = within(dataRows[1]).getAllByRole("cell");
+  const firstRowCells = within(dataRows[0]).getAllByRole("gridcell");
+  const secondRowCells = within(dataRows[1]).getAllByRole("gridcell");
 
   // first row for this vlan should contain name and space
   expect(firstRowCells[0]).toHaveTextContent(new RegExp(vlan.name));

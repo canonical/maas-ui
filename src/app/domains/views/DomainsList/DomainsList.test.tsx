@@ -29,7 +29,7 @@ describe("DomainsList", () => {
     });
 
     expect(
-      screen.getByRole("grid", { name: DomainsTableLabels.TableLable })
+      screen.getByRole("treegrid", { name: DomainsTableLabels.TableLable })
     ).toBeInTheDocument();
   });
 });

@@ -175,12 +175,15 @@ describe("DhcpFormFields", () => {
       screen.getByRole("button", { name: /Choose machine/ })
     );
     await waitFor(() => {
-      expect(screen.getByRole("grid")).toHaveAttribute("aria-busy", "false");
+      expect(screen.getByRole("treegrid")).toHaveAttribute(
+        "aria-busy",
+        "false"
+      );
     });
     // need to use fireEvent here to click through the element and trigger the onCLick handler
     // eslint-disable-next-line testing-library/prefer-user-event
     fireEvent.click(
-      screen.getByRole("cell", {
+      screen.getByRole("gridcell", {
         name: new RegExp(machine.hostname),
       }).firstChild as Element
     );

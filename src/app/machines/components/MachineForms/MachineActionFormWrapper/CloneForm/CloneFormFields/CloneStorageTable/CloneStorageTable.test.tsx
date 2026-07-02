@@ -41,7 +41,7 @@ describe("CloneStorageTable", () => {
       <CloneStorageTable machine={machine} selected={false} />
     );
     const availableCell = within(screen.getAllByRole("row")[1]).getAllByRole(
-      "cell"
+      "gridcell"
     )[4];
     expect(availableCell.querySelector("i")).toHaveClass("p-icon--tick");
   });
@@ -54,7 +54,7 @@ describe("CloneStorageTable", () => {
       <CloneStorageTable machine={machine} selected={false} />
     );
     const availableCell = within(screen.getAllByRole("row")[1]).getAllByRole(
-      "cell"
+      "gridcell"
     )[4];
     expect(availableCell.querySelector("i")).toHaveClass("p-icon--close");
   });
@@ -71,7 +71,7 @@ describe("CloneStorageTable", () => {
       <CloneStorageTable machine={machine} selected={false} />
     );
     const availableCell = within(screen.getAllByRole("row")[2]).getAllByRole(
-      "cell"
+      "gridcell"
     )[4];
     expect(availableCell.querySelector("i")).toHaveClass("p-icon--tick");
   });
@@ -90,7 +90,7 @@ describe("CloneStorageTable", () => {
       <CloneStorageTable machine={machine} selected={false} />
     );
     const availableCell = within(screen.getAllByRole("row")[2]).getAllByRole(
-      "cell"
+      "gridcell"
     )[4];
     expect(availableCell.querySelector("i")).toHaveClass("p-icon--close");
   });

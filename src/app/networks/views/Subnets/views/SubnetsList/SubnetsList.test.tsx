@@ -26,7 +26,7 @@ describe("SubnetsList", () => {
       state,
     });
 
-    expect(screen.getAllByRole("grid")).toHaveLength(1);
+    expect(screen.getAllByRole("treegrid")).toHaveLength(1);
     await userEvent.type(screen.getByRole("searchbox"), "non-existent-fabric");
     await waitFor(() => {
       expect(screen.getByText(/Loading.../)).toBeInTheDocument();
@@ -39,13 +39,13 @@ describe("SubnetsList", () => {
       state,
     });
 
-    expect(screen.getAllByRole("grid")).toHaveLength(1);
+    expect(screen.getAllByRole("treegrid")).toHaveLength(1);
 
     await userEvent.type(screen.getByRole("searchbox"), "non-existent-fabric");
 
     await waitFor(() => {
       expect(
-        within(screen.getByRole("grid")).getByText(/No results/)
+        within(screen.getByRole("treegrid")).getByText(/No results/)
       ).toBeInTheDocument();
     });
   });

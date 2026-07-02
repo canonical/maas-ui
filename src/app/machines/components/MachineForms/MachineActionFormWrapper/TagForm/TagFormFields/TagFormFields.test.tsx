@@ -82,7 +82,7 @@ it("displays available tags in the dropdown", async () => {
     </Formik>,
     { state }
   );
-  const changes = screen.getByRole("grid", {
+  const changes = screen.getByRole("treegrid", {
     name: TagFormChangesLabel.Table,
   });
   const tagRow = within(changes)
@@ -131,7 +131,7 @@ it("displays the tags to be added", () => {
     </Formik>,
     { state }
   );
-  const changes = screen.getByRole("grid", {
+  const changes = screen.getByRole("treegrid", {
     name: TagFormChangesLabel.Table,
   });
   expect(
@@ -163,7 +163,7 @@ it.skip("updates the new tags after creating a tag", async () => {
     </Formik>
   );
   const { rerender } = renderWithProviders(<Form tags={[]} />, { state });
-  const changes = screen.getByRole("grid", {
+  const changes = screen.getByRole("treegrid", {
     name: TagFormChangesLabel.Table,
   });
   const newTag = factory.tag({ id: 8, name: "new-tag" });

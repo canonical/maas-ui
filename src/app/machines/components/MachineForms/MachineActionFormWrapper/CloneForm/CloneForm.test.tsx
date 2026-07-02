@@ -78,7 +78,7 @@ describe("CloneForm", () => {
 
     // Select a source machine - form should update
     await userEvent.click(
-      screen.getByRole("cell", { name: new RegExp(machines[1].hostname) })
+      screen.getByRole("gridcell", { name: new RegExp(machines[1].hostname) })
         .firstChild as Element
     );
 
@@ -155,7 +155,7 @@ describe("CloneForm", () => {
     );
 
     await userEvent.click(
-      screen.getByRole("cell", { name: new RegExp(machines[2].hostname) })
+      screen.getByRole("gridcell", { name: new RegExp(machines[2].hostname) })
         .firstChild as Element
     );
 

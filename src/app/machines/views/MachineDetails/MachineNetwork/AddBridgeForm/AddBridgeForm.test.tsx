@@ -70,7 +70,7 @@ describe("AddBridgeForm", () => {
       />,
       { state }
     );
-    const table = screen.getByRole("grid");
+    const table = screen.getByRole("treegrid");
     expect(within(table).getAllByRole("row")).toHaveLength(2);
     expect(within(table).getByText("eth2")).toBeInTheDocument();
   });
@@ -178,7 +178,7 @@ describe("AddBridgeForm", () => {
     );
 
     // Ensure both interfaces are shown in the table
-    const table = screen.getByRole("grid");
+    const table = screen.getByRole("treegrid");
     const rows = within(within(table).getAllByRole("rowgroup")[1]).getAllByRole(
       "row"
     );

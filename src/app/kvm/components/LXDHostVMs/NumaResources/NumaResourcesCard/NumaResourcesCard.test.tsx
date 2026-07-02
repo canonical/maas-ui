@@ -68,10 +68,10 @@ describe("NumaResourcesCard", () => {
       name: new RegExp(`^Hugepage`, "i"),
     });
     expect(within(hugepagesData).getByText("(Size: 1KiB)")).toBeInTheDocument();
-    expect(within(hugepagesData).getAllByRole("cell")[1]).toHaveTextContent(
+    expect(within(hugepagesData).getAllByRole("gridcell")[1]).toHaveTextContent(
       "5B"
     ); // Allocated
-    expect(within(hugepagesData).getAllByRole("cell")[2]).toHaveTextContent(
+    expect(within(hugepagesData).getAllByRole("gridcell")[2]).toHaveTextContent(
       "7B"
     ); // Free
   });

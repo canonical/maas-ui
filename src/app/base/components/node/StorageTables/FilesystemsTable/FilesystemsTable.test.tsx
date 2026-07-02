@@ -143,10 +143,12 @@ describe("FilesystemsTable", () => {
         state,
       });
 
-      expect(screen.getByRole("cell", { name: "disk-fs" })).toHaveClass("name");
-      expect(screen.getByRole("cell", { name: "/disk-fs/path" })).toHaveClass(
-        "mountPoint"
+      expect(screen.getByRole("gridcell", { name: "disk-fs" })).toHaveClass(
+        "name"
       );
+      expect(
+        screen.getByRole("gridcell", { name: "/disk-fs/path" })
+      ).toHaveClass("mountPoint");
     });
 
     it("can show filesystems associated with partitions", () => {
@@ -170,11 +172,11 @@ describe("FilesystemsTable", () => {
         state,
       });
 
-      expect(screen.getByRole("cell", { name: "partition-fs" })).toHaveClass(
-        "name"
-      );
       expect(
-        screen.getByRole("cell", { name: "/partition-fs/path" })
+        screen.getByRole("gridcell", { name: "partition-fs" })
+      ).toHaveClass("name");
+      expect(
+        screen.getByRole("gridcell", { name: "/partition-fs/path" })
       ).toHaveClass("mountPoint");
     });
 
@@ -194,9 +196,11 @@ describe("FilesystemsTable", () => {
         state,
       });
 
-      expect(screen.getAllByRole("cell", { name: "—" })[0]).toHaveClass("name");
+      expect(screen.getAllByRole("gridcell", { name: "—" })[0]).toHaveClass(
+        "name"
+      );
       expect(
-        screen.getByRole("cell", { name: "/special-fs/path" })
+        screen.getByRole("gridcell", { name: "/special-fs/path" })
       ).toHaveClass("mountPoint");
     });
   });

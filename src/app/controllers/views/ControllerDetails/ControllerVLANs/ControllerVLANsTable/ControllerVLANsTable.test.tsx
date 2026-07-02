@@ -64,7 +64,7 @@ it("displays correct text when loading", function () {
     }
   );
 
-  const vlanTable = screen.getByRole("grid", { name: "Controller VLANs" });
+  const vlanTable = screen.getByRole("treegrid", { name: "Controller VLANs" });
   expect(within(vlanTable).getByText("Loading...")).toBeInTheDocument();
 });
 
@@ -93,7 +93,7 @@ it("displays correct text for no VLANs", function () {
     }
   );
 
-  const vlanTable = screen.getByRole("grid", { name: "Controller VLANs" });
+  const vlanTable = screen.getByRole("treegrid", { name: "Controller VLANs" });
   expect(within(vlanTable).getByText(/No VLANs found/)).toBeInTheDocument();
 });
 
@@ -122,7 +122,7 @@ it("displays a VLANs table with a single row", function () {
     }
   );
 
-  const vlanTable = screen.getByRole("grid", { name: "Controller VLANs" });
+  const vlanTable = screen.getByRole("treegrid", { name: "Controller VLANs" });
   expect(vlanTable).toBeInTheDocument();
   const tableBody = within(vlanTable).getAllByRole("rowgroup")[1];
   const vlanTableRows = within(tableBody).getAllByRole("row");
@@ -208,7 +208,7 @@ it("displays correct text within each cell", () => {
   });
 
   Object.values(expectedColumnContent).forEach((value, index) => {
-    expect(within(row).getAllByRole("cell")[index]).toHaveTextContent(
+    expect(within(row).getAllByRole("gridcell")[index]).toHaveTextContent(
       new RegExp(value)
     );
   });

@@ -32,7 +32,7 @@ it("renders a table of known boot architectures", () => {
   );
 
   const rows = within(screen.getAllByRole("rowgroup")[1]).getAllByRole("row");
-  const firstRowCells = within(rows[0]).getAllByRole("cell");
+  const firstRowCells = within(rows[0]).getAllByRole("gridcell");
 
   expect(firstRowCells[0]).toHaveTextContent(knownBootArchitecture.name);
   expect(firstRowCells[1]).toHaveTextContent(
@@ -67,7 +67,7 @@ it("renders a '—' if bootloader_arches or arch_octect are empty", () => {
   );
 
   const rows = within(screen.getAllByRole("rowgroup")[1]).getAllByRole("row");
-  const firstRowCells = within(rows[0]).getAllByRole("cell");
+  const firstRowCells = within(rows[0]).getAllByRole("gridcell");
 
   expect(firstRowCells[2]).toHaveTextContent("—");
   expect(firstRowCells[4]).toHaveTextContent("—");
@@ -95,13 +95,13 @@ it("sorts by name by default", () => {
 
   const rows = within(screen.getAllByRole("rowgroup")[1]).getAllByRole("row");
 
-  expect(within(rows[0]).getAllByRole("cell")[0]).toHaveTextContent(
+  expect(within(rows[0]).getAllByRole("gridcell")[0]).toHaveTextContent(
     knownBootArchitectures[0].name
   );
-  expect(within(rows[1]).getAllByRole("cell")[0]).toHaveTextContent(
+  expect(within(rows[1]).getAllByRole("gridcell")[0]).toHaveTextContent(
     knownBootArchitectures[1].name
   );
-  expect(within(rows[2]).getAllByRole("cell")[0]).toHaveTextContent(
+  expect(within(rows[2]).getAllByRole("gridcell")[0]).toHaveTextContent(
     knownBootArchitectures[2].name
   );
 });

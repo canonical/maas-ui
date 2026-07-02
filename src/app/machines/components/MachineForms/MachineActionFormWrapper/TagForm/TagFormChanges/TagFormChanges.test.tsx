@@ -61,7 +61,7 @@ beforeEach(() => {
   });
 });
 
-const getTable = () => screen.getByRole("grid", { name: Label.Table });
+const getTable = () => screen.getByRole("treegrid", { name: Label.Table });
 
 const findRowByTagName = (tagName: string) =>
   within(getTable())

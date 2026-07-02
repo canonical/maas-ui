@@ -9,5 +9,5 @@ Given("the page is loaded", () => {
 });
 
 Given("the {string} table has loaded", (name: string) => {
-  cy.waitForTableToLoad({ name: name });
+  cy.waitForTableToLoad({ name, role: "treegrid" });
 });

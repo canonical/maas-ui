@@ -64,7 +64,7 @@ When("the user deletes the machine", () => {
 });
 
 When("the user opens the first commissioning details row", () => {
-  cy.findByRole("grid").within(() => {
+  cy.findByRole("treegrid").within(() => {
     cy.get("tbody tr")
       .first()
       .within(() => {

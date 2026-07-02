@@ -41,7 +41,7 @@ describe("InterfaceFormTable", () => {
       { state }
     );
 
-    expect(screen.getByRole("grid")).toBeInTheDocument();
+    expect(screen.getByRole("treegrid")).toBeInTheDocument();
   });
 
   it("displays a PXE column by default", () => {

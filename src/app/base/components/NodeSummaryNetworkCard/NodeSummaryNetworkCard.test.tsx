@@ -119,7 +119,7 @@ describe("NodeSummaryNetworkCard", () => {
       { state }
     );
 
-    const tables = screen.getAllByRole("grid");
+    const tables = screen.getAllByRole("treegrid");
 
     expect(within(tables[0]).getAllByRole("row")).toHaveLength(5);
     expect(within(tables[1]).getAllByRole("row")).toHaveLength(4);

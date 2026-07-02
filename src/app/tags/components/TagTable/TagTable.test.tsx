@@ -91,10 +91,10 @@ it("displays the tags in order", () => {
     />
   );
   expect(
-    within(screen.getAllByRole("row")[1]).getAllByRole("cell")[0]
+    within(screen.getAllByRole("row")[1]).getAllByRole("gridcell")[0]
   ).toHaveTextContent("cool");
   expect(
-    within(screen.getAllByRole("row")[2]).getAllByRole("cell")[0]
+    within(screen.getAllByRole("row")[2]).getAllByRole("gridcell")[0]
   ).toHaveTextContent("rad");
 });
 
@@ -111,20 +111,20 @@ it("can change the sort order", async () => {
   );
 
   expect(
-    within(screen.getAllByRole("row")[1]).getAllByRole("cell")[0]
+    within(screen.getAllByRole("row")[1]).getAllByRole("gridcell")[0]
   ).toHaveTextContent("cool");
   expect(
-    within(screen.getAllByRole("row")[2]).getAllByRole("cell")[0]
+    within(screen.getAllByRole("row")[2]).getAllByRole("gridcell")[0]
   ).toHaveTextContent("rad");
   await userEvent.click(
     screen.getByRole("button", { name: `${Label.Name} ascending` })
   );
 
   expect(
-    within(screen.getAllByRole("row")[1]).getAllByRole("cell")[0]
+    within(screen.getAllByRole("row")[1]).getAllByRole("gridcell")[0]
   ).toHaveTextContent("rad");
   expect(
-    within(screen.getAllByRole("row")[2]).getAllByRole("cell")[0]
+    within(screen.getAllByRole("row")[2]).getAllByRole("gridcell")[0]
   ).toHaveTextContent("cool");
 });
 
@@ -142,7 +142,7 @@ it("shows an icon for automatic tags", () => {
   );
 
   expect(
-    within(screen.getAllByRole("row")[1]).getAllByRole("cell")[2].firstChild
+    within(screen.getAllByRole("row")[1]).getAllByRole("gridcell")[2].firstChild
   ).toHaveClass("p-icon--success-grey");
 });
 
@@ -160,7 +160,8 @@ it("does not show an icon for manual tags", () => {
   );
 
   expect(
-    within(screen.getAllByRole("row")[1]).queryAllByRole("cell")[2].firstChild
+    within(screen.getAllByRole("row")[1]).queryAllByRole("gridcell")[2]
+      .firstChild
   ).toBeNull();
 });
 
@@ -178,7 +179,7 @@ it("shows an icon for kernel options", () => {
   );
 
   expect(
-    within(screen.getAllByRole("row")[1]).getAllByRole("cell")[4].firstChild
+    within(screen.getAllByRole("row")[1]).getAllByRole("gridcell")[4].firstChild
   ).toHaveClass("p-icon--success-grey");
 });
 
@@ -196,7 +197,8 @@ it("does not show an icon for tags without kernel options", () => {
   );
 
   expect(
-    within(screen.getAllByRole("row")[1]).queryAllByRole("cell")[4].firstChild
+    within(screen.getAllByRole("row")[1]).queryAllByRole("gridcell")[4]
+      .firstChild
   ).toBeNull();
 });
 

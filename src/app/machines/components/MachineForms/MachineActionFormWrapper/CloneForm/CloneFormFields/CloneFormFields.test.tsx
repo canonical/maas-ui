@@ -102,7 +102,7 @@ describe("CloneFormFields", () => {
 
     // nested span contains the onClick handler
     await userEvent.click(
-      screen.getByRole("cell", {
+      screen.getByRole("gridcell", {
         name: new RegExp(`^${machine.hostname}`),
       }).firstChild as Element
     );
@@ -131,7 +131,7 @@ describe("CloneFormFields", () => {
       </Formik>,
       { state }
     );
-    let tableContainer = screen.getByRole("grid", {
+    let tableContainer = screen.getByRole("treegrid", {
       name: "Clone network",
     }).parentElement;
     // Table has unselected styling by default
@@ -143,7 +143,7 @@ describe("CloneFormFields", () => {
     );
 
     await waitFor(() => {
-      tableContainer = screen.getByRole("grid", {
+      tableContainer = screen.getByRole("treegrid", {
         name: "Clone network",
       }).parentElement;
       expect(tableContainer).not.toHaveClass("not-selected");

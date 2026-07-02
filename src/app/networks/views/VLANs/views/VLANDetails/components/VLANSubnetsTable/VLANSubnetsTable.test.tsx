@@ -23,7 +23,7 @@ it("renders correct details", () => {
     screen.getByRole("region", {
       name: "Subnets on this VLAN",
     })
-  ).getByRole("grid");
+  ).getByRole("treegrid");
 
   expect(within(vlanSubnetsTable).getByRole("link")).toHaveAttribute(
     "href",

@@ -144,7 +144,7 @@ describe("NetworkTable", () => {
       );
 
       const row = screen.getAllByRole("row")[1];
-      const cells = within(row).getAllByRole("cell");
+      const cells = within(row).getAllByRole("gridcell");
       const subnetCell = cells[6];
       expect(subnetCell).toHaveTextContent("Unconfigured");
       const ipCell = cells[7];
@@ -192,7 +192,7 @@ describe("NetworkTable", () => {
       );
 
       const row = screen.getAllByRole("row")[1];
-      const cells = within(row).getAllByRole("cell");
+      const cells = within(row).getAllByRole("gridcell");
       const subnetCell = cells[6];
       expect(subnetCell).toHaveTextContent("subnet-cidr");
       const ipCell = cells[7];
@@ -247,7 +247,7 @@ describe("NetworkTable", () => {
 
       const rows = screen.getAllByRole("row").slice(1);
       rows.forEach((row, index) => {
-        const cells = within(row).getAllByRole("cell");
+        const cells = within(row).getAllByRole("gridcell");
         const nameCell = cells[1];
         expect(nameCell).toHaveTextContent("alias");
         const subnetCell = cells[6];
@@ -296,7 +296,7 @@ describe("NetworkTable", () => {
       const bondRow = rows[1];
       expect(within(bondRow).getByRole("checkbox")).toBeInTheDocument();
       const nicRow = rows[2];
-      expect(within(nicRow).queryByRole("checkbox")).toBeDisabled();
+      expect(within(nicRow).queryByRole("checkbox")).not.toBeInTheDocument();
     });
 
     it("does not include parent interfaces in the selection", async () => {
@@ -341,16 +341,16 @@ describe("NetworkTable", () => {
         { state }
       );
       const row = screen.getAllByRole("row")[2];
-      const cells = within(row).queryAllByRole("cell");
-      const fabricCell = cells[5];
+      const cells = within(row).queryAllByRole("gridcell");
+      const fabricCell = cells[4];
       expect(fabricCell).toHaveTextContent("");
-      const subnetCell = cells[6];
+      const subnetCell = cells[5];
       expect(subnetCell).toHaveTextContent("");
-      const ipCell = cells[7];
+      const ipCell = cells[6];
       expect(ipCell).toHaveTextContent("");
-      const dhcpCell = cells[8];
+      const dhcpCell = cells[7];
       expect(dhcpCell).toHaveTextContent("");
-      const actionCell = cells[9];
+      const actionCell = cells[8];
       expect(actionCell).toHaveTextContent("");
     });
   });

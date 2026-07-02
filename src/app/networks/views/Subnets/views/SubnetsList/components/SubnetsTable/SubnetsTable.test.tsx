@@ -34,7 +34,7 @@ describe("SubnetsTable", () => {
       });
 
       expect(
-        screen.getByRole("grid", { name: "Subnets by fabric" })
+        screen.getByRole("treegrid", { name: "Subnets by fabric" })
       ).toBeInTheDocument();
 
       const firstRow = within(screen.getAllByRole("rowgroup")[1]).getAllByRole(
@@ -52,7 +52,7 @@ describe("SubnetsTable", () => {
       });
 
       expect(
-        screen.getByRole("grid", { name: "Subnets by space" })
+        screen.getByRole("treegrid", { name: "Subnets by space" })
       ).toBeInTheDocument();
     });
 
@@ -64,7 +64,7 @@ describe("SubnetsTable", () => {
       });
 
       expect(
-        screen.getByRole("grid", { name: "Subnets by space" })
+        screen.getByRole("treegrid", { name: "Subnets by space" })
       ).toBeInTheDocument();
 
       expect(
@@ -80,7 +80,7 @@ describe("SubnetsTable", () => {
       });
 
       expect(
-        screen.getByRole("grid", { name: "Subnets by fabric" })
+        screen.getByRole("treegrid", { name: "Subnets by fabric" })
       ).toBeInTheDocument();
 
       expect(
@@ -303,7 +303,7 @@ it("displays a correct number of pages", () => {
   });
 
   expect(
-    screen.getByRole("grid", { name: "Subnets by fabric" })
+    screen.getByRole("treegrid", { name: "Subnets by fabric" })
   ).toBeInTheDocument();
 
   const numberOfPages = Math.ceil(

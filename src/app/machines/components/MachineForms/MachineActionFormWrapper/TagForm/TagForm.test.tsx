@@ -317,7 +317,7 @@ it("updates the new tags after creating a tag", async () => {
   await userEvent.click(
     screen.getByRole("button", { name: AddTagFormLabel.Submit })
   );
-  const changes = screen.getByRole("grid", {
+  const changes = screen.getByRole("treegrid", {
     name: TagFormChangesLabel.Table,
   });
   await waitFor(() => {

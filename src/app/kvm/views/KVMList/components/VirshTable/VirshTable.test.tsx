@@ -48,8 +48,12 @@ describe("VirshTable", () => {
       const rows = within(screen.getAllByRole("rowgroup")[1]).getAllByRole(
         "row"
       );
-      expect(within(rows[0]).getAllByRole("cell")[0]).toHaveTextContent(/b/i);
-      expect(within(rows[1]).getAllByRole("cell")[0]).toHaveTextContent(/a/i);
+      expect(within(rows[0]).getAllByRole("gridcell")[0]).toHaveTextContent(
+        /b/i
+      );
+      expect(within(rows[1]).getAllByRole("gridcell")[0]).toHaveTextContent(
+        /a/i
+      );
     });
 
     it("displays a message when empty", () => {
@@ -75,26 +79,42 @@ describe("VirshTable", () => {
       await waitForLoading();
 
       let rows = within(screen.getAllByRole("rowgroup")[1]).getAllByRole("row");
-      expect(within(rows[0]).getAllByRole("cell")[0]).toHaveTextContent(/b/i);
-      expect(within(rows[1]).getAllByRole("cell")[0]).toHaveTextContent(/a/i);
+      expect(within(rows[0]).getAllByRole("gridcell")[0]).toHaveTextContent(
+        /b/i
+      );
+      expect(within(rows[1]).getAllByRole("gridcell")[0]).toHaveTextContent(
+        /a/i
+      );
 
       await userEvent.click(screen.getByRole("button", { name: /name/i }));
       rows = within(screen.getAllByRole("rowgroup")[1]).getAllByRole("row");
-      expect(within(rows[0]).getAllByRole("cell")[0]).toHaveTextContent(/a/i);
-      expect(within(rows[1]).getAllByRole("cell")[0]).toHaveTextContent(/b/i);
+      expect(within(rows[0]).getAllByRole("gridcell")[0]).toHaveTextContent(
+        /a/i
+      );
+      expect(within(rows[1]).getAllByRole("gridcell")[0]).toHaveTextContent(
+        /b/i
+      );
 
       // Click the VMs table header to order by descending VMs count
       await userEvent.click(screen.getByRole("button", { name: /VMs/i }));
       rows = within(screen.getAllByRole("rowgroup")[1]).getAllByRole("row");
 
-      expect(within(rows[0]).getAllByRole("cell")[1]).toHaveTextContent(/2/i);
-      expect(within(rows[1]).getAllByRole("cell")[1]).toHaveTextContent(/1/i);
+      expect(within(rows[0]).getAllByRole("gridcell")[1]).toHaveTextContent(
+        /2/i
+      );
+      expect(within(rows[1]).getAllByRole("gridcell")[1]).toHaveTextContent(
+        /1/i
+      );
 
       await userEvent.click(screen.getByRole("button", { name: /VMs/i }));
       rows = within(screen.getAllByRole("rowgroup")[1]).getAllByRole("row");
 
-      expect(within(rows[0]).getAllByRole("cell")[1]).toHaveTextContent(/1/i);
-      expect(within(rows[1]).getAllByRole("cell")[1]).toHaveTextContent(/2/i);
+      expect(within(rows[0]).getAllByRole("gridcell")[1]).toHaveTextContent(
+        /1/i
+      );
+      expect(within(rows[1]).getAllByRole("gridcell")[1]).toHaveTextContent(
+        /2/i
+      );
     });
 
     it("can sort by pod resource pool", async () => {
@@ -110,18 +130,22 @@ describe("VirshTable", () => {
       await waitForLoading();
 
       let rows = within(screen.getAllByRole("rowgroup")[1]).getAllByRole("row");
-      expect(within(rows[0]).getAllByRole("cell")[0]).toHaveTextContent(/b/i);
-      expect(within(rows[1]).getAllByRole("cell")[0]).toHaveTextContent(/a/i);
+      expect(within(rows[0]).getAllByRole("gridcell")[0]).toHaveTextContent(
+        /b/i
+      );
+      expect(within(rows[1]).getAllByRole("gridcell")[0]).toHaveTextContent(
+        /a/i
+      );
 
       await userEvent.click(
         screen.getByRole("button", { name: /Resource Pool/i })
       );
 
       rows = within(screen.getAllByRole("rowgroup")[1]).getAllByRole("row");
-      expect(within(rows[0]).getAllByRole("cell")[3]).toHaveTextContent(
+      expect(within(rows[0]).getAllByRole("gridcell")[3]).toHaveTextContent(
         /gene/i
       );
-      expect(within(rows[1]).getAllByRole("cell")[3]).toHaveTextContent(
+      expect(within(rows[1]).getAllByRole("gridcell")[3]).toHaveTextContent(
         /swimming/i
       );
 
@@ -129,10 +153,10 @@ describe("VirshTable", () => {
         screen.getByRole("button", { name: /Resource Pool/i })
       );
       rows = within(screen.getAllByRole("rowgroup")[1]).getAllByRole("row");
-      expect(within(rows[0]).getAllByRole("cell")[3]).toHaveTextContent(
+      expect(within(rows[0]).getAllByRole("gridcell")[3]).toHaveTextContent(
         /swimming/i
       );
-      expect(within(rows[1]).getAllByRole("cell")[3]).toHaveTextContent(
+      expect(within(rows[1]).getAllByRole("gridcell")[3]).toHaveTextContent(
         /gene/i
       );
     });

@@ -83,11 +83,13 @@ Then("the subnet appears under the correct fabric", function () {
   cy.findAllByRole("row", { name: new RegExp(this.fabric) })
     .next("tr")
     .within(() => {
-      cy.findAllByRole("cell").eq(1).should("contain.text", this.subnetName);
-      cy.findAllByRole("cell")
+      cy.findAllByRole("gridcell")
+        .eq(1)
+        .should("contain.text", this.subnetName);
+      cy.findAllByRole("gridcell")
         .eq(2)
         .should("have.text", `${this.vid} (${this.vlan})`);
-      cy.findAllByRole("cell").eq(5).should("have.text", this.spaceName);
+      cy.findAllByRole("gridcell").eq(5).should("have.text", this.spaceName);
     });
 });
 

@@ -149,7 +149,7 @@ describe("DHCPTable", () => {
           state,
         }
       );
-      const subnetSnippets = screen.getAllByRole("cell", {
+      const subnetSnippets = screen.getAllByRole("gridcell", {
         name: /subnet-name/,
       });
 

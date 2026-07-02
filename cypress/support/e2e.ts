@@ -1,8 +1,8 @@
 /// <reference types="cypress" />
 
+import "@percy/cypress";
 import "cypress-axe";
 import "cypress-wait-until";
-import "@percy/cypress";
 import "./commands";
 
 export type A11yPageContext = { url?: string; title?: string };
@@ -31,6 +31,7 @@ declare global {
       waitForPageToLoad(): void;
       waitForTableToLoad(options?: {
         name?: string | RegExp;
+        role?: string;
       }): Cypress.Chainable<JQuery<HTMLElement>>;
       getMainNavigation(): Cypress.Chainable<JQuery<HTMLElement>>;
       expandMainNavigation(): void;
