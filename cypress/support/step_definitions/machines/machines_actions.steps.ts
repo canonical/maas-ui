@@ -1,9 +1,9 @@
 import {
-    Before,
-    DataTable,
-    Given,
-    Then,
-    When,
+  Before,
+  DataTable,
+  Given,
+  Then,
+  When,
 } from "@badeball/cypress-cucumber-preprocessor";
 import { LONG_TIMEOUT } from "../../../constants";
 import { generateName } from "../../../e2e/utils";

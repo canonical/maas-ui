@@ -2,11 +2,11 @@ import "@testing-library/cypress/add-commands";
 import type { Result } from "axe-core";
 import { LONG_TIMEOUT } from "../constants";
 import {
-    generateId,
-    generateMAASURL,
-    generateMac,
-    generateName,
-    generateVid,
+  generateId,
+  generateMAASURL,
+  generateMac,
+  generateName,
+  generateVid,
 } from "../e2e/utils";
 import type { A11yPageContext } from "./e2e";
 

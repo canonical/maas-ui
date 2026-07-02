@@ -1,9 +1,9 @@
 import { Then, When } from "@badeball/cypress-cucumber-preprocessor";
 import {
-    generateCidr,
-    generateId,
-    generateMAASURL,
-    generateVid,
+  generateCidr,
+  generateId,
+  generateMAASURL,
+  generateVid,
 } from "../../../e2e/utils";
 import { completeAddVlanForm, completeForm } from "./add.helpers";
 

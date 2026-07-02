@@ -1,11 +1,11 @@
 import { Given, Then, When } from "@badeball/cypress-cucumber-preprocessor";
 import { LONG_TIMEOUT } from "../../../constants";
 import {
-    generateCidr,
-    generateId,
-    generateMAASURL,
-    generateMac,
-    generateVid,
+  generateCidr,
+  generateId,
+  generateMAASURL,
+  generateMac,
+  generateVid,
 } from "../../../e2e/utils";
 import { completeAddVlanForm, completeForm } from "./add.helpers";
 
