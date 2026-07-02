@@ -312,6 +312,9 @@ import type {
   GetOperationData,
   GetOperationErrors,
   GetOperationResponses,
+  GetOperationTasksData,
+  GetOperationTasksErrors,
+  GetOperationTasksResponses,
   GetPackageRepositoryData,
   GetPackageRepositoryErrors,
   GetPackageRepositoryResponses,
@@ -2206,6 +2209,20 @@ export const getOperation = <ThrowOnError extends boolean = false>(
     GetOperationErrors,
     ThrowOnError
   >({ url: "/MAAS/a/v3/operations/{operation_uuid}", ...options });
+
+/**
+ * Get Operation Tasks
+ *
+ * Get a paginated list of tasks for a specific operation.
+ */
+export const getOperationTasks = <ThrowOnError extends boolean = false>(
+  options: Options<GetOperationTasksData, ThrowOnError>
+) =>
+  (options.client ?? client).get<
+    GetOperationTasksResponses,
+    GetOperationTasksErrors,
+    ThrowOnError
+  >({ url: "/MAAS/a/v3/operations/{operation_uuid}/tasks", ...options });
 
 /**
  * List Operations

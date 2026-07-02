@@ -35,6 +35,7 @@ export const oAuthProviderFactory = Factory.define<OAuthProviderResponse>(
         seed: sequence,
       }),
       token_type: "JWT",
+      vendor: "Generic",
       enabled: true,
       metadata: {
         authorization_endpoint: chance.url() + "/authorize",
