@@ -331,6 +331,7 @@ jobs:
             enabled=True \
             issuer_url="http://${HOST_IP}:8080/realms/test-realm" \
             token_type="JWT" \
+            vendor="Keycloak" \
             redirect_uri="https://localhost:8400/MAAS/r/login/oidc/callback" \
             scopes="openid profile email offline_access"
       - name: Enable TLS for MAAS
