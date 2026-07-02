@@ -3,13 +3,18 @@ import { useMemo } from "react";
 import { Button, Icon } from "@canonical/react-components";
 import type { ColumnDef } from "@tanstack/react-table";
 
+import DeleteSwitch from "../../DeleteSwitch";
+import EditSwitch from "../../EditSwitch";
+
 import DoubleRow from "@/app/base/components/DoubleRow";
 import TableActions from "@/app/base/components/TableActions";
+import { useSidePanel } from "@/app/base/side-panel-context";
 import type { SwitchItem } from "@/app/switches/types";
 
 type SwitchColumnDef = ColumnDef<SwitchItem>;
 
 const useSwitchesTableColumns = (): SwitchColumnDef[] => {
+  const { openSidePanel } = useSidePanel();
   return useMemo(
     () => [
       {
@@ -84,12 +89,27 @@ const useSwitchesTableColumns = (): SwitchColumnDef[] => {
         accessorKey: "id",
         enableSorting: false,
         header: "Actions",
-        cell: () => (
-          <TableActions onDelete={() => undefined} onEdit={() => undefined} />
+        cell: ({ row }) => (
+          <TableActions
+            onDelete={() => {
+              openSidePanel({
+                component: DeleteSwitch,
+                title: "Delete switch",
+                props: { id: row.original.id },
+              });
+            }}
+            onEdit={() => {
+              openSidePanel({
+                component: EditSwitch,
+                title: "Edit switch",
+                props: { id: row.original.id },
+              });
+            }}
+          />
         ),
       },
     ],
-    []
+    [openSidePanel]
   );
 };
 
