@@ -12,7 +12,7 @@ const MachineFormFields = (): JSX.Element => {
       <Col size={6}>
         <ArchitectureSelect name="architecture" />
         <MinimumKernelSelect name="minHweKernel" />
-        <ZoneSelect name="zone" valueKey="name"/>
+        <ZoneSelect name="zone" valueKey="name" />
         <ResourcePoolSelect name="pool" />
         {/* TODO: Remove feature flag https://warthogs.atlassian.net/browse/MAASENG-4186 */}
         {import.meta.env.VITE_APP_DPU_PROVISIONING === "true" && (
