@@ -37,7 +37,7 @@ export const ZoneSelect = ({
         ...(zones.data?.map?.((zone) => ({
           key: `zone-${zone.id}`,
           label: zone.name,
-          value: zone[valueKey],
+          value: zone[valueKey ?? "id"],
         })) || []),
       ]}
       {...props}
