@@ -15,6 +15,7 @@ import ImagesTable from "@/app/images/components/ImagesTable";
 import { bootResourceActions } from "@/app/store/bootresource";
 import { configActions } from "@/app/store/config";
 import configSelectors from "@/app/store/config/selectors";
+import statusSelectors from "@/app/store/status/selectors";
 
 export enum Labels {
   SyncDisabled = "Automatic image updates are disabled. This may mean that images won't be automatically updated and receive the latest package versions and security fixes.",
@@ -25,6 +26,7 @@ const ImageList = (): ReactElement => {
   const { sidePanelContent, setSidePanelContent } = useSidePanel();
   const autoImport = useSelector(configSelectors.bootImagesAutoImport);
   const configLoaded = useSelector(configSelectors.loaded);
+  const connectedCount = useSelector(statusSelectors.connectedCount);
 
   const [selectedRows, setSelectedRows] = useState<RowSelectionState>({});
 
@@ -37,7 +39,7 @@ const ImageList = (): ReactElement => {
     return () => {
       dispatch(bootResourceActions.pollStop());
     };
-  }, [dispatch, setSidePanelContent]);
+  }, [dispatch, setSidePanelContent, connectedCount]);
 
   return (
     <PageContent
