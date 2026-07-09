@@ -79,6 +79,7 @@ export const App = (): React.ReactElement => {
   const authenticating = useSelector(status.authenticating);
   const connected = useSelector(status.connected);
   const connecting = useSelector(status.connecting);
+  const connectedCount = useSelector(status.connectedCount);
   const connectionError = useSelector(status.error);
   const configLoading = useSelector(configSelectors.loading);
   const configErrors = useSelector(configSelectors.errors);
@@ -122,7 +123,10 @@ export const App = (): React.ReactElement => {
   const hasVaultError =
     configErrors === VaultErrors.REQUEST_FAILED ||
     configErrors === VaultErrors.CONNECTION_FAILED;
-  const isLoaded = user.isSuccess && authenticated;
+  // Wait for the websocket to have connected at least once before rendering
+  // routed content.
+  const hasConnected = connectedCount > 0;
+  const isLoaded = user.isSuccess && authenticated && hasConnected;
 
   let content: ReactNode = null;
   // display loading spinner only on initial load
