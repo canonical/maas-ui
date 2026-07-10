@@ -130,11 +130,13 @@ export const groupArchesByTitle = (images: ImagesByOS): GroupedImages => {
 };
 
 const SelectUpstreamImagesForm = ({
-  setStep,
+  selectedImages: savedSelectedImages,
   setSelectedImages,
+  setStep,
 }: {
-  setStep: (step: SelectUpstreamImagesStepValues) => void;
+  selectedImages: SelectedImage[];
   setSelectedImages: (images: SelectedImage[]) => void;
+  setStep: (step: SelectUpstreamImagesStepValues) => void;
 }): ReactElement => {
   const { closeSidePanel } = useSidePanel();
 
@@ -162,16 +164,30 @@ const SelectUpstreamImagesForm = ({
   }, [availableImages, selectedImages]);
 
   const initialValues = useMemo(() => {
+    // Seed all available field keys with empty arrays.
     const initial: Record<string, MultiSelectItem[]> = {};
     Object.keys(groupedImages).forEach((distro) => {
       Object.keys(groupedImages[distro]).forEach((key) => {
         const [title, release] = key.split("&");
-        const fieldKey = getValueKey(distro, release, title);
-        initial[fieldKey] = [];
+        initial[getValueKey(distro, release, title)] = [];
       });
     });
+
+    // Restore prior selections by parsing savedSelectedImages back into
+    // Formik field values (SelectedImage[] → Record<fieldKey, MultiSelectItem[]>).
+    savedSelectedImages.forEach((img) => {
+      const distro = img.os.charAt(0).toUpperCase() + img.os.slice(1);
+      const fieldKey = getValueKey(distro, img.release, img.title);
+      if (initial[fieldKey]) {
+        initial[fieldKey] = [
+          ...initial[fieldKey],
+          { label: img.architecture, value: img.id },
+        ];
+      }
+    });
+
     return initial;
-  }, [groupedImages]);
+  }, [groupedImages, savedSelectedImages]);
 
   const noAvailableImages = availableImages?.items.length === 0;
 
@@ -201,9 +217,11 @@ const SelectUpstreamImagesForm = ({
               initialValues={initialValues}
               onCancel={closeSidePanel}
               onSubmit={(values) => {
-                const allSelectedItems = Object.values(
-                  values as Record<string, { label: string; value: string }[]>
-                ).flat();
+                const typedValues = values as Record<
+                  string,
+                  { label: string; value: string }[]
+                >;
+                const allSelectedItems = Object.values(typedValues).flat();
                 const selectedItemIds = new Set(
                   allSelectedItems.map((item) => item.value)
                 );

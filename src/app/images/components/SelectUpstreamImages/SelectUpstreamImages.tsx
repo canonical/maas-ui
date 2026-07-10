@@ -34,6 +34,7 @@ const SelectUpstreamImages = (): ReactElement => {
       <hr />
       {step === SelectUpstreamImagesSteps.IMAGE_SELECTION && (
         <SelectUpstreamImagesForm
+          selectedImages={selectedImages}
           setSelectedImages={setSelectedImages}
           setStep={setStep}
         />
