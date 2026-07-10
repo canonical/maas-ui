@@ -4,6 +4,7 @@ import { useEffect, useMemo, useState } from "react";
 import { useSidePanel } from "@canonical/maas-react-components";
 import type { MultiSelectItem } from "@canonical/react-components";
 import {
+  SearchBox,
   Notification as NotificationBanner,
   Spinner,
   Strip,
@@ -26,6 +27,7 @@ import type {
   SelectUpstreamImagesStepValues,
 } from "@/app/images/components/SelectUpstreamImages/SelectUpstreamImages";
 import { SelectUpstreamImagesSteps } from "@/app/images/components/SelectUpstreamImages/SelectUpstreamImages";
+import { OPERATING_SYSTEM_NAMES } from "@/app/images/constants";
 
 import "./_index.scss";
 
@@ -129,6 +131,17 @@ export const groupArchesByTitle = (images: ImagesByOS): GroupedImages => {
   return groupedImages;
 };
 
+/** Returns true if every character of `query` appears in order within `target`. */
+const fuzzyMatch = (target: string, query: string): boolean => {
+  const lowerTarget = target.toLowerCase();
+  const lowerQuery = query.toLowerCase();
+  let qi = 0;
+  for (let i = 0; i < lowerTarget.length && qi < lowerQuery.length; i++) {
+    if (lowerTarget[i] === lowerQuery[qi]) qi++;
+  }
+  return qi === lowerQuery.length;
+};
+
 const SelectUpstreamImagesForm = ({
   selectedImages: savedSelectedImages,
   setSelectedImages,
@@ -150,6 +163,8 @@ const SelectUpstreamImagesForm = ({
   const [hasSelections, setHasSelections] = useState(
     () => savedSelectedImages.length > 0
   );
+
+  const [searchText, setSearchText] = useState("");
 
   const isPending = isSelectedImagesPending || isAvailableImagesPending;
 
@@ -201,6 +216,43 @@ const SelectUpstreamImagesForm = ({
 
   const noAvailableImages = availableImages?.items.length === 0;
 
+  const filteredGroupedImages = useMemo((): GroupedImages => {
+    if (!searchText) return groupedImages;
+
+    const result: GroupedImages = {};
+    Object.keys(groupedImages).forEach((distro) => {
+      const displayName =
+        OPERATING_SYSTEM_NAMES.find(
+          (os) => os.value.toLowerCase() === distro.toLowerCase()
+        )?.label ?? distro;
+
+      const distroMatches =
+        fuzzyMatch(distro, searchText) || fuzzyMatch(displayName, searchText);
+
+      const filteredReleases: GroupedImages[string] = {};
+      if (distroMatches) {
+        // OS name matches — show all its releases.
+        Object.assign(filteredReleases, groupedImages[distro]);
+      } else {
+        // Filter individual release rows by title and release codename.
+        Object.keys(groupedImages[distro]).forEach((key) => {
+          const [title, release] = key.split("&");
+          if (
+            fuzzyMatch(title, searchText) ||
+            fuzzyMatch(release, searchText)
+          ) {
+            filteredReleases[key] = groupedImages[distro][key];
+          }
+        });
+      }
+
+      if (Object.keys(filteredReleases).length > 0) {
+        result[distro] = filteredReleases;
+      }
+    });
+    return result;
+  }, [groupedImages, searchText]);
+
   return (
     <div className="select-upstream-images-form">
       Select images to be imported and kept in sync daily. Images will be
@@ -220,6 +272,11 @@ const SelectUpstreamImagesForm = ({
                 source settings, please come back after some time.
               </NotificationBanner>
             )}
+            <SearchBox
+              onChange={setSearchText}
+              placeholder="Search available images"
+              value={searchText}
+            />
             <FormikForm
               allowUnchanged
               aria-label="Select upstream images to sync"
@@ -293,7 +350,7 @@ const SelectUpstreamImagesForm = ({
                 "setFieldValue" | "values"
               >) => (
                 <SelectUpstreamImagesSelect
-                  groupedImages={groupedImages}
+                  groupedImages={filteredGroupedImages}
                   setFieldValue={setFieldValue}
                   values={values}
                 />
