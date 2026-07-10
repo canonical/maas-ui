@@ -57,6 +57,9 @@ import type {
   UpdateOauthProviderData,
   UpdateOauthProviderErrors,
   UpdateOauthProviderResponses,
+  UpdateUserMeData,
+  UpdateUserMeErrors,
+  UpdateUserMeResponses,
   UserStatisticsResponse,
 } from "@/app/apiclient";
 import {
@@ -74,6 +77,7 @@ import {
   login,
   preLogin,
   updateOauthProvider,
+  updateUserMe,
 } from "@/app/apiclient";
 import {
   getMeStatisticsQueryKey,
@@ -335,6 +339,21 @@ export const useCompleteIntro = (
   });
 };
 
+export const useUpdateMe = (mutationOptions?: Options<UpdateUserMeData>) => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    ...mutationOptionsWithHeaders<
+      UpdateUserMeResponses,
+      UpdateUserMeErrors,
+      UpdateUserMeData
+    >(mutationOptions, updateUserMe),
+    onSuccess: () => {
+      return queryClient.invalidateQueries({
+        queryKey: getUserInfoQueryKey(),
+      });
+    },
+  });
+};
 export const useActiveOauthProvider = (
   options?: Options<GetOauthProviderData>
 ) => {
