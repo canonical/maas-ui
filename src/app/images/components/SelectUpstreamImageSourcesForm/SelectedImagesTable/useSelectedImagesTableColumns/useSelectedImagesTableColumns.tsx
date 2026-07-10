@@ -11,6 +11,7 @@ import {
 import type { ColumnDef, Row } from "@tanstack/react-table";
 
 import { useImageSources } from "@/app/api/query/imageSources";
+import { useAvailableSelections } from "@/app/api/query/images";
 import type { BootSourceResponse } from "@/app/apiclient";
 import type { SelectedImage } from "@/app/images/components/SelectUpstreamImages/SelectUpstreamImages";
 
@@ -24,15 +25,31 @@ const useSelectedImagesTableColumns = ({
   setSelectedImages: (images: SelectedImage[]) => void;
 }): SelectedImageColumnDef[] => {
   const { data: sources, isPending: isSourcesPending } = useImageSources();
+  const { data: availableImages } = useAvailableSelections();
 
-  // Pre-compute a map of os/release/arch -> deduplicated BootSourceResponse[]
+  // Build a set of selected os/release/arch keys for fast lookup.
+  const selectedKeys = useMemo(
+    () =>
+      new Set(
+        selectedImages.map(
+          (img) => `${img.os}/${img.release}/${img.architecture}`
+        )
+      ),
+    [selectedImages]
+  );
+
+  // For each selected os/release/arch, collect every source that has that
+  // image available. This is derived from the full availableImages list so
+  // the dropdown always shows all switchable sources, not just the initially
+  // assigned one.
   const sourcesByImageKey = useMemo(() => {
     const map: Record<string, BootSourceResponse[]> = {};
-    if (!sources?.items || !selectedImages) return map;
+    if (!sources?.items || !availableImages?.items) return map;
 
-    for (const image of selectedImages) {
-      const key = `${image.os}/${image.release}/${image.architecture}`;
-      const source = sources.items.find((s) => s.id === image.source_id);
+    for (const img of availableImages.items) {
+      const key = `${img.os}/${img.release}/${img.architecture}`;
+      if (!selectedKeys.has(key)) continue;
+      const source = sources.items.find((s) => s.id === img.source_id);
       if (!source) continue;
       if (!map[key]) {
         map[key] = [source];
@@ -41,7 +58,7 @@ const useSelectedImagesTableColumns = ({
       }
     }
     return map;
-  }, [sources, selectedImages]);
+  }, [sources, availableImages, selectedKeys]);
 
   return useMemo(
     () =>

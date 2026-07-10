@@ -14,6 +14,7 @@ import SelectUpstreamImagesSelect, {
 } from "./SelectUpstreamImagesSelect";
 import type { DownloadImagesSelectProps } from "./SelectUpstreamImagesSelect/SelectUpstreamImagesSelect";
 
+import { useImageSources } from "@/app/api/query/imageSources";
 import { useAvailableSelections, useSelections } from "@/app/api/query/images";
 import type {
   ImageResponse,
@@ -45,17 +46,21 @@ type DownloadableImage = {
 export const getDownloadableImages = (
   availableImages: UiSourceAvailableImageResponse[]
 ): DownloadableImage[] => {
-  return availableImages
-    .map((image) => {
-      return {
-        id: `${image.os}&${image.release}&${image.title}&${image.architecture}&${image.source_id}`,
+  const seen = new Set<string>();
+  return availableImages.reduce<DownloadableImage[]>((acc, image) => {
+    const id = `${image.os}&${image.release}&${image.title}&${image.architecture}`;
+    if (!seen.has(id)) {
+      seen.add(id);
+      acc.push({
+        id,
         title: image.title,
         release: image.release,
         architectures: image.architecture,
         os: image.os.charAt(0).toUpperCase() + image.os.slice(1),
-      };
-    })
-    .flat();
+      });
+    }
+    return acc;
+  }, []);
 };
 
 export const filterSyncedImages = (
@@ -137,6 +142,7 @@ const SelectUpstreamImagesForm = ({
     useSelections();
   const { data: availableImages, isPending: isAvailableImagesPending } =
     useAvailableSelections();
+  const { data: sources } = useImageSources();
 
   const [groupedImages, setGroupedImages] = useState<GroupedImages>({});
 
@@ -201,18 +207,41 @@ const SelectUpstreamImagesForm = ({
                 const selectedItemIds = new Set(
                   allSelectedItems.map((item) => item.value)
                 );
-                const nextSelectedImages: SelectedImage[] = (
-                  availableImages?.items ?? []
-                )
-                  .filter((img) =>
-                    selectedItemIds.has(
-                      `${img.os}&${img.release}&${img.title}&${img.architecture}&${img.source_id}`
-                    )
-                  )
-                  .map((img) => ({
-                    ...img,
-                    id: `${img.os}&${img.release}&${img.title}&${img.architecture}&${img.source_id}`,
-                  }));
+
+                // Group all available images by selection key (no source_id).
+                const groupedByKey = new Map<
+                  string,
+                  UiSourceAvailableImageResponse[]
+                >();
+                for (const img of availableImages?.items ?? []) {
+                  const id = `${img.os}&${img.release}&${img.title}&${img.architecture}`;
+                  if (!selectedItemIds.has(id)) continue;
+                  if (!groupedByKey.has(id)) groupedByKey.set(id, []);
+                  groupedByKey.get(id)!.push(img);
+                }
+
+                // For each group, default to the enabled source with the
+                // lowest numeric priority, falling back to the first candidate.
+                const nextSelectedImages: SelectedImage[] = [];
+                for (const [id, candidates] of groupedByKey) {
+                  const best =
+                    candidates
+                      .filter(
+                        (img) =>
+                          sources?.items.find((s) => s.id === img.source_id)
+                            ?.enabled
+                      )
+                      .sort((a, b) => {
+                        const priA =
+                          sources?.items.find((s) => s.id === a.source_id)
+                            ?.priority ?? Infinity;
+                        const priB =
+                          sources?.items.find((s) => s.id === b.source_id)
+                            ?.priority ?? Infinity;
+                        return priA - priB;
+                      })[0] ?? candidates[0];
+                  nextSelectedImages.push({ ...best, id });
+                }
 
                 setSelectedImages(nextSelectedImages);
                 setStep(SelectUpstreamImagesSteps.SOURCE_CONFIGURATION);
