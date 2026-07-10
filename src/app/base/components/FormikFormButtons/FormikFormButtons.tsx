@@ -31,6 +31,7 @@ export type Props<V> = {
   submitAppearance?: ActionButtonProps["appearance"];
   submitDisabled?: boolean;
   submitLabel?: string;
+  submitTooltip?: string | null;
   /**
    * Determines the behavior of the primary and secondary submit buttons.
    * - "coupled" (default): The secondary submit button is disabled if the primary submit button is disabled.
@@ -72,6 +73,7 @@ export const FormikFormButtons = <V,>({
   submitAppearance = "positive",
   submitDisabled,
   submitLabel = "Save",
+  submitTooltip,
   buttonsBehavior = "coupled",
 }: Props<V>): React.ReactElement => {
   const formikContext = useFormikContext<V>();
@@ -157,16 +159,35 @@ export const FormikFormButtons = <V,>({
           </Button>
         )}
         {secondaryButton}
-        <ActionButton
-          appearance={submitAppearance}
-          className="formik-form-buttons__button"
-          disabled={submitDisabled}
-          loading={saving}
-          success={saved}
-          type="submit"
-        >
-          {submitLabel}
-        </ActionButton>
+        {submitTooltip ? (
+          <Tooltip
+            message={submitTooltip}
+            position="top-center"
+            positionElementClassName="u-nudge-left"
+          >
+            <ActionButton
+              appearance={submitAppearance}
+              className="formik-form-buttons__button"
+              disabled={submitDisabled}
+              loading={saving}
+              success={saved}
+              type="submit"
+            >
+              {submitLabel}
+            </ActionButton>
+          </Tooltip>
+        ) : (
+          <ActionButton
+            appearance={submitAppearance}
+            className="formik-form-buttons__button"
+            disabled={submitDisabled}
+            loading={saving}
+            success={saved}
+            type="submit"
+          >
+            {submitLabel}
+          </ActionButton>
+        )}
       </div>
       {saving && savingLabel && (
         <p

@@ -52,7 +52,13 @@ const SelectUpstreamImageSourcesForm = ({
             setStep(SelectUpstreamImagesSteps.IMAGE_SELECTION);
           }}
           secondarySubmitLabel="Back"
+          submitDisabled={selectedImages.length === 0}
           submitLabel="Save and sync"
+          submitTooltip={
+            selectedImages.length === 0
+              ? "Select at least one image to save and sync."
+              : null
+          }
         >
           {() => (
             <SelectedImagesTable
