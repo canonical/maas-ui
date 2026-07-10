@@ -14,17 +14,17 @@ import SelectUpstreamImagesSelect, {
 } from "./SelectUpstreamImagesSelect";
 import type { DownloadImagesSelectProps } from "./SelectUpstreamImagesSelect/SelectUpstreamImagesSelect";
 
-import {
-  useAddSelections,
-  useAvailableSelections,
-  useSelections,
-} from "@/app/api/query/images";
+import { useAvailableSelections, useSelections } from "@/app/api/query/images";
 import type {
   ImageResponse,
-  SelectionRequest,
   UiSourceAvailableImageResponse,
 } from "@/app/apiclient";
 import FormikForm from "@/app/base/components/FormikForm";
+import type {
+  SelectedImage,
+  SelectUpstreamImagesStepValues,
+} from "@/app/images/components/SelectUpstreamImages/SelectUpstreamImages";
+import { SelectUpstreamImagesSteps } from "@/app/images/components/SelectUpstreamImages/SelectUpstreamImages";
 
 import "./_index.scss";
 
@@ -124,15 +124,19 @@ export const groupArchesByTitle = (images: ImagesByOS): GroupedImages => {
   return groupedImages;
 };
 
-const SelectUpstreamImagesForm = (): ReactElement => {
+const SelectUpstreamImagesForm = ({
+  setStep,
+  setSelectedImages,
+}: {
+  setStep: (step: SelectUpstreamImagesStepValues) => void;
+  setSelectedImages: (images: SelectedImage[]) => void;
+}): ReactElement => {
   const { closeSidePanel } = useSidePanel();
 
   const { data: selectedImages, isPending: isSelectedImagesPending } =
     useSelections();
   const { data: availableImages, isPending: isAvailableImagesPending } =
     useAvailableSelections();
-
-  const addSelections = useAddSelections();
 
   const [groupedImages, setGroupedImages] = useState<GroupedImages>({});
 
@@ -188,31 +192,32 @@ const SelectUpstreamImagesForm = (): ReactElement => {
               aria-label="Select upstream images to sync"
               buttonsBehavior="independent"
               enableReinitialize
-              errors={addSelections.error}
               initialValues={initialValues}
               onCancel={closeSidePanel}
               onSubmit={(values) => {
-                const formSelectedImages = Object.entries(
+                const allSelectedItems = Object.values(
                   values as Record<string, { label: string; value: string }[]>
-                ).flatMap(([_, images]): SelectionRequest[] => {
-                  return images.map((image): SelectionRequest => {
-                    const [os, release, _title, arch, boot_source_id] =
-                      image.value.split("&");
-                    return {
-                      arch,
-                      boot_source_id: Number(boot_source_id),
-                      os,
-                      release,
-                    };
-                  });
-                });
+                ).flat();
+                const selectedItemIds = new Set(
+                  allSelectedItems.map((item) => item.value)
+                );
+                const nextSelectedImages: SelectedImage[] = (
+                  availableImages?.items ?? []
+                )
+                  .filter((img) =>
+                    selectedItemIds.has(
+                      `${img.os}&${img.release}&${img.title}&${img.architecture}&${img.source_id}`
+                    )
+                  )
+                  .map((img) => ({
+                    ...img,
+                    id: `${img.os}&${img.release}&${img.title}&${img.architecture}&${img.source_id}`,
+                  }));
 
-                addSelections.mutate({
-                  body: formSelectedImages,
-                });
-                closeSidePanel();
+                setSelectedImages(nextSelectedImages);
+                setStep(SelectUpstreamImagesSteps.SOURCE_CONFIGURATION);
               }}
-              submitLabel="Save and sync"
+              submitLabel="Next"
             >
               {({
                 values,
