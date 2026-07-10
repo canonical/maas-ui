@@ -1,6 +1,8 @@
 import type { MenuLink } from "@canonical/react-components";
 import { ContextualMenu } from "@canonical/react-components";
 
+import "./_index.scss";
+
 type SourceOption = { id: number; name?: string | null };
 
 type ImageSourceMenuProps = {
@@ -20,7 +22,7 @@ const ImageSourceMenu = ({
 
   return (
     <ContextualMenu
-      className="p-table-menu"
+      className="p-table-menu image-source-menu"
       hasToggleIcon
       links={[
         "Change source:",

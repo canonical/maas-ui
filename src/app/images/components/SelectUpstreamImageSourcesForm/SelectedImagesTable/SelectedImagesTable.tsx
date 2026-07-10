@@ -34,7 +34,10 @@ const SelectedImagesTable = ({
       columns={columns}
       data={selectedImages}
       isLoading={false}
-      sorting={[{ id: "title", desc: true }]}
+      sorting={[
+        { id: "title", desc: true },
+        { id: "architecture", desc: false },
+      ]}
       variant="regular"
     />
   );
