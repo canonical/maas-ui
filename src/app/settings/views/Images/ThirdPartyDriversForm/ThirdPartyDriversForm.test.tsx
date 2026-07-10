@@ -20,7 +20,8 @@ const mockServer = setupMockServer(
     name: ConfigNames.ENABLE_THIRD_PARTY_DRIVERS,
     value: false,
   }),
-  authResolvers.getCurrentUser.handler()
+  authResolvers.getCurrentUser.handler(),
+  authResolvers.getMeEntitlements.handler()
 );
 describe("ThirdPartyDriversForm", () => {
   it("sets enable_third_party_drivers value", async () => {
@@ -39,15 +40,11 @@ describe("ThirdPartyDriversForm", () => {
 
   it("disables the checkbox without edit permissions", async () => {
     mockServer.use(
-      authResolvers.getCurrentUser.handler(
-        factory.userInfo({
-          entitlements: [
-            factory.entitlement({
-              entitlement: Entitlement.CAN_VIEW_BOOT_ENTITIES,
-            }),
-          ],
-        })
-      )
+      authResolvers.getMeEntitlements.handler([
+        factory.entitlement({
+          entitlement: Entitlement.CAN_VIEW_BOOT_ENTITIES,
+        }),
+      ])
     );
     renderWithProviders(<ThirdPartyDriversForm />);
     await waitForLoading();

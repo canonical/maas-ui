@@ -16,6 +16,7 @@ import {
 
 const mockServer = setupMockServer(
   authResolvers.getCurrentUser.handler(),
+  authResolvers.getMeEntitlements.handler(),
   authResolvers.getMeStatistics.handler()
 );
 
@@ -40,9 +41,8 @@ describe("Intro", () => {
 
   it("displays a message if the user is not an admin", async () => {
     mockServer.use(
-      authResolvers.getCurrentUser.handler(
-        factory.userInfo({ id: 1, entitlements: [] })
-      ),
+      authResolvers.getCurrentUser.handler(factory.user({ id: 1 })),
+      authResolvers.getMeEntitlements.handler([]),
       authResolvers.getMeStatistics.handler(
         factory.userStatistics({ id: 1, completed_intro: false })
       )
@@ -62,7 +62,7 @@ describe("Intro", () => {
 
   it("does not display a message if the user is an admin", async () => {
     mockServer.use(
-      authResolvers.getCurrentUser.handler(factory.userInfo()),
+      authResolvers.getCurrentUser.handler(factory.user()),
       authResolvers.getMeStatistics.handler(
         factory.userStatistics({ completed_intro: false })
       )
@@ -89,7 +89,7 @@ describe("Intro", () => {
       items: [{ name: ConfigNames.COMPLETED_INTRO, value: true }],
     });
     mockServer.use(
-      authResolvers.getCurrentUser.handler(factory.userInfo()),
+      authResolvers.getCurrentUser.handler(factory.user()),
       authResolvers.getMeStatistics.handler(
         factory.userStatistics({ completed_intro: true })
       )
@@ -118,7 +118,7 @@ describe("Intro", () => {
       items: [{ name: ConfigNames.COMPLETED_INTRO, value: true }],
     });
     mockServer.use(
-      authResolvers.getCurrentUser.handler(factory.userInfo()),
+      authResolvers.getCurrentUser.handler(factory.user()),
       authResolvers.getMeStatistics.handler(
         factory.userStatistics({ completed_intro: false })
       )

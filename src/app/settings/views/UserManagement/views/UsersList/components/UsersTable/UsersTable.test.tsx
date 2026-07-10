@@ -27,6 +27,7 @@ const mockServer = setupMockServer(
   usersResolvers.getUser.handler(),
   usersResolvers.listUsersStatistics.handler(),
   authResolvers.getCurrentUser.handler(),
+  authResolvers.getMeEntitlements.handler(),
   authResolvers.getMeStatistics.handler()
 );
 const { mockOpen } = await mockSidePanel();
@@ -158,16 +159,12 @@ describe("UsersTable", () => {
           items: [user],
           total: 1,
         }),
-        authResolvers.getCurrentUser.handler(
-          factory.userInfo({
-            id: 1,
-            entitlements: [
-              factory.entitlement({
-                entitlement: Entitlement.CAN_VIEW_IDENTITIES,
-              }),
-            ],
-          })
-        )
+        authResolvers.getCurrentUser.handler(factory.user({ id: 1 })),
+        authResolvers.getMeEntitlements.handler([
+          factory.entitlement({
+            entitlement: Entitlement.CAN_VIEW_IDENTITIES,
+          }),
+        ])
       );
 
       renderWithProviders(<UsersTable />);
@@ -192,7 +189,7 @@ describe("UsersTable", () => {
           items: [user],
           total: 1,
         }),
-        authResolvers.getCurrentUser.handler(factory.userInfo({ id: 1 }))
+        authResolvers.getCurrentUser.handler(factory.user({ id: 1 }))
       );
 
       renderWithProviders(<UsersTable />);
@@ -208,16 +205,12 @@ describe("UsersTable", () => {
   describe("actions", () => {
     it("displays the form when Add user is clicked", async () => {
       mockServer.use(
-        authResolvers.getCurrentUser.handler(
-          factory.userInfo({
-            id: 1,
-            entitlements: [
-              factory.entitlement({
-                entitlement: Entitlement.CAN_EDIT_IDENTITIES,
-              }),
-            ],
-          })
-        )
+        authResolvers.getCurrentUser.handler(factory.user({ id: 1 })),
+        authResolvers.getMeEntitlements.handler([
+          factory.entitlement({
+            entitlement: Entitlement.CAN_EDIT_IDENTITIES,
+          }),
+        ])
       );
       renderWithProviders(<UsersTable />);
 
@@ -241,16 +234,12 @@ describe("UsersTable", () => {
           items: [factory.user({ id: 2 })],
           total: 1,
         }),
-        authResolvers.getCurrentUser.handler(
-          factory.userInfo({
-            id: 1,
-            entitlements: [
-              factory.entitlement({
-                entitlement: Entitlement.CAN_EDIT_IDENTITIES,
-              }),
-            ],
-          })
-        )
+        authResolvers.getCurrentUser.handler(factory.user({ id: 1 })),
+        authResolvers.getMeEntitlements.handler([
+          factory.entitlement({
+            entitlement: Entitlement.CAN_EDIT_IDENTITIES,
+          }),
+        ])
       );
 
       renderWithProviders(<UsersTable />);
@@ -276,16 +265,12 @@ describe("UsersTable", () => {
           items: [factory.user({ id: 2 })],
           total: 1,
         }),
-        authResolvers.getCurrentUser.handler(
-          factory.userInfo({
-            id: 1,
-            entitlements: [
-              factory.entitlement({
-                entitlement: Entitlement.CAN_EDIT_IDENTITIES,
-              }),
-            ],
-          })
-        )
+        authResolvers.getCurrentUser.handler(factory.user({ id: 1 })),
+        authResolvers.getMeEntitlements.handler([
+          factory.entitlement({
+            entitlement: Entitlement.CAN_EDIT_IDENTITIES,
+          }),
+        ])
       );
 
       renderWithProviders(<UsersTable />);

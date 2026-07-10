@@ -22,7 +22,6 @@ import type {
   DeleteOauthProviderData,
   DeleteOauthProviderErrors,
   DeleteOauthProviderResponses,
-  EntitlementResponse,
   ExtendSessionData,
   ExtendSessionErrors,
   ExtendSessionResponses,
@@ -33,6 +32,9 @@ import type {
   GetOauthProviderData,
   GetOauthProviderErrors,
   GetOauthProviderResponses,
+  GetUserEntitlementsData,
+  GetUserEntitlementsErrors,
+  GetUserEntitlementsResponses,
   GetUserInfoData,
   GetUserInfoError,
   GetUserInfoErrors,
@@ -65,6 +67,7 @@ import {
   extendSession,
   getMeStatistics,
   getOauthProvider,
+  getUserEntitlements,
   getUserInfo,
   handleOauthCallback,
   initiateAuthFlow,
@@ -75,6 +78,7 @@ import {
 import {
   getMeStatisticsQueryKey,
   getOauthProviderQueryKey,
+  getUserEntitlementsQueryKey,
   getUserInfoQueryKey,
   handleOauthCallbackQueryKey,
   initiateAuthFlowQueryKey,
@@ -249,7 +253,6 @@ export const useExtendSession = (
 export type CurrentUserInfo = {
   id: number;
   username: string;
-  entitlements: EntitlementResponse[];
   headers?: Headers;
   statistics: WithHeaders<UserStatisticsResponse> | undefined;
 };
@@ -288,7 +291,6 @@ export const useGetCurrentUser = (
     data: userInfo.data
       ? {
           ...userInfo.data,
-          entitlements: userInfo.data.entitlements,
           statistics: statistics.data,
         }
       : undefined,
@@ -297,14 +299,16 @@ export const useGetCurrentUser = (
   };
 };
 
-export const useGetUserEntitlements = (options?: Options<GetUserInfoData>) => {
+export const useGetUserEntitlements = (
+  options?: Options<GetUserEntitlementsData>
+) => {
   return useWebsocketAwareQuery({
     ...queryOptionsWithHeaders<
-      GetUserInfoResponses,
-      GetUserInfoErrors,
-      GetUserInfoData
-    >(options, getUserInfo, getUserInfoQueryKey(options)),
-    select: (data) => data.entitlements,
+      GetUserEntitlementsResponses,
+      GetUserEntitlementsErrors,
+      GetUserEntitlementsData
+    >(options, getUserEntitlements, getUserEntitlementsQueryKey(options)),
+    select: (data) => data.items,
   });
 };
 

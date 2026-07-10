@@ -11,6 +11,7 @@ import {
 
 const mockServer = setupMockServer(
   authResolvers.getCurrentUser.handler(),
+  authResolvers.getMeEntitlements.handler(),
   authResolvers.getMeStatistics.handler()
 );
 
@@ -35,11 +36,7 @@ describe("Settings", () => {
   });
 
   it("displays a message if not an admin", () => {
-    mockServer.use(
-      authResolvers.getCurrentUser.handler(
-        factory.userInfo({ entitlements: [] })
-      )
-    );
+    mockServer.use(authResolvers.getMeEntitlements.handler([]));
     renderWithProviders(<Settings />);
     expect(
       screen.getByRole("heading", {

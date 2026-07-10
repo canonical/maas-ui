@@ -14,7 +14,10 @@ import {
   waitFor,
 } from "@/testing/utils";
 
-const mockServer = setupMockServer(authResolvers.getCurrentUser.handler());
+const mockServer = setupMockServer(
+  authResolvers.getCurrentUser.handler(),
+  authResolvers.getMeEntitlements.handler()
+);
 
 describe("CommissioningForm", () => {
   let initialState: RootState;
@@ -103,15 +106,11 @@ describe("CommissioningForm", () => {
 
   it("disables fields without edit permissions", async () => {
     mockServer.use(
-      authResolvers.getCurrentUser.handler(
-        factory.userInfo({
-          entitlements: [
-            factory.entitlement({
-              entitlement: Entitlement.CAN_VIEW_CONFIGURATIONS,
-            }),
-          ],
-        })
-      )
+      authResolvers.getMeEntitlements.handler([
+        factory.entitlement({
+          entitlement: Entitlement.CAN_VIEW_CONFIGURATIONS,
+        }),
+      ])
     );
 
     renderWithProviders(<CommissioningForm />, { state: initialState });

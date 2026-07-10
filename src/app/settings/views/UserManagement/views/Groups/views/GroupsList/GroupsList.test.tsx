@@ -13,7 +13,8 @@ import {
 setupMockServer(
   groupsResolvers.listGroups.handler(),
   groupsResolvers.listGroupsStatistics.handler(),
-  authResolvers.getCurrentUser.handler()
+  authResolvers.getCurrentUser.handler(),
+  authResolvers.getMeEntitlements.handler()
 );
 describe("GroupsList", () => {
   it("renders AddGroup", async () => {

@@ -118,6 +118,7 @@ import {
   getSwitch,
   getTag,
   getUser,
+  getUserEntitlements,
   getUserInfo,
   getUserSshkey,
   getUserSslkey,
@@ -201,6 +202,7 @@ import {
   updateSwitch,
   updateTag,
   updateUser,
+  updateUserMe,
   updateZone,
   uploadCustomImage,
 } from "../sdk.gen";
@@ -541,6 +543,9 @@ import type {
   GetTagError,
   GetTagResponse,
   GetUserData,
+  GetUserEntitlementsData,
+  GetUserEntitlementsError,
+  GetUserEntitlementsResponse,
   GetUserError,
   GetUserInfoData,
   GetUserInfoError,
@@ -786,6 +791,9 @@ import type {
   UpdateTagResponse,
   UpdateUserData,
   UpdateUserError,
+  UpdateUserMeData,
+  UpdateUserMeError,
+  UpdateUserMeResponse,
   UpdateUserResponse,
   UpdateZoneData,
   UpdateZoneError,
@@ -5598,6 +5606,61 @@ export const getUserInfoOptions = (options?: Options<GetUserInfoData>) =>
       return data;
     },
     queryKey: getUserInfoQueryKey(options),
+  });
+
+/**
+ * Update User Me
+ */
+export const updateUserMeMutation = (
+  options?: Partial<Options<UpdateUserMeData>>
+): UseMutationOptions<
+  UpdateUserMeResponse,
+  UpdateUserMeError,
+  Options<UpdateUserMeData>
+> => {
+  const mutationOptions: UseMutationOptions<
+    UpdateUserMeResponse,
+    UpdateUserMeError,
+    Options<UpdateUserMeData>
+  > = {
+    mutationFn: async (fnOptions) => {
+      const { data } = await updateUserMe({
+        ...options,
+        ...fnOptions,
+        throwOnError: true,
+      });
+      return data;
+    },
+  };
+  return mutationOptions;
+};
+
+export const getUserEntitlementsQueryKey = (
+  options?: Options<GetUserEntitlementsData>
+) => createQueryKey("getUserEntitlements", options);
+
+/**
+ * Get User Entitlements
+ */
+export const getUserEntitlementsOptions = (
+  options?: Options<GetUserEntitlementsData>
+) =>
+  queryOptions<
+    GetUserEntitlementsResponse,
+    GetUserEntitlementsError,
+    GetUserEntitlementsResponse,
+    ReturnType<typeof getUserEntitlementsQueryKey>
+  >({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await getUserEntitlements({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: getUserEntitlementsQueryKey(options),
   });
 
 /**

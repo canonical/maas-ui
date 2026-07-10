@@ -14,7 +14,8 @@ import {
 setupMockServer(
   packageRepositoriesResolvers.listPackageRepositories.handler(),
   packageRepositoriesResolvers.getPackageRepository.handler(),
-  authResolvers.getCurrentUser.handler()
+  authResolvers.getCurrentUser.handler(),
+  authResolvers.getMeEntitlements.handler()
 );
 
 describe("RepositoriesList", () => {

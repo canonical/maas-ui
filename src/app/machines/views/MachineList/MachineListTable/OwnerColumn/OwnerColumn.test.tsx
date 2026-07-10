@@ -16,6 +16,7 @@ import {
 
 const mockServer = setupMockServer(
   authResolvers.getCurrentUser.handler(),
+  authResolvers.getMeEntitlements.handler(),
   usersResolvers.listUsers.handler()
 );
 
@@ -62,9 +63,7 @@ describe("OwnerColumn", () => {
 
   it("displays owner's username if showFullName is true and user doesn't have a full name", () => {
     mockServer.use(
-      authResolvers.getCurrentUser.handler(
-        factory.userInfo({ username: "user1" })
-      )
+      authResolvers.getCurrentUser.handler(factory.user({ username: "user1" }))
     );
     renderWithProviders(
       <OwnerColumn onToggleMenu={vi.fn()} showFullName systemId="abc123" />,

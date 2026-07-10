@@ -25,7 +25,8 @@ const mockServer = setupMockServer(
     value: 60,
   }),
   configurationsResolvers.setConfiguration.handler(),
-  authResolvers.getCurrentUser.handler()
+  authResolvers.getCurrentUser.handler(),
+  authResolvers.getMeEntitlements.handler()
 );
 
 describe("Synchronization", () => {
@@ -121,15 +122,11 @@ describe("Synchronization", () => {
 
   it("disables the form fields without edit permissions", async () => {
     mockServer.use(
-      authResolvers.getCurrentUser.handler(
-        factory.userInfo({
-          entitlements: [
-            factory.entitlement({
-              entitlement: Entitlement.CAN_VIEW_BOOT_ENTITIES,
-            }),
-          ],
-        })
-      )
+      authResolvers.getMeEntitlements.handler([
+        factory.entitlement({
+          entitlement: Entitlement.CAN_VIEW_BOOT_ENTITIES,
+        }),
+      ])
     );
     renderWithProviders(<Synchronization />);
     await waitForLoading();

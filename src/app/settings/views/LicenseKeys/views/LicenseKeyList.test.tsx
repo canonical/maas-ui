@@ -11,7 +11,10 @@ import {
   waitFor,
 } from "@/testing/utils";
 
-const mockServer = setupMockServer(authResolvers.getCurrentUser.handler());
+const mockServer = setupMockServer(
+  authResolvers.getCurrentUser.handler(),
+  authResolvers.getMeEntitlements.handler()
+);
 
 describe("LicenseKeyList", () => {
   let initialState: RootState;
@@ -54,15 +57,11 @@ describe("LicenseKeyList", () => {
 
   it("disables the Add button without edit permissions", async () => {
     mockServer.use(
-      authResolvers.getCurrentUser.handler(
-        factory.userInfo({
-          entitlements: [
-            factory.entitlement({
-              entitlement: Entitlement.CAN_VIEW_LICENSE_KEYS,
-            }),
-          ],
-        })
-      )
+      authResolvers.getMeEntitlements.handler([
+        factory.entitlement({
+          entitlement: Entitlement.CAN_VIEW_LICENSE_KEYS,
+        }),
+      ])
     );
     renderWithProviders(<LicenseKeyList />, { state: initialState });
     await waitFor(() => {
