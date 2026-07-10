@@ -66,7 +66,7 @@ const useSelectedImagesTableColumns = ({
         {
           id: "title",
           accessorKey: "title",
-          enableSorting: true,
+          enableSorting: false,
           header: "Release title",
           cell: ({
             row: {
@@ -88,7 +88,7 @@ const useSelectedImagesTableColumns = ({
         {
           id: "architecture",
           accessorKey: "architecture",
-          enableSorting: true,
+          enableSorting: false,
           header: "Architecture",
         },
         {

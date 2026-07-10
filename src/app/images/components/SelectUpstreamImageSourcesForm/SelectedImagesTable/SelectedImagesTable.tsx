@@ -3,6 +3,8 @@ import { GenericTable } from "@canonical/maas-react-components";
 import useSelectedImagesTableColumns from "@/app/images/components/SelectUpstreamImageSourcesForm/SelectedImagesTable/useSelectedImagesTableColumns/useSelectedImagesTableColumns";
 import type { SelectedImage } from "@/app/images/components/SelectUpstreamImages/SelectUpstreamImages";
 
+import "./_index.scss";
+
 type SelectedImagesTableProps = {
   selectedImages: SelectedImage[];
   setSelectedImages: (images: SelectedImage[]) => void;
