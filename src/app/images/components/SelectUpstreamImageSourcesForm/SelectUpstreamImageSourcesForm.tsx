@@ -46,8 +46,10 @@ const SelectUpstreamImageSourcesForm = ({
                 release: img.release,
               })),
             });
-            closeSidePanel();
           }}
+          onSuccess={closeSidePanel}
+          saved={addSelections.isSuccess}
+          saving={addSelections.isPending}
           secondarySubmit={() => {
             setStep(SelectUpstreamImagesSteps.IMAGE_SELECTION);
           }}

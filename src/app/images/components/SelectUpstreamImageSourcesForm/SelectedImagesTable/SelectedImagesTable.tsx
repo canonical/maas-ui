@@ -1,5 +1,7 @@
 import { GenericTable } from "@canonical/maas-react-components";
 
+import { useImageSources } from "@/app/api/query/imageSources";
+import { useAvailableSelections } from "@/app/api/query/images";
 import useSelectedImagesTableColumns from "@/app/images/components/SelectUpstreamImageSourcesForm/SelectedImagesTable/useSelectedImagesTableColumns/useSelectedImagesTableColumns";
 import type { SelectedImage } from "@/app/images/components/SelectUpstreamImages/SelectUpstreamImages";
 
@@ -14,9 +16,15 @@ const SelectedImagesTable = ({
   selectedImages,
   setSelectedImages,
 }: SelectedImagesTableProps) => {
+  const { data: sources, isPending: isSourcesPending } = useImageSources();
+  const { data: availableImages } = useAvailableSelections();
+
   const columns = useSelectedImagesTableColumns({
     selectedImages,
     setSelectedImages,
+    sources: sources?.items,
+    availableImages: availableImages?.items,
+    isSourcesPending,
   });
 
   return (

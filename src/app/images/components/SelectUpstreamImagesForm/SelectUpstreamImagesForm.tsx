@@ -1,5 +1,5 @@
 import type { ReactElement } from "react";
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 
 import { useSidePanel } from "@canonical/maas-react-components";
 import type { MultiSelectItem } from "@canonical/react-components";
@@ -27,7 +27,7 @@ import type {
   SelectUpstreamImagesStepValues,
 } from "@/app/images/components/SelectUpstreamImages/SelectUpstreamImages";
 import { SelectUpstreamImagesSteps } from "@/app/images/components/SelectUpstreamImages/SelectUpstreamImages";
-import { OPERATING_SYSTEM_NAMES } from "@/app/images/constants";
+import { capitalizeOs, getOsDisplayName } from "@/app/images/utils";
 
 import "./_index.scss";
 
@@ -58,7 +58,7 @@ export const getDownloadableImages = (
         title: image.title,
         release: image.release,
         architectures: image.architecture,
-        os: image.os.charAt(0).toUpperCase() + image.os.slice(1),
+        os: capitalizeOs(image.os),
       });
     }
     return acc;
@@ -85,11 +85,7 @@ export const groupImagesByOS = (images: DownloadableImage[]): ImagesByOS => {
   const imagesByOS: ImagesByOS = {};
 
   images.forEach((image) => {
-    if (!!imagesByOS[image.os]) {
-      imagesByOS[image.os].push(image);
-    } else {
-      imagesByOS[image.os] = [image];
-    }
+    (imagesByOS[image.os] ??= []).push(image);
   });
 
   Object.keys(imagesByOS).forEach((distro) => {
@@ -111,27 +107,18 @@ export const groupArchesByTitle = (images: ImagesByOS): GroupedImages => {
   const groupedImages: GroupedImages = {};
 
   Object.keys(images).forEach((distro) => {
-    if (!groupedImages[distro]) {
-      groupedImages[distro] = {};
-    }
+    groupedImages[distro] ??= {};
     images[distro].forEach((image) => {
-      if (!groupedImages[distro][`${image.title}&${image.release}`]) {
-        groupedImages[distro][`${image.title}&${image.release}`] = [
-          { label: image.architectures.toString(), value: image.id },
-        ];
-      } else {
-        groupedImages[distro][`${image.title}&${image.release}`].push({
-          label: image.architectures.toString(),
-          value: image.id,
-        });
-      }
+      (groupedImages[distro][`${image.title}&${image.release}`] ??= []).push({
+        label: image.architectures.toString(),
+        value: image.id,
+      });
     });
   });
 
   return groupedImages;
 };
 
-/** Returns true if every character of `query` appears in order within `target`. */
 const fuzzyMatch = (target: string, query: string): boolean => {
   const lowerTarget = target.toLowerCase();
   const lowerQuery = query.toLowerCase();
@@ -159,26 +146,22 @@ const SelectUpstreamImagesForm = ({
     useAvailableSelections();
   const { data: sources } = useImageSources();
 
-  const [groupedImages, setGroupedImages] = useState<GroupedImages>({});
   const [hasSelections, setHasSelections] = useState(
     () => savedSelectedImages.length > 0
   );
-
   const [searchText, setSearchText] = useState("");
 
   const isPending = isSelectedImagesPending || isAvailableImagesPending;
 
-  useEffect(() => {
-    if (selectedImages && availableImages) {
-      const downloadableImages = getDownloadableImages(availableImages.items);
-      const filteredDownloadableImages = filterSyncedImages(
-        downloadableImages,
-        selectedImages.items
-      );
-      const imagesByOS = groupImagesByOS(filteredDownloadableImages);
-      const grouped = groupArchesByTitle(imagesByOS);
-      setGroupedImages(grouped);
-    }
+  const groupedImages = useMemo<GroupedImages>(() => {
+    if (!selectedImages || !availableImages) return {};
+    const downloadableImages = getDownloadableImages(availableImages.items);
+    const filteredDownloadableImages = filterSyncedImages(
+      downloadableImages,
+      selectedImages.items
+    );
+    const imagesByOS = groupImagesByOS(filteredDownloadableImages);
+    return groupArchesByTitle(imagesByOS);
   }, [availableImages, selectedImages]);
 
   const initialValues = useMemo(() => {
@@ -194,7 +177,7 @@ const SelectUpstreamImagesForm = ({
     // Restore prior selections by parsing savedSelectedImages back into
     // Formik field values (SelectedImage[] → Record<fieldKey, MultiSelectItem[]>).
     savedSelectedImages.forEach((img) => {
-      const distro = img.os.charAt(0).toUpperCase() + img.os.slice(1);
+      const distro = capitalizeOs(img.os);
       const fieldKey = getValueKey(distro, img.release, img.title);
       if (initial[fieldKey]) {
         initial[fieldKey] = [
@@ -221,10 +204,7 @@ const SelectUpstreamImagesForm = ({
 
     const result: GroupedImages = {};
     Object.keys(groupedImages).forEach((distro) => {
-      const displayName =
-        OPERATING_SYSTEM_NAMES.find(
-          (os) => os.value.toLowerCase() === distro.toLowerCase()
-        )?.label ?? distro;
+      const displayName = getOsDisplayName(distro);
 
       const distroMatches =
         fuzzyMatch(distro, searchText) || fuzzyMatch(displayName, searchText);
@@ -263,10 +243,7 @@ const SelectUpstreamImagesForm = ({
         ) : (
           <>
             {noAvailableImages && (
-              <NotificationBanner
-                data-testid="no-available-images-warning"
-                severity="caution"
-              >
+              <NotificationBanner severity="caution">
                 No available upstream images found. This could be caused by an
                 ongoing image source change. If you recently changed the image
                 source settings, please come back after some time.

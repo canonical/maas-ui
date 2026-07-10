@@ -1,32 +1,32 @@
 import { useMemo } from "react";
 
-import type { MenuLink } from "@canonical/react-components";
-import {
-  Button,
-  ContextualMenu,
-  Icon,
-  Spinner,
-  Tooltip,
-} from "@canonical/react-components";
+import { Button, Icon, Spinner, Tooltip } from "@canonical/react-components";
 import type { ColumnDef, Row } from "@tanstack/react-table";
 
-import { useImageSources } from "@/app/api/query/imageSources";
-import { useAvailableSelections } from "@/app/api/query/images";
-import type { BootSourceResponse } from "@/app/apiclient";
+import type {
+  BootSourceResponse,
+  UiSourceAvailableImageResponse,
+} from "@/app/apiclient";
+import ImageSourceMenu from "@/app/images/components/ImageSourceMenu";
+import ReleaseTitleCell from "@/app/images/components/ReleaseTitleCell";
 import type { SelectedImage } from "@/app/images/components/SelectUpstreamImages/SelectUpstreamImages";
+import { buildSourcesByImageKey } from "@/app/images/utils";
 
 type SelectedImageColumnDef = ColumnDef<SelectedImage, Partial<SelectedImage>>;
 
 const useSelectedImagesTableColumns = ({
   selectedImages,
   setSelectedImages,
+  sources,
+  availableImages,
+  isSourcesPending,
 }: {
   selectedImages: SelectedImage[];
   setSelectedImages: (images: SelectedImage[]) => void;
+  sources: BootSourceResponse[] | undefined;
+  availableImages: UiSourceAvailableImageResponse[] | undefined;
+  isSourcesPending: boolean;
 }): SelectedImageColumnDef[] => {
-  const { data: sources, isPending: isSourcesPending } = useImageSources();
-  const { data: availableImages } = useAvailableSelections();
-
   // Build a set of selected os/release/arch keys for fast lookup.
   const selectedKeys = useMemo(
     () =>
@@ -39,26 +39,14 @@ const useSelectedImagesTableColumns = ({
   );
 
   // For each selected os/release/arch, collect every source that has that
-  // image available. This is derived from the full availableImages list so
-  // the dropdown always shows all switchable sources, not just the initially
-  // assigned one.
-  const sourcesByImageKey = useMemo(() => {
-    const map: Record<string, BootSourceResponse[]> = {};
-    if (!sources?.items || !availableImages?.items) return map;
-
-    for (const img of availableImages.items) {
-      const key = `${img.os}/${img.release}/${img.architecture}`;
-      if (!selectedKeys.has(key)) continue;
-      const source = sources.items.find((s) => s.id === img.source_id);
-      if (!source) continue;
-      if (!map[key]) {
-        map[key] = [source];
-      } else if (!map[key].some((s) => s.id === source.id)) {
-        map[key].push(source);
-      }
-    }
-    return map;
-  }, [sources, availableImages, selectedKeys]);
+  // image available so the dropdown always shows all switchable sources.
+  const sourcesByImageKey = useMemo(
+    () =>
+      sources && availableImages
+        ? buildSourcesByImageKey(sources, availableImages, selectedKeys)
+        : {},
+    [sources, availableImages, selectedKeys]
+  );
 
   return useMemo(
     () =>
@@ -74,16 +62,7 @@ const useSelectedImagesTableColumns = ({
             },
           }: {
             row: Row<SelectedImage>;
-          }) => {
-            return (
-              <div>
-                <div>{title}</div>
-                {title !== release ? (
-                  <small className="u-text--muted">{release}</small>
-                ) : null}
-              </div>
-            );
-          },
+          }) => <ReleaseTitleCell release={release} title={title} />,
         },
         {
           id: "architecture",
@@ -109,36 +88,18 @@ const useSelectedImagesTableColumns = ({
 
             const key = `${os}/${release}/${architecture}`;
             const switchableSources = sourcesByImageKey[key] ?? [];
-            const currentSource = switchableSources.find(
-              (source) => source.id === source_id
-            );
 
             return (
-              <ContextualMenu
-                className="p-table-menu"
-                hasToggleIcon
-                links={[
-                  "Change source:",
-                  ...switchableSources.map(
-                    (source): MenuLink => ({
-                      disabled: source.id === currentSource?.id,
-                      children: source.name,
-                      onClick: () => {
-                        setSelectedImages(
-                          selectedImages.map((img) =>
-                            img.id === id
-                              ? { ...img, source_id: source.id }
-                              : img
-                          )
-                        );
-                      },
-                    })
-                  ),
-                ]}
-                position="right"
-                toggleAppearance="base"
-                toggleClassName="u-no-margin--bottom p-table-menu__toggle"
-                toggleLabel={currentSource?.name}
+              <ImageSourceMenu
+                currentSourceId={source_id}
+                onSourceSelect={(source) => {
+                  setSelectedImages(
+                    selectedImages.map((img) =>
+                      img.id === id ? { ...img, source_id: source.id } : img
+                    )
+                  );
+                }}
+                sources={switchableSources}
               />
             );
           },
@@ -154,24 +115,22 @@ const useSelectedImagesTableColumns = ({
             },
           }: {
             row: Row<SelectedImage>;
-          }) => {
-            return (
-              <Tooltip message="Remove" position="left">
-                <Button
-                  appearance="base"
-                  className="is-dense u-table-cell-padding-overlap"
-                  hasIcon
-                  onClick={() => {
-                    setSelectedImages(
-                      selectedImages.filter((img) => img.id !== id)
-                    );
-                  }}
-                >
-                  <Icon name="close">Remove</Icon>
-                </Button>
-              </Tooltip>
-            );
-          },
+          }) => (
+            <Tooltip message="Remove" position="left">
+              <Button
+                appearance="base"
+                className="is-dense u-table-cell-padding-overlap"
+                hasIcon
+                onClick={() => {
+                  setSelectedImages(
+                    selectedImages.filter((img) => img.id !== id)
+                  );
+                }}
+              >
+                <Icon name="close">Remove</Icon>
+              </Button>
+            </Tooltip>
+          ),
         },
       ] as SelectedImageColumnDef[],
     [isSourcesPending, sourcesByImageKey, selectedImages, setSelectedImages]

@@ -9,14 +9,13 @@ import SelectUpstreamImagesForm from "@/app/images/components/SelectUpstreamImag
 
 export type SelectedImage = UiSourceAvailableImageResponse & { id: string };
 
-export type SelectUpstreamImagesStepValues =
-  | "Image selection"
-  | "Source configuration";
-
 export const SelectUpstreamImagesSteps = {
   IMAGE_SELECTION: "Image selection",
   SOURCE_CONFIGURATION: "Source configuration",
 } as const;
+
+export type SelectUpstreamImagesStepValues =
+  (typeof SelectUpstreamImagesSteps)[keyof typeof SelectUpstreamImagesSteps];
 
 const SelectUpstreamImages = (): ReactElement => {
   const [step, setStep] = useState<SelectUpstreamImagesStepValues>(
