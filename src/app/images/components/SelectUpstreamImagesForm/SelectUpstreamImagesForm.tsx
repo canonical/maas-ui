@@ -147,6 +147,9 @@ const SelectUpstreamImagesForm = ({
   const { data: sources } = useImageSources();
 
   const [groupedImages, setGroupedImages] = useState<GroupedImages>({});
+  const [hasSelections, setHasSelections] = useState(
+    () => savedSelectedImages.length > 0
+  );
 
   const isPending = isSelectedImagesPending || isAvailableImagesPending;
 
@@ -186,6 +189,13 @@ const SelectUpstreamImagesForm = ({
       }
     });
 
+    // Keep architecture lists alphabetically sorted, matching the original display order.
+    Object.keys(initial).forEach((key) => {
+      initial[key] = initial[key].sort((a, b) =>
+        a.label.localeCompare(b.label)
+      );
+    });
+
     return initial;
   }, [groupedImages, savedSelectedImages]);
 
@@ -211,6 +221,7 @@ const SelectUpstreamImagesForm = ({
               </NotificationBanner>
             )}
             <FormikForm
+              allowUnchanged
               aria-label="Select upstream images to sync"
               buttonsBehavior="independent"
               enableReinitialize
@@ -264,6 +275,14 @@ const SelectUpstreamImagesForm = ({
                 setSelectedImages(nextSelectedImages);
                 setStep(SelectUpstreamImagesSteps.SOURCE_CONFIGURATION);
               }}
+              onValuesChanged={(values) => {
+                setHasSelections(
+                  Object.values(
+                    values as Record<string, MultiSelectItem[]>
+                  ).some((items) => items.length > 0)
+                );
+              }}
+              submitDisabled={!hasSelections}
               submitLabel="Next"
             >
               {({
