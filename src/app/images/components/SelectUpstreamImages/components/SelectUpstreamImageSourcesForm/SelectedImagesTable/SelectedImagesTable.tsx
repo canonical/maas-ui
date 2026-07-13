@@ -34,6 +34,7 @@ const SelectedImagesTable = ({
       columns={columns}
       data={selectedImages}
       isLoading={false}
+      noData="No upstream images were selected."
       sorting={[
         { id: "title", desc: true },
         { id: "architecture", desc: false },
