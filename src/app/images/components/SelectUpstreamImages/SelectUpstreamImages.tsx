@@ -4,8 +4,8 @@ import { useState } from "react";
 import { Stepper } from "@canonical/maas-react-components";
 
 import type { UiSourceAvailableImageResponse } from "@/app/apiclient";
-import SelectUpstreamImageSourcesForm from "@/app/images/components/SelectUpstreamImageSourcesForm";
-import SelectUpstreamImagesForm from "@/app/images/components/SelectUpstreamImagesForm";
+import SelectUpstreamImageSourcesForm from "@/app/images/components/SelectUpstreamImages/components/SelectUpstreamImageSourcesForm";
+import SelectUpstreamImagesForm from "@/app/images/components/SelectUpstreamImages/components/SelectUpstreamImagesForm";
 
 export type SelectedImage = UiSourceAvailableImageResponse & { id: string };
 

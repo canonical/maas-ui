@@ -160,7 +160,7 @@
 
 // images
 @import "@/app/images/components/ImagesTable";
-@import "@/app/images/components/SelectUpstreamImagesForm";
+@import "@/app/images/components/SelectUpstreamImages/SelectUpstreamImages";
 @include ImagesTable;
 @include DownloadImages;
 

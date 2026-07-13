@@ -3,7 +3,7 @@ import { vi } from "vitest";
 import ImageListHeader from "./ImageListHeader";
 
 import DeleteImages from "@/app/images/components/DeleteImages";
-import SelectUpstreamImagesForm from "@/app/images/components/SelectUpstreamImagesForm";
+import SelectUpstreamImagesForm from "@/app/images/components/SelectUpstreamImages/components/SelectUpstreamImagesForm";
 import * as factory from "@/testing/factories";
 import { imageSourceResolvers } from "@/testing/resolvers/imageSources";
 import { imageResolvers } from "@/testing/resolvers/images";

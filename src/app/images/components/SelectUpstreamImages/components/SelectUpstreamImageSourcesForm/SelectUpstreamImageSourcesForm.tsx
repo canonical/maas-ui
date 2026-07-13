@@ -3,12 +3,12 @@ import { Strip } from "@canonical/react-components";
 
 import { useAddSelections } from "@/app/api/query/images";
 import FormikForm from "@/app/base/components/FormikForm";
-import SelectedImagesTable from "@/app/images/components/SelectUpstreamImageSourcesForm/SelectedImagesTable";
 import type {
   SelectedImage,
   SelectUpstreamImagesStepValues,
 } from "@/app/images/components/SelectUpstreamImages/SelectUpstreamImages";
 import { SelectUpstreamImagesSteps } from "@/app/images/components/SelectUpstreamImages/SelectUpstreamImages";
+import SelectedImagesTable from "@/app/images/components/SelectUpstreamImages/components/SelectUpstreamImageSourcesForm/SelectedImagesTable";
 
 type SelectUpstreamImageSourcesFormProps = {
   selectedImages: SelectedImage[];

@@ -2,8 +2,8 @@ import { GenericTable } from "@canonical/maas-react-components";
 
 import { useImageSources } from "@/app/api/query/imageSources";
 import { useAvailableSelections } from "@/app/api/query/images";
-import useSelectedImagesTableColumns from "@/app/images/components/SelectUpstreamImageSourcesForm/SelectedImagesTable/useSelectedImagesTableColumns/useSelectedImagesTableColumns";
 import type { SelectedImage } from "@/app/images/components/SelectUpstreamImages/SelectUpstreamImages";
+import useSelectedImagesTableColumns from "@/app/images/components/SelectUpstreamImages/components/SelectUpstreamImageSourcesForm/SelectedImagesTable/useSelectedImagesTableColumns/useSelectedImagesTableColumns";
 
 import "./_index.scss";
 

@@ -9,7 +9,7 @@ import {
 } from "@canonical/react-components";
 import type { Section } from "@canonical/react-components/dist/components/Accordion/Accordion";
 
-import type { GroupedImages } from "@/app/images/components/SelectUpstreamImagesForm/SelectUpstreamImagesForm";
+import type { GroupedImages } from "@/app/images/components/SelectUpstreamImages/components/SelectUpstreamImagesForm/SelectUpstreamImagesForm";
 import { getOsDisplayName } from "@/app/images/utils";
 
 import "./_index.scss";
