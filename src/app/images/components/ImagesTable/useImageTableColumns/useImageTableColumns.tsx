@@ -34,11 +34,15 @@ import { buildSourcesByImageKey, getOsDisplayName } from "@/app/images/utils";
 export type ImageColumnDef = ColumnDef<Image, Partial<Image>>;
 
 const TOOLTIP_MESSAGES = {
+  IMAGE_NOT_SELECTED:
+    "This image release is already selected from a more prioritized source, and will not be synchronized.",
   STOP_SYNC_ACTIVE: "Stop image synchronization.",
   STOP_SYNC_OPTIMISTIC: "Synchronization cannot be stopped while queueing.",
   STOP_SYNC_FAILED: "Stopping image synchronization failed. Please try again.",
   START_SYNC: "Start image synchronization.",
   START_SYNC_DISABLED: "Image is already synchronized.",
+  START_SYNC_NOT_SELECTED:
+    "This image release cannot be synchronized since it is already selected from a more prioritized source.",
   START_SYNC_FAILED: "Starting image synchronization failed. Please try again.",
   DELETE_IMAGE: "Delete this image.",
   DELETE_COMMISSIONING:
@@ -293,7 +297,7 @@ const useImageTableColumns = ({
                     )
                   ) : (
                     <Tooltip
-                      message="This image release is already selected from a more prioritized source, and will not be synchronized."
+                      message={TOOLTIP_MESSAGES.IMAGE_NOT_SELECTED}
                       position="btm-center"
                     >
                       Won't sync
@@ -392,7 +396,14 @@ const useImageTableColumns = ({
               getIsSelected,
               getIsGrouped,
               toggleSelected,
-              original: { id, boot_source_id, release, status, update_status },
+              original: {
+                id,
+                boot_source_id,
+                release,
+                status,
+                selected,
+                update_status,
+              },
             },
           }: {
             row: Row<Image>;
@@ -464,9 +475,11 @@ const useImageTableColumns = ({
                 ) : (
                   <Tooltip
                     message={
-                      downloadAvailable
-                        ? TOOLTIP_MESSAGES.START_SYNC
-                        : TOOLTIP_MESSAGES.START_SYNC_DISABLED
+                      !selected
+                        ? TOOLTIP_MESSAGES.START_SYNC_NOT_SELECTED
+                        : downloadAvailable
+                          ? TOOLTIP_MESSAGES.START_SYNC
+                          : TOOLTIP_MESSAGES.START_SYNC_DISABLED
                     }
                     position="left"
                   >
@@ -474,6 +487,7 @@ const useImageTableColumns = ({
                       appearance="base"
                       className="is-dense u-table-cell-padding-overlap"
                       disabled={
+                        !selected ||
                         !downloadAvailable ||
                         stopSync.isPending ||
                         isOptimisticStopping ||
