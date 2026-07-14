@@ -16,6 +16,8 @@ import {
 
 const mockServer = setupMockServer(
   authResolvers.authenticate.handler(),
+  authResolvers.getCurrentUser.handler(),
+  authResolvers.getMeStatistics.handler(),
   usersResolvers.getUser.handler(),
   usersResolvers.updateUser.handler(),
   groupsResolvers.listGroups.handler(),

@@ -13,7 +13,11 @@ import * as Yup from "yup";
 import { Labels } from "../../constants";
 import GroupMultiSelect from "../GroupMultiSelect";
 
-import { useAuthenticate, useUpdateMe } from "@/app/api/query/auth";
+import {
+  useAuthenticate,
+  useGetCurrentUser,
+  useUpdateMe,
+} from "@/app/api/query/auth";
 import { useGetUser, useUpdateUser } from "@/app/api/query/users";
 import type { UpdateUserError, UserUpdateRequest } from "@/app/apiclient";
 import { getUserQueryKey } from "@/app/apiclient/@tanstack/react-query.gen";
@@ -61,7 +65,11 @@ const EditUser = ({
   const [authError, setAuthError] = useState<string | null>(null);
 
   const authenticate = useAuthenticate();
-  const user = useGetUser({ path: { user_id: id } });
+  // Self-editing users fetch their own profile via `/users/me`, while admins
+  // editing another user fetch it via `/users/{id}`.
+  const currentUser = useGetCurrentUser();
+  const otherUser = useGetUser({ path: { user_id: id } }, !isSelfEditing);
+  const user = isSelfEditing ? currentUser : otherUser;
   const eTag = user.data?.headers?.get("ETag");
   const updateUser = useUpdateUser();
   const updateMe = useUpdateMe();
@@ -77,7 +85,7 @@ const EditUser = ({
       {user.isPending && <Spinner text="Loading..." />}
       {user.isError && (
         <NotificationBanner severity="negative">
-          {user.error.message}
+          {user.error?.message}
         </NotificationBanner>
       )}
       {user.isSuccess && user.data && (

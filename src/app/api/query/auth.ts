@@ -60,6 +60,7 @@ import type {
   UpdateUserMeData,
   UpdateUserMeErrors,
   UpdateUserMeResponses,
+  UserResponse,
   UserStatisticsResponse,
 } from "@/app/apiclient";
 import {
@@ -254,9 +255,7 @@ export const useExtendSession = (
   });
 };
 
-export type CurrentUserInfo = {
-  id: number;
-  username: string;
+export type CurrentUserInfo = UserResponse & {
   headers?: Headers;
   statistics: WithHeaders<UserStatisticsResponse> | undefined;
 };
