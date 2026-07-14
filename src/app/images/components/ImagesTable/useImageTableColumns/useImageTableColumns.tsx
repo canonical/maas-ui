@@ -294,7 +294,7 @@ const useImageTableColumns = ({
                   ) : (
                     <Tooltip
                       message="This image release is already selected from a more prioritized source, and will not be synchronized."
-                      position="btm-right"
+                      position="btm-center"
                     >
                       Won't sync
                     </Tooltip>
