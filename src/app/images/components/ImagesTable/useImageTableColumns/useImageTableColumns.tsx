@@ -241,16 +241,16 @@ const useImageTableColumns = ({
           ),
           cell: ({
             row: {
-              original: { status, sync_percentage, node_count },
+              original: { status, sync_percentage, node_count, selected },
             },
           }) => {
             let icon;
             switch (status) {
               case "Ready":
-                icon = <Icon aria-label={"synced"} name={"success"} />;
+                icon = <Icon aria-label="synced" name="success" />;
                 break;
               case "Waiting for download":
-                icon = <Icon name={"status-waiting"} />;
+                icon = <Icon name="status-waiting" />;
                 break;
               case "OptimisticDownloading":
               case "OptimisticStopping":
@@ -263,32 +263,41 @@ const useImageTableColumns = ({
               <Spinner />
             ) : (
               <DoubleRow
-                icon={icon}
+                icon={selected ? icon : <Icon name="warning" />}
                 primary={
-                  status === "Downloading" ||
-                  status === "OptimisticDownloading" ||
-                  status === "OptimisticStopping" ? (
-                    <>
-                      {!isStopping ? (
-                        <div className="p-progress">
-                          <div
-                            className="p-progress__value"
-                            style={{
-                              width: `${isOptimistic ? 100 : sync_percentage}%`,
-                            }}
-                          />
-                        </div>
-                      ) : null}
-                      <small className="u-text--muted">
-                        {isOptimistic
-                          ? "Queueing..."
-                          : isStopping
-                            ? "Stopping..."
-                            : `${sync_percentage}%`}
-                      </small>
-                    </>
+                  selected ? (
+                    status === "Downloading" ||
+                    status === "OptimisticDownloading" ||
+                    status === "OptimisticStopping" ? (
+                      <>
+                        {!isStopping ? (
+                          <div className="p-progress">
+                            <div
+                              className="p-progress__value"
+                              style={{
+                                width: `${isOptimistic ? 100 : sync_percentage}%`,
+                              }}
+                            />
+                          </div>
+                        ) : null}
+                        <small className="u-text--muted">
+                          {isOptimistic
+                            ? "Queueing..."
+                            : isStopping
+                              ? "Stopping..."
+                              : `${sync_percentage}%`}
+                        </small>
+                      </>
+                    ) : (
+                      status
+                    )
                   ) : (
-                    status
+                    <Tooltip
+                      message="This image release is already selected from a more prioritized source, and will not be synchronized."
+                      position="btm-right"
+                    >
+                      Won't sync
+                    </Tooltip>
                   )
                 }
                 secondary={
