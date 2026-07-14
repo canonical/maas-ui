@@ -91,8 +91,8 @@ const DeleteImages = ({
                   {image.release === commissioningRelease && (
                     <>
                       {" "}
-                      <Tooltip message="Default commissioning release">
-                        <Icon name="warning" />
+                      <Tooltip message="This image is a default commissioning release.">
+                        <Icon name="default" />
                       </Tooltip>
                     </>
                   )}

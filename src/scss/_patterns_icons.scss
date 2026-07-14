@@ -193,7 +193,12 @@
 
   .p-icon--default {
     @extend %icon;
-    @include vf-icon-plans($color-warning);
+    @include vf-icon-plans($colors--light-theme--link-default);
+  }
+
+  .is-dark .p-icon--default,
+  [data-theme="dark"] .p-icon--default {
+    @include vf-icon-plans($colors--dark-theme--link-default);
   }
 
   [class*="p-circle--"].is-inline,
