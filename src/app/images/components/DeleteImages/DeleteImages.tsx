@@ -2,18 +2,22 @@ import type { Dispatch, ReactElement, SetStateAction } from "react";
 
 import { useSidePanel } from "@canonical/maas-react-components";
 import {
+  Icon,
   Notification as NotificationBanner,
   Spinner,
+  Tooltip,
 } from "@canonical/react-components";
 import type { RowSelectionState } from "@tanstack/react-table";
 import pluralize from "pluralize";
 
+import { useGetConfiguration } from "@/app/api/query/configurations";
 import {
   useDeleteCustomImages,
   useDeleteSelections,
   useImages,
 } from "@/app/api/query/images";
 import ModelActionForm from "@/app/base/components/ModelActionForm";
+import { ConfigNames } from "@/app/store/config/types";
 
 type DeleteImagesProps = {
   rowSelection: RowSelectionState;
@@ -27,6 +31,11 @@ const DeleteImages = ({
   rowSelection,
   setRowSelection,
 }: DeleteImagesProps): ReactElement => {
+  const commissioningRelease =
+    (useGetConfiguration({
+      path: { name: ConfigNames.COMMISSIONING_DISTRO_SERIES },
+    }).data?.value as string) ?? "";
+
   const { closeSidePanel } = useSidePanel();
 
   const deleteSelections = useDeleteSelections();
@@ -35,9 +44,9 @@ const DeleteImages = ({
 
   const imagesCount = Object.keys(rowSelection).length;
 
-  const selectedImages = images.data.items.filter(
-    (image) => rowSelection[image.id]
-  );
+  const selectedImages = images.data.items
+    .filter((image) => rowSelection[image.id])
+    .toSorted((a, b) => (b.title ?? "").localeCompare(a.title ?? ""));
 
   return (
     <>
@@ -53,6 +62,17 @@ const DeleteImages = ({
         initialValues={{}}
         message={
           <>
+            {selectedImages.some(
+              (image) => image.release === commissioningRelease
+            ) && (
+              <NotificationBanner
+                severity="caution"
+                title="Deleting default commissioning release image"
+              >
+                Machine commissioning will fail if there are no default
+                commissioning images with the appropriate architecture.
+              </NotificationBanner>
+            )}
             <NotificationBanner
               severity="caution"
               title="Machines will be affected"
@@ -68,6 +88,14 @@ const DeleteImages = ({
               {selectedImages.map((image) => (
                 <li key={image.id}>
                   {image.title} ({image.architecture})
+                  {image.release === commissioningRelease && (
+                    <>
+                      {" "}
+                      <Tooltip message="Default commissioning release">
+                        <Icon name="warning" />
+                      </Tooltip>
+                    </>
+                  )}
                 </li>
               ))}
             </ul>

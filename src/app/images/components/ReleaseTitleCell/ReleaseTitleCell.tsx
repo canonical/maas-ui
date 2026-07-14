@@ -1,11 +1,25 @@
+import { Icon, Tooltip } from "@canonical/react-components";
+
 type ReleaseTitleCellProps = {
   title: string;
   release: string;
+  commissioningRelease?: string;
 };
 
-const ReleaseTitleCell = ({ title, release }: ReleaseTitleCellProps) => (
+const ReleaseTitleCell = ({
+  title,
+  release,
+  commissioningRelease,
+}: ReleaseTitleCellProps) => (
   <div>
-    <div>{title}</div>
+    <div className="release-title">
+      {title}{" "}
+      {release === commissioningRelease ? (
+        <Tooltip message="This image is a default commissioning release.">
+          <Icon name="default" />
+        </Tooltip>
+      ) : null}
+    </div>
     {title !== release ? (
       <small className="u-text--muted">{release}</small>
     ) : null}

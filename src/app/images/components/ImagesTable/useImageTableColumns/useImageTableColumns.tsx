@@ -127,7 +127,13 @@ const useImageTableColumns = ({
             },
           }: {
             row: Row<Image>;
-          }) => <ReleaseTitleCell release={release} title={title} />,
+          }) => (
+            <ReleaseTitleCell
+              commissioningRelease={commissioningRelease}
+              release={release}
+              title={title}
+            />
+          ),
         },
         {
           id: "architecture",

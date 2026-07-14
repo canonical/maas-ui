@@ -191,6 +191,11 @@
     @include vf-icon-ignored-themed;
   }
 
+  .p-icon--default {
+    @extend %icon;
+    @include vf-icon-plans($color-warning);
+  }
+
   [class*="p-circle--"].is-inline,
   [class*="p-icon--"].is-inline {
     margin-right: $sph--small;
