@@ -45,8 +45,6 @@ const TOOLTIP_MESSAGES = {
     "This image release cannot be synchronized since it is already selected from a more prioritized source.",
   START_SYNC_FAILED: "Starting image synchronization failed. Please try again.",
   DELETE_IMAGE: "Delete this image.",
-  DELETE_COMMISSIONING:
-    "Cannot delete images of the default commissioning release.",
   DELETE_IMPORTING: "Cannot delete images that are currently being downloaded.",
 } as const;
 
@@ -402,19 +400,11 @@ const useImageTableColumns = ({
               getIsSelected,
               getIsGrouped,
               toggleSelected,
-              original: {
-                id,
-                boot_source_id,
-                release,
-                status,
-                selected,
-                update_status,
-              },
+              original: { id, boot_source_id, status, selected, update_status },
             },
           }: {
             row: Row<Image>;
           }) => {
-            const isCommissioningImage = release === commissioningRelease;
             const isCustom = id.endsWith("-custom");
             const imageId = Number(id.split("-")[0]);
 
@@ -433,7 +423,7 @@ const useImageTableColumns = ({
               status === "Waiting for download" ||
               update_status === "Update available";
 
-            const canBeDeleted = !isCommissioningImage && !downloadInProgress;
+            const canBeDeleted = !downloadInProgress;
 
             const selectedImageCount =
               Object.entries(selectedRows).filter(
@@ -522,9 +512,7 @@ const useImageTableColumns = ({
                 <Tooltip
                   message={
                     !canBeDeleted
-                      ? isCommissioningImage
-                        ? TOOLTIP_MESSAGES.DELETE_COMMISSIONING
-                        : TOOLTIP_MESSAGES.DELETE_IMPORTING
+                      ? TOOLTIP_MESSAGES.DELETE_IMPORTING
                       : TOOLTIP_MESSAGES.DELETE_IMAGE
                   }
                   position="left"
@@ -559,6 +547,7 @@ const useImageTableColumns = ({
         },
       ] as ImageColumnDef[],
     [
+      commissioningRelease,
       isStatisticsLoading,
       isStatusLoading,
       isSourcesPending,
@@ -566,12 +555,11 @@ const useImageTableColumns = ({
       sourcesByImageKey,
       deleteSelections,
       addSelections,
-      commissioningRelease,
+      selectedRows,
       startSync,
       stopSync,
       failure,
       openSidePanel,
-      selectedRows,
       setSelectedRows,
     ]
   );
