@@ -21,7 +21,8 @@ const mockServer = setupMockServer(
   groupsResolvers.listGroupEntitlements.handler(),
   groupsResolvers.listGroupMembers.handler(),
   poolsResolvers.getPool.handler(),
-  authResolvers.getCurrentUser.handler()
+  authResolvers.getCurrentUser.handler(),
+  authResolvers.getMeEntitlements.handler()
 );
 
 describe("GroupDetails", () => {
@@ -63,15 +64,11 @@ describe("GroupDetails", () => {
 
   it("disables group actions without edit permissions", async () => {
     mockServer.use(
-      authResolvers.getCurrentUser.handler(
-        factory.userInfo({
-          entitlements: [
-            factory.entitlement({
-              entitlement: Entitlement.CAN_VIEW_IDENTITIES,
-            }),
-          ],
-        })
-      )
+      authResolvers.getMeEntitlements.handler([
+        factory.entitlement({
+          entitlement: Entitlement.CAN_VIEW_IDENTITIES,
+        }),
+      ])
     );
 
     renderWithProviders(

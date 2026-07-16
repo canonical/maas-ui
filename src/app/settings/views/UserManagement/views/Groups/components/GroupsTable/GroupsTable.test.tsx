@@ -24,7 +24,8 @@ const { mockOpen } = await mockSidePanel();
 const mockServer = setupMockServer(
   groupsResolvers.listGroups.handler(),
   groupsResolvers.listGroupsStatistics.handler(),
-  authResolvers.getCurrentUser.handler()
+  authResolvers.getCurrentUser.handler(),
+  authResolvers.getMeEntitlements.handler()
 );
 
 describe("GroupsTable", () => {
@@ -114,15 +115,11 @@ describe("GroupsTable", () => {
 
     it("disables add and row actions without edit permissions", async () => {
       mockServer.use(
-        authResolvers.getCurrentUser.handler(
-          factory.userInfo({
-            entitlements: [
-              factory.entitlement({
-                entitlement: Entitlement.CAN_VIEW_IDENTITIES,
-              }),
-            ],
-          })
-        )
+        authResolvers.getMeEntitlements.handler([
+          factory.entitlement({
+            entitlement: Entitlement.CAN_VIEW_IDENTITIES,
+          }),
+        ])
       );
 
       renderWithProviders(<GroupsTable />);

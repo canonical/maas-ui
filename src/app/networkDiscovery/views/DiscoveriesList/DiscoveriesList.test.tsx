@@ -14,6 +14,7 @@ import {
 setupMockServer(
   networkDiscoveryResolvers.listNetworkDiscoveries.handler(),
   authResolvers.getCurrentUser.handler(),
+  authResolvers.getMeEntitlements.handler(),
   authResolvers.getMeStatistics.handler()
 );
 

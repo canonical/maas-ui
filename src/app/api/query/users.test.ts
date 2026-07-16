@@ -115,7 +115,6 @@ describe("useUpdateUser", () => {
       email: "updated.user@example.com",
       first_name: "Test",
       last_name: "User",
-      groups: [],
       username: "updated-user",
     };
     const { result } = renderHookWithProviders(() => useUpdateUser());

@@ -19,6 +19,7 @@ import {
 
 const mockServer = setupMockServer(
   authResolvers.getCurrentUser.handler(),
+  authResolvers.getMeEntitlements.handler(),
   authResolvers.getMeStatistics.handler()
 );
 
@@ -36,7 +37,7 @@ describe("MaasIntroSuccess", () => {
 
   it("links to the user intro if not yet completed", () => {
     mockServer.use(
-      authResolvers.getCurrentUser.handler(factory.userInfo()),
+      authResolvers.getCurrentUser.handler(factory.user()),
       authResolvers.getMeStatistics.handler(
         factory.userStatistics({ completed_intro: false })
       )
@@ -52,7 +53,7 @@ describe("MaasIntroSuccess", () => {
 
   it("links to the machine list if an admin that has completed the user intro", async () => {
     mockServer.use(
-      authResolvers.getCurrentUser.handler(factory.userInfo()),
+      authResolvers.getCurrentUser.handler(factory.user()),
       authResolvers.getMeStatistics.handler(
         factory.userStatistics({ completed_intro: true })
       )
@@ -70,9 +71,7 @@ describe("MaasIntroSuccess", () => {
 
   it("links to the machine list if a non-admin that has completed the user intro", async () => {
     mockServer.use(
-      authResolvers.getCurrentUser.handler(
-        factory.userInfo({ entitlements: [] })
-      ),
+      authResolvers.getMeEntitlements.handler([]),
       authResolvers.getMeStatistics.handler(
         factory.userStatistics({ completed_intro: true })
       )

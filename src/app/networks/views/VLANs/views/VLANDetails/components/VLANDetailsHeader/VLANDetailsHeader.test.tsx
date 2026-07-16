@@ -9,7 +9,10 @@ import * as factory from "@/testing/factories";
 import { authResolvers } from "@/testing/resolvers/auth";
 import { renderWithProviders, screen, setupMockServer } from "@/testing/utils";
 
-const mockServer = setupMockServer(authResolvers.getCurrentUser.handler());
+const mockServer = setupMockServer(
+  authResolvers.getCurrentUser.handler(),
+  authResolvers.getMeEntitlements.handler()
+);
 
 describe("VLANDetailsHeader", () => {
   let state: RootState;
@@ -102,11 +105,7 @@ describe("VLANDetailsHeader", () => {
   });
 
   it("does not show the delete button if the user is not an admin", () => {
-    mockServer.use(
-      authResolvers.getCurrentUser.handler(
-        factory.userInfo({ entitlements: [] })
-      )
-    );
+    mockServer.use(authResolvers.getMeEntitlements.handler([]));
     renderWithProviders(<VLANDetailsHeader vlan={vlan} />, {
       state,
     });

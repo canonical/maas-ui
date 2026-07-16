@@ -9,12 +9,7 @@ import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
 import { poolsResolvers } from "@/testing/resolvers/pools";
 import { zoneResolvers } from "@/testing/resolvers/zones";
-import {
-  screen,
-  renderWithProviders,
-  setupMockServer,
-  waitFor,
-} from "@/testing/utils";
+import { screen, renderWithProviders, setupMockServer } from "@/testing/utils";
 
 setupMockServer(
   zoneResolvers.getZone.handler(),
@@ -65,11 +60,8 @@ describe("LXDSingleDetails", () => {
       state,
       pattern: `${urls.kvm.lxd.single.index(null)}/*`,
     });
-    await waitFor(() => {
-      expect(zoneResolvers.listZones.resolved).toBeTruthy();
-    });
     expect(
-      screen.getByLabelText(LXDSingleSettingsLabel.Title)
+      await screen.findByLabelText(LXDSingleSettingsLabel.Title)
     ).toBeInTheDocument();
   });
 

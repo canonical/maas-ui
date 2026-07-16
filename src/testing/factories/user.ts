@@ -2,7 +2,6 @@ import { define, random } from "cooky-cutter";
 
 import type {
   EntitlementResponse,
-  UserInfoResponse,
   UserResponse,
   UserStatisticsResponse,
 } from "@/app/apiclient";
@@ -31,16 +30,12 @@ export const user = define<UserResponse>({
   username: (i: number) => `user${i}`,
 });
 
-export const userInfo = define<UserInfoResponse>({
-  id: random,
-  username: (i: number) => `user${i}`,
-  entitlements: () =>
-    Object.values(Entitlement).map((entitlement) => ({
-      entitlement,
-      resource_id: 0,
-      resource_type: "maas",
-    })),
-});
+export const userEntitlements = (): EntitlementResponse[] =>
+  Object.values(Entitlement).map((entitlement) => ({
+    entitlement,
+    resource_id: 0,
+    resource_type: "maas",
+  }));
 
 export const userStatistics = define<UserStatisticsResponse>({
   id: random,

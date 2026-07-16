@@ -14,7 +14,10 @@ import {
   renderWithProviders,
 } from "@/testing/utils";
 
-const mockServer = setupMockServer(authResolvers.getCurrentUser.handler());
+const mockServer = setupMockServer(
+  authResolvers.getCurrentUser.handler(),
+  authResolvers.getMeEntitlements.handler()
+);
 
 it("displays a spinner while loading config", () => {
   const state = factory.rootState({
@@ -239,15 +242,11 @@ it("dispatches an action to update TLS notification config with notification dis
 
 it("disables fields without edit permissions", async () => {
   mockServer.use(
-    authResolvers.getCurrentUser.handler(
-      factory.userInfo({
-        entitlements: [
-          factory.entitlement({
-            entitlement: Entitlement.CAN_VIEW_CONFIGURATIONS,
-          }),
-        ],
-      })
-    )
+    authResolvers.getMeEntitlements.handler([
+      factory.entitlement({
+        entitlement: Entitlement.CAN_VIEW_CONFIGURATIONS,
+      }),
+    ])
   );
   const state = factory.rootState({
     general: factory.generalState({

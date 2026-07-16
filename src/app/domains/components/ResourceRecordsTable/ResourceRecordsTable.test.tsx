@@ -14,6 +14,7 @@ import {
 
 const mockServer = setupMockServer(
   authResolvers.getCurrentUser.handler(),
+  authResolvers.getMeEntitlements.handler(),
   authResolvers.getMeStatistics.handler()
 );
 
@@ -96,11 +97,7 @@ describe("ResourceRecordsTable", () => {
 
   it("disables action dropdown when user is not a superuser", async () => {
     items.rrsets[0].dnsresource_id = 50;
-    mockServer.use(
-      authResolvers.getCurrentUser.handler(
-        factory.userInfo({ entitlements: [] })
-      )
-    );
+    mockServer.use(authResolvers.getMeEntitlements.handler([]));
     renderWithProviders(<ResourceRecordsTable domain={items} id={1} />);
     const dropdownBtn = screen.getByRole("button", { name: "Toggle menu" });
     await waitFor(() => {
@@ -109,7 +106,7 @@ describe("ResourceRecordsTable", () => {
   });
 
   it("enables action dropdown only when user is a superuser and tag is not system-generated", async () => {
-    mockServer.use(authResolvers.getCurrentUser.handler(factory.userInfo()));
+    mockServer.use(authResolvers.getMeEntitlements.handler());
     items.rrsets[0].dnsresource_id = 100;
     renderWithProviders(<ResourceRecordsTable domain={items} id={1} />);
 
