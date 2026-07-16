@@ -30,7 +30,8 @@ const mockServer = setupMockServer(
     value: true,
   }),
   configurationsResolvers.setConfiguration.handler(),
-  authResolvers.getCurrentUser.handler()
+  authResolvers.getCurrentUser.handler(),
+  authResolvers.getMeEntitlements.handler()
 );
 const { mockOpen } = await mockSidePanel();
 
@@ -50,15 +51,11 @@ describe("Sources", () => {
 
   it("disables the 'Add custom source' button without edit permissions", async () => {
     mockServer.use(
-      authResolvers.getCurrentUser.handler(
-        factory.userInfo({
-          entitlements: [
-            factory.entitlement({
-              entitlement: Entitlement.CAN_VIEW_BOOT_ENTITIES,
-            }),
-          ],
-        })
-      )
+      authResolvers.getMeEntitlements.handler([
+        factory.entitlement({
+          entitlement: Entitlement.CAN_VIEW_BOOT_ENTITIES,
+        }),
+      ])
     );
 
     renderWithProviders(<Sources />);

@@ -24,6 +24,7 @@ const queryClient = new QueryClient({
 });
 const mockServer = setupMockServer(
   authResolvers.getCurrentUser.handler(),
+  authResolvers.getMeEntitlements.handler(),
   authResolvers.getMeStatistics.handler()
 );
 
@@ -164,7 +165,7 @@ describe("RequireLogin", () => {
       factory.config({ name: ConfigNames.COMPLETED_INTRO, value: true }),
     ];
     mockServer.use(
-      authResolvers.getCurrentUser.handler(factory.userInfo({ id: userId })),
+      authResolvers.getCurrentUser.handler(factory.user({ id: userId })),
       authResolvers.getMeStatistics.handler(
         factory.userStatistics({ id: userId, completed_intro: false })
       )

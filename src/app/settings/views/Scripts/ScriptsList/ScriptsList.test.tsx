@@ -19,7 +19,10 @@ import {
   within,
 } from "@/testing/utils";
 
-const mockServer = setupMockServer(authResolvers.getCurrentUser.handler());
+const mockServer = setupMockServer(
+  authResolvers.getCurrentUser.handler(),
+  authResolvers.getMeEntitlements.handler()
+);
 const { mockOpen } = await mockSidePanel();
 
 describe("ScriptsList", () => {
@@ -208,15 +211,11 @@ describe("ScriptsList", () => {
 
   it("disables the action buttons without edit permissions", async () => {
     mockServer.use(
-      authResolvers.getCurrentUser.handler(
-        factory.userInfo({
-          entitlements: [
-            factory.entitlement({
-              entitlement: Entitlement.CAN_VIEW_GLOBAL_ENTITIES,
-            }),
-          ],
-        })
-      )
+      authResolvers.getMeEntitlements.handler([
+        factory.entitlement({
+          entitlement: Entitlement.CAN_VIEW_GLOBAL_ENTITIES,
+        }),
+      ])
     );
 
     renderWithProviders(<ScriptsList />, { state });

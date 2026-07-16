@@ -22,7 +22,6 @@ import type {
   DeleteOauthProviderData,
   DeleteOauthProviderErrors,
   DeleteOauthProviderResponses,
-  EntitlementResponse,
   ExtendSessionData,
   ExtendSessionErrors,
   ExtendSessionResponses,
@@ -33,6 +32,9 @@ import type {
   GetOauthProviderData,
   GetOauthProviderErrors,
   GetOauthProviderResponses,
+  GetUserEntitlementsData,
+  GetUserEntitlementsErrors,
+  GetUserEntitlementsResponses,
   GetUserInfoData,
   GetUserInfoError,
   GetUserInfoErrors,
@@ -55,6 +57,10 @@ import type {
   UpdateOauthProviderData,
   UpdateOauthProviderErrors,
   UpdateOauthProviderResponses,
+  UpdateUserMeData,
+  UpdateUserMeErrors,
+  UpdateUserMeResponses,
+  UserResponse,
   UserStatisticsResponse,
 } from "@/app/apiclient";
 import {
@@ -65,16 +71,19 @@ import {
   extendSession,
   getMeStatistics,
   getOauthProvider,
+  getUserEntitlements,
   getUserInfo,
   handleOauthCallback,
   initiateAuthFlow,
   login,
   preLogin,
   updateOauthProvider,
+  updateUserMe,
 } from "@/app/apiclient";
 import {
   getMeStatisticsQueryKey,
   getOauthProviderQueryKey,
+  getUserEntitlementsQueryKey,
   getUserInfoQueryKey,
   handleOauthCallbackQueryKey,
   initiateAuthFlowQueryKey,
@@ -246,10 +255,7 @@ export const useExtendSession = (
   });
 };
 
-export type CurrentUserInfo = {
-  id: number;
-  username: string;
-  entitlements: EntitlementResponse[];
+export type CurrentUserInfo = UserResponse & {
   headers?: Headers;
   statistics: WithHeaders<UserStatisticsResponse> | undefined;
 };
@@ -288,7 +294,6 @@ export const useGetCurrentUser = (
     data: userInfo.data
       ? {
           ...userInfo.data,
-          entitlements: userInfo.data.entitlements,
           statistics: statistics.data,
         }
       : undefined,
@@ -297,14 +302,16 @@ export const useGetCurrentUser = (
   };
 };
 
-export const useGetUserEntitlements = (options?: Options<GetUserInfoData>) => {
+export const useGetUserEntitlements = (
+  options?: Options<GetUserEntitlementsData>
+) => {
   return useWebsocketAwareQuery({
     ...queryOptionsWithHeaders<
-      GetUserInfoResponses,
-      GetUserInfoErrors,
-      GetUserInfoData
-    >(options, getUserInfo, getUserInfoQueryKey(options)),
-    select: (data) => data.entitlements,
+      GetUserEntitlementsResponses,
+      GetUserEntitlementsErrors,
+      GetUserEntitlementsData
+    >(options, getUserEntitlements, getUserEntitlementsQueryKey(options)),
+    select: (data) => data.items,
   });
 };
 
@@ -331,6 +338,21 @@ export const useCompleteIntro = (
   });
 };
 
+export const useUpdateMe = (mutationOptions?: Options<UpdateUserMeData>) => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    ...mutationOptionsWithHeaders<
+      UpdateUserMeResponses,
+      UpdateUserMeErrors,
+      UpdateUserMeData
+    >(mutationOptions, updateUserMe),
+    onSuccess: () => {
+      return queryClient.invalidateQueries({
+        queryKey: getUserInfoQueryKey(),
+      });
+    },
+  });
+};
 export const useActiveOauthProvider = (
   options?: Options<GetOauthProviderData>
 ) => {

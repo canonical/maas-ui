@@ -22,6 +22,7 @@ import {
   authResolvers,
   mockAuth,
   mockOauthProvider,
+  mockUserEntitlements,
 } from "@/testing/resolvers/auth";
 import {
   renderHookWithProviders,
@@ -40,6 +41,7 @@ vi.mock("@/app/utils", async () => {
 const mockServer = setupMockServer(
   authResolvers.authenticate.handler(),
   authResolvers.preLogin.handler(),
+  authResolvers.getMeEntitlements.handler(),
   authResolvers.createSession.handler(),
   authResolvers.isOidcUser.handler(),
   authResolvers.getCallback.handler(),
@@ -301,12 +303,12 @@ describe("useGetCurrentUser", () => {
 
 describe("useGetUserEntitlements", () => {
   it("should return the user's entitlements", async () => {
-    const expectedUser = mockAuth;
+    const expectedUserEntitlements = mockUserEntitlements;
     const { result } = renderHookWithProviders(() => useGetUserEntitlements());
     await waitFor(() => {
       expect(result.current.isSuccess).toBe(true);
     });
-    expect(result.current.data).toEqual(expectedUser.entitlements);
+    expect(result.current.data).toEqual(expectedUserEntitlements);
   });
 });
 

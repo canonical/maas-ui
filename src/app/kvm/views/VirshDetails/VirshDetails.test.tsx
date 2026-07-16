@@ -8,12 +8,7 @@ import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
 import { poolsResolvers } from "@/testing/resolvers/pools";
 import { zoneResolvers } from "@/testing/resolvers/zones";
-import {
-  screen,
-  renderWithProviders,
-  setupMockServer,
-  waitFor,
-} from "@/testing/utils";
+import { screen, renderWithProviders, setupMockServer } from "@/testing/utils";
 
 setupMockServer(
   zoneResolvers.listZones.handler(),
@@ -54,10 +49,9 @@ describe("VirshDetails", () => {
       state,
       pattern: `${urls.kvm.virsh.details.index(null)}/*`,
     });
-    await waitFor(() => {
-      expect(zoneResolvers.listZones.resolved).toBeTruthy();
-    });
-    expect(screen.getByLabelText(VirshSettingsLabel.Title)).toBeInTheDocument();
+    expect(
+      await screen.findByLabelText(VirshSettingsLabel.Title)
+    ).toBeInTheDocument();
   });
 
   it("redirects to resources", () => {

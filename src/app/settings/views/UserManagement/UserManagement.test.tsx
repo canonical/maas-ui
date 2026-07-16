@@ -12,7 +12,10 @@ import {
   waitFor,
 } from "@/testing/utils";
 
-const mockServer = setupMockServer(authResolvers.getCurrentUser.handler());
+const mockServer = setupMockServer(
+  authResolvers.getCurrentUser.handler(),
+  authResolvers.getMeEntitlements.handler()
+);
 
 const renderUserManagement = () =>
   renderWithProviders(
@@ -25,11 +28,7 @@ const renderUserManagement = () =>
 
 describe("UserManagement", () => {
   it("displays a message if the user lacks the identities entitlement", async () => {
-    mockServer.use(
-      authResolvers.getCurrentUser.handler(
-        factory.userInfo({ entitlements: [] })
-      )
-    );
+    mockServer.use(authResolvers.getMeEntitlements.handler([]));
     renderUserManagement();
 
     expect(
@@ -41,15 +40,11 @@ describe("UserManagement", () => {
 
   it("renders the content for users with the view identities entitlement", async () => {
     mockServer.use(
-      authResolvers.getCurrentUser.handler(
-        factory.userInfo({
-          entitlements: [
-            factory.entitlement({
-              entitlement: Entitlement.CAN_VIEW_IDENTITIES,
-            }),
-          ],
-        })
-      )
+      authResolvers.getMeEntitlements.handler([
+        factory.entitlement({
+          entitlement: Entitlement.CAN_VIEW_IDENTITIES,
+        }),
+      ])
     );
     renderUserManagement();
 
@@ -63,15 +58,11 @@ describe("UserManagement", () => {
 
   it("renders the content for users with the edit identities entitlement", async () => {
     mockServer.use(
-      authResolvers.getCurrentUser.handler(
-        factory.userInfo({
-          entitlements: [
-            factory.entitlement({
-              entitlement: Entitlement.CAN_EDIT_IDENTITIES,
-            }),
-          ],
-        })
-      )
+      authResolvers.getMeEntitlements.handler([
+        factory.entitlement({
+          entitlement: Entitlement.CAN_EDIT_IDENTITIES,
+        }),
+      ])
     );
     renderUserManagement();
 

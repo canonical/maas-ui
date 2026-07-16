@@ -15,7 +15,10 @@ import {
   waitFor,
 } from "@/testing/utils";
 
-const mockServer = setupMockServer(authResolvers.getCurrentUser.handler());
+const mockServer = setupMockServer(
+  authResolvers.getCurrentUser.handler(),
+  authResolvers.getMeEntitlements.handler()
+);
 
 describe("NetworkDiscoverySubnetForm", () => {
   it("displays a spinner if subnets have not loaded", () => {
@@ -139,15 +142,11 @@ describe("NetworkDiscoverySubnetForm", () => {
 
   it("disables the form without edit permissions", async () => {
     mockServer.use(
-      authResolvers.getCurrentUser.handler(
-        factory.userInfo({
-          entitlements: [
-            factory.entitlement({
-              entitlement: Entitlement.CAN_VIEW_CONFIGURATIONS,
-            }),
-          ],
-        })
-      )
+      authResolvers.getMeEntitlements.handler([
+        factory.entitlement({
+          entitlement: Entitlement.CAN_VIEW_CONFIGURATIONS,
+        }),
+      ])
     );
     const state = factory.rootState({
       fabric: factory.fabricState({ loaded: true }),

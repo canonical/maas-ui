@@ -13,7 +13,11 @@ import * as Yup from "yup";
 import { Labels } from "../../constants";
 import GroupMultiSelect from "../GroupMultiSelect";
 
-import { useAuthenticate } from "@/app/api/query/auth";
+import {
+  useAuthenticate,
+  useGetCurrentUser,
+  useUpdateMe,
+} from "@/app/api/query/auth";
 import { useGetUser, useUpdateUser } from "@/app/api/query/users";
 import type { UpdateUserError, UserUpdateRequest } from "@/app/apiclient";
 import { getUserQueryKey } from "@/app/apiclient/@tanstack/react-query.gen";
@@ -61,12 +65,18 @@ const EditUser = ({
   const [authError, setAuthError] = useState<string | null>(null);
 
   const authenticate = useAuthenticate();
-  const user = useGetUser({ path: { user_id: id } });
+  // Self-editing users fetch their own profile via `/users/me`, while admins
+  // editing another user fetch it via `/users/{id}`.
+  const currentUser = useGetCurrentUser();
+  const otherUser = useGetUser({ path: { user_id: id } }, !isSelfEditing);
+  const user = isSelfEditing ? currentUser : otherUser;
   const eTag = user.data?.headers?.get("ETag");
   const updateUser = useUpdateUser();
+  const updateMe = useUpdateMe();
 
+  const updateError = isSelfEditing ? updateMe.error : updateUser.error;
   const combinedErrors = {
-    ...(updateUser.error || {}),
+    ...(updateError || {}),
     ...(authError ? { old_password: authError } : {}),
   };
 
@@ -75,7 +85,7 @@ const EditUser = ({
       {user.isPending && <Spinner text="Loading..." />}
       {user.isError && (
         <NotificationBanner severity="negative">
-          {user.error.message}
+          {user.error?.message}
         </NotificationBanner>
       )}
       {user.isSuccess && user.data && (
@@ -83,6 +93,7 @@ const EditUser = ({
           UserUpdateRequest & {
             passwordConfirm: UserUpdateRequest["password"];
             oldPassword: UserUpdateRequest["password"];
+            groups: number[];
           },
           UpdateUserError
         >
@@ -120,7 +131,6 @@ const EditUser = ({
 
             const updateData: UserUpdateRequest = {
               username: values.username,
-              groups: values.groups,
               first_name: values.first_name,
               last_name: values.last_name,
               email: values.email,
@@ -131,11 +141,17 @@ const EditUser = ({
               updateData.password = values.password;
             }
 
-            updateUser.mutate({
-              headers: { ETag: eTag },
-              path: { user_id: id },
-              body: updateData,
-            });
+            if (isSelfEditing) {
+              // Users can always edit their own profile
+              updateMe.mutate({ body: updateData });
+            } else {
+              // Admins editing another user must supply the user's groups
+              updateUser.mutate({
+                headers: { ETag: eTag },
+                path: { user_id: id },
+                body: { ...updateData, groups: values.groups },
+              });
+            }
           }}
           onSuccess={() => {
             return queryClient
@@ -147,8 +163,11 @@ const EditUser = ({
               .then(closeSidePanel);
           }}
           resetOnSave={true}
-          saved={updateUser.isSuccess}
-          saving={updateUser.isPending || authenticate.isPending}
+          saved={isSelfEditing ? updateMe.isSuccess : updateUser.isSuccess}
+          saving={
+            (isSelfEditing ? updateMe.isPending : updateUser.isPending) ||
+            authenticate.isPending
+          }
           submitLabel={isSelfEditing ? "Save profile" : "Save user"}
           validationSchema={
             isSelfEditing && passwordVisible ? SelfEditUserSchema : UserSchema
