@@ -13,4 +13,18 @@ describe("ReleaseTitleCell", () => {
     renderWithProviders(<ReleaseTitleCell release="noble" title="noble" />);
     expect(screen.getAllByText("noble")).toHaveLength(1);
   });
+
+  it("displays commissioning release icon", async () => {
+    renderWithProviders(
+      <ReleaseTitleCell
+        commissioningRelease="noble"
+        release="noble"
+        title="24.04 LTS"
+      />
+    );
+
+    expect(
+      screen.getByLabelText("Default commissioning release")
+    ).toBeInTheDocument();
+  });
 });

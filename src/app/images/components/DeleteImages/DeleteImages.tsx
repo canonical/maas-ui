@@ -92,7 +92,10 @@ const DeleteImages = ({
                     <>
                       {" "}
                       <Tooltip message="This image is a default commissioning release.">
-                        <Icon name="default" />
+                        <Icon
+                          aria-label="Default commissioning release"
+                          name="default"
+                        />
                       </Tooltip>
                     </>
                   )}

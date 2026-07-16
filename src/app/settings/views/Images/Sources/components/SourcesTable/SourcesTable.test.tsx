@@ -81,10 +81,19 @@ describe("SourcesTable", () => {
       mockServer.use(
         imageSourceResolvers.listImageSources.handler({
           items: [
-            factory.imageSourceFactory.build({ id: 1, enabled: true }),
-            factory.imageSourceFactory.build({ id: 2, enabled: false }),
+            factory.imageSourceFactory.build({
+              id: 1,
+              priority: 3,
+              enabled: true,
+            }),
+            factory.imageSourceFactory.build({
+              id: 2,
+              priority: 2,
+              enabled: false,
+            }),
             factory.imageSourceFactory.build({
               id: 3,
+              priority: 1,
               url: "http://custom.image.source/stable/",
             }),
           ],
