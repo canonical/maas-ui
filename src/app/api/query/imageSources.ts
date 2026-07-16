@@ -131,9 +131,14 @@ export const useUpdateImageSource = (
       UpdateBootsourceErrors,
       UpdateBootsourceData
     >(mutationOptions, updateBootsource),
-    onSuccess: () => {
-      return queryClient.invalidateQueries({
+    onSuccess: async (_data, variables) => {
+      await queryClient.invalidateQueries({
         queryKey: listBootsourcesQueryKey(),
+      });
+      await queryClient.invalidateQueries({
+        queryKey: getBootsourceQueryKey({
+          path: { boot_source_id: variables.path.boot_source_id },
+        }),
       });
     },
   });

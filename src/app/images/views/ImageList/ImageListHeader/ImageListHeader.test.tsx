@@ -3,7 +3,7 @@ import { vi } from "vitest";
 import ImageListHeader from "./ImageListHeader";
 
 import DeleteImages from "@/app/images/components/DeleteImages";
-import SelectUpstreamImagesForm from "@/app/images/components/SelectUpstreamImagesForm";
+import SelectUpstreamImages from "@/app/images/components/SelectUpstreamImages";
 import * as factory from "@/testing/factories";
 import { imageSourceResolvers } from "@/testing/resolvers/imageSources";
 import { imageResolvers } from "@/testing/resolvers/images";
@@ -87,7 +87,7 @@ describe("Select upstream images", () => {
     );
 
     expect(mockOpen).toHaveBeenCalledWith({
-      component: SelectUpstreamImagesForm,
+      component: SelectUpstreamImages,
       title: "Select upstream images to sync",
     });
   });

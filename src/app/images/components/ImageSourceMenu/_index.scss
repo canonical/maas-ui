@@ -1,0 +1,15 @@
+.p-table-menu.image-source-menu {
+  button.p-contextual-menu__toggle {
+    display: flex;
+
+    span {
+      width: min-content;
+      text-align: left;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+  }
+}
