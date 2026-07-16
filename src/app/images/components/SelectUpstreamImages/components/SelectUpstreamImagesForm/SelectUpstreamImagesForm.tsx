@@ -301,7 +301,7 @@ const SelectUpstreamImagesForm = ({
                         const priB =
                           sources?.items.find((s) => s.id === b.source_id)
                             ?.priority ?? Infinity;
-                        return priA - priB;
+                        return priB - priA;
                       })[0] ?? candidates[0];
                   nextSelectedImages.push({ ...best, id });
                 }
