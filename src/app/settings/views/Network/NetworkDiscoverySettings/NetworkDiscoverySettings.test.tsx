@@ -10,16 +10,13 @@ import { renderWithProviders, screen, setupMockServer } from "@/testing/utils";
 const mockServer = setupMockServer(
   networkDiscoveryResolvers.listNetworkDiscoveries.handler(),
   authResolvers.getCurrentUser.handler(mockAuth),
+  authResolvers.getMeEntitlements.handler(),
   authResolvers.getMeStatistics.handler()
 );
 
 describe("NetworkDiscoverySettings", () => {
   it("renders permission message if user is not superuser", async () => {
-    mockServer.use(
-      authResolvers.getCurrentUser.handler(
-        factory.userInfo({ entitlements: [] })
-      )
-    );
+    mockServer.use(authResolvers.getMeEntitlements.handler([]));
     renderWithProviders(<NetworkDiscoverySettings />);
     await waitFor(() => {
       expect(

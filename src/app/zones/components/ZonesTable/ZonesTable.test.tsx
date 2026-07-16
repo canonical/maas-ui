@@ -21,7 +21,8 @@ const mockServer = setupMockServer(
   zoneResolvers.listZones.handler(),
   zoneResolvers.listZonesWithStatistics.handler(),
   zoneResolvers.getZone.handler(),
-  authResolvers.getCurrentUser.handler()
+  authResolvers.getCurrentUser.handler(),
+  authResolvers.getMeEntitlements.handler()
 );
 const { mockOpen } = await mockSidePanel();
 

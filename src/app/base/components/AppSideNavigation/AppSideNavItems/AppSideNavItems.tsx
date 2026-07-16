@@ -9,10 +9,10 @@ import type { NavGroup } from "../types";
 import { isSelected } from "../utils";
 
 import type { CurrentUserInfo } from "@/app/api/query/auth";
+import { useHasEntitlements } from "@/app/base/hooks";
 import { useId } from "@/app/base/hooks/base";
 import urls from "@/app/base/urls";
 import { Entitlement } from "@/app/settings/views/UserManagement/views/Groups/constants";
-import { hasPermissions } from "@/app/utils/permissions";
 
 type Props = {
   authUser: CurrentUserInfo | undefined;
@@ -27,7 +27,6 @@ type Props = {
 
 const AppSideNavItemGroup = ({
   group,
-  authUser,
   vaultIncomplete,
   path,
   setIsCollapsed,
@@ -44,7 +43,7 @@ const AppSideNavItemGroup = ({
     return false;
   }, [group, path]);
 
-  const canViewControllersLink = hasPermissions(authUser?.entitlements, [
+  const canViewControllersLink = useHasEntitlements([
     Entitlement.CAN_VIEW_CONTROLLERS,
   ]);
 
@@ -95,7 +94,7 @@ export const AppSideNavItems = ({
   showLinks,
   vaultIncomplete,
 }: Props): React.ReactElement => {
-  const canViewSettingsLink = hasPermissions(authUser?.entitlements, [
+  const canViewSettingsLink = useHasEntitlements([
     Entitlement.CAN_VIEW_GLOBAL_ENTITIES,
   ]);
   return (

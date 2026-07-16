@@ -4902,24 +4902,6 @@ export type UserGroupsStatisticsListResponse = {
 };
 
 /**
- * UserInfoResponse
- */
-export type UserInfoResponse = {
-  /**
-   * Id
-   */
-  id: number;
-  /**
-   * Username
-   */
-  username: string;
-  /**
-   * Entitlements
-   */
-  entitlements: EntitlementResponse[];
-};
-
-/**
  * UserResponse
  */
 export type UserResponse = {
@@ -5005,6 +4987,32 @@ export type UserStatisticsResponse = {
  * UserUpdateRequest
  */
 export type UserUpdateRequest = {
+  /**
+   * Username
+   */
+  username: string;
+  /**
+   * First Name
+   */
+  first_name: string;
+  /**
+   * Last Name
+   */
+  last_name: string;
+  /**
+   * Email
+   */
+  email?: string;
+  /**
+   * Password
+   */
+  password?: string;
+};
+
+/**
+ * UserUpdateRequestAdmin
+ */
+export type UserUpdateRequestAdmin = {
   /**
    * Username
    */
@@ -12292,11 +12300,72 @@ export type GetUserInfoResponses = {
   /**
    * Successful Response
    */
-  200: UserInfoResponse;
+  200: UserResponse;
 };
 
 export type GetUserInfoResponse =
   GetUserInfoResponses[keyof GetUserInfoResponses];
+
+export type UpdateUserMeData = {
+  body: UserUpdateRequest;
+  path?: never;
+  query?: never;
+  url: "/MAAS/a/v3/users/me";
+};
+
+export type UpdateUserMeErrors = {
+  /**
+   * Unauthorized
+   */
+  401: UnauthorizedBodyResponse;
+  /**
+   * Unprocessable Content
+   */
+  422: ValidationErrorBodyResponse;
+};
+
+export type UpdateUserMeError = UpdateUserMeErrors[keyof UpdateUserMeErrors];
+
+export type UpdateUserMeResponses = {
+  /**
+   * Successful Response
+   */
+  200: UserResponse;
+};
+
+export type UpdateUserMeResponse =
+  UpdateUserMeResponses[keyof UpdateUserMeResponses];
+
+export type GetUserEntitlementsData = {
+  body?: never;
+  path?: never;
+  query?: never;
+  url: "/MAAS/a/v3/users/me:get_entitlements";
+};
+
+export type GetUserEntitlementsErrors = {
+  /**
+   * Unauthorized
+   */
+  401: UnauthorizedBodyResponse;
+  /**
+   * Unprocessable Content
+   */
+  422: ValidationErrorBodyResponse;
+};
+
+export type GetUserEntitlementsError =
+  GetUserEntitlementsErrors[keyof GetUserEntitlementsErrors];
+
+export type GetUserEntitlementsResponses = {
+  /**
+   * Successful Response
+   */
+  200: EntitlementsListResponse;
+};
+
+export type GetUserEntitlementsResponse =
+  GetUserEntitlementsResponses[keyof GetUserEntitlementsResponses];
 
 export type CompleteIntroData = {
   body?: never;
@@ -12534,7 +12603,7 @@ export type GetUserResponses = {
 export type GetUserResponse = GetUserResponses[keyof GetUserResponses];
 
 export type UpdateUserData = {
-  body: UserUpdateRequest;
+  body: UserUpdateRequestAdmin;
   path: {
     /**
      * User Id

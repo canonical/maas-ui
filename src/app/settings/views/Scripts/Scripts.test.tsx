@@ -2,7 +2,6 @@ import { Route, Routes } from "react-router";
 
 import Scripts from "./Scripts";
 
-import * as factory from "@/testing/factories";
 import { authResolvers } from "@/testing/resolvers/auth";
 import {
   renderWithProviders,
@@ -11,7 +10,10 @@ import {
   waitFor,
 } from "@/testing/utils";
 
-const mockServer = setupMockServer(authResolvers.getCurrentUser.handler());
+const mockServer = setupMockServer(
+  authResolvers.getCurrentUser.handler(),
+  authResolvers.getMeEntitlements.handler()
+);
 
 const renderScripts = () =>
   renderWithProviders(
@@ -24,11 +26,7 @@ const renderScripts = () =>
 
 describe("Scripts", () => {
   it("displays a message if the user lacks the global entities entitlement", async () => {
-    mockServer.use(
-      authResolvers.getCurrentUser.handler(
-        factory.userInfo({ entitlements: [] })
-      )
-    );
+    mockServer.use(authResolvers.getMeEntitlements.handler([]));
     renderScripts();
 
     expect(

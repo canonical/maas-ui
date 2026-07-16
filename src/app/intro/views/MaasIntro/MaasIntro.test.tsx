@@ -18,7 +18,8 @@ import {
 } from "@/testing/utils";
 
 setupMockServer(
-  authResolvers.getCurrentUser.handler(factory.userInfo()),
+  authResolvers.getCurrentUser.handler(factory.user()),
+  authResolvers.getMeEntitlements.handler(),
   authResolvers.getMeStatistics.handler(
     factory.userStatistics({ completed_intro: false })
   )

@@ -7,6 +7,7 @@ import { renderWithProviders, screen, setupMockServer } from "@/testing/utils";
 
 const mockServer = setupMockServer(
   authResolvers.getCurrentUser.handler(),
+  authResolvers.getMeEntitlements.handler(),
   authResolvers.getMeStatistics.handler()
 );
 
@@ -21,7 +22,7 @@ describe("IntroSection", () => {
 
   it("can redirect to close the intro", () => {
     mockServer.use(
-      authResolvers.getCurrentUser.handler(factory.userInfo()),
+      authResolvers.getCurrentUser.handler(factory.user()),
       authResolvers.getMeStatistics.handler(
         factory.userStatistics({ completed_intro: true })
       )
@@ -35,7 +36,7 @@ describe("IntroSection", () => {
 
   it("redirects to the machine list for admins", () => {
     mockServer.use(
-      authResolvers.getCurrentUser.handler(factory.userInfo()),
+      authResolvers.getCurrentUser.handler(factory.user()),
       authResolvers.getMeStatistics.handler(
         factory.userStatistics({ completed_intro: true })
       )
@@ -49,9 +50,7 @@ describe("IntroSection", () => {
 
   it("redirects to the machine list for non-admins", () => {
     mockServer.use(
-      authResolvers.getCurrentUser.handler(
-        factory.userInfo({ entitlements: [] })
-      ),
+      authResolvers.getMeEntitlements.handler([]),
       authResolvers.getMeStatistics.handler(
         factory.userStatistics({ completed_intro: true })
       )

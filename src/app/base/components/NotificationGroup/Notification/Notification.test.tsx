@@ -14,7 +14,10 @@ import {
   userEvent,
 } from "@/testing/utils";
 
-const mockServer = setupMockServer(authResolvers.getCurrentUser.handler());
+const mockServer = setupMockServer(
+  authResolvers.getCurrentUser.handler(),
+  authResolvers.getMeEntitlements.handler()
+);
 
 describe("NotificationGroupNotification", () => {
   let config: ConfigState;
@@ -155,11 +158,7 @@ describe("NotificationGroupNotification", () => {
         items: [notification],
       }),
     });
-    mockServer.use(
-      authResolvers.getCurrentUser.handler(
-        factory.userInfo({ entitlements: [] })
-      )
-    );
+    mockServer.use(authResolvers.getMeEntitlements.handler([]));
     renderWithProviders(
       <NotificationGroupNotification
         id={notification.id}

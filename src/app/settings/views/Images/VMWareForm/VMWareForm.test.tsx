@@ -18,7 +18,8 @@ import {
 
 const mockServer = setupMockServer(
   configurationsResolvers.listConfigurations.handler(),
-  authResolvers.getCurrentUser.handler()
+  authResolvers.getCurrentUser.handler(),
+  authResolvers.getMeEntitlements.handler()
 );
 describe("VMWareForm", () => {
   let state: RootState;
@@ -81,15 +82,11 @@ describe("VMWareForm", () => {
       configurationsResolvers.listConfigurations.handler({
         items: configItems,
       }),
-      authResolvers.getCurrentUser.handler(
-        factory.userInfo({
-          entitlements: [
-            factory.entitlement({
-              entitlement: Entitlement.CAN_VIEW_BOOT_ENTITIES,
-            }),
-          ],
-        })
-      )
+      authResolvers.getMeEntitlements.handler([
+        factory.entitlement({
+          entitlement: Entitlement.CAN_VIEW_BOOT_ENTITIES,
+        }),
+      ])
     );
     renderWithProviders(<VMWare />, { state });
     await waitForLoading();

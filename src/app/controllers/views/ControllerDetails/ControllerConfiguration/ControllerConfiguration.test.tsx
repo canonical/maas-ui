@@ -28,6 +28,7 @@ setupMockServer(
   zoneResolvers.listZones.handler(),
   zoneResolvers.listZonesWithStatistics.handler(),
   authResolvers.getCurrentUser.handler(),
+  authResolvers.getMeEntitlements.handler(),
   authResolvers.getMeStatistics.handler()
 );
 
