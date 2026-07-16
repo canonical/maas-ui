@@ -1,10 +1,8 @@
 import { type Dispatch, type SetStateAction, useMemo } from "react";
 
 import { useSidePanel } from "@canonical/maas-react-components";
-import type { MenuLink } from "@canonical/react-components";
 import {
   Button,
-  ContextualMenu,
   Icon,
   Spinner,
   Tooltip,
@@ -26,11 +24,12 @@ import {
   useAvailableSelections,
   useDeleteSelections,
 } from "@/app/api/query/images";
-import type { BootSourceResponse } from "@/app/apiclient";
 import DoubleRow from "@/app/base/components/DoubleRow/DoubleRow";
 import DeleteImages from "@/app/images/components/DeleteImages";
-import { OPERATING_SYSTEM_NAMES } from "@/app/images/constants";
+import ImageSourceMenu from "@/app/images/components/ImageSourceMenu";
+import ReleaseTitleCell from "@/app/images/components/ReleaseTitleCell";
 import type { Image } from "@/app/images/types";
+import { buildSourcesByImageKey, getOsDisplayName } from "@/app/images/utils";
 
 export type ImageColumnDef = ColumnDef<Image, Partial<Image>>;
 
@@ -86,22 +85,13 @@ const useImageTableColumns = ({
   const deleteSelections = useDeleteSelections();
 
   // Pre-compute a map of os/release/arch -> deduplicated BootSourceResponse[]
-  const sourcesByImageKey = useMemo(() => {
-    const map: Record<string, BootSourceResponse[]> = {};
-    if (!sources?.items || !availableImages?.items) return map;
-
-    for (const image of availableImages.items) {
-      const key = `${image.os}/${image.release}/${image.architecture}`;
-      const source = sources.items.find((s) => s.id === image.source_id);
-      if (!source) continue;
-      if (!map[key]) {
-        map[key] = [source];
-      } else if (!map[key].some((s) => s.id === source.id)) {
-        map[key].push(source);
-      }
-    }
-    return map;
-  }, [sources, availableImages]);
+  const sourcesByImageKey = useMemo(
+    () =>
+      sources?.items && availableImages?.items
+        ? buildSourcesByImageKey(sources.items, availableImages.items)
+        : {},
+    [sources, availableImages]
+  );
 
   return useMemo(
     () =>
@@ -113,14 +103,7 @@ const useImageTableColumns = ({
             return (
               <div>
                 <div>
-                  <strong>
-                    {OPERATING_SYSTEM_NAMES.find(
-                      (os) =>
-                        os.value.toLowerCase() === row.original.os.toLowerCase()
-                    )?.label ??
-                      row.original.os.charAt(0).toUpperCase() +
-                        row.original.os.slice(1)}
-                  </strong>
+                  <strong>{getOsDisplayName(row.original.os)}</strong>
                 </div>
                 <small className="u-text--muted">
                   {pluralize("image", row.getLeafRows().length ?? 0, true)}
@@ -140,16 +123,7 @@ const useImageTableColumns = ({
             },
           }: {
             row: Row<Image>;
-          }) => {
-            return (
-              <div>
-                <div>{title}</div>
-                {title !== release ? (
-                  <small className="u-text--muted">{release}</small>
-                ) : null}
-              </div>
-            );
-          },
+          }) => <ReleaseTitleCell release={release} title={title} />,
         },
         {
           id: "architecture",
@@ -363,45 +337,11 @@ const useImageTableColumns = ({
 
             const key = `${os}/${release}/${architecture}`;
             const switchableSources = sourcesByImageKey[key] ?? [];
-            const currentSource = switchableSources.find(
-              (source) => source.id === boot_source_id
-            );
 
             return (
-              <ContextualMenu
-                className="p-table-menu"
-                hasToggleIcon
-                links={[
-                  "Change source:",
-                  ...switchableSources.map(
-                    (source): MenuLink => ({
-                      disabled: source.id === currentSource?.id,
-                      children: source.name,
-                      onClick: () => {
-                        deleteSelections
-                          .mutateAsync({
-                            query: { id: [Number.parseInt(id)] },
-                          })
-                          .then(() => {
-                            addSelections.mutate({
-                              body: [
-                                {
-                                  os: os,
-                                  release: release,
-                                  arch: architecture,
-                                  boot_source_id: source.id,
-                                },
-                              ],
-                            });
-                          });
-                      },
-                    })
-                  ),
-                ]}
-                position="right"
-                toggleAppearance="base"
-                toggleClassName="u-no-margin--bottom p-table-menu__toggle"
-                toggleDisabled={
+              <ImageSourceMenu
+                currentSourceId={boot_source_id}
+                disabled={
                   status === "Downloading" ||
                   status === "OptimisticDownloading" ||
                   status === "OptimisticStopping" ||
@@ -409,7 +349,25 @@ const useImageTableColumns = ({
                   update_status === "OptimisticDownloading" ||
                   update_status === "OptimisticStopping"
                 }
-                toggleLabel={currentSource?.name}
+                onSourceSelect={(source) => {
+                  deleteSelections
+                    .mutateAsync({
+                      query: { id: [Number.parseInt(id)] },
+                    })
+                    .then(() => {
+                      addSelections.mutate({
+                        body: [
+                          {
+                            os: os,
+                            release: release,
+                            arch: architecture,
+                            boot_source_id: source.id,
+                          },
+                        ],
+                      });
+                    });
+                }}
+                sources={switchableSources}
               />
             );
           },

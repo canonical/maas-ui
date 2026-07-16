@@ -51,7 +51,7 @@ describe("ImagesTable", () => {
   });
 
   describe("display", () => {
-    it("displays a loading component if pools are loading", async () => {
+    it("displays a loading component if images are loading", async () => {
       mockIsPending();
       renderWithProviders(
         <ImagesTable selectedRows={{}} setSelectedRows={vi.fn} />

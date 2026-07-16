@@ -9,7 +9,7 @@ import { useImageSources } from "@/app/api/query/imageSources";
 import { useSelectionStatuses } from "@/app/api/query/images";
 import type { BootSourceResponse } from "@/app/apiclient";
 import DeleteImages from "@/app/images/components/DeleteImages";
-import SelectUpstreamImagesForm from "@/app/images/components/SelectUpstreamImagesForm";
+import SelectUpstreamImages from "@/app/images/components/SelectUpstreamImages";
 import UploadCustomImage from "@/app/images/components/UploadCustomImage";
 import { MAAS_IO_URLS } from "@/app/images/constants";
 
@@ -92,7 +92,7 @@ const ImageListHeader = ({
             hasIcon
             onClick={() => {
               openSidePanel({
-                component: SelectUpstreamImagesForm,
+                component: SelectUpstreamImages,
                 title: "Select upstream images to sync",
               });
             }}

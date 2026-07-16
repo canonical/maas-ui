@@ -1,8 +1,15 @@
 @mixin DownloadImages {
   .select-upstream-images-form {
+    .p-search-box {
+      margin: 0;
+    }
+
+    .p-accordion__tab {
+      padding-inline: 0.5rem;
+    }
+
     footer.content-section__footer {
       z-index: 2;
-      margin-bottom: 100%;
     }
   }
 }

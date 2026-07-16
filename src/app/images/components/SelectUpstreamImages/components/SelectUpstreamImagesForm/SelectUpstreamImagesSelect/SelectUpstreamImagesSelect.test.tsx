@@ -4,11 +4,11 @@ import {
   getDownloadableImages,
   groupArchesByTitle,
   groupImagesByOS,
-} from "@/app/images/components/SelectUpstreamImagesForm/SelectUpstreamImagesForm";
-import type { DownloadImagesSelectProps } from "@/app/images/components/SelectUpstreamImagesForm/SelectUpstreamImagesSelect/SelectUpstreamImagesSelect";
+} from "@/app/images/components/SelectUpstreamImages/components/SelectUpstreamImagesForm/SelectUpstreamImagesForm";
+import type { DownloadImagesSelectProps } from "@/app/images/components/SelectUpstreamImages/components/SelectUpstreamImagesForm/SelectUpstreamImagesSelect/SelectUpstreamImagesSelect";
 import SelectUpstreamImagesSelect, {
   getValueKey,
-} from "@/app/images/components/SelectUpstreamImagesForm/SelectUpstreamImagesSelect/SelectUpstreamImagesSelect";
+} from "@/app/images/components/SelectUpstreamImages/components/SelectUpstreamImagesForm/SelectUpstreamImagesSelect/SelectUpstreamImagesSelect";
 import { availableImageFactory } from "@/testing/factories";
 import { screen, userEvent, renderWithProviders } from "@/testing/utils";
 
