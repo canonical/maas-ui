@@ -12,7 +12,7 @@ const MachineFormFields = (): React.ReactElement => {
       <Col size={6}>
         <ArchitectureSelect name="architecture" />
         <MinimumKernelSelect name="minHweKernel" />
-        <ZoneSelect name="zone" />
+        <ZoneSelect name="zone" valueKey="name" />
         <ResourcePoolSelect name="pool" />
         <FormikField label="Register as DPU" name="is_dpu" type="checkbox" />
         <FormikField component={Textarea} label="Note" name="description" />
