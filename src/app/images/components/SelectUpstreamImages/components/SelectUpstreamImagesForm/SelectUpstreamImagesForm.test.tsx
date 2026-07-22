@@ -88,7 +88,6 @@ describe("SelectUpstreamImagesForm", () => {
 
   it("shows a loading spinner while data is being fetched", () => {
     renderWithProviders(<SelectUpstreamImagesForm {...defaultProps} />);
-    // Spinner is visible synchronously on mount before MSW responds
     expect(screen.getByText(/loading/i)).toBeInTheDocument();
   });
 
@@ -127,7 +126,6 @@ describe("SelectUpstreamImagesForm", () => {
   });
 
   it("filters the image list by OS name when a search query is entered", async () => {
-    // Clear prior selections so all available images are displayed
     mockServer.use(
       imageResolvers.listSelections.handler({ items: [], total: 0 })
     );
@@ -137,10 +135,8 @@ describe("SelectUpstreamImagesForm", () => {
     await userEvent.type(screen.getByRole("searchbox"), "centos");
 
     await waitFor(() => {
-      // The CentOS accordion section title should be visible
       expect(screen.getByText("CentOS")).toBeInTheDocument();
     });
-    // The Ubuntu accordion section title should be hidden
     expect(screen.queryByText("Ubuntu")).not.toBeInTheDocument();
   });
 

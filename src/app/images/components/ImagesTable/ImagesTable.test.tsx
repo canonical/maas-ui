@@ -26,6 +26,21 @@ import {
   waitForLoading,
 } from "@/testing/utils";
 
+const failureMock = vi.fn();
+
+vi.mock("@canonical/react-components", async (orig) => {
+  const actual = (await orig()) as Record<string, unknown>;
+  return {
+    ...actual,
+    useToastNotification: () => ({
+      failure: failureMock,
+      success: vi.fn(),
+      caution: vi.fn(),
+      info: vi.fn(),
+    }),
+  };
+});
+
 const mockServer = setupMockServer(
   imageResolvers.listSelections.handler(),
   imageResolvers.listSelectionStatistics.handler(),
@@ -48,6 +63,7 @@ describe("ImagesTable", () => {
   beforeEach(() => {
     // Clear localStorage between tests to prevent optimistic state pollution
     localStorage.clear();
+    failureMock.mockReset();
   });
 
   describe("display", () => {
@@ -117,6 +133,70 @@ describe("ImagesTable", () => {
         ).not.toBeInTheDocument();
       });
     });
+
+    it("shows 'Custom' label and hides sync controls for non-upstream images", async () => {
+      mockServer.use(
+        imageResolvers.listSelections.handler({ items: [], total: 0 }),
+        imageResolvers.listCustomImages.handler({
+          items: [
+            imageFactory.build({
+              id: 1,
+              os: "centos",
+              release: "centos8",
+              title: "CentOS 8",
+            }),
+          ],
+          total: 1,
+        }),
+        imageResolvers.listCustomImageStatuses.handler({
+          items: [imageStatusFactory.build({ id: 1 })],
+          total: 1,
+        })
+      );
+      renderWithProviders(
+        <ImagesTable selectedRows={{}} setSelectedRows={vi.fn} />
+      );
+      await waitForLoading();
+
+      const row = screen.getByRole("row", { name: /centos8/i });
+      expect(within(row).getByText("Custom")).toBeInTheDocument();
+      expect(
+        within(row).queryByRole("button", { name: "Start synchronization" })
+      ).not.toBeInTheDocument();
+      expect(
+        within(row).queryByRole("button", { name: "Stop synchronization" })
+      ).not.toBeInTheDocument();
+    });
+
+    it("restores optimistic downloading state from local storage on mount", async () => {
+      localStorage.setItem(
+        "optimisticImages",
+        "OptimisticDownloading=1;OptimisticStopping="
+      );
+      mockServer.use(
+        imageResolvers.listSelections.handler({
+          items: [imageFactory.build({ id: 1, release: "jammy" })],
+          total: 1,
+        }),
+        imageResolvers.listSelectionStatuses.handler({
+          items: [
+            imageStatusFactory.build({
+              id: 1,
+              status: "Waiting for download",
+              update_status: "Update available",
+            }),
+          ],
+          total: 1,
+        })
+      );
+      renderWithProviders(
+        <ImagesTable selectedRows={{}} setSelectedRows={vi.fn} />
+      );
+
+      await waitFor(() => {
+        expect(screen.getAllByText("Queueing...").length).toBeGreaterThan(0);
+      });
+    });
   });
 
   describe("permissions", () => {
@@ -145,44 +225,18 @@ describe("ImagesTable", () => {
       expect(sourceToggle).toBeAriaDisabled();
     });
 
-    it("disables delete and select for default commissioning release images", async () => {
-      renderWithProviders(
-        <ImagesTable selectedRows={{}} setSelectedRows={vi.fn} />
-      );
-      await waitForLoading();
-
-      const row = screen.getByRole("row", {
-        name: new RegExp("noble", "i"),
-      });
-      const deleteButton = within(row).getByRole("button", { name: "Delete" });
-      expect(deleteButton).toBeAriaDisabled();
-      await userEvent.hover(deleteButton);
-
-      await waitFor(() => {
-        expect(deleteButton).toHaveAccessibleDescription(
-          "Cannot delete images of the default commissioning release."
-        );
-      });
-
-      const selectionCheckbox = within(row).getByRole("checkbox", {
-        name: "select 24.04 LTS",
-      });
-      expect(selectionCheckbox).toBeAriaDisabled();
-      await userEvent.hover(selectionCheckbox);
-
-      await waitFor(() => {
-        expect(
-          screen.getByText(
-            "Cannot modify images of the default commissioning release."
-          )
-        ).toBeInTheDocument();
-      });
-    });
-
     it("disables selection, and delete/start sync for images being downloaded, enables stop sync", async () => {
+      localStorage.setItem(
+        "optimisticImages",
+        "OptimisticDownloading=1;OptimisticStopping="
+      );
       mockServer.use(
         imageResolvers.listSelectionStatuses.handler({
           items: [
+            imageStatusFactory.build({
+              id: 1,
+              status: "Waiting for download",
+            }),
             imageStatusFactory.build({
               id: 2,
               status: "Downloading",
@@ -240,22 +294,97 @@ describe("ImagesTable", () => {
           "Cannot delete images that are currently being downloaded."
         );
       });
+
+      const nobleRow = screen.getByRole("row", { name: /noble/i });
+
+      const nobleCheckbox = within(nobleRow).getByRole("checkbox", {
+        name: /select/i,
+      });
+      expect(nobleCheckbox).toBeAriaDisabled();
+
+      const nobleStopButton = within(nobleRow).getByRole("button", {
+        name: "Stop synchronization",
+      });
+      expect(nobleStopButton).toBeAriaDisabled();
     });
 
-    it("disables stop sync when there is no download", async () => {
+    it("disables start sync and shows Won't sync status for images not selected from the current source", async () => {
+      mockServer.use(
+        imageResolvers.listSelections.handler({
+          items: [imageFactory.build({ id: 1, release: "jammy" })],
+          total: 1,
+        }),
+        imageResolvers.listSelectionStatuses.handler({
+          items: [
+            imageStatusFactory.build({
+              id: 1,
+              selected: false,
+              status: "Ready",
+              update_status: "No updates available",
+            }),
+          ],
+          total: 1,
+        })
+      );
       renderWithProviders(
         <ImagesTable selectedRows={{}} setSelectedRows={vi.fn} />
       );
       await waitForLoading();
 
-      const row = screen.getByRole("row", {
-        name: new RegExp("jammy", "i"),
+      const row = screen.getByRole("row", { name: /jammy/i });
+
+      expect(within(row).getByText("Won't sync")).toBeInTheDocument();
+
+      const startButton = within(row).getByRole("button", {
+        name: "Start synchronization",
       });
-      expect(
-        within(row).queryByRole("button", {
-          name: "Stop synchronization",
+      expect(startButton).toBeAriaDisabled();
+
+      await userEvent.hover(startButton);
+      await waitFor(() => {
+        expect(
+          screen.getByText(
+            "This image release cannot be synchronized since it is already selected from a more prioritized source."
+          )
+        ).toBeInTheDocument();
+      });
+    });
+
+    it("disables start sync when image is already synchronized", async () => {
+      mockServer.use(
+        imageResolvers.listSelections.handler({
+          items: [imageFactory.build({ id: 1, release: "jammy" })],
+          total: 1,
+        }),
+        imageResolvers.listSelectionStatuses.handler({
+          items: [
+            imageStatusFactory.build({
+              id: 1,
+              status: "Ready",
+              update_status: "No updates available",
+            }),
+          ],
+          total: 1,
         })
-      ).not.toBeInTheDocument();
+      );
+      renderWithProviders(
+        <ImagesTable selectedRows={{}} setSelectedRows={vi.fn} />
+      );
+      await waitForLoading();
+
+      const row = screen.getByRole("row", { name: /jammy/i });
+      const startButton = within(row).getByRole("button", {
+        name: "Start synchronization",
+      });
+
+      expect(startButton).toBeAriaDisabled();
+
+      await userEvent.hover(startButton);
+      await waitFor(() => {
+        expect(
+          screen.getByText("Image is already synchronized.")
+        ).toBeInTheDocument();
+      });
     });
   });
 
@@ -428,6 +557,100 @@ describe("ImagesTable", () => {
 
       await waitFor(() => {
         expect(imageSyncResolvers.stopSynchronization.resolved).toBeTruthy();
+      });
+    });
+
+    it("includes row count in the delete panel title when other rows are pre-selected", async () => {
+      mockServer.use(
+        imageResolvers.listSelections.handler({
+          items: [
+            imageFactory.build({ id: 1, release: "noble" }),
+            imageFactory.build({ id: 2, release: "jammy" }),
+          ],
+          total: 2,
+        })
+      );
+      renderWithProviders(
+        <ImagesTable
+          selectedRows={{ "1-selection": true }}
+          setSelectedRows={vi.fn}
+        />
+      );
+      await waitForLoading();
+
+      const jammyRow = screen.getByRole("row", { name: /jammy/i });
+      await userEvent.click(
+        within(jammyRow).getByRole("button", { name: "Delete" })
+      );
+
+      expect(mockOpen).toHaveBeenCalledWith(
+        expect.objectContaining({
+          title: "Delete 2 images",
+        })
+      );
+    });
+
+    it("shows a failure notification when start synchronization fails", async () => {
+      mockServer.use(
+        imageResolvers.listSelections.handler({
+          items: [imageFactory.build({ id: 1, release: "jammy" })],
+          total: 1,
+        }),
+        imageResolvers.listSelectionStatuses.handler({
+          items: [
+            imageStatusFactory.build({
+              id: 1,
+              status: "Waiting for download",
+              update_status: "Update available",
+            }),
+          ],
+          total: 1,
+        }),
+        imageSyncResolvers.startSynchronization.error()
+      );
+      renderWithProviders(
+        <ImagesTable selectedRows={{}} setSelectedRows={vi.fn} />
+      );
+      await waitForLoading();
+
+      await userEvent.click(
+        screen.getByRole("button", { name: "Start synchronization" })
+      );
+
+      await waitFor(() => {
+        expect(failureMock).toHaveBeenCalledWith(
+          "Starting image synchronization failed. Please try again.",
+          expect.anything()
+        );
+      });
+    });
+
+    it("shows a failure notification when stop synchronization fails", async () => {
+      mockServer.use(
+        imageResolvers.listSelections.handler({
+          items: [imageFactory.build({ id: 1, release: "jammy" })],
+          total: 1,
+        }),
+        imageResolvers.listSelectionStatuses.handler({
+          items: [imageStatusFactory.build({ id: 1, status: "Downloading" })],
+          total: 1,
+        }),
+        imageSyncResolvers.stopSynchronization.error()
+      );
+      renderWithProviders(
+        <ImagesTable selectedRows={{}} setSelectedRows={vi.fn} />
+      );
+      await waitForLoading();
+
+      await userEvent.click(
+        screen.getByRole("button", { name: "Stop synchronization" })
+      );
+
+      await waitFor(() => {
+        expect(failureMock).toHaveBeenCalledWith(
+          "Stopping image synchronization failed. Please try again.",
+          expect.anything()
+        );
       });
     });
   });
