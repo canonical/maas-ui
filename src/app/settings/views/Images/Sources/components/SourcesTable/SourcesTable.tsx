@@ -114,7 +114,7 @@ const SourcesTable = ({ canEdit }: Props): ReactElement => {
         }}
         pinGroup={[{ value: BootResourceSourceType.MAAS_IO, isTop: true }]}
         showChevron
-        sorting={[{ id: "priority", desc: false }]}
+        sorting={[{ id: "priority", desc: true }]}
       />
     </>
   );

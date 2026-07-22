@@ -109,9 +109,11 @@ const useSourcesTableColumns = ({
               <>
                 Priority
                 <Tooltip
-                  message="If the same image is available from several sources,
-                           the image from the source with the higher priority
-                           takes precedence. 1 is the highest priority."
+                  message={
+                    "If the same image is available from several sources, the image from the \n" +
+                    "source with the higher priority takes precedence. 0 is the lowest priority."
+                  }
+                  position="btm-left"
                 >
                   <Icon name="help" />
                 </Tooltip>

@@ -34,15 +34,17 @@ import { buildSourcesByImageKey, getOsDisplayName } from "@/app/images/utils";
 export type ImageColumnDef = ColumnDef<Image, Partial<Image>>;
 
 const TOOLTIP_MESSAGES = {
+  IMAGE_NOT_SELECTED:
+    "This image release is already selected from a more prioritized source, and will not be synchronized.",
   STOP_SYNC_ACTIVE: "Stop image synchronization.",
   STOP_SYNC_OPTIMISTIC: "Synchronization cannot be stopped while queueing.",
   STOP_SYNC_FAILED: "Stopping image synchronization failed. Please try again.",
   START_SYNC: "Start image synchronization.",
   START_SYNC_DISABLED: "Image is already synchronized.",
+  START_SYNC_NOT_SELECTED:
+    "This image release cannot be synchronized since it is already selected from a more prioritized source.",
   START_SYNC_FAILED: "Starting image synchronization failed. Please try again.",
   DELETE_IMAGE: "Delete this image.",
-  DELETE_COMMISSIONING:
-    "Cannot delete images of the default commissioning release.",
   DELETE_IMPORTING: "Cannot delete images that are currently being downloaded.",
 } as const;
 
@@ -123,7 +125,13 @@ const useImageTableColumns = ({
             },
           }: {
             row: Row<Image>;
-          }) => <ReleaseTitleCell release={release} title={title} />,
+          }) => (
+            <ReleaseTitleCell
+              commissioningRelease={commissioningRelease}
+              release={release}
+              title={title}
+            />
+          ),
         },
         {
           id: "architecture",
@@ -241,16 +249,16 @@ const useImageTableColumns = ({
           ),
           cell: ({
             row: {
-              original: { status, sync_percentage, node_count },
+              original: { status, sync_percentage, node_count, selected },
             },
           }) => {
             let icon;
             switch (status) {
               case "Ready":
-                icon = <Icon aria-label={"synced"} name={"success"} />;
+                icon = <Icon aria-label="synced" name="success" />;
                 break;
               case "Waiting for download":
-                icon = <Icon name={"status-waiting"} />;
+                icon = <Icon name="status-waiting" />;
                 break;
               case "OptimisticDownloading":
               case "OptimisticStopping":
@@ -263,32 +271,41 @@ const useImageTableColumns = ({
               <Spinner />
             ) : (
               <DoubleRow
-                icon={icon}
+                icon={selected ? icon : <Icon name="warning" />}
                 primary={
-                  status === "Downloading" ||
-                  status === "OptimisticDownloading" ||
-                  status === "OptimisticStopping" ? (
-                    <>
-                      {!isStopping ? (
-                        <div className="p-progress">
-                          <div
-                            className="p-progress__value"
-                            style={{
-                              width: `${isOptimistic ? 100 : sync_percentage}%`,
-                            }}
-                          />
-                        </div>
-                      ) : null}
-                      <small className="u-text--muted">
-                        {isOptimistic
-                          ? "Queueing..."
-                          : isStopping
-                            ? "Stopping..."
-                            : `${sync_percentage}%`}
-                      </small>
-                    </>
+                  selected ? (
+                    status === "Downloading" ||
+                    status === "OptimisticDownloading" ||
+                    status === "OptimisticStopping" ? (
+                      <>
+                        {!isStopping ? (
+                          <div className="p-progress">
+                            <div
+                              className="p-progress__value"
+                              style={{
+                                width: `${isOptimistic ? 100 : sync_percentage}%`,
+                              }}
+                            />
+                          </div>
+                        ) : null}
+                        <small className="u-text--muted">
+                          {isOptimistic
+                            ? "Queueing..."
+                            : isStopping
+                              ? "Stopping..."
+                              : `${sync_percentage}%`}
+                        </small>
+                      </>
+                    ) : (
+                      status
+                    )
                   ) : (
-                    status
+                    <Tooltip
+                      message={TOOLTIP_MESSAGES.IMAGE_NOT_SELECTED}
+                      position="btm-center"
+                    >
+                      Won't sync
+                    </Tooltip>
                   )
                 }
                 secondary={
@@ -383,12 +400,11 @@ const useImageTableColumns = ({
               getIsSelected,
               getIsGrouped,
               toggleSelected,
-              original: { id, boot_source_id, release, status, update_status },
+              original: { id, boot_source_id, status, selected, update_status },
             },
           }: {
             row: Row<Image>;
           }) => {
-            const isCommissioningImage = release === commissioningRelease;
             const isCustom = id.endsWith("-custom");
             const imageId = Number(id.split("-")[0]);
 
@@ -407,7 +423,7 @@ const useImageTableColumns = ({
               status === "Waiting for download" ||
               update_status === "Update available";
 
-            const canBeDeleted = !isCommissioningImage && !downloadInProgress;
+            const canBeDeleted = !downloadInProgress;
 
             const selectedImageCount =
               Object.entries(selectedRows).filter(
@@ -455,9 +471,11 @@ const useImageTableColumns = ({
                 ) : (
                   <Tooltip
                     message={
-                      downloadAvailable
-                        ? TOOLTIP_MESSAGES.START_SYNC
-                        : TOOLTIP_MESSAGES.START_SYNC_DISABLED
+                      !selected
+                        ? TOOLTIP_MESSAGES.START_SYNC_NOT_SELECTED
+                        : downloadAvailable
+                          ? TOOLTIP_MESSAGES.START_SYNC
+                          : TOOLTIP_MESSAGES.START_SYNC_DISABLED
                     }
                     position="left"
                   >
@@ -465,6 +483,7 @@ const useImageTableColumns = ({
                       appearance="base"
                       className="is-dense u-table-cell-padding-overlap"
                       disabled={
+                        !selected ||
                         !downloadAvailable ||
                         stopSync.isPending ||
                         isOptimisticStopping ||
@@ -493,9 +512,7 @@ const useImageTableColumns = ({
                 <Tooltip
                   message={
                     !canBeDeleted
-                      ? isCommissioningImage
-                        ? TOOLTIP_MESSAGES.DELETE_COMMISSIONING
-                        : TOOLTIP_MESSAGES.DELETE_IMPORTING
+                      ? TOOLTIP_MESSAGES.DELETE_IMPORTING
                       : TOOLTIP_MESSAGES.DELETE_IMAGE
                   }
                   position="left"
@@ -530,6 +547,7 @@ const useImageTableColumns = ({
         },
       ] as ImageColumnDef[],
     [
+      commissioningRelease,
       isStatisticsLoading,
       isStatusLoading,
       isSourcesPending,
@@ -537,12 +555,11 @@ const useImageTableColumns = ({
       sourcesByImageKey,
       deleteSelections,
       addSelections,
-      commissioningRelease,
+      selectedRows,
       startSync,
       stopSync,
       failure,
       openSidePanel,
-      selectedRows,
       setSelectedRows,
     ]
   );
