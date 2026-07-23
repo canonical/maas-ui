@@ -111,6 +111,9 @@ import type {
   CreateSpaceData,
   CreateSpaceErrors,
   CreateSpaceResponses,
+  CreateSshHostKeyData,
+  CreateSshHostKeyErrors,
+  CreateSshHostKeyResponses,
   CreateSwitchData,
   CreateSwitchErrors,
   CreateSwitchResponses,
@@ -186,6 +189,9 @@ import type {
   DeleteSpaceData,
   DeleteSpaceErrors,
   DeleteSpaceResponses,
+  DeleteSshHostKeyData,
+  DeleteSshHostKeyErrors,
+  DeleteSshHostKeyResponses,
   DeleteSwitchData,
   DeleteSwitchErrors,
   DeleteSwitchResponses,
@@ -339,6 +345,9 @@ import type {
   GetSpaceData,
   GetSpaceErrors,
   GetSpaceResponses,
+  GetSshHostKeyData,
+  GetSshHostKeyErrors,
+  GetSshHostKeyResponses,
   GetSubnetData,
   GetSubnetErrors,
   GetSubnetResponses,
@@ -492,6 +501,9 @@ import type {
   ListSpacesData,
   ListSpacesErrors,
   ListSpacesResponses,
+  ListSshHostKeysData,
+  ListSshHostKeysErrors,
+  ListSshHostKeysResponses,
   ListSubnetsData,
   ListSubnetsErrors,
   ListSubnetsResponses,
@@ -3110,6 +3122,74 @@ export const listUserSslkeysStatistics = <ThrowOnError extends boolean = false>(
   >({
     security: [{ scheme: "bearer", type: "http" }],
     url: "/MAAS/a/v3/users/me/sslkeys:statistics",
+    ...options,
+  });
+
+/**
+ * List Ssh Host Keys
+ */
+export const listSshHostKeys = <ThrowOnError extends boolean = false>(
+  options?: Options<ListSshHostKeysData, ThrowOnError>
+) =>
+  (options?.client ?? client).get<
+    ListSshHostKeysResponses,
+    ListSshHostKeysErrors,
+    ThrowOnError
+  >({
+    security: [{ scheme: "bearer", type: "http" }],
+    url: "/MAAS/a/v3/ssh-host-keys",
+    ...options,
+  });
+
+/**
+ * Create Ssh Host Key
+ */
+export const createSshHostKey = <ThrowOnError extends boolean = false>(
+  options: Options<CreateSshHostKeyData, ThrowOnError>
+) =>
+  (options.client ?? client).post<
+    CreateSshHostKeyResponses,
+    CreateSshHostKeyErrors,
+    ThrowOnError
+  >({
+    security: [{ scheme: "bearer", type: "http" }],
+    url: "/MAAS/a/v3/ssh-host-keys",
+    ...options,
+    headers: {
+      "Content-Type": "application/json",
+      ...options.headers,
+    },
+  });
+
+/**
+ * Delete Ssh Host Key
+ */
+export const deleteSshHostKey = <ThrowOnError extends boolean = false>(
+  options: Options<DeleteSshHostKeyData, ThrowOnError>
+) =>
+  (options.client ?? client).delete<
+    DeleteSshHostKeyResponses,
+    DeleteSshHostKeyErrors,
+    ThrowOnError
+  >({
+    security: [{ scheme: "bearer", type: "http" }],
+    url: "/MAAS/a/v3/ssh-host-keys/{ssh_host_key_id}",
+    ...options,
+  });
+
+/**
+ * Get Ssh Host Key
+ */
+export const getSshHostKey = <ThrowOnError extends boolean = false>(
+  options: Options<GetSshHostKeyData, ThrowOnError>
+) =>
+  (options.client ?? client).get<
+    GetSshHostKeyResponses,
+    GetSshHostKeyErrors,
+    ThrowOnError
+  >({
+    security: [{ scheme: "bearer", type: "http" }],
+    url: "/MAAS/a/v3/ssh-host-keys/{ssh_host_key_id}",
     ...options,
   });
 
