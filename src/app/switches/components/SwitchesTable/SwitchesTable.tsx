@@ -6,9 +6,10 @@ import { useSwitches } from "@/app/api/query/switches";
 import usePagination from "@/app/base/hooks/usePagination/usePagination";
 
 const SwitchesTable = () => {
-  const { page, size, handlePageSizeChange, setPage } = usePagination();
+  const { page, debouncedPage, size, handlePageSizeChange, setPage } =
+    usePagination();
 
-  const switches = useSwitches({ query: { page, size } });
+  const switches = useSwitches({ query: { page: debouncedPage, size } });
 
   const columns = useSwitchesTableColumns();
 
