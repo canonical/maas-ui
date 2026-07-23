@@ -1,6 +1,6 @@
 import { expect, it } from "vitest";
 
-import { MAAS_IO_DEFAULT_KEYRING_FILE_PATHS } from "@/app/images/constants";
+import { MAAS_IO_DEFAULT_KEYRING_FILE_PATH } from "@/app/images/constants";
 import AddSource from "@/app/settings/views/Images/Sources/components/AddSource/AddSource";
 import { Labels } from "@/app/settings/views/Images/Sources/constants";
 import { imageSourceResolvers } from "@/testing/resolvers/imageSources";
@@ -53,10 +53,10 @@ describe("AddSource", () => {
   it("clears the other field when switching between keyring types", async () => {
     renderWithProviders(<AddSource />);
 
-    // The default keyring filename is the snap path when no install type is set
+    // The default keyring filename is the snap path
     expect(
       screen.getByRole("textbox", { name: Labels.KeyringFilename })
-    ).toHaveValue(MAAS_IO_DEFAULT_KEYRING_FILE_PATHS.snap);
+    ).toHaveValue(MAAS_IO_DEFAULT_KEYRING_FILE_PATH);
 
     // Switch to keyring_data
     const select = screen.getByRole("combobox");
@@ -79,7 +79,7 @@ describe("AddSource", () => {
 
     expect(
       screen.getByRole("textbox", { name: Labels.KeyringFilename })
-    ).toHaveValue(MAAS_IO_DEFAULT_KEYRING_FILE_PATHS.snap);
+    ).toHaveValue(MAAS_IO_DEFAULT_KEYRING_FILE_PATH);
   });
 
   it("does not display keyring fields when unsigned keyring type is selected", async () => {

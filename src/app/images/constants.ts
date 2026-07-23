@@ -5,10 +5,8 @@ export const MAAS_IO_URLS = {
   candidate: "http://images.maas.io/ephemeral-v3/candidate",
 } as const;
 
-export const MAAS_IO_DEFAULT_KEYRING_FILE_PATHS = {
-  deb: "/usr/share/keyrings/ubuntu-cloudimage-keyring.gpg",
-  snap: "/snap/maas/current/usr/share/keyrings/ubuntu-cloudimage-keyring.gpg",
-};
+export const MAAS_IO_DEFAULT_KEYRING_FILE_PATH =
+  "/snap/maas/current/usr/share/keyrings/ubuntu-cloudimage-keyring.gpg";
 
 export const MAAS_IO_DEFAULTS = {
   url: MAAS_IO_URLS.stable,

@@ -18,7 +18,7 @@ import type {
 import FormikField from "@/app/base/components/FormikField";
 import { FormikFieldChangeError } from "@/app/base/components/FormikField/FormikField";
 import FormikForm from "@/app/base/components/FormikForm";
-import { MAAS_IO_DEFAULT_KEYRING_FILE_PATHS } from "@/app/images/constants";
+import { MAAS_IO_DEFAULT_KEYRING_FILE_PATH } from "@/app/images/constants";
 import { Labels } from "@/app/settings/views/Images/Sources/constants";
 
 export const SourceSchema = Yup.object()
@@ -117,7 +117,7 @@ const AddSource = (): ReactElement => {
         name: "",
         url: "",
         keyring_type: "keyring_filename",
-        keyring_filename: MAAS_IO_DEFAULT_KEYRING_FILE_PATHS.snap,
+        keyring_filename: MAAS_IO_DEFAULT_KEYRING_FILE_PATH,
         keyring_data: "",
         skip_keyring_verification: undefined,
         priority: 10,
