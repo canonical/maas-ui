@@ -5,7 +5,7 @@ import {
   uniqueNamesGenerator,
 } from "unique-names-generator";
 
-import { SwitchResponse } from "@/app/apiclient";
+import type { SwitchResponse } from "@/app/apiclient";
 
 export const switchFactory = Factory.define<SwitchResponse>(({ sequence }) => {
   const name = uniqueNamesGenerator({
