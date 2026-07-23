@@ -7,7 +7,6 @@ import { Link } from "react-router";
 import type { SwitchResponse } from "@/app/apiclient";
 import DoubleRow from "@/app/base/components/DoubleRow";
 import TableActions from "@/app/base/components/TableActions";
-// import type { SwitchItem } from "@/app/switches/types";
 
 type SwitchColumnDef = ColumnDef<SwitchResponse>;
 
