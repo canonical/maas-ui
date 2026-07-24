@@ -1,9 +1,8 @@
 import { expect, it } from "vitest";
 
-import { MAAS_IO_DEFAULT_KEYRING_FILE_PATHS } from "@/app/images/constants";
+import { MAAS_IO_DEFAULT_KEYRING_FILE_PATH } from "@/app/images/constants";
 import AddSource from "@/app/settings/views/Images/Sources/components/AddSource/AddSource";
 import { Labels } from "@/app/settings/views/Images/Sources/constants";
-import * as factory from "@/testing/factories";
 import { imageSourceResolvers } from "@/testing/resolvers/imageSources";
 import {
   userEvent,
@@ -54,10 +53,10 @@ describe("AddSource", () => {
   it("clears the other field when switching between keyring types", async () => {
     renderWithProviders(<AddSource />);
 
-    // The default keyring filename is the snap path when no install type is set
+    // The default keyring filename is the snap path
     expect(
       screen.getByRole("textbox", { name: Labels.KeyringFilename })
-    ).toHaveValue(MAAS_IO_DEFAULT_KEYRING_FILE_PATHS.snap);
+    ).toHaveValue(MAAS_IO_DEFAULT_KEYRING_FILE_PATH);
 
     // Switch to keyring_data
     const select = screen.getByRole("combobox");
@@ -75,30 +74,12 @@ describe("AddSource", () => {
     expect(screen.getByRole("textbox", { name: Labels.Url })).toHaveValue("");
   });
 
-  it("pre-populates custom source with correct default keyring based on install type", async () => {
-    const state = factory.rootState({
-      general: factory.generalState({
-        installType: factory.installTypeState({ data: "deb" }),
-      }),
-    });
-    // Test with deb install type
-    const { rerender } = renderWithProviders(<AddSource />, {
-      state,
-    });
+  it("pre-populates custom source with the snap default keyring", async () => {
+    renderWithProviders(<AddSource />);
 
-    // Verify deb default keyring is shown
     expect(
       screen.getByRole("textbox", { name: Labels.KeyringFilename })
-    ).toHaveValue(MAAS_IO_DEFAULT_KEYRING_FILE_PATHS.deb);
-
-    // Test with snap install type
-    state.general.installType = factory.installTypeState({ data: "snap" });
-    rerender(<AddSource />, { state });
-
-    // Verify snap default keyring is shown
-    expect(
-      screen.getByRole("textbox", { name: Labels.KeyringFilename })
-    ).toHaveValue(MAAS_IO_DEFAULT_KEYRING_FILE_PATHS.snap);
+    ).toHaveValue(MAAS_IO_DEFAULT_KEYRING_FILE_PATH);
   });
 
   it("does not display keyring fields when unsigned keyring type is selected", async () => {

@@ -1,9 +1,3 @@
-export enum ControllerInstallType {
-  UNKNOWN = "",
-  SNAP = "snap",
-  DEB = "deb",
-}
-
 export enum ControllerMeta {
   MODEL = "controller",
   PK = "system_id",

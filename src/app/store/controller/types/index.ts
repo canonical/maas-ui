@@ -13,7 +13,6 @@ export type {
 } from "./base";
 
 export {
-  ControllerInstallType,
   ControllerMeta,
   ControllerVersionIssues,
   ImageSyncStatus,

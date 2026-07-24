@@ -37,7 +37,6 @@ import type {
   GeneralState,
   GeneratedCertificateState,
   HWEKernelsState,
-  InstallTypeState,
   KnownArchitecturesState,
   KnownBootArchitecturesState,
   MAASURLState,
@@ -393,10 +392,6 @@ export const defaultMinHweKernelState = define<DefaultMinHweKernelState>({
   data: "",
 });
 
-export const installTypeState = define<InstallTypeState>({
-  ...defaultGeneralState,
-});
-
 export const generatedCertificateState = define<GeneratedCertificateState>({
   ...defaultGeneralState,
   data: null,
@@ -454,7 +449,6 @@ export const generalState = define<GeneralState>({
   defaultMinHweKernel: defaultMinHweKernelState,
   generatedCertificate: generatedCertificateState,
   hweKernels: hweKernelsState,
-  installType: installTypeState,
   knownArchitectures: knownArchitecturesState,
   knownBootArchitectures: knownBootArchitecturesState,
   maasURL: maasURLState,

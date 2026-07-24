@@ -26,11 +26,7 @@ import {
   isRack,
   isRegionAndRack,
 } from "@/app/store/controller/utils";
-import { generalActions } from "@/app/store/general";
-import {
-  installType as installTypeSelectors,
-  version as versionSelectors,
-} from "@/app/store/general/selectors";
+import { version as versionSelectors } from "@/app/store/general/selectors";
 import machineSelectors from "@/app/store/machine/selectors";
 import type { MachineDetails } from "@/app/store/machine/types";
 import {
@@ -120,7 +116,6 @@ export const StatusBar = (): React.ReactElement | null => {
   const maasName = useSelector(configSelectors.maasName);
   const allowUsabilla = useUsabilla();
   const msmRunning = useSelector(msmSelectors.running);
-  const installType = useSelector(installTypeSelectors.get);
   const { toggleListView, notifications, countBySeverity, isListView } =
     useToastNotification();
 
@@ -146,7 +141,7 @@ export const StatusBar = (): React.ReactElement | null => {
 
   const hasNotifications = notifications.length > 0;
 
-  useFetchActions([msmActions.fetch, generalActions.fetchInstallType]);
+  useFetchActions([msmActions.fetch]);
 
   if (!(maasName && version)) {
     return null;
@@ -189,9 +184,7 @@ export const StatusBar = (): React.ReactElement | null => {
         <div className="p-status-bar__primary u-flex--no-shrink u-flex--wrap">
           <strong data-testid="status-bar-maas-name">{maasName} MAAS</strong>
           :&nbsp;
-          <span data-testid="status-bar-version">
-            {version} ({installType})
-          </span>
+          <span data-testid="status-bar-version">{version}</span>
         </div>
         <div className="p-status-bar__primary u-flex--no-shrink u-flex--wrap">
           <span data-testid="status-bar-msm-status">

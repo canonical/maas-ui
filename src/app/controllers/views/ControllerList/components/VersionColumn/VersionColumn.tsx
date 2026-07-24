@@ -22,7 +22,6 @@ export const VersionColumn = ({
   }
   const origin = versions.origin || null;
   const cohortTooltip = cohortKey ? `Cohort key: \n${cohortKey}` : null;
-  const isDeb = versions.install_type === "deb";
   return (
     <DoubleRow
       primary={
@@ -38,12 +37,8 @@ export const VersionColumn = ({
       primaryTitle={versions.current.version}
       secondary={
         <>
-          <span data-testid="origin">
-            {!!origin && <>{isDeb ? "Deb" : origin} </>}
-          </span>
-          {!!(cohortTooltip || isDeb) && (
-            <TooltipButton message={isDeb ? origin : cohortTooltip} />
-          )}
+          <span data-testid="origin">{!!origin && <>{origin} </>}</span>
+          {!!cohortTooltip && <TooltipButton message={cohortTooltip} />}
         </>
       }
     />
