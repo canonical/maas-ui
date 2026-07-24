@@ -1,10 +1,7 @@
 import ControllerStatusCard, { Labels } from "./ControllerStatusCard";
 
 import { controllerActions } from "@/app/store/controller";
-import {
-  ControllerInstallType,
-  ImageSyncStatus,
-} from "@/app/store/controller/types";
+import { ImageSyncStatus } from "@/app/store/controller/types";
 import { NodeType } from "@/app/store/types/node";
 import * as factory from "@/testing/factories";
 import {
@@ -92,43 +89,10 @@ it("dispatches an action to stop polling images on unmount", () => {
   );
 });
 
-it("renders correct version info for a deb install", async () => {
-  const controller = factory.controllerDetails({
-    versions: factory.controllerVersions({
-      current: factory.controllerVersionInfo({ version: "1.2.3" }),
-      install_type: ControllerInstallType.DEB,
-      origin: "ppa:some/ppa",
-    }),
-  });
-  const state = factory.rootState({
-    controller: factory.controllerState({ items: [controller] }),
-  });
-
-  renderWithProviders(<ControllerStatusCard controller={controller} />, {
-    state,
-  });
-
-  await userEvent.hover(
-    screen.getByRole("button", { name: Labels.VersionDetails })
-  );
-  await waitFor(() => {
-    expect(screen.getByLabelText(Labels.Version).textContent).toBe(
-      "Version: 1.2.3"
-    );
-  });
-
-  await waitFor(() => {
-    expect(screen.getByLabelText(Labels.Origin).textContent).toBe(
-      "Deb: ppa:some/ppa"
-    );
-  });
-});
-
 it("renders correct version info for a snap install", async () => {
   const controller = factory.controllerDetails({
     versions: factory.controllerVersions({
       current: factory.controllerVersionInfo({ version: "1.2.3" }),
-      install_type: ControllerInstallType.SNAP,
       origin: "1.2/edge",
     }),
   });
@@ -157,11 +121,10 @@ it("renders correct version info for a snap install", async () => {
   });
 });
 
-it("renders correct version info for an unknown install type", async () => {
+it("renders fallback version info when the version is unknown", async () => {
   const controller = factory.controllerDetails({
     versions: factory.controllerVersions({
       current: factory.controllerVersionInfo({ version: "" }),
-      install_type: ControllerInstallType.UNKNOWN,
       origin: "nowhere",
     }),
   });
@@ -185,7 +148,7 @@ it("renders correct version info for an unknown install type", async () => {
   await waitFor(() => {
     expect(
       within(screen.getByRole("tooltip")).getByLabelText(Labels.Origin)
-    ).toHaveTextContent("Origin: nowhere");
+    ).toHaveTextContent("Channel: nowhere");
   });
 });
 

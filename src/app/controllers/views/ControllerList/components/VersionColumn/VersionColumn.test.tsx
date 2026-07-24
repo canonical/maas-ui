@@ -1,6 +1,5 @@
 import { VersionColumn } from "./VersionColumn";
 
-import { ControllerInstallType } from "@/app/store/controller/types";
 import * as factory from "@/testing/factories";
 import { renderWithProviders, screen, userEvent } from "@/testing/utils";
 
@@ -31,17 +30,6 @@ describe("VersionColumn", () => {
     });
     renderWithProviders(<VersionColumn controller={controller} />);
     expect(screen.getByTestId("origin")).toHaveTextContent("latest/edge");
-  });
-
-  it("can display the origin when it is a deb", async () => {
-    controller.versions = factory.controllerVersions({
-      install_type: ControllerInstallType.DEB,
-      origin: "stable",
-    });
-    renderWithProviders(<VersionColumn controller={controller} />);
-    expect(screen.getByTestId("origin")).toHaveTextContent(/Deb/);
-    await userEvent.click(screen.getByRole("button", { name: /information/i }));
-    expect(screen.getByRole("tooltip")).toHaveTextContent("stable");
   });
 
   it("can display a cohort tooltip", async () => {
