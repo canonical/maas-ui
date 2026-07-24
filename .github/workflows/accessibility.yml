@@ -23,14 +23,14 @@ jobs:
         with:
           node-version-file: ".nvmrc"
       - name: Install Cypress
-        uses: cypress-io/github-action@v7.3.0
+        uses: cypress-io/github-action@v7.4.1
         with:
           runTests: false
           install-command: yarn install
       - name: Create MAAS admin
         run: lxc exec maas-backend -- maas createadmin --username=admin --password=test --email=fake@example.org
       - name: Run cypress-axe accessibility tests
-        uses: cypress-io/github-action@v7.3.0
+        uses: cypress-io/github-action@v7.4.1
         with:
           config: baseUrl=${{env.MAAS_URL}},pageLoadTimeout=100000
           install: false
