@@ -8,10 +8,7 @@ import { useDispatch, useSelector } from "react-redux";
 import TooltipButton from "@/app/base/components/TooltipButton";
 import { controllerActions } from "@/app/store/controller";
 import controllerSelectors from "@/app/store/controller/selectors";
-import {
-  ControllerInstallType,
-  ImageSyncStatus,
-} from "@/app/store/controller/types";
+import { ImageSyncStatus } from "@/app/store/controller/types";
 import type {
   ControllerVersions,
   ControllerDetails,
@@ -81,18 +78,14 @@ const getImageSyncStatus = (
 };
 
 const getVersionDisplay = (versions: ControllerVersions) => {
-  const { current, install_type, origin } = versions;
-  const isDeb = install_type === ControllerInstallType.DEB;
-  const isSnap = install_type === ControllerInstallType.SNAP;
+  const { current, origin } = versions;
   return (
     <>
       <span aria-label={Labels.Version}>
         Version: {current.version || "Unknown (less than 2.3.0)"}
       </span>
       <br />
-      <span aria-label={Labels.Origin}>
-        {isDeb ? "Deb" : isSnap ? "Channel" : "Origin"}: {origin || "Unknown"}
-      </span>
+      <span aria-label={Labels.Origin}>Channel: {origin || "Unknown"}</span>
     </>
   );
 };

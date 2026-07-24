@@ -1,10 +1,9 @@
 import type { ReactElement } from "react";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 
 import { useSidePanel } from "@canonical/maas-react-components";
 import { Select, Textarea } from "@canonical/react-components";
 import type { FormikContextType } from "formik";
-import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 
 import {
@@ -19,10 +18,8 @@ import type {
 import FormikField from "@/app/base/components/FormikField";
 import { FormikFieldChangeError } from "@/app/base/components/FormikField/FormikField";
 import FormikForm from "@/app/base/components/FormikForm";
-import { MAAS_IO_DEFAULT_KEYRING_FILE_PATHS } from "@/app/images/constants";
+import { MAAS_IO_DEFAULT_KEYRING_FILE_PATH } from "@/app/images/constants";
 import { Labels } from "@/app/settings/views/Images/Sources/constants";
-import { generalActions } from "@/app/store/general";
-import { installType } from "@/app/store/general/selectors";
 
 export const SourceSchema = Yup.object()
   .shape({
@@ -49,7 +46,6 @@ export type SourceValues = BootSourceCreateRequest & {
 };
 
 const AddSource = (): ReactElement => {
-  const dispatch = useDispatch();
   const { closeSidePanel } = useSidePanel();
   const [isValidated, setIsValidated] = useState(false);
   const [lastValidatedValues, setLastValidatedValues] =
@@ -57,12 +53,6 @@ const AddSource = (): ReactElement => {
 
   const createSource = useCreateImageSource();
   const fetchImageSource = useFetchImageSource();
-
-  const installTypeData = useSelector(installType.get);
-
-  useEffect(() => {
-    dispatch(generalActions.fetchInstallType());
-  });
 
   const onValidate = async (values: SourceValues) => {
     if (!isValidated) {
@@ -127,10 +117,7 @@ const AddSource = (): ReactElement => {
         name: "",
         url: "",
         keyring_type: "keyring_filename",
-        keyring_filename:
-          installTypeData === "deb"
-            ? MAAS_IO_DEFAULT_KEYRING_FILE_PATHS.deb
-            : MAAS_IO_DEFAULT_KEYRING_FILE_PATHS.snap,
+        keyring_filename: MAAS_IO_DEFAULT_KEYRING_FILE_PATH,
         keyring_data: "",
         skip_keyring_verification: undefined,
         priority: 10,

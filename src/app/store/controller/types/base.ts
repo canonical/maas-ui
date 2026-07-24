@@ -1,5 +1,4 @@
 import type {
-  ControllerInstallType,
   ControllerMeta,
   ControllerVersionIssues,
   ImageSyncStatus,
@@ -45,7 +44,6 @@ export type ControllerVersionInfo = {
 
 export type ControllerVersions = {
   current: ControllerVersionInfo;
-  install_type?: ControllerInstallType;
   origin: string;
   snap_cohort?: string;
   up_to_date: boolean;

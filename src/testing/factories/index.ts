@@ -121,7 +121,6 @@ export {
   generalState,
   generatedCertificateState,
   hweKernelsState,
-  installTypeState,
   ipRangeState,
   knownArchitecturesState,
   knownBootArchitecturesState,
