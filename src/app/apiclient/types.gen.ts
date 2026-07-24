@@ -3831,6 +3831,101 @@ export type SpacesListResponse = {
 };
 
 /**
+ * SshHostKeyRequest
+ */
+export type SshHostKeyRequest = {
+  /**
+   * Host
+   *
+   * The hostname or IP address.
+   */
+  host: string;
+  /**
+   * Key Type
+   *
+   * The SSH key type (e.g. ssh-rsa).
+   */
+  key_type: string;
+  /**
+   * Public Key
+   *
+   * The Base64-encoded public key.
+   */
+  public_key: string;
+  /**
+   * Label
+   *
+   * An optional human-readable label.
+   */
+  label?: string;
+};
+
+/**
+ * SshHostKeyResponse
+ */
+export type SshHostKeyResponse = {
+  _links?: BaseHal;
+  /**
+   * Embedded
+   */
+  _embedded?: Record<string, unknown>;
+  /**
+   * Kind
+   */
+  kind?: string;
+  /**
+   * Id
+   */
+  id: number;
+  /**
+   * Created
+   */
+  created: string;
+  /**
+   * Updated
+   */
+  updated: string;
+  /**
+   * Host
+   */
+  host: string;
+  /**
+   * Key Type
+   */
+  key_type: string;
+  /**
+   * Public Key
+   */
+  public_key: string;
+  /**
+   * Label
+   */
+  label?: string;
+};
+
+/**
+ * SshHostKeysListResponse
+ */
+export type SshHostKeysListResponse = {
+  /**
+   * Items
+   */
+  items: SshHostKeyResponse[];
+  /**
+   * Total
+   */
+  total: number;
+  /**
+   * Next
+   */
+  next?: string;
+  /**
+   * Kind
+   */
+  kind?: string;
+};
+
+/**
  * SshKeyImportFromSourceRequest
  */
 export type SshKeyImportFromSourceRequest = {
@@ -4147,6 +4242,10 @@ export type SwitchRequest = {
    */
   mac_address: string;
   /**
+   * Name
+   */
+  name?: string;
+  /**
    * Image
    *
    * Boot resource name for the NOS to install on the switch. Supports full format (e.g., 'onie/mellanox-3.8.0') or short format for ONIE images (e.g., 'mellanox-3.8.0').
@@ -4176,6 +4275,14 @@ export type SwitchResponse = {
    */
   id: number;
   /**
+   * Name
+   */
+  name?: string;
+  /**
+   * Management Mac
+   */
+  management_mac?: string;
+  /**
    * Target Image Id
    */
   target_image_id?: number;
@@ -4191,6 +4298,10 @@ export type SwitchResponse = {
  * Request model for updating a switch.
  */
 export type SwitchUpdateRequest = {
+  /**
+   * Name
+   */
+  name?: string;
   /**
    * Image
    *
@@ -10999,6 +11110,150 @@ export type ListUserSslkeysStatisticsResponses = {
 
 export type ListUserSslkeysStatisticsResponse =
   ListUserSslkeysStatisticsResponses[keyof ListUserSslkeysStatisticsResponses];
+
+export type ListSshHostKeysData = {
+  body?: never;
+  path?: never;
+  query?: {
+    /**
+     * Page
+     */
+    page?: number;
+    /**
+     * Size
+     */
+    size?: number;
+  };
+  url: "/MAAS/a/v3/ssh-host-keys";
+};
+
+export type ListSshHostKeysErrors = {
+  /**
+   * Unprocessable Content
+   */
+  422: ValidationErrorBodyResponse;
+};
+
+export type ListSshHostKeysError =
+  ListSshHostKeysErrors[keyof ListSshHostKeysErrors];
+
+export type ListSshHostKeysResponses = {
+  /**
+   * Successful Response
+   */
+  200: SshHostKeysListResponse;
+};
+
+export type ListSshHostKeysResponse =
+  ListSshHostKeysResponses[keyof ListSshHostKeysResponses];
+
+export type CreateSshHostKeyData = {
+  body: SshHostKeyRequest;
+  path?: never;
+  query?: never;
+  url: "/MAAS/a/v3/ssh-host-keys";
+};
+
+export type CreateSshHostKeyErrors = {
+  /**
+   * Unprocessable Content
+   */
+  422: ValidationErrorBodyResponse;
+};
+
+export type CreateSshHostKeyError =
+  CreateSshHostKeyErrors[keyof CreateSshHostKeyErrors];
+
+export type CreateSshHostKeyResponses = {
+  /**
+   * Successful Response
+   */
+  201: SshHostKeyResponse;
+};
+
+export type CreateSshHostKeyResponse =
+  CreateSshHostKeyResponses[keyof CreateSshHostKeyResponses];
+
+export type DeleteSshHostKeyData = {
+  body?: never;
+  headers?: {
+    /**
+     * If-Match
+     */
+    "if-match"?: string;
+  };
+  path: {
+    /**
+     * Ssh Host Key Id
+     */
+    ssh_host_key_id: number;
+  };
+  query?: never;
+  url: "/MAAS/a/v3/ssh-host-keys/{ssh_host_key_id}";
+};
+
+export type DeleteSshHostKeyErrors = {
+  /**
+   * Not Found
+   */
+  404: NotFoundBodyResponse;
+  /**
+   * Precondition Failed
+   */
+  412: PreconditionFailedBodyResponse;
+  /**
+   * Unprocessable Content
+   */
+  422: ValidationErrorBodyResponse;
+};
+
+export type DeleteSshHostKeyError =
+  DeleteSshHostKeyErrors[keyof DeleteSshHostKeyErrors];
+
+export type DeleteSshHostKeyResponses = {
+  /**
+   * Successful Response
+   */
+  204: void;
+};
+
+export type DeleteSshHostKeyResponse =
+  DeleteSshHostKeyResponses[keyof DeleteSshHostKeyResponses];
+
+export type GetSshHostKeyData = {
+  body?: never;
+  path: {
+    /**
+     * Ssh Host Key Id
+     */
+    ssh_host_key_id: number;
+  };
+  query?: never;
+  url: "/MAAS/a/v3/ssh-host-keys/{ssh_host_key_id}";
+};
+
+export type GetSshHostKeyErrors = {
+  /**
+   * Not Found
+   */
+  404: NotFoundBodyResponse;
+  /**
+   * Unprocessable Content
+   */
+  422: ValidationErrorBodyResponse;
+};
+
+export type GetSshHostKeyError = GetSshHostKeyErrors[keyof GetSshHostKeyErrors];
+
+export type GetSshHostKeyResponses = {
+  /**
+   * Successful Response
+   */
+  200: SshHostKeyResponse;
+};
+
+export type GetSshHostKeyResponse =
+  GetSshHostKeyResponses[keyof GetSshHostKeyResponses];
 
 export type ListFabricVlanSubnetsData = {
   body?: never;
