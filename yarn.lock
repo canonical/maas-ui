@@ -1019,10 +1019,10 @@
     "@types/sjcl" "1.0.30"
     macaroon "3.0.4"
 
-"@canonical/react-components@4.5.2":
-  version "4.5.2"
-  resolved "https://registry.yarnpkg.com/@canonical/react-components/-/react-components-4.5.2.tgz#a3d470c48ca8dbffdf2e4609f5dc6c48c7f58373"
-  integrity sha512-N/e046Sa+14pO8yXXBoShRcZ+BuKMWuY+dhdFoD12+/MtHSuttNzj9rpLVpOItT3L1NxOOCodjbiXjuDU6u3MA==
+"@canonical/react-components@4.8.2":
+  version "4.8.2"
+  resolved "https://registry.yarnpkg.com/@canonical/react-components/-/react-components-4.8.2.tgz#747e90ceb1e1704d8007e3e16cf64ace0ae00270"
+  integrity sha512-LFeZM+V2embiXZiL1uWXPMX4bZJ8wirTPBsS6L1GOjKe9eiRX5DNQ5eqW7FCdfTjT3+zRv1rM0zp79Y+EPW4sg==
   dependencies:
     "@types/jest" "30.0.0"
     "@types/node" "20.19.30"
@@ -1035,17 +1035,17 @@
     prop-types "15.8.1"
     react-table "7.8.0"
 
-"@canonical/typescript-config-react@0.27.0":
-  version "0.27.0"
-  resolved "https://registry.yarnpkg.com/@canonical/typescript-config-react/-/typescript-config-react-0.27.0.tgz#962c1b1b360619d3e606ba4d62481e91c6371500"
-  integrity sha512-1N9PlHzF7749TlhPPvL7+xZuth7SBrnC34w/JUw8MSl7B7rAlETqsWbIIvqsl3vcYNPnVZGQtaC8DMb82b1Qqg==
+"@canonical/typescript-config-react@0.33.0":
+  version "0.33.0"
+  resolved "https://registry.yarnpkg.com/@canonical/typescript-config-react/-/typescript-config-react-0.33.0.tgz#91a1b5f3a2d39469352cf73a7d42f9062f403362"
+  integrity sha512-YsgwJNB4SvpQab6ps2nMY8sk8xfaPa8wNVhloUeORmZyangR2qdSpyu5ScqdUPcbQ0wsObEX3/H9ja0hgIphTA==
   dependencies:
-    "@canonical/typescript-config" "^0.27.0"
+    "@canonical/typescript-config" "^0.33.0"
 
-"@canonical/typescript-config@^0.27.0":
-  version "0.27.0"
-  resolved "https://registry.yarnpkg.com/@canonical/typescript-config/-/typescript-config-0.27.0.tgz#d4b25279280eb28fbb01c03c5e5d3e8b21b270c0"
-  integrity sha512-nQm/6FK332iqdCiLNQkvhQgGmhLf2a9al2zAsEQxlYoubjQ3UaGsk9Aw0D7cQfAJ+KVx+Au5/D1+zxXWOSVknQ==
+"@canonical/typescript-config@^0.33.0":
+  version "0.33.0"
+  resolved "https://registry.yarnpkg.com/@canonical/typescript-config/-/typescript-config-0.33.0.tgz#a1f1ed4b028acffaa7fb1091105976d9c0c80f70"
+  integrity sha512-pJAGpwjQi+uuVdThZ1a6LxDwNarME4H99yJYy1UceEx2P+toocV8z6xmIA0jpeq9Z+80p3zguDboR+AXweQYhQ==
 
 "@colors/colors@1.5.0":
   version "1.5.0"
@@ -15670,10 +15670,10 @@ validate-npm-package-name@^5.0.1:
   resolved "https://registry.yarnpkg.com/validate-npm-package-name/-/validate-npm-package-name-5.0.1.tgz#a316573e9b49f3ccd90dbb6eb52b3f06c6d604e8"
   integrity sha512-OljLrQ9SQdOUqTaQxqL5dEfZWrXExyyWsozYlAWFawPVNuD83igl7uJD2RTkNMbniIYgt8l81eCJGIdQF7avLQ==
 
-vanilla-framework@4.51.0:
-  version "4.51.0"
-  resolved "https://registry.yarnpkg.com/vanilla-framework/-/vanilla-framework-4.51.0.tgz#9c9268a030ff1031c459fb90e836e210000ad02d"
-  integrity sha512-RfGQE2KOhEWeLAX2je8zPdjiKHekikzCvQNWAslijZEGvjDUVPSuhrtiG4wxSW7OyhKLfg7h4U5ApRW6fzddCA==
+vanilla-framework@4.55.1:
+  version "4.55.1"
+  resolved "https://registry.yarnpkg.com/vanilla-framework/-/vanilla-framework-4.55.1.tgz#3f4be9ebd298a0407272acae439047e253db770f"
+  integrity sha512-fa9lTFPDPZjKRgVbE90WNJmEI9grUiJVGDXsEY1Wo785zkYHoSc0PiPNpc4GOq36PWBEPn+ggo6iszBMPQBAvw==
 
 vary@~1.1.2:
   version "1.1.2"
