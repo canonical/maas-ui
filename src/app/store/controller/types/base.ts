@@ -108,7 +108,6 @@ export type ControllerDetails = BaseController &
     hardware_uuid: string | null;
     has_logs: boolean;
     hwe_kernel: string | null;
-    install_kvm: boolean;
     install_rackd: boolean;
     installation_start_time: string;
     installation_status: number;
@@ -128,7 +127,6 @@ export type ControllerDetails = BaseController &
     power_type: PowerType["name"];
     previous_status: NodeStatus;
     pxe_mac?: string;
-    register_vmhost: boolean;
     show_os_info: boolean;
     special_filesystems: Filesystem[];
     storage_layout_issues: string[];

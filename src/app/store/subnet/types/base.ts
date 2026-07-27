@@ -4,7 +4,6 @@ import type { UserResponse } from "@/app/apiclient";
 import type { APIError } from "@/app/base/types";
 import type { Domain } from "@/app/store/domain/types";
 import type { KnownBootArchitecture } from "@/app/store/general/types";
-import type { Pod } from "@/app/store/pod/types";
 import type {
   Model,
   TimestampedModel,
@@ -44,7 +43,7 @@ export type SubnetBMCNode = {
 
 export type SubnetBMC = Model & {
   nodes: SubnetBMCNode[];
-  power_type: Pod["type"];
+  power_type: string;
 };
 
 export type SubnetDNSRecord = Model & {

@@ -54,16 +54,8 @@ describe("common machine utils", () => {
   });
 
   describe("getMachineFieldScopes", () => {
-    it("gets the field scopes for a machine in a pod", () => {
-      const machine = factory.machine({ pod: factory.modelRef() });
-
-      expect(getMachineFieldScopes(machine)).toStrictEqual([
-        PowerFieldScope.NODE,
-      ]);
-    });
-
-    it("gets the field scopes for a machine not in a pod", () => {
-      const machine = factory.machine({ pod: undefined });
+    it("gets the field scopes for a machine", () => {
+      const machine = factory.machine();
 
       expect(getMachineFieldScopes(machine)).toStrictEqual([
         PowerFieldScope.BMC,

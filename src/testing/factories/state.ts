@@ -74,8 +74,6 @@ import type { NodeDeviceState } from "@/app/store/nodedevice/types";
 import type { NodeScriptResultState } from "@/app/store/nodescriptresult/types";
 import type { NotificationState } from "@/app/store/notification/types";
 import type { PackageRepositoryState } from "@/app/store/packagerepository/types";
-import { DEFAULT_STATUSES as DEFAULT_POD_STATUSES } from "@/app/store/pod/slice";
-import type { PodState, PodStatus, PodStatuses } from "@/app/store/pod/types";
 import type { ReservedIpState } from "@/app/store/reservedip/types";
 import type { RootState } from "@/app/store/root/types";
 import type { ScriptState } from "@/app/store/script/types";
@@ -104,8 +102,6 @@ import type {
   VLANStatus,
   VLANStatuses,
 } from "@/app/store/vlan/types";
-import type { VMClusterState } from "@/app/store/vmcluster/types";
-import type { VMClusterStatuses } from "@/app/store/vmcluster/types/base";
 
 const defaultState = {
   errors: () => ({}),
@@ -339,20 +335,6 @@ export const packageRepositoryState = define<PackageRepositoryState>({
   errors: null,
 });
 
-export const podStatus = define<PodStatus>(DEFAULT_POD_STATUSES);
-
-export const podStatuses = define<PodStatuses>({
-  1: podStatus,
-});
-
-export const podState = define<PodState>({
-  ...defaultState,
-  active: null,
-  errors: null,
-  projects: () => ({}),
-  statuses: () => ({}),
-});
-
 export const notificationState = define<NotificationState>({
   ...defaultState,
   errors: null,
@@ -559,18 +541,6 @@ export const vlanState = define<VLANState>({
   statuses: () => ({}),
 });
 
-export const vmClusterStatuses = define<VMClusterStatuses>({
-  deleting: false,
-  getting: false,
-});
-
-export const vmClusterState = define<VMClusterState>({
-  ...defaultState,
-  eventErrors: () => [],
-  physicalClusters: () => [],
-  statuses: vmClusterStatuses,
-});
-
 export const locationState = define<RouterState["location"]>({
   pathname: "/",
   search: "",
@@ -602,7 +572,6 @@ export const rootState = define<RootState>({
   notification: notificationState,
   nodescriptresult: nodeScriptResultState,
   packagerepository: packageRepositoryState,
-  pod: podState,
   reservedip: reservedIpState,
   router: routerState,
   scriptresult: scriptResultState,
@@ -615,5 +584,4 @@ export const rootState = define<RootState>({
   tag: tagState,
   token: tokenState,
   vlan: vlanState,
-  vmcluster: vmClusterState,
 });

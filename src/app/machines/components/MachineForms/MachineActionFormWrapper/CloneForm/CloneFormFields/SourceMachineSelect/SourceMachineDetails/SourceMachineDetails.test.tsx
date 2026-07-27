@@ -17,7 +17,6 @@ describe("SourceMachineDetails", () => {
       memory: 8,
       owner: "Owner",
       physical_disk_count: 2,
-      pod: { id: 2, name: "pod" },
       power_type: "manual",
       status: NodeStatus.READY,
       storage: 8,
@@ -42,9 +41,6 @@ describe("SourceMachineDetails", () => {
     expect(
       screen.getByLabelText(SourceMachineDetailsLabels.Owner)
     ).toHaveTextContent("Owner");
-    expect(
-      screen.getByLabelText(SourceMachineDetailsLabels.Host)
-    ).toHaveTextContent("pod");
     expect(
       screen.getByLabelText(SourceMachineDetailsLabels.Zone)
     ).toHaveTextContent("zone");

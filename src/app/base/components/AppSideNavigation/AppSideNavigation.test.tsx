@@ -52,14 +52,6 @@ describe("GlobalSideNav", () => {
         items: [factory.controller()],
         loaded: true,
       }),
-      pod: factory.podState({
-        loaded: true,
-        items: [
-          factory.pod({
-            type: "virsh",
-          }),
-        ],
-      }),
     });
   });
 
@@ -372,29 +364,6 @@ describe("GlobalSideNav", () => {
     await waitFor(() => {
       expect(router.state.location.pathname).toBe(urls.intro.images);
     });
-  });
-
-  it("displays 'Virsh' link if user has Virsh KVM hosts", async () => {
-    renderWithProviders(<AppSideNavigation />, {
-      initialEntries: ["/machines"],
-      state,
-    });
-    await waitFor(() => {
-      expect(screen.getByRole("link", { name: /Virsh/i })).toBeInTheDocument();
-    });
-    expect(screen.getByRole("link", { name: "Virsh" })).toBeInTheDocument();
-  });
-
-  it("hides 'Virsh' link if user has no Virsh KVM hosts", () => {
-    state.pod.items = [];
-    renderWithProviders(<AppSideNavigation />, {
-      initialEntries: ["/machines"],
-      state,
-    });
-
-    expect(
-      screen.queryByRole("link", { name: "Virsh" })
-    ).not.toBeInTheDocument();
   });
 
   it("is collapsed by default", () => {

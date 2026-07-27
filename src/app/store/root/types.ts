@@ -39,7 +39,6 @@ import type {
   PackageRepositoryState,
   PackageRepositoryMeta,
 } from "@/app/store/packagerepository/types";
-import type { PodState, PodMeta } from "@/app/store/pod/types";
 import type { ReservedIpState } from "@/app/store/reservedip/types";
 import type { ReservedIpMeta } from "@/app/store/reservedip/types/enum";
 import type { ScriptState, ScriptMeta } from "@/app/store/script/types";
@@ -58,10 +57,6 @@ import type { SubnetState, SubnetMeta } from "@/app/store/subnet/types";
 import type { TagState, TagMeta } from "@/app/store/tag/types";
 import type { TokenState, TokenMeta } from "@/app/store/token/types";
 import type { VLANState, VLANMeta } from "@/app/store/vlan/types";
-import type {
-  VMClusterMeta,
-  VMClusterState,
-} from "@/app/store/vmcluster/types";
 
 export type RootState = {
   [ConfigMeta.MODEL]: ConfigState;
@@ -81,7 +76,6 @@ export type RootState = {
   [NodeScriptResultMeta.MODEL]: NodeScriptResultState;
   [NotificationMeta.MODEL]: NotificationState;
   [PackageRepositoryMeta.MODEL]: PackageRepositoryState;
-  [PodMeta.MODEL]: PodState;
   [ReservedIpMeta.MODEL]: ReservedIpState;
   router: RouterState;
   [ScriptResultMeta.MODEL]: ScriptResultState;
@@ -94,5 +88,4 @@ export type RootState = {
   [TagMeta.MODEL]: TagState;
   [TokenMeta.MODEL]: TokenState;
   [VLANMeta.MODEL]: VLANState;
-  [VMClusterMeta.MODEL]: VMClusterState;
 };

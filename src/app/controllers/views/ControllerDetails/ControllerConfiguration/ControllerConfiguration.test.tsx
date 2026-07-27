@@ -8,7 +8,6 @@ import { Label as TagFieldLabel } from "@/app/base/components/TagField/TagField"
 import { Label as ZoneSelectLabel } from "@/app/base/components/ZoneSelect/ZoneSelect";
 import urls from "@/app/base/urls";
 import { controllerActions } from "@/app/store/controller";
-import { PodType } from "@/app/store/pod/constants";
 import * as factory from "@/testing/factories";
 import { authResolvers } from "@/testing/resolvers/auth";
 import { zoneResolvers } from "@/testing/resolvers/zones";
@@ -47,7 +46,7 @@ describe("ControllerConfiguration", () => {
         powerTypes: factory.powerTypesState({
           data: [
             factory.powerType({
-              name: PodType.LXD,
+              name: "lxd",
               fields: [
                 factory.powerField({ name: "power_address" }),
                 factory.powerField({ name: "password" }),

@@ -52,7 +52,6 @@ export type BaseMachine = Omit<
   owner: string;
   physical_disk_count: number;
   parent: string | null; // `parent` is a `system_id`
-  pod: ModelRef | null;
   pool: ModelRef;
   power_state: PowerState;
   power_type: PowerType["name"] | "" | null;

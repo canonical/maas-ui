@@ -1,7 +1,7 @@
 import { define, extend, random, sequence } from "cooky-cutter";
 
 import { timestamp } from "./general";
-import { model, modelRef, timestampedModel } from "./model";
+import { model, modelRef } from "./model";
 
 import type {
   Controller,
@@ -22,25 +22,6 @@ import {
   FilterGroupType,
 } from "@/app/store/machine/types/base";
 import type { FilterGroup, BaseMachine } from "@/app/store/machine/types/base";
-import { PodType } from "@/app/store/pod/constants";
-import type {
-  Pod,
-  PodDetails,
-  PodMemoryResource,
-  PodNetworkInterface,
-  PodNuma,
-  PodNumaHugepageMemory,
-  PodNumaMemory,
-  PodNumaResource,
-  PodPowerParameters,
-  PodProject,
-  PodResource,
-  PodResources,
-  PodStoragePool,
-  PodStoragePoolResource,
-  PodVM,
-  PodVmCount,
-} from "@/app/store/pod/types";
 import {
   NetworkLinkMode,
   NetworkInterfaceTypes,
@@ -48,7 +29,7 @@ import {
   PowerState,
   StorageLayout,
 } from "@/app/store/types/enum";
-import type { Model, TimestampedModel } from "@/app/store/types/model";
+import type { Model } from "@/app/store/types/model";
 import type {
   DiscoveredIP,
   NetworkInterface,
@@ -81,21 +62,13 @@ export const testStatus = define<TestStatus>({
 });
 
 const actions = () => [];
-const architectures = () => ["amd64/generic", "i386"];
 const extra_macs = () => [];
-const capabilities = () => [
-  "composable",
-  "dynamic_local_storage",
-  "over_commit",
-  "storage_pools",
-];
 const fabrics = () => [];
 const ip_addresses = () => [];
 const link_speeds = () => [];
 const permissions = () => ["edit", "delete", "compose"];
 const service_ids = () => [];
 const spaces = () => [];
-const storage_pools = () => [podStoragePool(), podStoragePool()];
 const storage_tags = () => [];
 const subnets = () => [];
 const tags = () => [];
@@ -283,7 +256,6 @@ export const machine = extend<SimpleNode, Machine>(simpleNode, {
   locked: false,
   owner: "admin",
   physical_disk_count: 1,
-  pod: null,
   power_state: PowerState.ON,
   power_type: "manual",
   pxe_mac: "de:ad:be:ef:aa:b1",
@@ -434,7 +406,6 @@ export const controllerDetails = extend<Controller, ControllerDetails>(
     hardware_uuid: "F5BB1CC9-45B2-46EA-B96A-7D528A902F4B",
     has_logs: false,
     hwe_kernel: "groovy (ga-20.10)",
-    install_kvm: false,
     install_rackd: false,
     installation_start_time: "Thu, 15 Oct. 2020 07:25:10",
     installation_status: 3,
@@ -473,7 +444,6 @@ export const controllerDetails = extend<Controller, ControllerDetails>(
     power_type: "manual",
     previous_status: NodeStatus.DEPLOYING,
     pxe_mac: "de:ad:be:ef:aa:b1",
-    register_vmhost: false,
     show_os_info: false,
     special_filesystems: () => [],
     storage_layout_issues: () => [],
@@ -506,131 +476,4 @@ export const controllerVersions = define<ControllerVersions>({
 export const controllerVlansHA = define<ControllerVlansHA>({
   true: 1,
   false: 1,
-});
-
-export const podStoragePool = define<PodStoragePool>({
-  available: 700000000000,
-  id: () => `pool-id-${random()}`,
-  name: () => `pool-name-${random()}`,
-  path: () => `/path/to/${random()}`,
-  total: 1000000000000,
-  type: "lvm",
-  used: 300000000000,
-});
-
-export const podResource = define<PodResource>({
-  allocated_other: 2,
-  allocated_tracked: 1,
-  free: 3,
-});
-
-export const podMemoryResource = define<PodMemoryResource>({
-  general: podResource,
-  hugepages: podResource,
-});
-
-export const podNetworkInterface = extend<Model, PodNetworkInterface>(model, {
-  name: "eth0",
-  numa_index: 0,
-  virtual_functions: podResource,
-});
-
-export const podVM = extend<Model, PodVM>(model, {
-  hugepages_backed: false,
-  memory: 4068,
-  pinned_cores: () => [0, 2],
-  system_id: "abc123",
-  unpinned_cores: 1,
-});
-
-export const podNumaCores = define<PodNumaResource<number[]>>({
-  allocated: () => [0, 2],
-  free: () => [1, 3],
-});
-
-export const podNumaGeneralMemory = define<PodNumaResource<number>>({
-  allocated: 1024,
-  free: 2048,
-});
-
-export const podNumaHugepageMemory = define<PodNumaHugepageMemory>({
-  allocated: 1024,
-  free: 2048,
-  page_size: 4068,
-});
-
-export const podNumaMemory = define<PodNumaMemory>({
-  general: podNumaGeneralMemory,
-  hugepages: () => [podNumaHugepageMemory()],
-});
-
-export const podNuma = define<PodNuma>({
-  cores: podNumaCores,
-  memory: podNumaMemory,
-  node_id: sequence,
-  interfaces: () => [0, 1],
-  vms: () => [0, 1],
-});
-
-export const podVmCount = define<PodVmCount>({
-  tracked: 2,
-  other: 1,
-});
-
-export const podStoragePoolResource = define<PodStoragePoolResource>({
-  allocated_other: random,
-  allocated_tracked: random,
-  backend: "zfs",
-  id: "abc123",
-  name: "pool-name",
-  path: "/path",
-  total: random,
-});
-
-export const podResources = define<PodResources>({
-  cores: podResource,
-  interfaces: () => [podNetworkInterface()],
-  memory: podMemoryResource,
-  numa: () => [podNuma()],
-  storage: podResource,
-  storage_pools: () => ({}),
-  vm_count: podVmCount,
-  vms: () => [podVM()],
-});
-
-export const podProject = define<PodProject>({
-  description: "this is a description",
-  name: "project-name",
-});
-
-export const podPowerParameters = define<PodPowerParameters>({
-  power_address: "qemu+ssh://ubuntu@127.0.0.1/system",
-  power_pass: "",
-});
-
-export const pod = extend<TimestampedModel, Pod>(timestampedModel, {
-  architectures,
-  capabilities,
-  cpu_over_commit_ratio: 10,
-  cpu_speed: 1000,
-  default_macvlan_mode: "",
-  default_storage_pool: "b85e27c9-9d53-4821-ad64-153c53767ce9",
-  host: "",
-  ip_address: (i: number) => `192.168.1.${i}`,
-  memory_over_commit_ratio: 8,
-  name: (i: number) => `pod${i}`,
-  permissions,
-  pool: 1,
-  power_parameters: podPowerParameters,
-  resources: podResources,
-  storage_pools,
-  tags,
-  type: PodType.VIRSH,
-  version: "4.0.2",
-  zone: 1,
-});
-
-export const podDetails = extend<Pod, PodDetails>(pod, {
-  attached_vlans: () => [],
-  boot_vlans: () => [],
 });

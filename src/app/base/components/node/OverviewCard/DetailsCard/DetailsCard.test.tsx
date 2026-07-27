@@ -1,8 +1,6 @@
 import DetailsCard, { Labels as DetailsCardLabels } from "./DetailsCard";
 
-import urls from "@/app/base/urls";
 import { PowerTypeNames } from "@/app/store/general/constants";
-import { PodType } from "@/app/store/pod/constants";
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
 import { screen, renderWithProviders } from "@/testing/utils";
@@ -125,7 +123,7 @@ it("renders a list of tags once loaded", () => {
 });
 
 describe("node is a controller", () => {
-  it("does not render owner, host, pool, or kernel crash dump information", () => {
+  it("does not render owner, pool, or kernel crash dump information", () => {
     const controller = factory.controllerDetails();
     state.controller.items = [controller];
 
@@ -134,7 +132,6 @@ describe("node is a controller", () => {
     });
 
     expect(screen.queryByText(DetailsCardLabels.Owner)).not.toBeInTheDocument();
-    expect(screen.queryByText(DetailsCardLabels.Host)).not.toBeInTheDocument();
     expect(
       screen.queryByText(DetailsCardLabels.PoolLink)
     ).not.toBeInTheDocument();
@@ -155,56 +152,6 @@ describe("node is a machine", () => {
 
     expect(screen.getByText(DetailsCardLabels.Owner)).toBeInTheDocument();
     expect(screen.getByText("admin")).toBeInTheDocument();
-  });
-
-  it("renders host details for LXD machines", () => {
-    const machine = factory.machineDetails({
-      pod: { id: 1, name: "lxd-pod" },
-      power_type: PowerTypeNames.LXD,
-    });
-    const pod = factory.pod({
-      id: 1,
-      name: "lxd-pod",
-      type: PodType.LXD,
-    });
-
-    state.machine.items = [machine];
-    state.pod.items = [pod];
-
-    renderWithProviders(<DetailsCard node={machine} />, {
-      state,
-    });
-
-    expect(screen.getByText(DetailsCardLabels.Owner)).toBeInTheDocument();
-    expect(screen.getByRole("link", { name: "lxd-pod ›" })).toHaveAttribute(
-      "href",
-      urls.kvm.lxd.single.index({ id: pod.id })
-    );
-  });
-
-  it("renders host details for virsh machines", () => {
-    const machine = factory.machineDetails({
-      pod: { id: 1, name: "virsh-pod" },
-      power_type: PowerTypeNames.VIRSH,
-    });
-    const pod = factory.pod({
-      id: 1,
-      name: "virsh-pod",
-      type: PodType.VIRSH,
-    });
-
-    state.machine.items = [machine];
-    state.pod.items = [pod];
-
-    renderWithProviders(<DetailsCard node={machine} />, {
-      state,
-    });
-
-    expect(screen.getByText(DetailsCardLabels.Host)).toBeInTheDocument();
-    expect(screen.getByRole("link", { name: "virsh-pod ›" })).toHaveAttribute(
-      "href",
-      urls.kvm.virsh.details.index({ id: pod.id })
-    );
   });
 
   it("renders a link to resource pool configuration with edit permissions", () => {
