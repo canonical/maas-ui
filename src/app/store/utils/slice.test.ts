@@ -1,8 +1,8 @@
 import type { Slice, PayloadAction, CaseReducer } from "@reduxjs/toolkit";
 import { createSlice } from "@reduxjs/toolkit";
 
-import { PodMeta } from "@/app/store/pod/types";
-import type { Pod, PodState } from "@/app/store/pod/types";
+import { SubnetMeta } from "@/app/store/subnet/types";
+import type { Subnet, SubnetState } from "@/app/store/subnet/types";
 import { TokenMeta } from "@/app/store/token/types";
 import type { TokenState } from "@/app/store/token/types";
 import {
@@ -388,43 +388,44 @@ describe("slice", () => {
     let slice: Slice;
 
     beforeEach(() => {
-      const statusHandlers = generateStatusHandlers<PodState, Pod, PodMeta.PK>(
-        PodMeta.PK,
-        [
-          {
-            status: "refresh",
-            statusKey: "refreshing",
-            success: (state, action) => {
-              state.items = state.items.map((item) =>
-                item.id === action.payload?.id ? action.payload : item
-              );
-            },
+      const statusHandlers = generateStatusHandlers<
+        SubnetState,
+        Subnet,
+        SubnetMeta.PK
+      >(SubnetMeta.PK, [
+        {
+          status: "scan",
+          statusKey: "scanning",
+          success: (state, action) => {
+            state.items = state.items.map((item) =>
+              item.id === action.payload?.id ? action.payload : item
+            );
           },
-        ]
-      );
+        },
+      ]);
       slice = createSlice({
-        name: PodMeta.MODEL,
+        name: SubnetMeta.MODEL,
         initialState: {
           ...genericInitialState,
           active: null,
-          projects: {},
+          eventErrors: [],
           statuses: {},
-        } as PodState,
+        } as SubnetState,
         reducers: {
-          ...generateCommonReducers<PodState, PodMeta.PK, void, void>({
-            modelName: PodMeta.MODEL,
-            primaryKey: PodMeta.PK,
+          ...generateCommonReducers<SubnetState, SubnetMeta.PK, void, void>({
+            modelName: SubnetMeta.MODEL,
+            primaryKey: SubnetMeta.PK,
           }),
-          refreshStart: statusHandlers.refresh.start as CaseReducer<
-            PodState,
+          scanStart: statusHandlers.scan.start as CaseReducer<
+            SubnetState,
             PayloadAction<unknown>
           >,
-          refreshSuccess: statusHandlers.refresh.success as CaseReducer<
-            PodState,
+          scanSuccess: statusHandlers.scan.success as CaseReducer<
+            SubnetState,
             PayloadAction<unknown>
           >,
-          refreshError: statusHandlers.refresh.error as CaseReducer<
-            PodState,
+          scanError: statusHandlers.scan.error as CaseReducer<
+            SubnetState,
             PayloadAction<unknown>
           >,
         },
@@ -432,69 +433,75 @@ describe("slice", () => {
     });
 
     it("reduces the start action", () => {
-      const pods = [factory.pod({ id: 1 })];
-      const podState = factory.podState({
-        items: pods,
+      const subnets = [factory.subnet({ id: 1 })];
+      const subnetState = factory.subnetState({
+        items: subnets,
         statuses: {
-          1: factory.podStatus({ refreshing: false }),
+          1: factory.subnetStatus({ scanning: false }),
         },
       });
 
       expect(
-        slice.reducer(podState, slice.actions.refreshStart({ item: pods[0] }))
+        slice.reducer(
+          subnetState,
+          slice.actions.scanStart({ item: subnets[0] })
+        )
       ).toEqual(
-        factory.podState({
-          items: pods,
-          statuses: { 1: factory.podStatus({ refreshing: true }) },
+        factory.subnetState({
+          items: subnets,
+          statuses: { 1: factory.subnetStatus({ scanning: true }) },
         })
       );
     });
 
     it("reduces the success action", () => {
-      const pods = [factory.pod({ id: 1, cpu_speed: 100 })];
-      const updatedPod = factory.pod({ id: 1, cpu_speed: 100 });
-      const podState = factory.podState({
-        items: pods,
+      const subnets = [factory.subnet({ id: 1 })];
+      const updatedSubnet = factory.subnet({ id: 1 });
+      const subnetState = factory.subnetState({
+        items: subnets,
         statuses: {
-          1: factory.podStatus({ refreshing: true }),
+          1: factory.subnetStatus({ scanning: true }),
         },
       });
 
       expect(
         slice.reducer(
-          podState,
-          slice.actions.refreshSuccess({ item: pods[0], payload: updatedPod })
+          subnetState,
+          slice.actions.scanSuccess({
+            item: subnets[0],
+            payload: updatedSubnet,
+          })
         )
       ).toEqual(
-        factory.podState({
-          items: [updatedPod],
-          statuses: { 1: factory.podStatus({ refreshing: false }) },
+        factory.subnetState({
+          items: [updatedSubnet],
+          statuses: { 1: factory.subnetStatus({ scanning: false }) },
         })
       );
     });
 
     it("reduces the error action", () => {
-      const pods = [factory.pod({ id: 1, cpu_speed: 100 })];
-      const podState = factory.podState({
-        items: pods,
+      const subnets = [factory.subnet({ id: 1 })];
+      const subnetState = factory.subnetState({
+        items: subnets,
         statuses: {
-          1: factory.podStatus({ refreshing: true }),
+          1: factory.subnetStatus({ scanning: true }),
         },
       });
 
       expect(
         slice.reducer(
-          podState,
-          slice.actions.refreshError({
-            item: pods[0],
+          subnetState,
+          slice.actions.scanError({
+            item: subnets[0],
             payload: "You dun goofed",
           })
         )
       ).toEqual(
-        factory.podState({
+        factory.subnetState({
           errors: "You dun goofed",
-          items: pods,
-          statuses: { 1: factory.podStatus({ refreshing: false }) },
+          items: subnets,
+          statuses: { 1: factory.subnetStatus({ scanning: false }) },
         })
       );
     });

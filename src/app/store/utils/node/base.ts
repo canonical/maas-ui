@@ -5,7 +5,6 @@ import { isDeviceDetails } from "@/app/store/device/utils";
 import type { Machine } from "@/app/store/machine/types";
 // Import from the common utils to prevent an import loop in machine/utils/index.ts.
 import { isMachineDetails } from "@/app/store/machine/utils/common";
-import type { PodActions } from "@/app/store/pod/types/base";
 import type { Node, NodeDetails } from "@/app/store/types/node";
 import {
   NodeActions,
@@ -76,10 +75,10 @@ export const getNodeActionTitle = (actionName: NodeActions): string => {
 };
 export const getNodeActionLabel = (
   modelString: string,
-  actionName: NodeActions | PodActions,
+  actionName: NodeActions,
   isProcessing: boolean
 ): string => {
-  const actionLabels: Record<NodeActions | PodActions, string[]> = {
+  const actionLabels: Record<NodeActions, string[]> = {
     [NodeActions.ABORT]: [
       `Abort actions for ${modelString}`,
       `Aborting actions for ${modelString}`,
@@ -162,9 +161,6 @@ export const getNodeActionLabel = (
       `Starting tests for ${modelString}`,
     ],
     [NodeActions.UNLOCK]: [`Unlock ${modelString}`, `Unlocking ${modelString}`],
-    compose: [`Compose ${modelString}`, `Composing ${modelString}`],
-    refresh: [`Refresh ${modelString}`, `Refreshing ${modelString}`],
-    remove: [`Remove ${modelString}`, `Removing ${modelString}`],
   };
 
   const label = actionLabels[actionName];

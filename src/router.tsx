@@ -61,12 +61,6 @@ const DomainDetails = lazy(() => import("@/app/domains/views/DomainDetails"));
 const DomainsList = lazy(() => import("@/app/domains/views/DomainsList"));
 const ImageList = lazy(() => import("@/app/images/views/ImageList"));
 const Intro = lazy(() => import("@/app/intro/views/Intro"));
-const KVMList = lazy(() => import("@/app/kvm/views/KVMList"));
-const LXDClusterDetails = lazy(
-  () => import("@/app/kvm/views/LXDClusterDetails")
-);
-const LXDSingleDetails = lazy(() => import("@/app/kvm/views/LXDSingleDetails"));
-const VirshDetails = lazy(() => import("@/app/kvm/views/VirshDetails"));
 const MachineDetails = lazy(
   () => import("@/app/machines/views/MachineDetails")
 );
@@ -493,64 +487,6 @@ export const router = createBrowserRouter(
                   <ControllerList />
                 </ErrorBoundary>
               ),
-            },
-            {
-              path: urls.kvm.index,
-              children: [
-                {
-                  path: urls.kvm.index,
-                  element: <Navigate replace to={urls.kvm.lxd.index} />,
-                },
-                {
-                  path: getRelativeRoute(urls.kvm.lxd.index, urls.kvm.index),
-                  element: (
-                    <ErrorBoundary>
-                      <KVMList />
-                    </ErrorBoundary>
-                  ),
-                },
-                {
-                  path: getRelativeRoute(urls.kvm.virsh.index, urls.kvm.index),
-                  element: (
-                    <ErrorBoundary>
-                      <KVMList />
-                    </ErrorBoundary>
-                  ),
-                },
-                {
-                  path: `${getRelativeRoute(
-                    urls.kvm.lxd.cluster.index(null),
-                    urls.kvm.index
-                  )}/*`,
-                  element: (
-                    <ErrorBoundary>
-                      <LXDClusterDetails />
-                    </ErrorBoundary>
-                  ),
-                },
-                {
-                  path: `${getRelativeRoute(
-                    urls.kvm.lxd.single.index(null),
-                    urls.kvm.index
-                  )}/*`,
-                  element: (
-                    <ErrorBoundary>
-                      <LXDSingleDetails />
-                    </ErrorBoundary>
-                  ),
-                },
-                {
-                  path: `${getRelativeRoute(
-                    urls.kvm.virsh.details.index(null),
-                    urls.kvm.index
-                  )}/*`,
-                  element: (
-                    <ErrorBoundary>
-                      <VirshDetails />
-                    </ErrorBoundary>
-                  ),
-                },
-              ],
             },
             {
               path: `${urls.pools.index}/*`,

@@ -12,7 +12,6 @@ import type { Prettify } from "@/app/base/types";
 import type { Domain } from "@/app/store/domain/types";
 import type { Fabric } from "@/app/store/fabric/types";
 import type { LicenseKeys } from "@/app/store/licensekeys/types";
-import type { Pod } from "@/app/store/pod/types";
 import type { Script, ScriptName } from "@/app/store/script/types";
 import type { Space } from "@/app/store/space/types";
 import type { Subnet } from "@/app/store/subnet/types";
@@ -285,7 +284,7 @@ type Filters = {
   [FilterGroupKey.Owner]: Machine["owner"];
   [FilterGroupKey.Parent]: Node["system_id"];
   [FilterGroupKey.Pod]: ModelRef["name"];
-  [FilterGroupKey.PodType]: Pod["type"];
+  [FilterGroupKey.PodType]: string;
   [FilterGroupKey.Pool]: ResourcePoolResponse["name"];
   [FilterGroupKey.Spaces]: Space["name"];
   [FilterGroupKey.Status]: FetchNodeStatus;

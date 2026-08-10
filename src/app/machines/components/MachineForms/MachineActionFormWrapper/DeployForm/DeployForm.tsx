@@ -26,7 +26,6 @@ import {
   useMachineSelectedCount,
   useSelectedMachinesActionsDispatch,
 } from "@/app/store/machine/utils/hooks";
-import { PodType } from "@/app/store/pod/constants";
 import { NodeActions } from "@/app/store/types/node";
 
 const DeploySchema = Yup.object().shape({
@@ -36,7 +35,6 @@ const DeploySchema = Yup.object().shape({
   includeUserData: Yup.boolean(),
   enableHwSync: Yup.boolean(),
   ephemeralDeploy: Yup.boolean(),
-  vmHostType: Yup.string().oneOf([PodType.LXD, PodType.VIRSH, ""]),
 });
 
 export type DeployFormValues = {
@@ -46,7 +44,6 @@ export type DeployFormValues = {
   oSystem: string;
   release: string;
   userData?: string;
-  vmHostType: string;
   enableHwSync: boolean;
   enableKernelCrashDump: boolean;
 };
@@ -144,7 +141,6 @@ export const DeployForm = ({
           kernel: defaultMinHweKernel || "",
           includeUserData: false,
           userData: "",
-          vmHostType: "",
           enableHwSync: false,
           enableKernelCrashDump: enableKernelCrashDump || false,
         }}
@@ -174,12 +170,6 @@ export const DeployForm = ({
               osystem: values.oSystem,
               enable_kernel_crash_dump: values.enableKernelCrashDump,
               ...(values.enableHwSync && { enable_hw_sync: true }),
-              ...(values.vmHostType === PodType.LXD && {
-                register_vmhost: true,
-              }),
-              ...(values.vmHostType === PodType.VIRSH && {
-                install_kvm: true,
-              }),
               ...(hasUserData && { user_data: values.userData }),
             });
           }

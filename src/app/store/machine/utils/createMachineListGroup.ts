@@ -40,8 +40,6 @@ export const createMachineListGroup = ({
     pool: machine.pool.name,
     architecture: machine.architecture,
     parent: machine.parent,
-    pod: machine.pod?.name || null, // KVM
-    pod_type: machine.power_type, // KVM Type
     power_state: machine.power_state,
     zone: machine.zone.name,
   };

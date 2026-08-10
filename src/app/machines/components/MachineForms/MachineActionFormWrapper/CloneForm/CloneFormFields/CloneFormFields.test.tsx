@@ -27,7 +27,6 @@ vi.mock("@reduxjs/toolkit", async () => {
 describe("CloneFormFields", () => {
   let state: RootState;
   const machine = factory.machineDetails({
-    pod: { id: 11, name: "podrick" },
     system_id: "abc123",
   });
   beforeEach(() => {

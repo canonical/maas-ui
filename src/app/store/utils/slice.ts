@@ -17,7 +17,6 @@ import type { MachineMeta, MachineStatus } from "@/app/store/machine/types";
 import type { MessageMeta } from "@/app/store/message/types";
 import type { MsmMeta } from "@/app/store/msm/types/enum";
 import type { NodeScriptResultMeta } from "@/app/store/nodescriptresult/types";
-import type { PodMeta, PodStatus } from "@/app/store/pod/types";
 import type { RootState } from "@/app/store/root/types";
 import type { StatusMeta } from "@/app/store/status/types";
 import type { SubnetMeta, SubnetStatus } from "@/app/store/subnet/types";
@@ -62,7 +61,6 @@ type StatusStates = Pick<
   | ControllerMeta.MODEL
   | DeviceMeta.MODEL
   | MachineMeta.MODEL
-  | PodMeta.MODEL
   | SubnetMeta.MODEL
   | VLANMeta.MODEL
 >;
@@ -72,7 +70,6 @@ type ModelStatuses =
   | ControllerStatus
   | DeviceStatus
   | MachineStatus
-  | PodStatus
   | SubnetStatus
   | VLANStatus;
 

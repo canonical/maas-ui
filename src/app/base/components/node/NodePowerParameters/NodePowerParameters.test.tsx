@@ -95,7 +95,6 @@ it("renders power parameters for all scopes if machine is not in a pod", () => {
     }),
   ];
   const machine = factory.machineDetails({
-    pod: undefined,
     power_parameters: {
       "node-field": "node field",
       "bmc-field": "bmc field",
@@ -108,32 +107,6 @@ it("renders power parameters for all scopes if machine is not in a pod", () => {
 
   expect(screen.getByText("node field")).toBeInTheDocument();
   expect(screen.getByText("bmc field")).toBeInTheDocument();
-});
-
-it("renders power parameters only for node scope if machine is in a pod", () => {
-  state.general.powerTypes.data = [
-    factory.powerType({
-      fields: [
-        factory.powerField({ name: "node-field", scope: PowerFieldScope.NODE }),
-        factory.powerField({ name: "bmc-field", scope: PowerFieldScope.BMC }),
-      ],
-      name: PowerTypeNames.LXD,
-    }),
-  ];
-  const machine = factory.machineDetails({
-    pod: factory.modelRef(),
-    power_parameters: {
-      "node-field": "node field",
-      "bmc-field": "bmc field",
-    },
-    power_type: PowerTypeNames.LXD,
-    system_id: "abc123",
-  });
-
-  renderWithProviders(<NodePowerParameters node={machine} />, { state });
-
-  expect(screen.getByText("node field")).toBeInTheDocument();
-  expect(screen.queryByText("bmc field")).not.toBeInTheDocument();
 });
 
 it("renders certificate power parameters with metadata", () => {

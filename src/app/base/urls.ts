@@ -3,7 +3,6 @@ import { default as devices } from "@/app/devices/urls";
 import { default as domains } from "@/app/domains/urls";
 import { default as images } from "@/app/images/urls";
 import { default as intro } from "@/app/intro/urls";
-import { default as kvm } from "@/app/kvm/urls";
 import { default as machines } from "@/app/machines/urls";
 import { default as networkDiscovery } from "@/app/networkDiscovery/urls";
 import { default as networks } from "@/app/networks/urls";
@@ -25,7 +24,6 @@ const urls = {
   domains,
   images,
   intro,
-  kvm,
   machines,
   pools,
   racks,

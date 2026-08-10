@@ -21,7 +21,7 @@ describe("PowerFormFields", () => {
     });
   });
 
-  it("disables the power select and limits field scopes to node if machine is in a pod", () => {
+  it("renders all field scopes and an enabled power select", () => {
     state.general.powerTypes.data = [
       factory.powerType({
         fields: [
@@ -40,10 +40,6 @@ describe("PowerFormFields", () => {
       }),
     ];
     const machine = factory.machineDetails({
-      pod: {
-        id: 1,
-        name: "pod",
-      },
       power_bmc_node_count: 1,
       power_type: "manual",
       system_id: "abc123",
@@ -62,12 +58,12 @@ describe("PowerFormFields", () => {
       { state }
     );
 
-    expect(screen.getByRole("combobox", { name: /Power type/ })).toBeDisabled();
+    expect(screen.getByRole("combobox", { name: /Power type/ })).toBeEnabled();
     expect(
       screen.getByRole("textbox", { name: "Node field" })
     ).toBeInTheDocument();
     expect(
-      screen.queryByRole("textbox", { name: "BMC field" })
-    ).not.toBeInTheDocument();
+      screen.getByRole("textbox", { name: "BMC field" })
+    ).toBeInTheDocument();
   });
 });

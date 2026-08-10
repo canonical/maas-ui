@@ -335,59 +335,6 @@ describe("DeployForm", () => {
     mockUseSendAnalytics.mockRestore();
   });
 
-  it("can register a LXD KVM host", async () => {
-    const { store } = renderWithProviders(
-      <DeployForm isViewingDetails={false} />,
-      { state }
-    );
-
-    await userEvent.selectOptions(
-      screen.getByRole("combobox", { name: "Kernel" }),
-      screen.getByRole("option", { name: "No minimum kernel" })
-    );
-
-    await userEvent.click(
-      screen.getByRole("checkbox", { name: /Register as MAAS KVM host/i })
-    );
-
-    await userEvent.click(
-      screen.getByRole("button", { name: "Deploy machine" })
-    );
-
-    const action = store
-      .getActions()
-      .find((action) => action.type === "machine/deploy");
-    expect(action?.payload?.params?.extra?.register_vmhost).toBe(true);
-    expect(action?.payload?.params?.extra?.install_kvm).toBeUndefined();
-  });
-
-  it("can register a libvirt KVM host", async () => {
-    const { store } = renderWithProviders(
-      <DeployForm isViewingDetails={false} />,
-      { state }
-    );
-
-    await userEvent.selectOptions(
-      screen.getByRole("combobox", { name: "Kernel" }),
-      screen.getByRole("option", { name: "No minimum kernel" })
-    );
-
-    await userEvent.click(
-      screen.getByRole("checkbox", { name: /Register as MAAS KVM host/i })
-    );
-
-    await userEvent.click(screen.getByRole("radio", { name: /libvirt/i }));
-
-    await userEvent.click(
-      screen.getByRole("button", { name: "Deploy machine" })
-    );
-    const action = store
-      .getActions()
-      .find((action) => action.type === "machine/deploy");
-    expect(action?.payload?.params?.extra?.install_kvm).toBe(true);
-    expect(action?.payload?.params?.extra?.register_vmhost).toBeUndefined();
-  });
-
   it("can deploy machines ephemerally", async () => {
     state.machine.selected = { items: ["abc123", "def456"] };
     const { store } = renderWithProviders(
