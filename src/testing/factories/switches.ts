@@ -5,9 +5,9 @@ import {
   uniqueNamesGenerator,
 } from "unique-names-generator";
 
-import type { SwitchItem } from "@/app/switches/types";
+import type { SwitchResponse } from "@/app/apiclient";
 
-export const switchFactory = Factory.define<SwitchItem>(({ sequence }) => {
+export const switchFactory = Factory.define<SwitchResponse>(({ sequence }) => {
   const name = uniqueNamesGenerator({
     dictionaries: [adjectives, animals],
     separator: "-",
