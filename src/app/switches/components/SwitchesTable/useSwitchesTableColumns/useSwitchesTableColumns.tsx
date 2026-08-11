@@ -2,12 +2,13 @@ import { useMemo } from "react";
 
 import { Button, Icon } from "@canonical/react-components";
 import type { ColumnDef } from "@tanstack/react-table";
+import { Link } from "react-router";
 
+import type { SwitchResponse } from "@/app/apiclient";
 import DoubleRow from "@/app/base/components/DoubleRow";
 import TableActions from "@/app/base/components/TableActions";
-import type { SwitchItem } from "@/app/switches/types";
 
-type SwitchColumnDef = ColumnDef<SwitchItem>;
+type SwitchColumnDef = ColumnDef<SwitchResponse>;
 
 const useSwitchesTableColumns = (): SwitchColumnDef[] => {
   return useMemo(
@@ -39,45 +40,33 @@ const useSwitchesTableColumns = (): SwitchColumnDef[] => {
             <span>MAC address</span>
           </>
         ),
-        cell: ({ row }) => (
+        cell: ({
+          row: {
+            original: { name, management_mac, id },
+          },
+        }) => (
           <DoubleRow
-            primary={row.original.name ?? "—"}
-            primaryTitle={row.original.name}
-            secondary={row.original.mac_address ?? "—"}
-            secondaryTitle={row.original.mac_address}
+            primary={<Link to={`/switches/${id}/summary`}>{name ?? "—"}</Link>}
+            primaryTitle={name}
+            secondary={management_mac ?? "—"}
+            secondaryTitle={management_mac}
           />
         ),
       },
-      {
-        id: "status",
-        accessorKey: "status",
-        enableSorting: false,
-        header: "Status",
-        cell: ({ row }) => <span>{row.original.status ?? "—"}</span>,
-      },
+      // Add when we have the status field in the API response
+      // {
+      //   id: "status",
+      //   accessorKey: "status",
+      //   enableSorting: false,
+      //   header: "Status",
+      //   cell: ({ row }) => <span>{row.original.status ?? "—"}</span>,
+      // },
       {
         id: "target_image",
         accessorKey: "target_image",
         enableSorting: false,
         header: "Image",
         cell: ({ row }) => <span>{row.original.target_image ?? "—"}</span>,
-      },
-      {
-        id: "ztp_enabled",
-        accessorKey: "ztp_enabled",
-        enableSorting: false,
-        header: "ZTP enabled",
-        cell: ({ row }) => {
-          const enabled = row.original.ztp_enabled;
-          if (enabled === undefined || enabled === null) {
-            return <span>—</span>;
-          }
-          return (
-            <Icon name={enabled ? "tick" : "close"}>
-              {enabled ? "Yes" : "No"}
-            </Icon>
-          );
-        },
       },
       {
         id: "actions",

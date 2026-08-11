@@ -36,15 +36,13 @@ describe("SwitchesTable", () => {
     it("displays the columns correctly", () => {
       renderWithProviders(<SwitchesTable />);
 
-      ["Name", "Status", "Image", "ZTP enabled", "Actions"].forEach(
-        (column) => {
-          expect(
-            screen.getByRole("columnheader", {
-              name: new RegExp(`^${column}`, "i"),
-            })
-          ).toBeInTheDocument();
-        }
-      );
+      ["Name", "Image", "Actions"].forEach((column) => {
+        expect(
+          screen.getByRole("columnheader", {
+            name: new RegExp(`^${column}`, "i"),
+          })
+        ).toBeInTheDocument();
+      });
     });
   });
 
