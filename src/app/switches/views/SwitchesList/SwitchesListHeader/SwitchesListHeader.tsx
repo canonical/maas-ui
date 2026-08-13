@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
 
-import { MainToolbar } from "@canonical/maas-react-components";
+import { MainToolbar, useSidePanel } from "@canonical/maas-react-components";
 import { Button } from "@canonical/react-components";
 
 import DebounceSearchBox from "@/app/base/components/DebounceSearchBox";
 import type { SetSearchFilter } from "@/app/base/types";
+import AddSwitch from "@/app/switches/components/AddSwitch";
 
 type Props = {
   searchFilter: string;
@@ -12,6 +13,7 @@ type Props = {
 };
 
 const SwitchesListHeader = ({ searchFilter, setSearchFilter }: Props) => {
+  const { openSidePanel } = useSidePanel();
   const [searchText, setSearchText] = useState(searchFilter);
 
   useEffect(() => {
@@ -30,7 +32,14 @@ const SwitchesListHeader = ({ searchFilter, setSearchFilter }: Props) => {
           searchText={searchText}
           setSearchText={setSearchText}
         />
-        <Button data-testid="add-switch">Add switch</Button>
+        <Button
+          data-testid="add-switch"
+          onClick={() => {
+            openSidePanel({ component: AddSwitch, title: "Add switch" });
+          }}
+        >
+          Add switch
+        </Button>
       </MainToolbar.Controls>
     </MainToolbar>
   );
