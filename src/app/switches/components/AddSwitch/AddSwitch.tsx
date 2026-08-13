@@ -10,6 +10,7 @@ import type { CreateSwitchError, SwitchRequest } from "@/app/apiclient";
 import FormikField from "@/app/base/components/FormikField";
 import FormikForm from "@/app/base/components/FormikForm";
 import { MAC_ADDRESS_REGEX } from "@/app/base/validation";
+import { getOsDisplayName } from "@/app/images/utils";
 import { getSwitchErrorMessage } from "@/app/switches/utils";
 
 const SwitchSchema = Yup.object().shape({
@@ -30,7 +31,7 @@ const AddSwitch = (): ReactElement => {
     { label: "Select an image", value: "", disabled: true },
     ...(availableImages.data?.items ?? []).map((image, index) => ({
       key: `${image.title}-${index}`,
-      label: `${image.os}/${image.release} - ${image.title} (${image.architecture})`,
+      label: `${getOsDisplayName(image.os)}/${image.release} - ${image.title} (${image.architecture})`,
       value: `${image.os}/${image.release}/${image.architecture}`,
     })),
   ];
