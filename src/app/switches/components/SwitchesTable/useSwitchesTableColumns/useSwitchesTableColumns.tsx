@@ -1,5 +1,6 @@
 import { useMemo } from "react";
 
+import { useSidePanel } from "@canonical/maas-react-components";
 import { Button, Icon } from "@canonical/react-components";
 import type { ColumnDef } from "@tanstack/react-table";
 import { Link } from "react-router";
@@ -7,10 +8,13 @@ import { Link } from "react-router";
 import type { SwitchResponse } from "@/app/apiclient";
 import DoubleRow from "@/app/base/components/DoubleRow";
 import TableActions from "@/app/base/components/TableActions";
+import DeleteSwitch from "@/app/switches/components/DeleteSwitch";
+import EditSwitch from "@/app/switches/components/EditSwitch";
 
 type SwitchColumnDef = ColumnDef<SwitchResponse>;
 
 const useSwitchesTableColumns = (): SwitchColumnDef[] => {
+  const { openSidePanel } = useSidePanel();
   return useMemo(
     () => [
       {
@@ -73,12 +77,31 @@ const useSwitchesTableColumns = (): SwitchColumnDef[] => {
         accessorKey: "id",
         enableSorting: false,
         header: "Actions",
-        cell: () => (
-          <TableActions onDelete={() => undefined} onEdit={() => undefined} />
+        cell: ({
+          row: {
+            original: { id },
+          },
+        }) => (
+          <TableActions
+            onDelete={() => {
+              openSidePanel({
+                component: DeleteSwitch,
+                title: "Delete switch",
+                props: { id },
+              });
+            }}
+            onEdit={() => {
+              openSidePanel({
+                component: EditSwitch,
+                title: "Edit switch",
+                props: { id },
+              });
+            }}
+          />
         ),
       },
     ],
-    []
+    [openSidePanel]
   );
 };
 
