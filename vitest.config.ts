@@ -4,15 +4,20 @@ import * as path from "path";
 export default defineConfig({
   resolve: {
     alias: { "@": path.resolve(__dirname, "src") },
-    // Ensure a single copy of these packages is used, even when
-    // @canonical/maas-react-components is linked locally and ships its own
-    // nested copies in node_modules. Mirrors the dedupe in vite.config.ts so
-    // that shared context (e.g. the side panel provider) works in tests.
+    // Symlink-only dedupe
     dedupe: [
       "@canonical/react-components",
       "react",
       "react-dom",
       "react-router",
+      "react-redux",
+      "@reduxjs/toolkit",
+      "@tanstack/react-query",
+      "@tanstack/react-table",
+      "@testing-library/react",
+      "@testing-library/dom",
+      "@testing-library/user-event",
+      "msw",
     ],
   },
   css: {
@@ -28,6 +33,12 @@ export default defineConfig({
     setupFiles: ["./src/setupTests.ts"],
     exclude: [...configDefaults.exclude, "**/tests/**"],
     clearMocks: true,
+    server: {
+      deps: {
+        // Symlink-only
+        inline: [/maas-react-components\/node_modules\//],
+      },
+    },
     coverage: {
       // use instrumented coverage via istanbul instead of v8
       provider: "istanbul",
