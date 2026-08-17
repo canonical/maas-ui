@@ -443,8 +443,6 @@ export enum FetchGroupByKey {
   Architecture = FetchGroupKey.Architecture,
   Domain = FetchGroupKey.Domain,
   Parent = FetchGroupKey.Parent,
-  Pod = FetchGroupKey.Pod,
-  PodType = FetchGroupKey.PodType,
   PowerState = FetchGroupKey.PowerState,
   Zone = FetchGroupKey.Zone,
 }

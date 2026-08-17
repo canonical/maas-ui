@@ -80,14 +80,6 @@ export const groupOptions: { value: FetchGroupKey | ""; label: string }[] = [
     label: "Group by parent",
   },
   {
-    value: FetchGroupKey.Pod,
-    label: "Group by KVM",
-  },
-  {
-    value: FetchGroupKey.PodType,
-    label: "Group by KVM type",
-  },
-  {
     value: FetchGroupKey.PowerState,
     label: "Group by power state",
   },
