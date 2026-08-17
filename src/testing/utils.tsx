@@ -8,9 +8,9 @@ import {
   expectTooltipOnHover,
   mockIsPending,
   mockSidePanel,
-  renderHookWithProviders as libRenderHookWithProviders,
-  renderWithProviders as libRenderWithProviders,
-  setupMockServer as libSetupMockServer,
+  renderHookWithProviders as upstreamRenderHookWithProviders,
+  renderWithProviders as upstreamRenderWithProviders,
+  setupMockServer as upstreamSetupMockServer,
   spyOnMutation,
   waitForLoading,
 } from "@canonical/maas-react-components/testing";
@@ -220,7 +220,7 @@ export function flushAllLogs() {
  * @return The mock server instance
  */
 export const setupMockServer = (...handlers: RequestHandler[]) => {
-  const mockServer = libSetupMockServer(client, BASE_URL, ...handlers);
+  const mockServer = upstreamSetupMockServer(client, BASE_URL, ...handlers);
 
   mockServer.events.on("request:start", ({ request }: { request: Request }) => {
     logEvent(
@@ -250,34 +250,44 @@ export const setupMockServer = (...handlers: RequestHandler[]) => {
 type MaasStore = MockStoreEnhanced<RootState | unknown>;
 
 /**
- * Wraps rendered/hooked children with the app's WebSocketProvider and a
- * render Profiler used for perf logging, to be passed as
- * `AdditionalProviders` to the upstreamed render helpers.
+ * Builds a project-specific `AdditionalProviders` wrapper (Redux `Provider`,
+ * `WebSocketProvider`, and a render `Profiler` used for perf logging) to be
+ * passed to the upstreamed render helpers, which no longer maintain any
+ * Redux/state-management dependencies themselves.
+ *
+ * `store` is read via a getter so that callers (e.g. `rerender`) can swap the
+ * underlying store between renders while reusing the same component
+ * reference.
  */
-const AdditionalProviders = ({ children }: { children: ReactNode }) => {
-  const onRender: ProfilerOnRenderCallback = (_id, phase, actualDuration) => {
-    logEvent(
-      expect.getState().testPath?.split("/").pop() || "unknown file",
-      expect.getState().currentTestName || "unknown",
-      "render",
-      `[${phase}], took ${actualDuration.toFixed(2)}ms`
+const makeAdditionalProviders = (getStore: () => MaasStore) => {
+  return ({ children }: { children: ReactNode }) => {
+    const onRender: ProfilerOnRenderCallback = (_id, phase, actualDuration) => {
+      logEvent(
+        expect.getState().testPath?.split("/").pop() || "unknown file",
+        expect.getState().currentTestName || "unknown",
+        "render",
+        `[${phase}], took ${actualDuration.toFixed(2)}ms`
+      );
+    };
+
+    return (
+      <Profiler id="TestComponent" onRender={onRender}>
+        <WebSocketProvider>
+          <Provider store={getStore()}>{children}</Provider>
+        </WebSocketProvider>
+      </Profiler>
     );
   };
-
-  return (
-    <Profiler id="TestComponent" onRender={onRender}>
-      <WebSocketProvider>{children}</WebSocketProvider>
-    </Profiler>
-  );
 };
 
 /**
  * A function for rendering a component with all test-relevant providers.
  *
  * Delegates to the upstreamed `renderWithProviders` from
- * `@canonical/maas-react-components/testing`, defaulting the store to a
- * `redux-mock-store` preloaded with `RootState` so that `store.getActions()`
- * remains available to callers.
+ * `@canonical/maas-react-components/testing`, which no longer owns any Redux
+ * behavior, so the Redux `store`/`Provider` are supplied here via
+ * `AdditionalProviders` and defaulted to a `redux-mock-store` preloaded with
+ * `RootState` so that `store.getActions()` remains available to callers.
  *
  * @param ui The component to be rendered
  * @param options The rendering options
@@ -298,35 +308,42 @@ export const renderWithProviders = (
   rerender: (ui: ReactNode, options?: { state?: RootState }) => void;
   store: MaasStore;
 } => {
-  const store: MaasStore =
+  let store: MaasStore =
     options?.store ??
     getMockStore({ ...factory.rootState(), ...options?.state });
+
+  const AdditionalProviders = makeAdditionalProviders(() => store);
 
   const {
     result,
     router,
-    rerender,
-    store: renderedStore,
-  } = libRenderWithProviders<RootState>(ui, {
+    rerender: libRerender,
+  } = upstreamRenderWithProviders(ui, {
     ...options,
-    store,
     AdditionalProviders,
   });
 
-  return {
-    result,
-    router,
-    rerender,
-    store: renderedStore as MaasStore,
+  const rerender = (
+    ui: ReactNode,
+    { state: newState }: { state?: RootState } = {}
+  ) => {
+    if (newState) {
+      store = getMockStore({ ...options?.state, ...newState });
+    }
+    return libRerender(ui);
   };
+
+  return { result, router, rerender, store };
 };
 
 /**
  * A function for rendering a hook with all test-relevant providers.
  *
  * Delegates to the upstreamed `renderHookWithProviders` from
- * `@canonical/maas-react-components/testing`, defaulting the store to a
- * `redux-mock-store` preloaded with `RootState`.
+ * `@canonical/maas-react-components/testing`, which no longer owns any Redux
+ * behavior, so the Redux `store`/`Provider` are supplied here via
+ * `AdditionalProviders` and defaulted to a `redux-mock-store` preloaded with
+ * `RootState`.
  *
  * @param hook The hook to be rendered
  * @param options
@@ -348,17 +365,14 @@ export const renderHookWithProviders = <T,>(
     options?.store ??
     getMockStore({ ...factory.rootState(), ...options?.state });
 
-  const {
-    result,
-    store: renderedStore,
-    queryClient,
-  } = libRenderHookWithProviders<T, RootState>(hook, {
+  const AdditionalProviders = makeAdditionalProviders(() => store);
+
+  const { result, queryClient } = upstreamRenderHookWithProviders<T>(hook, {
     ...options,
-    store,
     AdditionalProviders,
   });
 
-  return { result, store: renderedStore as MaasStore, queryClient };
+  return { result, store, queryClient };
 };
 
 export {
