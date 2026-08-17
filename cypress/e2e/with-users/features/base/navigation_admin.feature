@@ -28,7 +28,6 @@ Feature: Navigation - admin
       | Machines    | /machines                       |
       | Devices     | /devices                        |
       | Controllers | /controllers                    |
-      | LXD         | /kvm/lxd                        |
       | Images      | /images                         |
       | DNS         | /domains                        |
       | Networks    | /networks/subnets               |
