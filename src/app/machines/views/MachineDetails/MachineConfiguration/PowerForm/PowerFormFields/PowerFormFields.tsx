@@ -12,7 +12,7 @@ type Props = {
 };
 
 const PowerFormFields = ({ machine }: Props): React.ReactElement => {
-  const fieldScopes = getMachineFieldScopes(machine);
+  const fieldScopes = getMachineFieldScopes();
 
   return (
     <Row>
@@ -20,7 +20,6 @@ const PowerFormFields = ({ machine }: Props): React.ReactElement => {
         <PowerTypeFields<PowerFormValues>
           customFieldProps={{
             [PowerTypeNames.LXD]: {
-              canEditCertificate: true,
               initialShouldGenerateCert: !machine.certificate,
             },
           }}

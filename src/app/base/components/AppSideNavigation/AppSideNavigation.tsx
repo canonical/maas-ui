@@ -1,5 +1,4 @@
 import type { ReactElement } from "react";
-import { useMemo } from "react";
 
 import { Navigation, NavigationBar } from "@canonical/maas-react-components";
 import {
@@ -35,7 +34,7 @@ import type { RootState } from "@/app/store/root/types";
 
 export type SideNavigationProps = {
   authUser: CurrentUserInfo | undefined;
-  filteredGroups: typeof navGroups;
+  groups: typeof navGroups;
   isAuthenticated: boolean;
   isCollapsed: boolean;
   isDarkMode: boolean;
@@ -50,7 +49,7 @@ export type SideNavigationProps = {
 
 export const AppSideNavigation = ({
   authUser,
-  filteredGroups,
+  groups,
   isAuthenticated,
   isCollapsed,
   isDarkMode,
@@ -99,7 +98,7 @@ export const AppSideNavigation = ({
         <Navigation.Content>
           <AppSideNavItems
             authUser={authUser}
-            groups={filteredGroups}
+            groups={groups}
             isAuthenticated={isAuthenticated}
             logout={logout}
             path={path}
@@ -163,14 +162,10 @@ const AppSideNavigationContainer = (): React.ReactElement => {
 
   const { theme } = useThemeContext();
 
-  const filteredGroups = useMemo(() => {
-    return navGroups;
-  }, []);
-
   return (
     <AppSideNavigation
       authUser={user.data!}
-      filteredGroups={filteredGroups}
+      groups={navGroups}
       isAuthenticated={isAuthenticated}
       isCollapsed={isCollapsed}
       isDarkMode={isDarkMode}

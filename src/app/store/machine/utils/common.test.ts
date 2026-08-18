@@ -55,9 +55,7 @@ describe("common machine utils", () => {
 
   describe("getMachineFieldScopes", () => {
     it("gets the field scopes for a machine", () => {
-      const machine = factory.machine();
-
-      expect(getMachineFieldScopes(machine)).toStrictEqual([
+      expect(getMachineFieldScopes()).toStrictEqual([
         PowerFieldScope.BMC,
         PowerFieldScope.NODE,
       ]);

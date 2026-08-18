@@ -21,7 +21,6 @@ import type {
   NetworkLinkMode,
   StorageLayout,
 } from "@/app/store/types/enum";
-import type { ModelRef } from "@/app/store/types/model";
 import type {
   Node,
   BaseNodeActionParams,
@@ -283,8 +282,6 @@ type Filters = {
   [FilterGroupKey.Osystem]: Machine["osystem"];
   [FilterGroupKey.Owner]: Machine["owner"];
   [FilterGroupKey.Parent]: Node["system_id"];
-  [FilterGroupKey.Pod]: ModelRef["name"];
-  [FilterGroupKey.PodType]: string;
   [FilterGroupKey.Pool]: ResourcePoolResponse["name"];
   [FilterGroupKey.Spaces]: Space["name"];
   [FilterGroupKey.Status]: FetchNodeStatus;
@@ -310,8 +307,6 @@ type ExcludeFilters = {
   [FilterGroupKey.NotMem]: Filters[FilterGroupKey.Mem];
   [FilterGroupKey.NotOsystem]: Filters[FilterGroupKey.Osystem];
   [FilterGroupKey.NotOwner]: Filters[FilterGroupKey.Owner];
-  [FilterGroupKey.NotPod]: Filters[FilterGroupKey.Pod];
-  [FilterGroupKey.NotPodType]: Filters[FilterGroupKey.PodType];
   [FilterGroupKey.NotSubnets]: Filters[FilterGroupKey.Subnets];
   [FilterGroupKey.NotId]: Filters[FilterGroupKey.Id];
   [FilterGroupKey.NotTags]: Filters[FilterGroupKey.Tags];

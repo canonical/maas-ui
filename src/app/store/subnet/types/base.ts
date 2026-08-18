@@ -3,7 +3,10 @@ import type { IPAddressType, SubnetMeta } from "./enum";
 import type { UserResponse } from "@/app/apiclient";
 import type { APIError } from "@/app/base/types";
 import type { Domain } from "@/app/store/domain/types";
-import type { KnownBootArchitecture } from "@/app/store/general/types";
+import type {
+  KnownBootArchitecture,
+  PowerType,
+} from "@/app/store/general/types";
 import type {
   Model,
   TimestampedModel,
@@ -43,7 +46,7 @@ export type SubnetBMCNode = {
 
 export type SubnetBMC = Model & {
   nodes: SubnetBMCNode[];
-  power_type: string;
+  power_type: PowerType["name"];
 };
 
 export type SubnetDNSRecord = Model & {
