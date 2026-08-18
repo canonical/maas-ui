@@ -15,16 +15,24 @@ import {
 import { callId, enableCallIdMocks } from "@/testing/callId-mock";
 import * as factory from "@/testing/factories";
 import { mockFormikFormSaved } from "@/testing/mockFormikFormSaved";
+import { imageResolvers } from "@/testing/resolvers/images";
+import { switchResolvers } from "@/testing/resolvers/switches";
 import {
   fireEvent,
   renderWithProviders,
   screen,
+  setupMockServer,
   userEvent,
   waitFor,
   within,
 } from "@/testing/utils";
 
 enableCallIdMocks();
+
+const mockServer = setupMockServer(
+  switchResolvers.createSwitch.handler(),
+  imageResolvers.listSelections.handler()
+);
 
 describe("DiscoveryAddForm", () => {
   let state: RootState;
@@ -346,6 +354,125 @@ describe("DiscoveryAddForm", () => {
         store.getActions().find((action) => action.type === "message/add")
           .payload.message
       ).toBe("An interface has been added.");
+    });
+  });
+});
+
+describe("DiscoveryAddForm switch", () => {
+  let state: RootState;
+  const discovery = factory.discovery({
+    ip: "1.2.3.4",
+    mac_address: "aa:bb:cc:dd:ee:ff",
+    subnet_id: 9,
+    vlan_id: 8,
+    hostname: "discovery-hostname.domain-name",
+  });
+
+  beforeEach(() => {
+    state = factory.rootState({
+      device: factory.deviceState({ loaded: true }),
+      domain: factory.domainState({ loaded: true }),
+      machine: factory.machineState({
+        loaded: true,
+        lists: {
+          [callId]: factory.machineStateList({
+            loaded: true,
+            groups: [
+              factory.machineStateListGroup({
+                items: [],
+                name: "Deployed",
+              }),
+            ],
+          }),
+        },
+      }),
+      subnet: factory.subnetState({ loaded: true }),
+      vlan: factory.vlanState({ loaded: true }),
+    });
+  });
+
+  const selectSwitchType = async () => {
+    await userEvent.selectOptions(
+      screen.getByRole("combobox", { name: FormFieldLabels.Type }),
+      DeviceType.SWITCH
+    );
+  };
+
+  it("shows switch specific fields when the Switch type is selected", async () => {
+    renderWithProviders(<DiscoveryAddForm discovery={discovery} />, { state });
+
+    await selectSwitchType();
+
+    expect(
+      screen.getByRole("textbox", { name: FormFieldLabels.Name })
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole("textbox", { name: FormFieldLabels.MacAddress })
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole("combobox", { name: FormFieldLabels.Image })
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole("combobox", { name: "IP assignment" })
+    ).toBeInTheDocument();
+  });
+
+  it("pre-populates the MAC address from the discovery", async () => {
+    renderWithProviders(<DiscoveryAddForm discovery={discovery} />, { state });
+
+    await selectSwitchType();
+
+    expect(
+      screen.getByRole("textbox", { name: FormFieldLabels.MacAddress })
+    ).toHaveValue("aa:bb:cc:dd:ee:ff");
+  });
+
+  it("shows Cancel, Save and Save and go to switch listing buttons", async () => {
+    renderWithProviders(<DiscoveryAddForm discovery={discovery} />, { state });
+
+    await selectSwitchType();
+
+    expect(screen.getByRole("button", { name: "Cancel" })).toBeInTheDocument();
+    expect(
+      screen.getByRole("button", {
+        name: DiscoveryAddFormLabels.SwitchSubmitLabel,
+      })
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole("button", { name: DiscoveryAddFormLabels.SubmitLabel })
+    ).toBeInTheDocument();
+  });
+
+  it("populates the image dropdown with available images", async () => {
+    renderWithProviders(<DiscoveryAddForm discovery={discovery} />, { state });
+
+    await selectSwitchType();
+
+    await waitFor(() => {
+      expect(
+        screen.getByRole("option", { name: /centos\/centos7 - 7\.0/i })
+      ).toBeInTheDocument();
+    });
+  });
+
+  it("calls create switch on save", async () => {
+    renderWithProviders(<DiscoveryAddForm discovery={discovery} />, { state });
+
+    await selectSwitchType();
+
+    await userEvent.type(
+      screen.getByRole("textbox", { name: FormFieldLabels.Name }),
+      "test-switch"
+    );
+
+    await userEvent.click(
+      screen.getByRole("button", {
+        name: DiscoveryAddFormLabels.SwitchSubmitLabel,
+      })
+    );
+
+    await waitFor(() => {
+      expect(switchResolvers.createSwitch.resolved).toBeTruthy();
     });
   });
 });

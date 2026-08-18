@@ -12,12 +12,13 @@ import DiscoveryAddFormFields from "./DiscoveryAddFormFields";
 import type { DiscoveryAddValues } from "./types";
 import { DeviceType } from "./types";
 
+import { useCreateSwitch } from "@/app/api/query/switches";
 import type { DiscoveryResponse } from "@/app/apiclient";
 import { listDiscoveriesQueryKey } from "@/app/apiclient/@tanstack/react-query.gen";
 import FormikForm from "@/app/base/components/FormikForm";
 import { useCycled, useFetchActions } from "@/app/base/hooks";
 import urls from "@/app/base/urls";
-import { hostnameValidation } from "@/app/base/validation";
+import { hostnameValidation, MAC_ADDRESS_REGEX } from "@/app/base/validation";
 import { deviceActions } from "@/app/store/device";
 import deviceSelectors from "@/app/store/device/selectors";
 import type { CreateInterfaceParams, Device } from "@/app/store/device/types";
@@ -32,12 +33,14 @@ import subnetSelectors from "@/app/store/subnet/selectors";
 import { FetchNodeStatus } from "@/app/store/types/node";
 import { vlanActions } from "@/app/store/vlan";
 import vlanSelectors from "@/app/store/vlan/selectors";
+import { getSwitchErrorMessage } from "@/app/switches/utils";
 import { preparePayload } from "@/app/utils";
 
 export enum Labels {
   SubmitLabel = "Save",
   SecondarySubmitParent = "Save and go to machine details",
   SecondarySubmitNoParent = "Save and go to device listing",
+  SwitchSubmitLabel = "Save and go to switch listing",
 }
 
 type Props = {
@@ -116,6 +119,14 @@ const DiscoveryAddSchema = Yup.object().shape({
   ip_assignment: Yup.string(),
   parent: Yup.string(),
   type: Yup.string(),
+  name: Yup.string(),
+  image: Yup.string(),
+  mac_address: Yup.string().when("type", {
+    is: DeviceType.SWITCH,
+    then: Yup.string()
+      .required("MAC address is required")
+      .matches(MAC_ADDRESS_REGEX, "Invalid MAC address"),
+  }),
 });
 
 const DiscoveryAddForm = ({ discovery }: Props): ReactElement => {
@@ -126,6 +137,8 @@ const DiscoveryAddForm = ({ discovery }: Props): ReactElement => {
   const initialDeviceType = DeviceType.DEVICE;
   const [deviceType, setDeviceType] = useState<DeviceType>(initialDeviceType);
   const [device, setDevice] = useState<Device[DeviceMeta.PK] | null>(null);
+  const createSwitch = useCreateSwitch();
+  const isSwitch = deviceType === DeviceType.SWITCH;
   const devicesLoaded = useSelector(deviceSelectors.loaded);
   const defaultDomain = useSelector(domainSelectors.getDefault);
   let hostname = discovery.hostname;
@@ -151,9 +164,16 @@ const DiscoveryAddForm = ({ discovery }: Props): ReactElement => {
   const [createdInterface] = useCycled(
     !creatingInterface && creatingInterfaceErrors.length === 0
   );
-  const processing =
-    deviceType === DeviceType.DEVICE ? saving : creatingInterface;
-  const processed = deviceType === DeviceType.DEVICE ? saved : createdInterface;
+  const processing = isSwitch
+    ? createSwitch.isPending
+    : deviceType === DeviceType.DEVICE
+      ? saving
+      : creatingInterface;
+  const processed = isSwitch
+    ? createSwitch.isSuccess
+    : deviceType === DeviceType.DEVICE
+      ? saved
+      : createdInterface;
   const { loaded: machinesLoaded } = useFetchMachines({
     filters: { status: FetchNodeStatus.DEPLOYED },
   });
@@ -189,7 +209,7 @@ const DiscoveryAddForm = ({ discovery }: Props): ReactElement => {
       allowUnchanged
       aria-label="Add discovery"
       className="u-width--full"
-      errors={errors}
+      errors={isSwitch ? getSwitchErrorMessage(createSwitch.error) : errors}
       initialValues={{
         [DeviceMeta.PK]: "",
         domain: (domainByName || defaultDomain)?.name || "",
@@ -197,6 +217,9 @@ const DiscoveryAddForm = ({ discovery }: Props): ReactElement => {
         ip_assignment: DeviceIpAssignment.DYNAMIC,
         parent: "",
         type: initialDeviceType,
+        name: "",
+        mac_address: discovery.mac_address || "",
+        image: "",
       }}
       onCancel={closeSidePanel}
       onSaveAnalytics={{
@@ -205,6 +228,18 @@ const DiscoveryAddForm = ({ discovery }: Props): ReactElement => {
         label: "Add discovery form",
       }}
       onSubmit={(values) => {
+        if (values.type === DeviceType.SWITCH) {
+          // The primary "Save" button should not redirect anywhere.
+          setRedirect(null);
+          createSwitch.mutate({
+            body: {
+              mac_address: values.mac_address ?? "",
+              name: values.name,
+              image: values.image,
+            },
+          });
+          return;
+        }
         // The normal submit button should not redirect anywhere.
         setRedirect(null);
         formSubmit(dispatch, discovery, values);
@@ -218,7 +253,9 @@ const DiscoveryAddForm = ({ discovery }: Props): ReactElement => {
         if (!redirect) {
           closeSidePanel();
           let device: string;
-          if (values.hostname) {
+          if (values.type === DeviceType.SWITCH) {
+            device = values.name || "A switch";
+          } else if (values.hostname) {
             device = values.hostname;
           } else if (values.type === DeviceType.INTERFACE) {
             device = `An ${values.type}`;
@@ -236,15 +273,33 @@ const DiscoveryAddForm = ({ discovery }: Props): ReactElement => {
       saved={processed}
       savedRedirect={redirect}
       saving={processing}
-      secondarySubmit={(values) => {
-        // The secondary submit should redirect to the device/devices.
-        setRedirectURL(values, setRedirect);
-        formSubmit(dispatch, discovery, values);
-      }}
-      secondarySubmitLabel={(values) =>
-        values.parent
-          ? Labels.SecondarySubmitParent
-          : Labels.SecondarySubmitNoParent
+      secondarySubmit={
+        isSwitch
+          ? (values) => {
+              // The switch secondary submit should redirect to the switch
+              // listing.
+              setRedirect(urls.switches.index);
+              createSwitch.mutate({
+                body: {
+                  mac_address: values.mac_address ?? "",
+                  name: values.name,
+                  image: values.image,
+                },
+              });
+            }
+          : (values) => {
+              // The secondary submit should redirect to the device/devices.
+              setRedirectURL(values, setRedirect);
+              formSubmit(dispatch, discovery, values);
+            }
+      }
+      secondarySubmitLabel={
+        isSwitch
+          ? Labels.SwitchSubmitLabel
+          : (values) =>
+              values.parent
+                ? Labels.SecondarySubmitParent
+                : Labels.SecondarySubmitNoParent
       }
       submitLabel={Labels.SubmitLabel}
       validationSchema={DiscoveryAddSchema}
