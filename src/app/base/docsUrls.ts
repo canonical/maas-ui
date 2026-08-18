@@ -17,8 +17,6 @@ const docsUrls = {
   ipmi: "https://canonical.com/maas/docs/latest/reference/configuration-guides/power-drivers/#id6",
   ipRanges:
     "https://canonical.com/maas/docs/latest/explanation/networking/#ip-range-management-and-static-ip-assignments",
-  kvmIntroduction:
-    "https://canonical.com/maas/docs/latest/how-to-guides/manage-machines/#use-lxd-vms",
   networkDiscovery:
     "https://canonical.com/maas/docs/latest/explanation/networking/#network-discovery",
   rackController:

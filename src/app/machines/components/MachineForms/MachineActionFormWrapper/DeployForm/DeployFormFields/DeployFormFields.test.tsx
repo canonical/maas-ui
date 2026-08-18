@@ -160,96 +160,6 @@ describe("DeployFormFields", () => {
     });
   });
 
-  it("disables KVM host checkbox if not Ubuntu 18.04 or 20.04", async () => {
-    if (state.general.osInfo.data) {
-      state.general.osInfo.data.default_release = "xenial";
-    }
-    renderWithProviders(<DeployForm isViewingDetails={false} />, { state });
-    expect(
-      screen.getByRole("checkbox", { name: /Register as MAAS KVM host/ })
-    ).toBeDisabled();
-    await userEvent.selectOptions(
-      screen.getByRole("combobox", { name: "Release" }),
-      'Ubuntu 18.04 LTS "Bionic Beaver"'
-    );
-
-    await waitFor(() => {
-      expect(
-        screen.getByRole("checkbox", { name: /Register as MAAS KVM host/ })
-      ).toBeEnabled();
-    });
-  });
-
-  it("enables KVM host checkbox when switching to Ubuntu 18.04 from a different OS/Release", async () => {
-    if (state.general.osInfo.data) {
-      state.general.osInfo.data.default_release = "bionic";
-    }
-    renderWithProviders(<DeployForm isViewingDetails={false} />, { state });
-    // Initial selection is Ubuntu 18.04. Switch to CentOS 6 to CentOS 7 back to
-    // Ubuntu 18.04 and checkbox should be enabled.
-    await userEvent.selectOptions(
-      screen.getByRole("combobox", { name: "OS" }),
-      "CentOS"
-    );
-    await userEvent.selectOptions(
-      screen.getByRole("combobox", { name: "Release" }),
-      "CentOS 7"
-    );
-    await userEvent.selectOptions(
-      screen.getByRole("combobox", { name: "OS" }),
-      "Ubuntu"
-    );
-    await userEvent.selectOptions(
-      screen.getByRole("combobox", { name: "Release" }),
-      "bionic"
-    );
-    await waitFor(() => {
-      expect(
-        screen.getByRole("checkbox", { name: /Register as MAAS KVM host/ })
-      ).not.toBeDisabled();
-    });
-  });
-
-  it("shows KVM host type options when the KVM host checkbox is checked", async () => {
-    if (state.general.osInfo.data) {
-      state.general.osInfo.data.default_release = "bionic";
-    }
-    renderWithProviders(<DeployForm isViewingDetails={false} />, { state });
-    expect(
-      screen.queryByRole("radio", { name: /LXD/ })
-    ).not.toBeInTheDocument();
-    expect(
-      screen.queryByRole("radio", { name: /libvirt/ })
-    ).not.toBeInTheDocument();
-
-    await userEvent.click(
-      screen.getByRole("checkbox", { name: /Register as MAAS KVM host/ })
-    );
-    await waitFor(() => {
-      expect(screen.getByRole("radio", { name: /LXD/ })).toBeInTheDocument();
-    });
-    expect(screen.getByRole("radio", { name: /libvirt/ })).toBeInTheDocument();
-  });
-
-  it("displays support message only when 'virsh' is selected for KVM host type", async () => {
-    if (state.general.osInfo.data) {
-      state.general.osInfo.data.default_release = "bionic";
-    }
-    renderWithProviders(<DeployForm isViewingDetails={false} />, { state });
-
-    const SUPPORT_MESSAGE =
-      "Only Ubuntu 18.04 LTS and Ubuntu 20.04 LTS are officially supported.";
-
-    await userEvent.click(
-      screen.getByRole("checkbox", { name: /Register as MAAS KVM host/ })
-    );
-    await userEvent.click(screen.getByRole("radio", { name: /libvirt/ }));
-    expect(screen.getByText(SUPPORT_MESSAGE)).toBeInTheDocument();
-
-    await userEvent.click(screen.getByRole("radio", { name: /LXD/ }));
-    expect(screen.queryByText(SUPPORT_MESSAGE)).not.toBeInTheDocument();
-  });
-
   it("displays a warning if user has no SSH keys", async () => {
     const userId = 1;
     mockServer.use(
@@ -278,9 +188,6 @@ describe("DeployFormFields", () => {
     expect(screen.getByTestId("images-error")).toBeInTheDocument();
     expect(screen.getByRole("combobox", { name: "OS" })).toBeDisabled();
     expect(screen.getByRole("combobox", { name: "Release" })).toBeDisabled();
-    expect(
-      screen.getByRole("checkbox", { name: /Register as MAAS KVM host/ })
-    ).toBeDisabled();
   });
 
   it("can display the user data input", async () => {
@@ -456,20 +363,6 @@ describe("DeployFormFields", () => {
     expect(
       screen.getByRole("radio", { name: "Deploy in memory" })
     ).not.toBeChecked();
-  });
-
-  it("hides 'Register as MAAS KVM host' if 'Deploy in memory' is selected", async () => {
-    renderWithProviders(<DeployForm isViewingDetails={false} />, {
-      state,
-    });
-
-    await userEvent.click(
-      screen.getByRole("radio", { name: "Deploy in memory" })
-    );
-
-    expect(
-      screen.queryByRole("checkbox", { name: "Register as MAAS KVM host" })
-    ).not.toBeInTheDocument();
   });
 
   it("shows a tooltip for minimum OS requirements", async () => {

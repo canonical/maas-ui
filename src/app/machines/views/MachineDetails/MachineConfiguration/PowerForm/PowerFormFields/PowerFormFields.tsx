@@ -12,8 +12,7 @@ type Props = {
 };
 
 const PowerFormFields = ({ machine }: Props): React.ReactElement => {
-  const isMachineInPod = Boolean(machine.pod);
-  const fieldScopes = getMachineFieldScopes(machine);
+  const fieldScopes = getMachineFieldScopes();
 
   return (
     <Row>
@@ -21,11 +20,9 @@ const PowerFormFields = ({ machine }: Props): React.ReactElement => {
         <PowerTypeFields<PowerFormValues>
           customFieldProps={{
             [PowerTypeNames.LXD]: {
-              canEditCertificate: !isMachineInPod,
               initialShouldGenerateCert: !machine.certificate,
             },
           }}
-          disableSelect={isMachineInPod}
           fieldScopes={fieldScopes}
           powerParametersValueName="powerParameters"
           powerTypeValueName="powerType"

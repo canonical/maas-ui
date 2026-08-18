@@ -30,9 +30,6 @@ import {
   fabric as fabricFactory,
   fabricState as fabricStateFactory,
   generalState as generalStateFactory,
-  podDetails as podDetailsFactory,
-  podState as podStateFactory,
-  podStatus as podStatusFactory,
   powerType as powerTypeFactory,
   powerTypesState as powerTypesStateFactory,
   rootState as rootStateFactory,
@@ -59,11 +56,6 @@ export const getTestState = (): RootState => {
   const bootVlan = vlanFactory({ fabric: fabric.id, name: "pxe-vlan" });
   const nonBootSubnet = subnetFactory({ vlan: nonBootVlan.id });
   const bootSubnet = subnetFactory({ name: "pxe-subnet", vlan: bootVlan.id });
-  const pod = podDetailsFactory({
-    attached_vlans: [nonBootVlan.id, bootVlan.id],
-    boot_vlans: [bootVlan.id],
-    id: 1,
-  });
   return rootStateFactory({
     config: configStateFactory({
       loaded: true,
@@ -81,11 +73,6 @@ export const getTestState = (): RootState => {
         data: [powerTypeFactory()],
         loaded: true,
       }),
-    }),
-    pod: podStateFactory({
-      items: [pod],
-      loaded: true,
-      statuses: { [pod.id]: podStatusFactory() },
     }),
     space: spaceStateFactory({
       loaded: true,

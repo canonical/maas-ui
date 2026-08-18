@@ -62,7 +62,7 @@ const NodePowerDefinitions = ({
   const powerTypes = useSelector(powerTypesSelectors.get);
   const powerType = getPowerTypeFromName(powerTypes, node.power_type);
   const fieldScopes = nodeIsMachine(node)
-    ? getMachineFieldScopes(node)
+    ? getMachineFieldScopes()
     : [PowerFieldScope.BMC, PowerFieldScope.NODE];
   const fieldsInScope = getFieldsInScope(powerType, fieldScopes);
   return (

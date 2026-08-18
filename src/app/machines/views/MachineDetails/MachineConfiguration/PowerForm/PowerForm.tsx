@@ -69,7 +69,7 @@ const PowerForm = ({ systemId }: Props): React.ReactElement | null => {
     return <Spinner text="Loading..." />;
   }
 
-  const fieldScopes = getMachineFieldScopes(machine);
+  const fieldScopes = getMachineFieldScopes();
   const powerParametersSchema = generatePowerParametersSchema(
     selectedPowerType,
     fieldScopes

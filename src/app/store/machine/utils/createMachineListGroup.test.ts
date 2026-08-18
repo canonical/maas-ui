@@ -63,40 +63,6 @@ describe("createMachineListGroup", () => {
     });
   });
 
-  it("creates a group from KVM", () => {
-    const groupBy = FetchGroupKey.Pod;
-    const machine = factory.machine({
-      pod: factory.modelRef({ name: "active-orca", id: 1 }),
-    });
-
-    expect(
-      createMachineListGroup({
-        groupBy,
-        machine,
-      })
-    ).toStrictEqual({
-      name: "active-orca",
-      value: "active-orca",
-    });
-  });
-
-  it("creates a group from KVM type", () => {
-    const groupBy = FetchGroupKey.PodType;
-    const machine = factory.machine({
-      power_type: "lxd",
-    });
-
-    expect(
-      createMachineListGroup({
-        groupBy,
-        machine,
-      })
-    ).toStrictEqual({
-      name: "lxd",
-      value: "lxd",
-    });
-  });
-
   it("creates a group from parent", () => {
     const groupBy = FetchGroupKey.Parent;
     const machine = factory.machine({

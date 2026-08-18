@@ -191,7 +191,6 @@ it("can validate IPv4 addresses with a port for IPMI power type", async () => {
 it("correctly dispatches an action to update a machine's power", async () => {
   const machine = factory.machineDetails({
     permissions: ["edit"],
-    pod: undefined,
     power_type: PowerTypeNames.AMT,
     system_id: "abc123",
   });

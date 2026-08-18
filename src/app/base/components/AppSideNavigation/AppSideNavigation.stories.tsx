@@ -27,7 +27,7 @@ export default meta;
 
 const args = {
   authUser: userFactory(),
-  filteredGroups: navGroups,
+  groups: navGroups,
   isAdmin: true,
   isAuthenticated: true,
   isCollapsed: true,

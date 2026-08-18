@@ -16,8 +16,6 @@ const GROUP_BY_OPTIONS = [
   "Group by architecture",
   "Group by domain",
   "Group by parent",
-  "Group by KVM",
-  "Group by KVM type",
   "Group by power state",
   "Group by zone",
 ] as const;

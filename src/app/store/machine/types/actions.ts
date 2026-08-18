@@ -12,7 +12,6 @@ import type { Prettify } from "@/app/base/types";
 import type { Domain } from "@/app/store/domain/types";
 import type { Fabric } from "@/app/store/fabric/types";
 import type { LicenseKeys } from "@/app/store/licensekeys/types";
-import type { Pod } from "@/app/store/pod/types";
 import type { Script, ScriptName } from "@/app/store/script/types";
 import type { Space } from "@/app/store/space/types";
 import type { Subnet } from "@/app/store/subnet/types";
@@ -22,7 +21,6 @@ import type {
   NetworkLinkMode,
   StorageLayout,
 } from "@/app/store/types/enum";
-import type { ModelRef } from "@/app/store/types/model";
 import type {
   Node,
   BaseNodeActionParams,
@@ -284,8 +282,6 @@ type Filters = {
   [FilterGroupKey.Osystem]: Machine["osystem"];
   [FilterGroupKey.Owner]: Machine["owner"];
   [FilterGroupKey.Parent]: Node["system_id"];
-  [FilterGroupKey.Pod]: ModelRef["name"];
-  [FilterGroupKey.PodType]: Pod["type"];
   [FilterGroupKey.Pool]: ResourcePoolResponse["name"];
   [FilterGroupKey.Spaces]: Space["name"];
   [FilterGroupKey.Status]: FetchNodeStatus;
@@ -311,8 +307,6 @@ type ExcludeFilters = {
   [FilterGroupKey.NotMem]: Filters[FilterGroupKey.Mem];
   [FilterGroupKey.NotOsystem]: Filters[FilterGroupKey.Osystem];
   [FilterGroupKey.NotOwner]: Filters[FilterGroupKey.Owner];
-  [FilterGroupKey.NotPod]: Filters[FilterGroupKey.Pod];
-  [FilterGroupKey.NotPodType]: Filters[FilterGroupKey.PodType];
   [FilterGroupKey.NotSubnets]: Filters[FilterGroupKey.Subnets];
   [FilterGroupKey.NotId]: Filters[FilterGroupKey.Id];
   [FilterGroupKey.NotTags]: Filters[FilterGroupKey.Tags];
@@ -444,8 +438,6 @@ export enum FetchGroupByKey {
   Architecture = FetchGroupKey.Architecture,
   Domain = FetchGroupKey.Domain,
   Parent = FetchGroupKey.Parent,
-  Pod = FetchGroupKey.Pod,
-  PodType = FetchGroupKey.PodType,
   PowerState = FetchGroupKey.PowerState,
   Zone = FetchGroupKey.Zone,
 }
