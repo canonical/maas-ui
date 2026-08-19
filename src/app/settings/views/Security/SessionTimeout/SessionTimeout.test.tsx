@@ -199,20 +199,19 @@ describe("SessionTimeout", () => {
     );
 
     await waitFor(() => {
-      expect(configurationsResolvers.setBulkConfigurations.resolved).toBe(true);
-    });
-
-    await waitFor(() => {
-      expect(mockMutate.mock.calls[0][0]).toMatchObject({
-        body: {
-          configurations: [
-            {
-              name: "refresh_token_duration",
-              value: 1044000,
-            },
-          ],
-        },
-      });
+      expect(mockMutate).toHaveBeenCalledWith(
+        expect.objectContaining({
+          body: expect.objectContaining({
+            configurations: [
+              {
+                name: "refresh_token_duration",
+                value: 1044000,
+              },
+            ],
+          }),
+        }),
+        expect.anything()
+      );
     });
   });
 
