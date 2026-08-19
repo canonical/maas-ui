@@ -29,7 +29,7 @@ import {
 
 enableCallIdMocks();
 
-const mockServer = setupMockServer(
+setupMockServer(
   switchResolvers.createSwitch.handler(),
   imageResolvers.listSelections.handler()
 );
