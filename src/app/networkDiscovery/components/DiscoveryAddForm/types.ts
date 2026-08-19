@@ -8,6 +8,7 @@ import type { Domain } from "@/app/store/domain/types";
 export enum DeviceType {
   DEVICE = "device",
   INTERFACE = "interface",
+  SWITCH = "switch",
 }
 
 export type DiscoveryAddValues = {
@@ -17,4 +18,7 @@ export type DiscoveryAddValues = {
   ip_assignment: DeviceIpAssignment;
   parent: Device["parent"];
   type: DeviceType | "";
+  name?: string;
+  mac_address?: string;
+  image?: string;
 };
