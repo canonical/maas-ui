@@ -2,15 +2,14 @@ import PageContent from "./PageContent";
 
 import { preferencesNavItems } from "@/app/preferences/constants";
 import { settingsNavItems } from "@/app/settings/constants";
-import { getTestState, renderWithProviders, screen } from "@/testing/utils";
-
-const state = getTestState();
+import * as factory from "@/testing/factories";
+import { renderWithProviders, screen } from "@/testing/utils";
 
 it("shows the secondary navigation for settings", () => {
-  state.status.authenticated = true;
-  state.status.connected = true;
   renderWithProviders(<PageContent header="Settings">content</PageContent>, {
-    state,
+    state: {
+      status: factory.statusState({ authenticated: true, connected: true }),
+    },
     initialEntries: ["/settings/configuration/general"],
   });
 
@@ -22,10 +21,10 @@ it("shows the secondary navigation for settings", () => {
 });
 
 it("shows the secondary navigation for preferences", () => {
-  state.status.authenticated = true;
-  state.status.connected = true;
   renderWithProviders(<PageContent header="Preferences">content</PageContent>, {
-    state,
+    state: {
+      status: factory.statusState({ authenticated: true, connected: true }),
+    },
     initialEntries: ["/account/prefs/details"],
   });
 
@@ -37,20 +36,16 @@ it("shows the secondary navigation for preferences", () => {
 });
 
 it("doesn't show the side nav if not authenticated", () => {
-  state.status.authenticated = false;
-  state.status.connected = true;
   renderWithProviders(<PageContent header="Preferences">content</PageContent>, {
-    state,
+    state: { status: factory.statusState({ connected: true }) },
   });
 
   expect(screen.queryByRole("navigation")).not.toBeInTheDocument();
 });
 
 it("doesn't show the side nav if not connected", () => {
-  state.status.authenticated = true;
-  state.status.connected = false;
   renderWithProviders(<PageContent header="Preferences">content</PageContent>, {
-    state,
+    state: { status: factory.statusState({ authenticated: true }) },
   });
 
   expect(screen.queryByRole("navigation")).not.toBeInTheDocument();

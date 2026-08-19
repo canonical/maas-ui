@@ -11,7 +11,22 @@
       "@tanstack/react-table": ["node_modules/@tanstack/react-table"],
       "@tanstack/react-table/*": ["node_modules/@tanstack/react-table/*"],
       "@tanstack/table-core": ["node_modules/@tanstack/table-core"],
-      "@tanstack/table-core/*": ["node_modules/@tanstack/table-core/*"]
+      "@tanstack/table-core/*": ["node_modules/@tanstack/table-core/*"],
+      // Symlink-only
+      "@tanstack/react-query": ["node_modules/@tanstack/react-query"],
+      "@tanstack/react-query/*": ["node_modules/@tanstack/react-query/*"],
+      "msw": ["node_modules/msw"],
+      "msw/*": ["node_modules/msw/*"],
+      "@testing-library/react": ["node_modules/@testing-library/react"],
+      "@testing-library/react/*": ["node_modules/@testing-library/react/*"],
+      "@testing-library/dom": ["node_modules/@testing-library/dom"],
+      "@testing-library/dom/*": ["node_modules/@testing-library/dom/*"],
+      "react-router": ["node_modules/react-router"],
+      "react-router/*": ["node_modules/react-router/*"],
+      "react-redux": ["node_modules/react-redux"],
+      "react-redux/*": ["node_modules/react-redux/*"],
+      "@reduxjs/toolkit": ["node_modules/@reduxjs/toolkit"],
+      "@reduxjs/toolkit/*": ["node_modules/@reduxjs/toolkit/*"]
     },
     "allowJs": true,
     "noUnusedParameters": true,
