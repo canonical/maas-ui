@@ -47,7 +47,7 @@ jobs:
       - name: Install
         if: steps.yarn-cache.outputs.cache-hit != 'true'
         run: CYPRESS_INSTALL_BINARY=0 yarn install
-      - run: MEASURE_UNIT_PERFORMANCE=true yarn test
+      - run: MEASURE_UNIT_PERFORMANCE=false yarn test
       - name: Upload timing logs
         if: always()
         uses: actions/upload-artifact@v4

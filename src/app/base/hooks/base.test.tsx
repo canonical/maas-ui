@@ -1,3 +1,5 @@
+import { createElement } from "react";
+
 import { render, renderHook, screen, waitFor } from "@testing-library/react";
 import type { Mock } from "vitest";
 
@@ -14,8 +16,8 @@ import {
 } from "./base";
 
 import {
-  renderHookWithMockStore,
   renderHookWithProviders,
+  renderWithProviders,
   userEvent,
 } from "@/testing/utils";
 
@@ -25,26 +27,30 @@ const mockUseLocationValue = {
   hash: "",
   state: null,
 };
-vi.mock("react-router", () => ({
-  ...vi.importActual("react-router"),
+vi.mock("react-router", async () => ({
+  ...(await vi.importActual("react-router")),
   useLocation: () => mockUseLocationValue,
 }));
 
 describe("useWindowTitle", () => {
   it("sets the window title", () => {
-    const { rerender } = renderHookWithMockStore(() => {
+    const TestComponent = () => {
       useWindowTitle("Test");
-    });
+      return null;
+    };
+    const { rerender } = renderWithProviders(createElement(TestComponent));
     expect(document.title).toBe("Test | MAAS");
-    rerender();
+    rerender(createElement(TestComponent));
     expect(document.title).toBe("Test | MAAS");
   });
   it("keeps the window title unchanged on unmount", () => {
-    const { unmount } = renderHookWithMockStore(() => {
+    const TestComponent = () => {
       useWindowTitle("Test");
-    });
+      return null;
+    };
+    const { result } = renderWithProviders(createElement(TestComponent));
     expect(document.title).toBe("Test | MAAS");
-    unmount();
+    result.unmount();
     expect(document.title).toBe("Test | MAAS");
   });
 });

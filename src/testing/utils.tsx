@@ -4,176 +4,36 @@ import path from "path";
 import type { ProfilerOnRenderCallback, ReactNode } from "react";
 import { Profiler } from "react";
 
-import { SidePanelContextProvider } from "@canonical/maas-react-components";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import {
+  expectTooltipOnHover,
+  mockIsPending,
+  mockSidePanel,
+  renderHookWithProviders as upstreamRenderHookWithProviders,
+  renderWithProviders as upstreamRenderWithProviders,
+  setupMockServer as upstreamSetupMockServer,
+  spyOnMutation,
+  waitForLoading,
+} from "@canonical/maas-react-components/testing";
+import type { QueryClient } from "@tanstack/react-query";
 import type { RenderOptions, RenderResult } from "@testing-library/react";
-import { render, renderHook, screen } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
 import type { RequestHandler } from "msw";
-import { setupServer } from "msw/node";
 import { Provider } from "react-redux";
 import type { DataRouter, InitialEntry } from "react-router";
-import { createMemoryRouter, RouterProvider } from "react-router";
 import type { MockStoreEnhanced } from "redux-mock-store";
 import configureStore from "redux-mock-store";
 import { vi } from "vitest";
 
 import { client } from "@/app/apiclient/client.gen";
 import { WebSocketProvider } from "@/app/base/websocket-context";
-import { ConfigNames } from "@/app/store/config/types";
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
-import {
-  config as configFactory,
-  configState as configStateFactory,
-  domainState as domainStateFactory,
-  fabric as fabricFactory,
-  fabricState as fabricStateFactory,
-  generalState as generalStateFactory,
-  powerType as powerTypeFactory,
-  powerTypesState as powerTypesStateFactory,
-  rootState as rootStateFactory,
-  spaceState as spaceStateFactory,
-  subnet as subnetFactory,
-  subnetState as subnetStateFactory,
-  vlan as vlanFactory,
-  vlanState as vlanStateFactory,
-} from "@/testing/factories";
 
 const getMockStore = (state = factory.rootState()) => {
   const mockStore = configureStore();
   return mockStore(state);
 };
 
-// Complete initial test state with all queryData loaded and no errors
-export const getTestState = (): RootState => {
-  const config = configFactory({
-    name: ConfigNames.SESSION_LENGTH,
-    value: 1209600, // This is the default session length for MAAS in seconds, equivalent to 14 days
-  });
-  const fabric = fabricFactory({ name: "pxe-fabric" });
-  const nonBootVlan = vlanFactory({ fabric: fabric.id });
-  const bootVlan = vlanFactory({ fabric: fabric.id, name: "pxe-vlan" });
-  const nonBootSubnet = subnetFactory({ vlan: nonBootVlan.id });
-  const bootSubnet = subnetFactory({ name: "pxe-subnet", vlan: bootVlan.id });
-  return rootStateFactory({
-    config: configStateFactory({
-      loaded: true,
-      items: [config],
-    }),
-    domain: domainStateFactory({
-      loaded: true,
-    }),
-    fabric: fabricStateFactory({
-      items: [fabric],
-      loaded: true,
-    }),
-    general: generalStateFactory({
-      powerTypes: powerTypesStateFactory({
-        data: [powerTypeFactory()],
-        loaded: true,
-      }),
-    }),
-    space: spaceStateFactory({
-      loaded: true,
-    }),
-    subnet: subnetStateFactory({
-      items: [nonBootSubnet, bootSubnet],
-      loaded: true,
-    }),
-    vlan: vlanStateFactory({
-      items: [nonBootVlan, bootVlan],
-      loaded: true,
-    }),
-  });
-};
-
-export const expectTooltipOnHover = async (
-  element: Element | null,
-  tooltipText: string | RegExp
-) => {
-  expect(
-    screen.queryByRole("tooltip", { name: tooltipText })
-  ).not.toBeInTheDocument();
-
-  if (!element) {
-    return {
-      message: () => `expected the element to exist`,
-      pass: false,
-    };
-  }
-
-  await userEvent.hover(element);
-
-  if (element.querySelector("i")) {
-    await userEvent.hover(element.querySelector("i")!);
-  }
-
-  const pass = await vi.waitFor(
-    () => screen.getAllByRole("tooltip", { name: tooltipText }).length === 1
-  );
-
-  if (pass) {
-    return {
-      message: () =>
-        `expected the element not to have tooltip '${tooltipText}'`,
-      pass: true,
-    };
-  } else {
-    return {
-      message: () => `expected the element to have tooltip '${tooltipText}'`,
-      pass: false,
-    };
-  }
-};
-
-type Hook = Parameters<typeof renderHook>[0];
-export const renderHookWithMockStore = (
-  hook: Hook,
-  options?: { initialState?: RootState }
-) => {
-  let store = configureStore()(options?.initialState || rootStateFactory());
-  const wrapper = ({ children }: { children: ReactNode }) => (
-    <WebSocketProvider>
-      <Provider store={store}>{children}</Provider>
-    </WebSocketProvider>
-  );
-
-  const result = renderHook(hook, { wrapper });
-
-  const customRerender = (
-    newHook?: Hook,
-    { state: newState }: { state?: Partial<RootState> } = {}
-  ) => {
-    if (newState) {
-      store = configureStore()({ ...newState });
-    }
-    result.rerender(newHook);
-  };
-
-  return {
-    ...result,
-    rerender: customRerender,
-    store,
-  };
-};
-
-export const waitFor = vi.waitFor;
-export {
-  act,
-  cleanup,
-  fireEvent,
-  getDefaultNormalizer,
-  render,
-  renderHook,
-  screen,
-  waitForElementToBeRemoved,
-  within,
-} from "@testing-library/react";
-export { default as userEvent } from "@testing-library/user-event";
-
-/* New utils with easier use */
-export const BASE_URL = import.meta.env.VITE_APP_MAAS_URL;
+const BASE_URL = import.meta.env.VITE_APP_MAAS_URL;
 
 type LogEntry = {
   testName: string;
@@ -186,7 +46,7 @@ const logsByFile: Record<string, LogEntry[]> = {};
 const testStart = performance.now();
 const logFile = path.join(process.cwd(), "test-timings.log");
 
-export function logEvent(
+function logEvent(
   file: string,
   testName: string,
   scope: string,
@@ -202,7 +62,7 @@ export function logEvent(
   logsByFile[file].push({ testName, time: now, scope, message });
 }
 
-export function flushAllLogs() {
+function flushAllLogs() {
   if (!process.env.MEASURE_UNIT_PERFORMANCE) return;
   const lines: string[] = [];
 
@@ -232,15 +92,17 @@ export function flushAllLogs() {
 /**
  * A function for setting up the MSW with the base testing url.
  *
+ * Delegates to the upstreamed `setupMockServer` from
+ * `@canonical/maas-react-components/testing`, wiring in the project's
+ * Hey-API client/base URL and preserving request/response timing logs.
+ *
  * @param handlers The destructured list of request handlers
  * @return The mock server instance
  */
-export const setupMockServer = (...handlers: RequestHandler[]) => {
-  client.setConfig({ baseUrl: BASE_URL });
+const setupMockServer = (...handlers: RequestHandler[]) => {
+  const mockServer = upstreamSetupMockServer(client, BASE_URL, ...handlers);
 
-  const mockServer = setupServer(...handlers);
-
-  mockServer.events.on("request:start", ({ request }) => {
+  mockServer.events.on("request:start", ({ request }: { request: Request }) => {
     logEvent(
       expect.getState().testPath?.split("/").pop() || "unknown file",
       expect.getState().currentTestName || "unknown",
@@ -249,7 +111,7 @@ export const setupMockServer = (...handlers: RequestHandler[]) => {
     );
   });
 
-  mockServer.events.on("request:end", ({ request }) => {
+  mockServer.events.on("request:end", ({ request }: { request: Request }) => {
     logEvent(
       expect.getState().testPath?.split("/").pop() || "unknown file",
       expect.getState().currentTestName || "unknown",
@@ -258,318 +120,166 @@ export const setupMockServer = (...handlers: RequestHandler[]) => {
     );
   });
 
-  beforeAll(() => {
-    mockServer.listen({ onUnhandledRequest: "error" });
-  });
-  afterEach(() => {
-    mockServer.resetHandlers();
-  });
   afterAll(() => {
-    mockServer.close();
     flushAllLogs();
   });
 
   return mockServer;
 };
 
+type MaasStore = MockStoreEnhanced<RootState | unknown>;
+
+/**
+ * Builds a project-specific `AdditionalProviders` wrapper (Redux `Provider`,
+ * `WebSocketProvider`, and a render `Profiler` used for perf logging) to be
+ * passed to the upstreamed render helpers, which no longer maintain any
+ * Redux/state-management dependencies themselves.
+ *
+ * `store` is read via a getter so that callers (e.g. `rerender`) can swap the
+ * underlying store between renders while reusing the same component
+ * reference.
+ */
+const makeAdditionalProviders = (getStore: () => MaasStore) => {
+  return ({ children }: { children: ReactNode }) => {
+    const onRender: ProfilerOnRenderCallback = (_id, phase, actualDuration) => {
+      logEvent(
+        expect.getState().testPath?.split("/").pop() || "unknown file",
+        expect.getState().currentTestName || "unknown",
+        "render",
+        `[${phase}], took ${actualDuration.toFixed(2)}ms`
+      );
+    };
+
+    return (
+      <Profiler id="TestComponent" onRender={onRender}>
+        <WebSocketProvider>
+          <Provider store={getStore()}>{children}</Provider>
+        </WebSocketProvider>
+      </Profiler>
+    );
+  };
+};
+
 /**
  * A function for rendering a component with all test-relevant providers.
+ *
+ * Delegates to the upstreamed `renderWithProviders` from
+ * `@canonical/maas-react-components/testing`, which no longer owns any Redux
+ * behavior, so the Redux `store`/`Provider` are supplied here via
+ * `AdditionalProviders` and defaulted to a `redux-mock-store` preloaded with
+ * `RootState` so that `store.getActions()` remains available to callers.
  *
  * @param ui The component to be rendered
  * @param options The rendering options
  * @returns { result, router, rerender, store }
  */
-export const renderWithProviders = (
+const renderWithProviders = (
   ui: ReactNode,
   options?: Omit<RenderOptions, "wrapper"> &
     Partial<{
-      state?: Partial<RootState>;
-      store?: MockStoreEnhanced<RootState | unknown>;
-      initialEntries?: InitialEntry[];
-      pattern?: string;
+      state: Partial<RootState>;
+      store: MaasStore;
+      initialEntries: InitialEntry[];
+      pattern: string;
     }>
 ): {
   result: RenderResult;
   router: DataRouter;
-  rerender: (
-    ui: ReactNode,
-    {
-      state,
-    }?: {
-      state?: RootState;
-    }
-  ) => void;
-  store: MockStoreEnhanced<RootState | unknown>;
+  rerender: (ui: ReactNode, options?: { state?: RootState }) => void;
+  store: MaasStore;
 } => {
-  const queryClient = new QueryClient({
-    defaultOptions: { queries: { retry: false, staleTime: Infinity } },
-  });
-
-  const router = createMemoryRouter(
-    [
-      {
-        path: options?.pattern ?? "*",
-        element: ui,
-      },
-    ],
-    { initialEntries: options?.initialEntries || ["/"] }
-  );
-
-  let store =
+  let store: MaasStore =
     options?.store ??
-    getMockStore({
-      ...factory.rootState(),
-      ...options?.state,
-    });
+    getMockStore({ ...factory.rootState(), ...options?.state });
 
-  const onRender: ProfilerOnRenderCallback = (
-    _id,
-    phase,
-    actualDuration,
-    _baseDuration,
-    _startTime,
-    _commitTime
-  ) => {
-    logEvent(
-      expect.getState().testPath?.split("/").pop() || "unknown file",
-      expect.getState().currentTestName || "unknown",
-      "render",
-      `[${phase}], took ${actualDuration.toFixed(2)}ms`
-    );
-  };
+  const AdditionalProviders = makeAdditionalProviders(() => store);
 
-  const Wrapper = ({ children }: { children: ReactNode }) => {
-    return (
-      <Profiler id="TestComponent" onRender={onRender}>
-        <QueryClientProvider client={queryClient}>
-          <WebSocketProvider>
-            <SidePanelContextProvider>
-              <Provider store={store}>{children}</Provider>
-            </SidePanelContextProvider>
-          </WebSocketProvider>
-        </QueryClientProvider>
-      </Profiler>
-    );
-  };
-
-  const rendered = render(<RouterProvider router={router} />, {
-    wrapper: Wrapper,
+  const {
+    result,
+    router,
+    rerender: libRerender,
+  } = upstreamRenderWithProviders(ui, {
     ...options,
+    AdditionalProviders,
   });
 
-  const customRerender = (
+  const rerender = (
     ui: ReactNode,
     { state: newState }: { state?: RootState } = {}
   ) => {
     if (newState) {
       store = getMockStore({ ...options?.state, ...newState });
     }
-    const router = createMemoryRouter(
-      [
-        {
-          path: options?.pattern ?? "*",
-          element: ui,
-        },
-      ],
-      { initialEntries: options?.initialEntries || ["/"] }
-    );
-
-    return rendered.rerender(
-      <Wrapper>
-        <RouterProvider router={router} />
-      </Wrapper>
-    );
+    return libRerender(ui);
   };
 
-  return {
-    result: rendered,
-    rerender: customRerender,
-    router,
-    store,
-  };
+  return { result, router, rerender, store };
 };
 
 /**
  * A function for rendering a hook with all test-relevant providers.
  *
+ * Delegates to the upstreamed `renderHookWithProviders` from
+ * `@canonical/maas-react-components/testing`, which no longer owns any Redux
+ * behavior, so the Redux `store`/`Provider` are supplied here via
+ * `AdditionalProviders` and defaulted to a `redux-mock-store` preloaded with
+ * `RootState`.
+ *
  * @param hook The hook to be rendered
  * @param options
- * @returns { rerender, result, unmount, store }
+ * @returns { result, store, queryClient }
  */
-export const renderHookWithProviders = <T,>(
+const renderHookWithProviders = <T,>(
   hook: () => T,
   options?: Partial<{
     state: Partial<RootState>;
-    store: MockStoreEnhanced<RootState | unknown>;
+    store: MaasStore;
     initialEntries: string[];
   }>
 ): {
   result: { current: T };
-  store: MockStoreEnhanced<RootState | unknown>;
+  store: MaasStore;
   queryClient: QueryClient;
 } => {
-  const queryClient = new QueryClient({
-    defaultOptions: { queries: { retry: false, staleTime: Infinity } },
-  });
-
-  const store =
+  const store: MaasStore =
     options?.store ??
-    configureStore()({
-      ...factory.rootState(),
-      ...options?.state,
-    });
+    getMockStore({ ...factory.rootState(), ...options?.state });
 
-  return {
-    result: renderHook(hook, {
-      wrapper: ({ children }) => (
-        <QueryClientProvider client={queryClient}>
-          <WebSocketProvider>
-            <SidePanelContextProvider>
-              <Provider store={store}>{children}</Provider>
-            </SidePanelContextProvider>
-          </WebSocketProvider>
-        </QueryClientProvider>
-      ),
-    }).result,
-    store,
-    queryClient,
-  };
+  const AdditionalProviders = makeAdditionalProviders(() => store);
+
+  const { result, queryClient } = upstreamRenderHookWithProviders<T>(hook, {
+    ...options,
+    AdditionalProviders,
+  });
+
+  return { result, store, queryClient };
 };
 
-/**
- * Mocks the useQuery hook to return a pending state.
- */
-export const mockIsPending = () => {
-  vi.doMock("@tanstack/react-query", async () => {
-    const actual: object = await vi.importActual("@tanstack/react-query");
-    return {
-      ...actual,
-      useQuery: vi.fn().mockReturnValueOnce({
-        data: null,
-        isPending: true,
-        failureReason: undefined,
-        isFetched: false,
-      }),
-    };
-  });
+const waitFor = vi.waitFor;
 
-  afterEach(() => {
-    vi.doUnmock("@tanstack/react-query");
-  });
-};
+export {
+  act,
+  cleanup,
+  fireEvent,
+  getDefaultNormalizer,
+  render,
+  renderHook,
+  screen,
+  waitForElementToBeRemoved,
+  within,
+} from "@testing-library/react";
 
-/**
- * Waits until the loading text is no longer present in the document.
- *
- * @param loadingText The text to query for. Defaults to "Loading".
- * @param options
- */
-export const waitForLoading = async (
-  loadingText: string = "Loading",
-  options?: { interval?: number; timeout?: number }
-) =>
-  await waitFor(
-    () =>
-      expect(
-        screen.queryByText(new RegExp(loadingText, "i"))
-      ).not.toBeInTheDocument(),
-    options
-  );
+export { default as userEvent } from "@testing-library/user-event";
 
-/**
- * Spies on a given mutation hook to observe the mutation function
- * @param obj The module that the hook belongs to
- * @param methodName The name of the mutation hook to spy on
- * @returns A mock function that can be observed
- */
-export const spyOnMutation = (obj: unknown, methodName: string) => {
-  const mockMutate = vi.fn();
-  vi.spyOn(obj, methodName as never).mockImplementation(() => {
-    return {
-      mutate: mockMutate,
-      mutateAsync: vi.fn(),
-      data: undefined,
-      error: null,
-      variables: undefined,
-      isError: false,
-      isPending: false,
-      isIdle: true,
-      isSuccess: false,
-      status: "idle",
-      reset: vi.fn(),
-      context: null,
-      failureCount: 0,
-      failureReason: null,
-      isPaused: false,
-      submittedAt: 0,
-    };
-  });
-
-  afterEach(() => {
-    vi.clearAllMocks();
-  });
-
-  return mockMutate;
-};
-
-/**
- * Mocks the generic side panel context
- * @returns A mock functions for opening and closing the side panel
- */
-export const mockSidePanel = async () => {
-  const mockUseSidePanel = vi.spyOn(
-    await import("@canonical/maas-react-components"),
-    "useSidePanel"
-  );
-
-  const mockOpen = vi.fn();
-  const mockClose = vi.fn();
-
-  let isOpen = false;
-
-  beforeEach(() => {
-    vi.clearAllMocks();
-    isOpen = false;
-
-    mockOpen.mockImplementation(() => {
-      isOpen = true;
-      mockUseSidePanel.mockReturnValue({
-        isOpen: true,
-        title: "",
-        size: "regular",
-        component: null,
-        props: {},
-        openSidePanel: mockOpen,
-        closeSidePanel: mockClose,
-        setSidePanelSize: vi.fn(),
-      });
-    });
-
-    mockClose.mockImplementation(() => {
-      isOpen = false;
-      mockUseSidePanel.mockReturnValue({
-        isOpen: false,
-        title: "",
-        size: "regular",
-        component: null,
-        props: {},
-        openSidePanel: mockOpen,
-        closeSidePanel: mockClose,
-        setSidePanelSize: vi.fn(),
-      });
-    });
-
-    mockUseSidePanel.mockReturnValue({
-      isOpen,
-      title: "",
-      size: "regular",
-      component: null,
-      props: {},
-      openSidePanel: mockOpen,
-      closeSidePanel: mockClose,
-      setSidePanelSize: vi.fn(),
-    });
-  });
-
-  return { mockOpen, mockClose };
+export {
+  expectTooltipOnHover,
+  mockIsPending,
+  mockSidePanel,
+  spyOnMutation,
+  waitForLoading,
+  BASE_URL,
+  setupMockServer,
+  renderWithProviders,
+  renderHookWithProviders,
+  waitFor,
 };

@@ -1,6 +1,8 @@
+import { createElement } from "react";
+
 import { useFetchActions } from "./dataFetching";
 
-import { renderHookWithMockStore } from "@/testing/utils";
+import { renderWithProviders } from "@/testing/utils";
 
 const mockDispatch = vi.fn();
 const mockAction = vi.fn(() => ({
@@ -17,9 +19,11 @@ afterEach(() => {
 });
 
 it("runs the actions once on mount and doesn't run again on rerender", async () => {
-  const { rerender } = await renderHookWithMockStore(() => {
+  const TestComponent = () => {
     useFetchActions([mockAction]);
-  });
+    return null;
+  };
+  const { rerender } = renderWithProviders(createElement(TestComponent));
 
   expect(mockDispatch).toHaveBeenCalledTimes(1);
   expect(mockAction).toHaveBeenCalledTimes(1);
@@ -27,7 +31,7 @@ it("runs the actions once on mount and doesn't run again on rerender", async () 
   mockAction.mockClear();
   mockDispatch.mockClear();
 
-  rerender();
+  rerender(createElement(TestComponent));
 
   expect(mockDispatch).not.toHaveBeenCalled();
   expect(mockAction).not.toHaveBeenCalled();

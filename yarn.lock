@@ -1006,10 +1006,10 @@
   resolved "https://registry.yarnpkg.com/@base2/pretty-print-object/-/pretty-print-object-1.0.1.tgz#371ba8be66d556812dc7fb169ebc3c08378f69d4"
   integrity sha512-4iri8i1AqYHJE2DstZYkyEprg6Pq6sKx3xn5FpySk9sNhH7qN2LLlHJCfDTZRILNwQNPD7mATWM0TBui7uC1pA==
 
-"@canonical/maas-react-components@2.4.0":
-  version "2.4.0"
-  resolved "https://registry.yarnpkg.com/@canonical/maas-react-components/-/maas-react-components-2.4.0.tgz#e081c103e8e8f23dafd9b009a5827a8836ad945a"
-  integrity sha512-vgd3wVJIWkgs64ZLxBL3ZcAAxt9ShjgmC3t5tqsp1xckGfAiDxSvbpHQVs08S513ZWxGF7cWGeuLKGno0un/Ww==
+"@canonical/maas-react-components@2.7.2":
+  version "2.7.2"
+  resolved "https://registry.yarnpkg.com/@canonical/maas-react-components/-/maas-react-components-2.7.2.tgz#a87c882fda74ad6c07280d51986a6389a5ded8f9"
+  integrity sha512-bUJAOgvX4NouNRCncHP+xvAErzICZtNsXmfLYNPcFayNVw1HLPTdDnbp9CGJG95+qQukSsExTFTfD0ln3rHCGg==
 
 "@canonical/macaroon-bakery@1.3.2":
   version "1.3.2"
