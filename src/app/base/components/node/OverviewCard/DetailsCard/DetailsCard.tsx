@@ -11,7 +11,6 @@ import {
 import urls from "@/app/base/urls";
 import type { ControllerDetails } from "@/app/store/controller/types";
 import { generalActions } from "@/app/store/general";
-import { PowerTypeNames } from "@/app/store/general/constants";
 import { powerTypes as powerTypesSelectors } from "@/app/store/general/selectors";
 import type { MachineDetails } from "@/app/store/machine/types";
 import type { RootState } from "@/app/store/root/types";
@@ -27,7 +26,6 @@ type Props = {
 
 export enum Labels {
   Owner = "Owner",
-  Host = "Host",
   Zone = "Zone",
   ZoneLink = "Zone ›",
   Pool = "Resource pool",
@@ -80,27 +78,6 @@ const DetailsCard = ({ node }: Props): React.ReactElement => {
             {node.owner || "-"}
           </span>
         </div>
-      )}
-      {isMachine && (
-        <>
-          {node.pod && (
-            <div>
-              <div className="u-text--muted">{Labels.Host}</div>
-              <span data-testid="host">
-                <Link
-                  className="p-link__chevron"
-                  to={
-                    node.power_type === PowerTypeNames.LXD
-                      ? urls.kvm.lxd.single.index({ id: node.pod.id })
-                      : urls.kvm.virsh.details.index({ id: node.pod.id })
-                  }
-                >
-                  {node.pod.name} ›
-                </Link>
-              </span>
-            </div>
-          )}
-        </>
       )}
       <div data-testid="zone">
         <div>

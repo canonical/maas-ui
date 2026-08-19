@@ -28,12 +28,10 @@ import {
   osInfo as osInfoSelectors,
   defaultMinHweKernel as defaultMinHweKernelSelectors,
 } from "@/app/store/general/selectors";
-import { PodType } from "@/app/store/pod/constants";
 import type { RootState } from "@/app/store/root/types";
 import { timeSpanToMinutes } from "@/app/utils";
 
 export const DeployFormFields = (): React.ReactElement => {
-  const [deployVmHost, setDeployVmHost] = useState(false);
   const [userDataVisible, setUserDataVisible] = useState(false);
   const formikProps = useFormikContext<DeployFormValues>();
   const { handleChange, setFieldValue, values } = formikProps;
@@ -49,20 +47,7 @@ export const DeployFormFields = (): React.ReactElement => {
   const kernelOptions = useSelector((state: RootState) =>
     osInfoSelectors.getUbuntuKernelOptions(state, values.release)
   );
-  const canBeKVMHost =
-    values.oSystem === "ubuntu" &&
-    ["bionic", "focal", "jammy", "noble"].includes(values.release);
   const noImages = osystems.length === 0 || releases.length === 0;
-  const clearVmHostOptions = () => {
-    setDeployVmHost(false);
-    setFieldValue("vmHostType", "").catch((reason: unknown) => {
-      throw new FormikFieldChangeError(
-        "vmHostType",
-        "setFieldValue",
-        reason as string
-      );
-    });
-  };
   const hardwareSyncInterval = useSelector(
     configSelectors.hardwareSyncInterval
   );
@@ -135,9 +120,6 @@ export const DeployFormFields = (): React.ReactElement => {
                     );
                   });
                 }
-                if (value !== "ubuntu") {
-                  clearVmHostOptions();
-                }
               }}
               options={osOptions}
             />
@@ -157,9 +139,6 @@ export const DeployFormFields = (): React.ReactElement => {
                     reason as string
                   );
                 });
-                if (!["bionic", "focal"].includes(e.target.value)) {
-                  clearVmHostOptions();
-                }
               }}
               options={releaseOptions}
             />
@@ -228,64 +207,6 @@ export const DeployFormFields = (): React.ReactElement => {
             <p>Customise options</p>
           </Col>
           <Col size={12}>
-            {!values.ephemeralDeploy && (
-              <>
-                <Input
-                  checked={deployVmHost}
-                  disabled={!canBeKVMHost || noImages}
-                  help={
-                    values.vmHostType === PodType.VIRSH
-                      ? "Only Ubuntu 18.04 LTS and Ubuntu 20.04 LTS are officially supported."
-                      : undefined
-                  }
-                  id="deployVmHost"
-                  label={
-                    <>
-                      Register as MAAS KVM host.{" "}
-                      <ExternalLink to={docsUrls.kvmIntroduction}>
-                        KVM docs
-                      </ExternalLink>
-                    </>
-                  }
-                  onChange={(evt: React.ChangeEvent<HTMLInputElement>) => {
-                    const { checked } = evt.target;
-                    if (checked) {
-                      setDeployVmHost(true);
-                      setFieldValue("vmHostType", PodType.LXD).catch(
-                        (reason: unknown) => {
-                          throw new FormikFieldChangeError(
-                            "vmHostType",
-                            "setFieldValue",
-                            reason as string
-                          );
-                        }
-                      );
-                    } else {
-                      clearVmHostOptions();
-                    }
-                  }}
-                  type="checkbox"
-                />
-                {deployVmHost && (
-                  <>
-                    <FormikField
-                      label="LXD"
-                      name="vmHostType"
-                      type="radio"
-                      value={PodType.LXD}
-                      wrapperClassName="u-nudge-right--x-large"
-                    />
-                    <FormikField
-                      label="libvirt"
-                      name="vmHostType"
-                      type="radio"
-                      value={PodType.VIRSH}
-                      wrapperClassName="u-nudge-right--x-large"
-                    />
-                  </>
-                )}
-              </>
-            )}
             <FormikField
               aria-label="Cloud-init user-data"
               disabled={noImages}

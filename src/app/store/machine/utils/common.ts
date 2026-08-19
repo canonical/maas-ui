@@ -48,13 +48,9 @@ export const getTagCountsForMachines = (machines: Machine[]): TagIdCountMap => {
 
 /**
  * Get the power field scopes that are applicable to a machine.
- * @param machine - The machine to get the applicable field scopes.
  * @returns A list of applicable field scopes.
  */
-export const getMachineFieldScopes = (machine: Machine): PowerFieldScope[] => {
-  if (machine.pod) {
-    return [PowerFieldScope.NODE];
-  }
+export const getMachineFieldScopes = (): PowerFieldScope[] => {
   return [PowerFieldScope.BMC, PowerFieldScope.NODE];
 };
 

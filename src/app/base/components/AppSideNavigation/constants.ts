@@ -47,20 +47,6 @@ const navGroups: NavGroup[] = [
     ],
   },
   {
-    groupTitle: "KVM",
-    groupIcon: "cluster-light",
-    navLinks: [
-      {
-        label: "LXD",
-        url: urls.kvm.lxd.index,
-      },
-      {
-        label: "Virsh",
-        url: urls.kvm.virsh.index,
-      },
-    ],
-  },
-  {
     groupTitle: "Organisation",
     groupIcon: "tag",
     navLinks: [

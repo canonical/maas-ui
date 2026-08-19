@@ -71,21 +71,6 @@ describe("subnet selectors", () => {
     expect(subnet.getByCIDR(state, "cidr1")).toStrictEqual(items[1]);
   });
 
-  it("can get subnets that are available to a given pod", () => {
-    const subnets = [
-      factory.subnet({ vlan: 1 }),
-      factory.subnet({ vlan: 2 }),
-      factory.subnet({ vlan: 3 }),
-    ];
-    const pod = factory.podDetails({ attached_vlans: [1, 2] });
-    const state = factory.rootState({
-      subnet: factory.subnetState({
-        items: subnets,
-      }),
-    });
-    expect(subnet.getByPod(state, pod)).toStrictEqual([subnets[0], subnets[1]]);
-  });
-
   it("can get subnets for a VLAN", () => {
     const subnets = [
       factory.subnet({ vlan: 1 }),
@@ -116,24 +101,6 @@ describe("subnet selectors", () => {
     expect(subnet.getByFabric(state, 101)).toStrictEqual([
       subnets[0],
       subnets[2],
-    ]);
-  });
-
-  it("can get PXE-enabled subnets that are available to a given pod", () => {
-    const subnets = [
-      factory.subnet({ vlan: 1 }),
-      factory.subnet({ vlan: 2 }),
-      factory.subnet({ vlan: 3 }),
-    ];
-    const pod = factory.podDetails({ boot_vlans: [1, 2] });
-    const state = factory.rootState({
-      subnet: factory.subnetState({
-        items: subnets,
-      }),
-    });
-    expect(subnet.getPxeEnabledByPod(state, pod)).toStrictEqual([
-      subnets[0],
-      subnets[1],
     ]);
   });
 

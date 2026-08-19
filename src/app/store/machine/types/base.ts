@@ -52,7 +52,6 @@ export type BaseMachine = Omit<
   owner: string;
   physical_disk_count: number;
   parent: string | null; // `parent` is a `system_id`
-  pod: ModelRef | null;
   pool: ModelRef;
   power_state: PowerState;
   power_type: PowerType["name"] | "" | null;
@@ -291,16 +290,12 @@ export enum FilterGroupKey {
   NotMem = "not_mem",
   NotOsystem = "not_osystem",
   NotOwner = "not_owner",
-  NotPod = "not_pod",
-  NotPodType = "not_pod_type",
   NotSubnets = "not_subnets",
   NotTags = "not_tags",
   NotVlans = "not_vlans",
   Osystem = "osystem",
   Owner = "owner",
   Parent = "parent",
-  Pod = "pod",
-  PodType = "pod_type",
   Pool = "pool",
   Spaces = "spaces",
   Status = "status",

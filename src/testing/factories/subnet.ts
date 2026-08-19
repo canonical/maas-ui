@@ -3,7 +3,7 @@ import { array, define, extend, random } from "cooky-cutter";
 import { timestamp } from "./general";
 import { model, timestampedModel } from "./model";
 
-import { PodType } from "@/app/store/pod/constants";
+import { PowerTypeNames } from "@/app/store/general/constants";
 import { IPAddressType } from "@/app/store/subnet/types";
 import type {
   BaseSubnet,
@@ -51,7 +51,7 @@ export const subnetBMCNode = define<SubnetBMCNode>({
 
 export const subnetBMC = extend<Model, SubnetBMC>(model, {
   nodes: () => [],
-  power_type: PodType.LXD,
+  power_type: PowerTypeNames.LXD,
 });
 
 export const subnetDNSRecord = extend<Model, SubnetDNSRecord>(model, {

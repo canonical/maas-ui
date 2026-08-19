@@ -1,5 +1,4 @@
 import type { ReactElement } from "react";
-import { useMemo } from "react";
 
 import { Navigation, NavigationBar } from "@canonical/maas-react-components";
 import {
@@ -31,13 +30,11 @@ import { useGlobalKeyShortcut } from "@/app/base/hooks/base";
 import { useThemeContext } from "@/app/base/theme-context";
 import { controllerActions } from "@/app/store/controller";
 import controllerSelectors from "@/app/store/controller/selectors";
-import { podActions } from "@/app/store/pod";
-import podSelectors from "@/app/store/pod/selectors";
 import type { RootState } from "@/app/store/root/types";
 
 export type SideNavigationProps = {
   authUser: CurrentUserInfo | undefined;
-  filteredGroups: typeof navGroups;
+  groups: typeof navGroups;
   isAuthenticated: boolean;
   isCollapsed: boolean;
   isDarkMode: boolean;
@@ -52,7 +49,7 @@ export type SideNavigationProps = {
 
 export const AppSideNavigation = ({
   authUser,
-  filteredGroups,
+  groups,
   isAuthenticated,
   isCollapsed,
   isDarkMode,
@@ -101,7 +98,7 @@ export const AppSideNavigation = ({
         <Navigation.Content>
           <AppSideNavItems
             authUser={authUser}
-            groups={filteredGroups}
+            groups={groups}
             isAuthenticated={isAuthenticated}
             logout={logout}
             path={path}
@@ -147,12 +144,6 @@ const AppSideNavigationContainer = (): React.ReactElement => {
 
   useFetchActions([controllerActions.fetch]);
 
-  useFetchActions([podActions.fetch]);
-
-  const virshKvms = useSelector(podSelectors.virsh);
-  const kvmsLoaded = useSelector(podSelectors.loaded);
-  const hideVirsh = kvmsLoaded && virshKvms.length < 1;
-
   const { unconfiguredControllers, configuredControllers } = useSelector(
     (state: RootState) =>
       controllerSelectors.getVaultConfiguredControllers(state)
@@ -171,28 +162,10 @@ const AppSideNavigationContainer = (): React.ReactElement => {
 
   const { theme } = useThemeContext();
 
-  const filteredGroups = useMemo(() => {
-    if (hideVirsh) {
-      const kvmGroupIndex = navGroups.findIndex(
-        (group) => group.groupTitle === "KVM"
-      );
-
-      const virshItemIndex = navGroups[kvmGroupIndex].navLinks.findIndex(
-        (navLink) => navLink.label === "Virsh"
-      );
-
-      if (virshItemIndex > -1) {
-        navGroups[kvmGroupIndex].navLinks.splice(virshItemIndex, 1);
-      }
-    }
-
-    return navGroups;
-  }, [hideVirsh]);
-
   return (
     <AppSideNavigation
       authUser={user.data!}
-      filteredGroups={filteredGroups}
+      groups={navGroups}
       isAuthenticated={isAuthenticated}
       isCollapsed={isCollapsed}
       isDarkMode={isDarkMode}

@@ -16,7 +16,6 @@ export enum Labels {
   Memory = "Memory",
   PowerType = "Power type",
   Owner = "Owner",
-  Host = "Host",
   Zone = "Zone",
   Domain = "Domain",
 }
@@ -30,7 +29,6 @@ export const SourceMachineDetails = ({
     cores: "X cores, X.X GHz",
     cpuModel: "Model information",
     domain: "Domain",
-    host: "Host name",
     memory: "X GiB",
     owner: "Owner",
     powerType: "Power type",
@@ -51,7 +49,6 @@ export const SourceMachineDetails = ({
       } GHz`,
       cpuModel: machine.metadata?.cpu_model || "Unknown model",
       domain: machine.domain?.name || "-",
-      host: machine.pod?.name || "-",
       memory: `${machine.memory} GiB`,
       owner: machine.owner || "-",
       powerType: machine.power_type || "Unknown",
@@ -110,10 +107,6 @@ export const SourceMachineDetails = ({
         {
           label: Labels.Owner,
           value: <Placeholder loading={!machine}>{content.owner}</Placeholder>,
-        },
-        {
-          label: Labels.Host,
-          value: <Placeholder loading={!machine}>{content.host}</Placeholder>,
         },
         {
           label: Labels.Zone,
