@@ -6,7 +6,7 @@ import SessionTimeout, {
 
 import * as configurationsQueryHooks from "@/app/api/query/configurations";
 import { Entitlement } from "@/app/settings/views/UserManagement/views/Groups/constants";
-import type { RootState } from "@/app/store/root/types";
+import { ConfigNames } from "@/app/store/config/types";
 import * as factory from "@/testing/factories";
 import { mockFormikFormSaved } from "@/testing/mockFormikFormSaved";
 import { authResolvers } from "@/testing/resolvers/auth";
@@ -14,7 +14,6 @@ import { configurationsResolvers } from "@/testing/resolvers/configurations";
 import {
   userEvent,
   renderWithProviders,
-  getTestState,
   setupMockServer,
   mockIsPending,
   waitForLoading,
@@ -30,15 +29,16 @@ const mockServer = setupMockServer(
 );
 
 describe("SessionTimeout", () => {
-  let state: RootState;
-  const configItems = getTestState().config.items;
-  beforeEach(() => {
-    state = getTestState();
-  });
+  const configItems = [
+    factory.config({
+      name: ConfigNames.SESSION_LENGTH,
+      value: 1209600,
+    }),
+  ];
 
   it("displays a spinner while loading", () => {
     mockIsPending();
-    renderWithProviders(<SessionTimeout />, { state });
+    renderWithProviders(<SessionTimeout />);
 
     expect(screen.getByText(SessionTimeoutLabels.Loading)).toBeInTheDocument();
   });
@@ -47,7 +47,7 @@ describe("SessionTimeout", () => {
     mockServer.use(
       configurationsResolvers.listConfigurations.handler({ items: configItems })
     );
-    renderWithProviders(<SessionTimeout />, { state });
+    renderWithProviders(<SessionTimeout />);
     await waitForLoading();
     expect(
       screen.getByRole("form", {
@@ -64,7 +64,7 @@ describe("SessionTimeout", () => {
     mockServer.use(
       configurationsResolvers.listConfigurations.handler({ items: configItems })
     );
-    renderWithProviders(<SessionTimeout />, { state });
+    renderWithProviders(<SessionTimeout />);
     await waitForLoading();
     await waitFor(() => {
       expect(
@@ -97,7 +97,7 @@ describe("SessionTimeout", () => {
     mockServer.use(
       configurationsResolvers.listConfigurations.handler({ items: configItems })
     );
-    renderWithProviders(<SessionTimeout />, { state });
+    renderWithProviders(<SessionTimeout />);
     await waitForLoading();
     await waitFor(() => {
       expect(
@@ -179,7 +179,7 @@ describe("SessionTimeout", () => {
       configurationsQueryHooks,
       "useBulkSetConfigurations"
     );
-    renderWithProviders(<SessionTimeout />, { state });
+    renderWithProviders(<SessionTimeout />);
     await waitForLoading();
     await waitFor(() => {
       expect(
@@ -224,7 +224,7 @@ describe("SessionTimeout", () => {
       ]),
       configurationsResolvers.listConfigurations.handler({ items: configItems })
     );
-    renderWithProviders(<SessionTimeout />, { state });
+    renderWithProviders(<SessionTimeout />);
     await waitForLoading();
     await waitFor(() => {
       expect(

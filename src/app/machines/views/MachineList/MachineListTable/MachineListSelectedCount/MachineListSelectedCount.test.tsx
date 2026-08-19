@@ -1,28 +1,16 @@
 import MachineListSelectedCount from "./MachineListSelectedCount";
 
 import { machineActions } from "@/app/store/machine";
-import type { RootState } from "@/app/store/root/types";
-import {
-  screen,
-  renderWithProviders,
-  getTestState,
-  userEvent,
-} from "@/testing/utils";
+import { screen, renderWithProviders, userEvent } from "@/testing/utils";
 
 describe("MachineListSelectedCount", () => {
-  let state: RootState;
-  beforeEach(() => {
-    state = getTestState();
-  });
-
   it("displays the number of selected machines", () => {
     renderWithProviders(
       <MachineListSelectedCount
         filter={""}
         machineCount={20}
         selectedCount={10}
-      />,
-      { state }
+      />
     );
 
     expect(screen.getByText(/10 machines selected/i)).toBeInTheDocument();
@@ -34,8 +22,7 @@ describe("MachineListSelectedCount", () => {
         filter={""}
         machineCount={20}
         selectedCount={10}
-      />,
-      { state }
+      />
     );
 
     expect(screen.getByRole("button")).toHaveTextContent(
@@ -49,8 +36,7 @@ describe("MachineListSelectedCount", () => {
         filter={"filter"}
         machineCount={20}
         selectedCount={10}
-      />,
-      { state }
+      />
     );
 
     expect(screen.getByRole("button")).toHaveTextContent(
@@ -64,8 +50,7 @@ describe("MachineListSelectedCount", () => {
         filter={""}
         machineCount={20}
         selectedCount={20}
-      />,
-      { state }
+      />
     );
 
     expect(screen.getByText(/Selected all 20 machines/i)).toBeInTheDocument();
@@ -78,8 +63,7 @@ describe("MachineListSelectedCount", () => {
         filter={""}
         machineCount={20}
         selectedCount={10}
-      />,
-      { state }
+      />
     );
 
     await userEvent.click(
@@ -99,8 +83,7 @@ describe("MachineListSelectedCount", () => {
         filter={"this-is-a-filter"}
         machineCount={20}
         selectedCount={10}
-      />,
-      { state }
+      />
     );
 
     await userEvent.click(
@@ -122,8 +105,7 @@ describe("MachineListSelectedCount", () => {
         filter={""}
         machineCount={20}
         selectedCount={20}
-      />,
-      { state }
+      />
     );
 
     await userEvent.click(
