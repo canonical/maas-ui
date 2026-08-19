@@ -1,3 +1,5 @@
+import { createElement } from "react";
+
 import * as reactQuery from "@tanstack/react-query";
 import type { UseQueryOptions } from "@tanstack/react-query";
 import { waitFor } from "@testing-library/react";
@@ -5,9 +7,13 @@ import { waitFor } from "@testing-library/react";
 import { useWebsocketAwareQuery } from "./base";
 
 import { rootState, statusState } from "@/testing/factories";
-import { renderHookWithMockStore } from "@/testing/utils";
+import { renderHookWithProviders, renderWithProviders } from "@/testing/utils";
 
-vi.mock("@tanstack/react-query");
+vi.mock("@tanstack/react-query", async () => ({
+  ...(await vi.importActual("@tanstack/react-query")),
+  useQuery: vi.fn(),
+  useQueryClient: vi.fn(),
+}));
 
 const mockOptions = {} as UseQueryOptions;
 
@@ -24,7 +30,7 @@ beforeEach(() => {
 });
 
 it("calls useQuery with correct parameters", () => {
-  renderHookWithMockStore(() => useWebsocketAwareQuery(mockOptions));
+  renderHookWithProviders(() => useWebsocketAwareQuery(mockOptions));
   expect(reactQuery.useQuery).toHaveBeenCalledWith(mockOptions);
 });
 
@@ -32,10 +38,13 @@ it("skips query invalidation when connectedCount is unchanged", () => {
   const initialState = rootState({
     status: statusState({ connectedCount: 0 }),
   });
-  const { rerender } = renderHookWithMockStore(
-    () => useWebsocketAwareQuery(mockOptions),
-    { initialState }
-  );
+  const TestComponent = () => {
+    useWebsocketAwareQuery(mockOptions);
+    return null;
+  };
+  const { rerender } = renderWithProviders(createElement(TestComponent), {
+    state: initialState,
+  });
 
   const mockInvalidateQueries = vi.fn();
   const mockQueryClient: Partial<reactQuery.QueryClient> = {
@@ -45,7 +54,7 @@ it("skips query invalidation when connectedCount is unchanged", () => {
     mockQueryClient as reactQuery.QueryClient
   );
 
-  rerender(() => useWebsocketAwareQuery(mockOptions), {
+  rerender(createElement(TestComponent), {
     state: rootState({
       status: statusState({ connectedCount: 0 }),
     }),
@@ -57,10 +66,13 @@ it("invalidates queries when connectedCount changes", async () => {
   const initialState = rootState({
     status: statusState({ connectedCount: 0 }),
   });
-  const { rerender } = renderHookWithMockStore(
-    () => useWebsocketAwareQuery(mockOptions),
-    { initialState }
-  );
+  const TestComponent = () => {
+    useWebsocketAwareQuery(mockOptions);
+    return null;
+  };
+  const { rerender } = renderWithProviders(createElement(TestComponent), {
+    state: initialState,
+  });
 
   const mockInvalidateQueries = vi.fn();
   const mockQueryClient: Partial<reactQuery.QueryClient> = {
@@ -70,7 +82,7 @@ it("invalidates queries when connectedCount changes", async () => {
     mockQueryClient as reactQuery.QueryClient
   );
 
-  rerender(() => useWebsocketAwareQuery(mockOptions), {
+  rerender(createElement(TestComponent), {
     state: rootState({
       status: statusState({ connectedCount: 1 }),
     }),
@@ -81,7 +93,7 @@ it("invalidates queries when connectedCount changes", async () => {
 });
 
 it("returns the result of useQuery", () => {
-  const { result } = renderHookWithMockStore(() =>
+  const { result } = renderHookWithProviders(() =>
     useWebsocketAwareQuery(mockOptions)
   );
   expect(result.current).not.toBeNull();
