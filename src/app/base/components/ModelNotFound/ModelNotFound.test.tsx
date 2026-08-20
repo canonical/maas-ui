@@ -10,7 +10,9 @@ describe("ModelNotFound", () => {
       <ModelNotFound id={1} linkURL="www.url.com" modelName="model" />,
       { state }
     );
-    expect(screen.getByRole("heading").textContent).toBe("Model not found");
+    expect(
+      screen.getByRole("heading", { name: "Model not found" })
+    ).toBeInTheDocument();
   });
 
   it("renders the default link correctly", () => {
