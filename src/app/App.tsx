@@ -1,9 +1,8 @@
 import type { ReactNode } from "react";
-import { Suspense, useEffect } from "react";
+import { useState, useEffect } from "react";
 
+import { Layout } from "@canonical/maas-react-components";
 import {
-  Application,
-  AppStatus,
   Notification as NotificationBanner,
   NotificationProvider,
   ToastNotificationProvider,
@@ -24,11 +23,9 @@ import PageContent from "./base/components/PageContent/PageContent";
 import SectionHeader from "./base/components/SectionHeader";
 import useSessionExtender from "./base/hooks/useSessionExtender/useSessionExtender";
 import ThemePreviewContextProvider from "./base/theme-context";
-import { MAAS_UI_ID } from "./constants";
 import { getCookie } from "./utils";
 
-import AppSideNavigation from "@/app/base/components/AppSideNavigation";
-import StatusBar from "@/app/base/components/StatusBar";
+import AppLayout from "@/app/base/components/AppLayout";
 import FileContext, { fileContextStore } from "@/app/base/file-context";
 import { useFetchActions } from "@/app/base/hooks";
 import { configActions } from "@/app/store/config";
@@ -87,6 +84,7 @@ export const App = (): React.ReactElement => {
   const createSession = useCreateSession();
   const authenticating = useSelector(status.authenticating);
   const connected = useSelector(status.connected);
+  const connectedCount = useSelector(status.connectedCount);
   const connecting = useSelector(status.connecting);
   const configLoading = useSelector(configSelectors.loading);
   const configErrors = useSelector(configSelectors.errors);
@@ -95,6 +93,7 @@ export const App = (): React.ReactElement => {
   const dismissMutation = useDismissNotification();
   const location = useLocation();
   const dismiss = useDismissNotifications(dismissMutation.mutate);
+  const [hasRenderedAppContent, setHasRenderedAppContent] = useState(false);
 
   useSessionExtender(extendSession);
   useFetchActions([statusActions.checkAuthenticated]);
@@ -133,17 +132,35 @@ export const App = (): React.ReactElement => {
       dispatch(configActions.fetch());
     }
   }, [dispatch, connected]);
+
+  // `websocketConnect` is dispatched in an effect, so an authenticated session
+  // has one render before `connecting` becomes true. Keep routes unmounted in
+  // that gap: WebSocket-backed views otherwise dispatch requests before the
+  // socket request handlers have been registered.
+  const isInitialConnectionPending =
+    authenticated && !connected && connectedCount === 0;
   const isLoading =
-    authenticating || configLoading || (!connected && connecting);
+    authenticating ||
+    configLoading ||
+    isInitialConnectionPending ||
+    (!connected && connecting);
   const hasVaultError =
     configErrors === VaultErrors.REQUEST_FAILED ||
     configErrors === VaultErrors.CONNECTION_FAILED;
 
+  useEffect(() => {
+    if (!isLoading) {
+      setHasRenderedAppContent(true);
+    }
+  }, [isLoading]);
+
+  const shouldShowInitialSkeleton = isLoading && !hasRenderedAppContent;
+
   let content: ReactNode;
-  // display loading spinner only on initial load
-  // this prevents flashing of the loading screen when websocket connection is lost and restored
-  if (isLoading) {
-    content = <PageContent header={<SectionHeader loading />} />;
+  // Force-display Layout.Skeleton only on initial load, in addition to Layout's default suspense skeleton render.
+  // This prevents flashing of the loading screen when websocket connection is lost and restored.
+  if (shouldShowInitialSkeleton) {
+    content = <Layout.Skeleton view="table" />;
   } else if (hasVaultError) {
     content = (
       <PageContent header={<SectionHeader title="Failed to connect" />}>
@@ -168,27 +185,14 @@ export const App = (): React.ReactElement => {
   }
 
   return (
-    <Application id={MAAS_UI_ID}>
-      <ThemePreviewContextProvider>
-        <ToastNotificationProvider onDismiss={dismiss}>
-          <NotificationProvider pathname={location.pathname}>
-            <ConnectionStatus />
-            <AppSideNavigation />
-
-            <Suspense
-              fallback={<PageContent header={<SectionHeader loading />} />}
-            >
-              {content}
-            </Suspense>
-            {authenticated && (
-              <AppStatus>
-                <StatusBar />
-              </AppStatus>
-            )}
-          </NotificationProvider>
-        </ToastNotificationProvider>
-      </ThemePreviewContextProvider>
-    </Application>
+    <ThemePreviewContextProvider>
+      <ToastNotificationProvider onDismiss={dismiss}>
+        <NotificationProvider pathname={location.pathname}>
+          <ConnectionStatus />
+          <AppLayout>{content}</AppLayout>
+        </NotificationProvider>
+      </ToastNotificationProvider>
+    </ThemePreviewContextProvider>
   );
 };
 
