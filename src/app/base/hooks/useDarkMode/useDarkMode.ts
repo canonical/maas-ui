@@ -11,10 +11,7 @@ const getInitialDarkMode = (): boolean => {
   }
 
   // Fall back to user's system preference
-  return (
-    window.matchMedia &&
-    window.matchMedia("(prefers-color-scheme: dark)").matches
-  );
+  return window.matchMedia?.("(prefers-color-scheme: dark)")?.matches ?? false;
 };
 
 const useDarkMode = (): [boolean, () => void] => {
