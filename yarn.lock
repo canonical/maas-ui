@@ -1019,10 +1019,10 @@
     "@types/sjcl" "1.0.30"
     macaroon "3.0.4"
 
-"@canonical/react-components@4.5.2":
-  version "4.5.2"
-  resolved "https://registry.yarnpkg.com/@canonical/react-components/-/react-components-4.5.2.tgz#a3d470c48ca8dbffdf2e4609f5dc6c48c7f58373"
-  integrity sha512-N/e046Sa+14pO8yXXBoShRcZ+BuKMWuY+dhdFoD12+/MtHSuttNzj9rpLVpOItT3L1NxOOCodjbiXjuDU6u3MA==
+"@canonical/react-components@4.10.0":
+  version "4.10.0"
+  resolved "https://registry.yarnpkg.com/@canonical/react-components/-/react-components-4.10.0.tgz#40ec375fb97c87cfe014ea3d16f00dac9789685a"
+  integrity sha512-+1/z7K3X2aW5ZCoFthHHVldxmH2UUUbQYP7IOraUNChfdxbJtdwro1R/rGgS3STD83YKZjyDoeW1OlSk3n9ekQ==
   dependencies:
     "@types/jest" "30.0.0"
     "@types/node" "20.19.30"
@@ -1035,17 +1035,17 @@
     prop-types "15.8.1"
     react-table "7.8.0"
 
-"@canonical/typescript-config-react@0.27.0":
-  version "0.27.0"
-  resolved "https://registry.yarnpkg.com/@canonical/typescript-config-react/-/typescript-config-react-0.27.0.tgz#962c1b1b360619d3e606ba4d62481e91c6371500"
-  integrity sha512-1N9PlHzF7749TlhPPvL7+xZuth7SBrnC34w/JUw8MSl7B7rAlETqsWbIIvqsl3vcYNPnVZGQtaC8DMb82b1Qqg==
+"@canonical/typescript-config-react@0.34.0":
+  version "0.34.0"
+  resolved "https://registry.yarnpkg.com/@canonical/typescript-config-react/-/typescript-config-react-0.34.0.tgz#3f9f43527e5dade2e00d4cedd909cf4cfe731d53"
+  integrity sha512-4oHgdOulYojIzVaLhfjAd5oiTv8hABypYQXQ2JUlkX1genYedcOuyUi6rEylHfz6sg7RgZFBWzwTEuDYuZS3Lw==
   dependencies:
-    "@canonical/typescript-config" "^0.27.0"
+    "@canonical/typescript-config" "^0.34.0"
 
-"@canonical/typescript-config@^0.27.0":
-  version "0.27.0"
-  resolved "https://registry.yarnpkg.com/@canonical/typescript-config/-/typescript-config-0.27.0.tgz#d4b25279280eb28fbb01c03c5e5d3e8b21b270c0"
-  integrity sha512-nQm/6FK332iqdCiLNQkvhQgGmhLf2a9al2zAsEQxlYoubjQ3UaGsk9Aw0D7cQfAJ+KVx+Au5/D1+zxXWOSVknQ==
+"@canonical/typescript-config@^0.34.0":
+  version "0.34.0"
+  resolved "https://registry.yarnpkg.com/@canonical/typescript-config/-/typescript-config-0.34.0.tgz#36d352f5d8b9d43767d109b0cff81ec362e965a6"
+  integrity sha512-4rYxAUNegmWDW4OYbNVngRSxs9251vzz3g6/qZDgW5OnJqeQgUWasxoBHL08OyWOBC7OvFNGB+IM14x50u+BQQ==
 
 "@colors/colors@1.5.0":
   version "1.5.0"
@@ -15768,10 +15768,10 @@ validate-npm-package-name@^5.0.1:
   resolved "https://registry.yarnpkg.com/validate-npm-package-name/-/validate-npm-package-name-5.0.1.tgz#a316573e9b49f3ccd90dbb6eb52b3f06c6d604e8"
   integrity sha512-OljLrQ9SQdOUqTaQxqL5dEfZWrXExyyWsozYlAWFawPVNuD83igl7uJD2RTkNMbniIYgt8l81eCJGIdQF7avLQ==
 
-vanilla-framework@4.51.0:
-  version "4.51.0"
-  resolved "https://registry.yarnpkg.com/vanilla-framework/-/vanilla-framework-4.51.0.tgz#9c9268a030ff1031c459fb90e836e210000ad02d"
-  integrity sha512-RfGQE2KOhEWeLAX2je8zPdjiKHekikzCvQNWAslijZEGvjDUVPSuhrtiG4wxSW7OyhKLfg7h4U5ApRW6fzddCA==
+vanilla-framework@4.58.0:
+  version "4.58.0"
+  resolved "https://registry.yarnpkg.com/vanilla-framework/-/vanilla-framework-4.58.0.tgz#6b49cea0b24d56ed79d84b50c4d1719d3f1fa4b5"
+  integrity sha512-NCcDakrhhbocYkLxaHc5k5H1Wk9AsjaUqwi/RCpdI1gZMEuJc4Stx9Af51K0LQHAyGl1fXd74AzrqDfkjfj/5Q==
 
 vary@~1.1.2:
   version "1.1.2"
