@@ -15,8 +15,9 @@ Feature: Intro
     And the user expands the "Ubuntu" accordion section
     And the user opens the "18.04" release dropdown
     And the user selects and captures the first available option
+    And the user clicks the "Next" button
+    And the selected images table is visible
     And the user clicks the "Save and sync" button
-
     Then the selected image row should show "Queueing" in the table
     And the "Continue" button should be enabled
 
