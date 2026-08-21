@@ -1,7 +1,7 @@
 import { defineConfig } from "@hey-api/openapi-ts";
 
 export default defineConfig({
-  input: "https://maas-ui-demo.internal:5443/MAAS/a/openapi.json",
+  input: "http://10.10.0.21:5240/MAAS/a/openapi.json",
   output: {
     path: "src/app/apiclient",
     format: "prettier",
