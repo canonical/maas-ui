@@ -3202,7 +3202,7 @@
     "@babel/runtime" "^7.23.2"
     immutable "^4.3.4"
 
-"@redux-saga/core@^1.4.3", "@redux-saga/core@^1.5.1":
+"@redux-saga/core@^1.5.1":
   version "1.5.1"
   resolved "https://registry.yarnpkg.com/@redux-saga/core/-/core-1.5.1.tgz#2aee91fe195341ba0baff635ee874d9c28d5d87c"
   integrity sha512-Yh/eO0YBawlK5qAVXh9vSS0BDMWyFe6qIcVcKa8JtPOo3IFwRly33ZYBrsCwxu7jdSQT9QUJHChAU8fil5dRZQ==
@@ -13518,21 +13518,13 @@ redux-saga-test-plan@4.0.6:
     lodash.isequal "^4.5.0"
     lodash.ismatch "^4.4.0"
 
-redux-saga@*:
+redux-saga@*, redux-saga@1.5.1:
   version "1.5.1"
   resolved "https://registry.yarnpkg.com/redux-saga/-/redux-saga-1.5.1.tgz#2d6b971eb8c0f359d7d9c8dcd72830d928044e8f"
   integrity sha512-ZwnV/p+ABHoaDzyBrZshmIG/axRQG6AQJre8p9t1bPI/i6UzE5C9jGG9wgSKi8ojLMVyFLwmiDwFtuaul9c3wQ==
   dependencies:
     "@babel/runtime" "^7.28.4"
     "@redux-saga/core" "^1.5.1"
-
-redux-saga@1.4.3:
-  version "1.4.3"
-  resolved "https://registry.yarnpkg.com/redux-saga/-/redux-saga-1.4.3.tgz#5d4ef2cadbd46a526fbc47c385144cd49dcc8857"
-  integrity sha512-l2XfhI/BphvE+egITxJFei0K6FoW5yOnMwkTaH+oGi+7I+nEXVu5KWRdHYShhND1kE3yotMPPFFPwfsSwhSajQ==
-  dependencies:
-    "@babel/runtime" "^7.28.4"
-    "@redux-saga/core" "^1.4.3"
 
 redux-thunk@^3.1.0:
   version "3.1.0"
