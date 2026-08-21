@@ -173,7 +173,7 @@
     "mock-socket": "9.3.1",
     "mockdate": "3.0.5",
     "msw": "2.14.6",
-    "nanoid": "5.1.11",
+    "nanoid": "5.1.16",
     "nodemon": "3.1.14",
     "npm-package-json-lint": "8.0.0",
     "postcss-normalize": "13.0.1",
