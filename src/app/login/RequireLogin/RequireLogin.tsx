@@ -33,7 +33,7 @@ const RequireLogin = () => {
   const configLoaded = useSelector(configSelectors.loaded);
 
   const isLoading =
-    user.isPending || authenticating || (!connected && connecting);
+    user.isLoading || authenticating || (!connected && connecting);
   const hasAuthError = !authenticated && !connectionError;
 
   useEffect(() => {

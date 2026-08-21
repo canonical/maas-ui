@@ -36,7 +36,7 @@ const UserIntro = (): React.ReactElement => {
   return (
     <IntroSection
       errors={errorMessage}
-      loading={user.isPending || sshKeyLoading}
+      loading={user.isLoading || sshKeyLoading}
       shouldExitIntro={
         user.data?.statistics?.completed_intro ||
         (completeIntro.isSuccess && markedIntroComplete)

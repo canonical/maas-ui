@@ -40,7 +40,7 @@ const Intro = (): ReactElement => {
   const showIncomplete = !completedIntro && !completedUserIntro && !isSuperUser;
 
   useEffect(() => {
-    if (!user.isPending && !configLoading && !showIncomplete) {
+    if (!user.isLoading && !configLoading && !showIncomplete) {
       if (completedIntro && completedUserIntro) {
         // If both intros have been completed then exit the flow.
         navigate(exitURL, { replace: true });
@@ -57,7 +57,7 @@ const Intro = (): ReactElement => {
   }, [
     navigate,
     user.data,
-    user.isPending,
+    user.isLoading,
     configLoading,
     completedIntro,
     completedUserIntro,
@@ -67,7 +67,7 @@ const Intro = (): ReactElement => {
   ]);
 
   let content: ReactNode;
-  if (user.isPending || configLoading) {
+  if (user.isLoading || configLoading) {
     content = <PageContent header={<SectionHeader loading />} />;
   } else if (showIncomplete) {
     // Prevent the user from reaching any of the intro urls if they are not an admin

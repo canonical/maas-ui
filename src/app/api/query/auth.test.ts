@@ -1,3 +1,4 @@
+import { http } from "msw";
 import { describe, it, expect, vi, beforeEach } from "vitest";
 
 import {
@@ -47,6 +48,7 @@ const mockServer = setupMockServer(
   authResolvers.getCallback.handler(),
   authResolvers.extendSession.handler(),
   authResolvers.getCurrentUser.handler(),
+  authResolvers.getMeStatistics.handler(),
   authResolvers.completeIntro.handler(),
   authResolvers.getActiveOauthProvider.handler(),
   authResolvers.createOauthProvider.handler(),
@@ -298,6 +300,23 @@ describe("useGetCurrentUser", () => {
       expect(result.current.isSuccess).toBe(true);
     });
     expect(result.current.data).toMatchObject(expectedUser);
+  });
+
+  it("remains loading until the user statistics have loaded", async () => {
+    mockServer.use(
+      http.get(
+        /\/MAAS\/a\/v3\/users\/me:statistics$/,
+        () => new Promise<Response>(() => {})
+      )
+    );
+
+    const { result } = renderHookWithProviders(() => useGetCurrentUser());
+
+    await waitFor(() => {
+      expect(authResolvers.getCurrentUser.resolved).toBe(true);
+    });
+    expect(result.current.isLoading).toBe(true);
+    expect(result.current.isSuccess).toBe(false);
   });
 });
 

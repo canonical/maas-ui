@@ -7,7 +7,7 @@ import { useStorageState } from "react-storage-hooks";
 import EventLogsTable from "./EventLogsTable";
 
 import ArrowPagination from "@/app/base/components/ArrowPagination";
-import { MAIN_CONTENT_SECTION_ID } from "@/app/base/components/MainContentSection/MainContentSection";
+import { MAIN_CONTENT_SECTION_ID } from "@/app/base/components/PageContent/PageContent";
 import SearchBox from "@/app/base/components/SearchBox";
 import { useFetchActions } from "@/app/base/hooks";
 import type { ControllerDetails } from "@/app/store/controller/types";
