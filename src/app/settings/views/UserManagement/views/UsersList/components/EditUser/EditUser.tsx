@@ -70,6 +70,9 @@ const EditUser = ({
   const currentUser = useGetCurrentUser();
   const otherUser = useGetUser({ path: { user_id: id } }, !isSelfEditing);
   const user = isSelfEditing ? currentUser : otherUser;
+  const userLoading = isSelfEditing
+    ? currentUser.isLoading
+    : otherUser.isPending;
   const eTag = user.data?.headers?.get("ETag");
   const updateUser = useUpdateUser();
   const updateMe = useUpdateMe();
@@ -82,7 +85,7 @@ const EditUser = ({
 
   return (
     <>
-      {user.isPending && <Spinner text="Loading..." />}
+      {userLoading && <Spinner text="Loading..." />}
       {user.isError && (
         <NotificationBanner severity="negative">
           {user.error?.message}

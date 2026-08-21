@@ -36,7 +36,7 @@ export const Details = (): ReactElement => {
         )}
         <Row>
           <Col size={6}>
-            {user.isPending && <Spinner text="Loading..." />}
+            {user.isLoading && <Spinner text="Loading..." />}
             {user.isSuccess && user.data && (
               <EditUser id={user.data?.id} isSelfEditing={true} />
             )}

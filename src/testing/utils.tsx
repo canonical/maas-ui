@@ -4,6 +4,7 @@ import path from "path";
 import type { ProfilerOnRenderCallback, ReactNode } from "react";
 import { Profiler } from "react";
 
+import { SidePanel } from "@canonical/maas-react-components";
 import {
   expectTooltipOnHover,
   mockIsPending,
@@ -24,6 +25,7 @@ import configureStore from "redux-mock-store";
 import { vi } from "vitest";
 
 import { client } from "@/app/apiclient/client.gen";
+import ThemeContextProvider from "@/app/base/theme-context";
 import { WebSocketProvider } from "@/app/base/websocket-context";
 import { ConfigNames } from "@/app/store/config/types";
 import type { RootState } from "@/app/store/root/types";
@@ -185,9 +187,9 @@ type MaasStore = MockStoreEnhanced<RootState | unknown>;
 
 /**
  * Builds a project-specific `AdditionalProviders` wrapper (Redux `Provider`,
- * `WebSocketProvider`, and a render `Profiler` used for perf logging) to be
+ * `WebSocketProvider`, `ThemeContextProvider`, and a render `Profiler`) to be
  * passed to the upstreamed render helpers, which no longer maintain any
- * Redux/state-management dependencies themselves.
+ * application state-management dependencies themselves.
  *
  * `store` is read via a getter so that callers (e.g. `rerender`) can swap the
  * underlying store between renders while reusing the same component
@@ -207,7 +209,9 @@ const makeAdditionalProviders = (getStore: () => MaasStore) => {
     return (
       <Profiler id="TestComponent" onRender={onRender}>
         <WebSocketProvider>
-          <Provider store={getStore()}>{children}</Provider>
+          <Provider store={getStore()}>
+            <ThemeContextProvider>{children}</ThemeContextProvider>
+          </Provider>
         </WebSocketProvider>
       </Profiler>
     );
@@ -215,7 +219,8 @@ const makeAdditionalProviders = (getStore: () => MaasStore) => {
 };
 
 /**
- * A function for rendering a component with all test-relevant providers.
+ * A function for rendering a component within the application layout and all
+ * test-relevant providers.
  *
  * Delegates to the upstreamed `renderWithProviders` from
  * `@canonical/maas-react-components/testing`, which no longer owns any Redux
@@ -252,10 +257,16 @@ const renderWithProviders = (
     result,
     router,
     rerender: libRerender,
-  } = upstreamRenderWithProviders(ui, {
-    ...options,
-    AdditionalProviders,
-  });
+  } = upstreamRenderWithProviders(
+    <>
+      {ui}
+      <SidePanel />
+    </>,
+    {
+      ...options,
+      AdditionalProviders,
+    }
+  );
 
   const rerender = (
     ui: ReactNode,
@@ -264,7 +275,12 @@ const renderWithProviders = (
     if (newState) {
       store = getMockStore({ ...options?.state, ...newState });
     }
-    return libRerender(ui);
+    return libRerender(
+      <>
+        {ui}
+        <SidePanel />
+      </>
+    );
   };
 
   return { result, router, rerender, store };

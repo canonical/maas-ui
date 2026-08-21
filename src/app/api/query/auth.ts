@@ -1,6 +1,10 @@
 import { useMemo } from "react";
 
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import {
+  useMutation,
+  useQueryClient,
+  type UseQueryResult,
+} from "@tanstack/react-query";
 import { useDispatch } from "react-redux";
 
 import { useWebsocketAwareQuery } from "@/app/api/query/base";
@@ -260,16 +264,34 @@ export type CurrentUserInfo = UserResponse & {
   statistics: WithHeaders<UserStatisticsResponse> | undefined;
 };
 
+type UseGetCurrentUserResult = {
+  data: CurrentUserInfo | undefined;
+  isLoading: UseQueryResult["isLoading"];
+  isSuccess: UseQueryResult["isSuccess"];
+  isError: UseQueryResult["isError"];
+  error: UseQueryResult<
+    GetMeStatisticsData | GetUserInfoData,
+    GetMeStatisticsError | GetUserInfoError
+  >["error"];
+  stages: {
+    userInfo: {
+      isLoading: UseQueryResult["isLoading"];
+      isSuccess: UseQueryResult["isSuccess"];
+      isError: UseQueryResult["isError"];
+      error: UseQueryResult<GetUserInfoData, GetUserInfoError>["error"];
+    };
+    userStatistics: {
+      isLoading: UseQueryResult["isLoading"];
+      isSuccess: UseQueryResult["isSuccess"];
+      isError: UseQueryResult["isError"];
+      error: UseQueryResult<GetMeStatisticsData, GetMeStatisticsError>["error"];
+    };
+  };
+};
+
 export const useGetCurrentUser = (
   options?: Options<GetUserInfoData>
-): {
-  data: CurrentUserInfo | undefined;
-  isPending: boolean;
-  isSuccess: boolean;
-  isError: boolean;
-  error: GetUserInfoError | null;
-  statisticsError: GetMeStatisticsError | null;
-} => {
+): UseGetCurrentUserResult => {
   const userInfo = useWebsocketAwareQuery({
     ...queryOptionsWithHeaders<
       GetUserInfoResponses,
@@ -279,7 +301,7 @@ export const useGetCurrentUser = (
     retry: false, // explicitly set retry to false
   });
 
-  const statistics = useWebsocketAwareQuery({
+  const userStatistics = useWebsocketAwareQuery({
     ...queryOptionsWithHeaders<
       GetMeStatisticsResponses,
       GetMeStatisticsErrors,
@@ -289,17 +311,40 @@ export const useGetCurrentUser = (
     retry: false,
   });
 
-  return {
-    ...userInfo,
-    data: userInfo.data
-      ? {
-          ...userInfo.data,
-          statistics: statistics.data,
-        }
-      : undefined,
-    error: userInfo.error,
-    statisticsError: statistics.error,
-  };
+  const stages = useMemo(
+    (): UseGetCurrentUserResult["stages"] => ({
+      userInfo: {
+        isLoading: userInfo.isLoading,
+        isSuccess: userInfo.isSuccess,
+        isError: userInfo.isError,
+        error: userInfo.error || null,
+      },
+      userStatistics: {
+        isLoading: userStatistics.isLoading,
+        isSuccess: userStatistics.isSuccess,
+        isError: userStatistics.isError,
+        error: userStatistics.error || null,
+      },
+    }),
+    [userInfo, userStatistics]
+  );
+
+  return useMemo(
+    () => ({
+      data: userInfo.data
+        ? {
+            ...userInfo.data,
+            statistics: userStatistics.data,
+          }
+        : undefined,
+      isLoading: userInfo.isLoading || userStatistics.isLoading,
+      isSuccess: userInfo.isSuccess && userStatistics.isSuccess,
+      isError: userInfo.isError || userStatistics.isError,
+      error: userInfo.error || userStatistics.error || null,
+      stages,
+    }),
+    [userInfo, userStatistics, stages]
+  );
 };
 
 export const useGetUserEntitlements = (

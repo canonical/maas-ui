@@ -24,6 +24,7 @@ import {
   mockIsPending,
   mockSidePanel,
   waitForLoading,
+  expectTooltipOnHover,
 } from "@/testing/utils";
 
 const failureMock = vi.fn();
@@ -262,15 +263,10 @@ describe("ImagesTable", () => {
       });
 
       expect(selectionCheckbox).toBeAriaDisabled();
-      await userEvent.hover(selectionCheckbox);
-
-      await waitFor(() => {
-        expect(
-          screen.getByText(
-            "Cannot modify images that are currently being downloaded."
-          )
-        ).toBeInTheDocument();
-      });
+      await expectTooltipOnHover(
+        selectionCheckbox,
+        "Cannot modify images that are currently being downloaded."
+      );
 
       // Start button is replaced by stop
       expect(
