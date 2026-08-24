@@ -1,8 +1,8 @@
 import type { ReactElement } from "react";
 import { useCallback } from "react";
 
-import { useSidePanel } from "@canonical/maas-react-components";
-import { Col, Input, Row, Spinner } from "@canonical/react-components";
+import { SidePanel, useSidePanel } from "@canonical/maas-react-components";
+import { Col, Input, Row } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 
@@ -72,7 +72,7 @@ const AddInterface = ({ systemId }: AddInterfaceProps): ReactElement => {
   const onRenderRef = useScrollOnRender<HTMLDivElement>();
 
   if (!isMachineDetails(machine)) {
-    return <Spinner text="Loading..." />;
+    return <SidePanel.Skeleton />;
   }
   return (
     <div ref={onRenderRef}>

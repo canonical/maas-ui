@@ -1,3 +1,5 @@
+import { lazyLoadSidePanel } from "@canonical/maas-react-components";
+
 import NetworkTableActions from "./NetworkTableActions";
 
 import type { MachineDetails } from "@/app/store/machine/types";
@@ -175,6 +177,11 @@ describe("NetworkTableActions", () => {
     renderWithProviders(<NetworkTableActions nic={nic} systemId="abc123" />, {
       state,
     });
+
+    const MarkConnectedForm = lazyLoadSidePanel(
+      () =>
+        import("@/app/machines/views/MachineDetails/MachineNetwork/MarkConnectedForm")
+    );
     // Open the menu:
     await openMenu();
     const editPhysicalButton = screen.getByRole("menuitem", {
@@ -184,7 +191,7 @@ describe("NetworkTableActions", () => {
     await userEvent.click(editPhysicalButton);
     expect(mockOpen).toHaveBeenCalledWith(
       expect.objectContaining({
-        component: expect.any(Function),
+        component: MarkConnectedForm,
         title: "Mark as connected",
       })
     );

@@ -1,8 +1,8 @@
 import type { ReactElement } from "react";
 import { useEffect } from "react";
 
-import { useSidePanel } from "@canonical/maas-react-components";
-import { Spinner, Strip } from "@canonical/react-components";
+import { SidePanel, useSidePanel } from "@canonical/maas-react-components";
+import { Strip } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation } from "react-router";
 import * as Yup from "yup";
@@ -76,7 +76,7 @@ export const ReleaseForm = ({
   }, [dispatch]);
 
   if (selectedCountLoading || !configLoaded) {
-    return <Spinner text={"Loading..."} />;
+    return <SidePanel.Skeleton />;
   }
 
   return (

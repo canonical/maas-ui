@@ -1,8 +1,7 @@
 import type { ReactElement } from "react";
 import { useEffect, useState, useCallback } from "react";
 
-import { useSidePanel } from "@canonical/maas-react-components";
-import { Spinner } from "@canonical/react-components";
+import { SidePanel, useSidePanel } from "@canonical/maas-react-components";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 
@@ -114,7 +113,7 @@ const AddBridgeForm = ({
   }, [bridgeVLAN, firstNic, setBridgeVLAN]);
 
   if (vlansLoading || !bridgeVLAN || !isMachineDetails(machine)) {
-    return <Spinner text="Loading..." />;
+    return <SidePanel.Skeleton />;
   }
 
   const macAddress = firstNic?.mac_address || "";

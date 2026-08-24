@@ -313,11 +313,11 @@ describe("EditBondForm", () => {
     expect(store.getActions().some((action) => action.type === "vlan/fetch"));
   });
 
-  it("displays a spinner when data is loading", async () => {
+  it("displays a skeleton when data is loading", async () => {
     state.fabric.loaded = false;
     state.subnet.loaded = false;
     state.vlan.loaded = false;
-    renderWithProviders(
+    const { result } = renderWithProviders(
       <EditBondForm
         nic={nic}
         selected={[]}
@@ -326,7 +326,9 @@ describe("EditBondForm", () => {
       />,
       { state }
     );
-    expect(screen.getByText("Loading")).toBeInTheDocument();
+    expect(
+      result.container.querySelector(".aside-skeleton")
+    ).toBeInTheDocument();
   });
 
   it("can dispatch an action to update a bond", async () => {

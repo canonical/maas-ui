@@ -58,12 +58,12 @@ describe("EditAliasOrVlanForm", () => {
     });
   });
 
-  it("displays a spinner when data is loading", () => {
+  it("displays a skeleton when data is loading", () => {
     state.fabric.loaded = false;
     state.subnet.loaded = false;
     state.vlan.loaded = false;
     state.machine.items = [];
-    renderWithProviders(
+    const { result } = renderWithProviders(
       <EditAliasOrVlanForm
         interfaceType={NetworkInterfaceTypes.VLAN}
         nic={nic}
@@ -71,7 +71,9 @@ describe("EditAliasOrVlanForm", () => {
       />,
       { state }
     );
-    expect(screen.getByText("Loading...")).toBeInTheDocument();
+    expect(
+      result.container.querySelector(".aside-skeleton")
+    ).toBeInTheDocument();
   });
 
   it("displays a tag field for a VLAN", () => {
