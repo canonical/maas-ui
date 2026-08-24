@@ -13,7 +13,7 @@ Then("the side navigation title should be {string}", (expectedHeading) => {
 });
 
 Then("the heading should be {string}", (expectedHeading: string) => {
-  cy.findByRole("heading", { level: 1 }).contains(expectedHeading);
+  cy.findByRole("heading", { level: 1, name: expectedHeading }).should("exist");
 });
 
 Then("the heading matching {string} text should exist", (heading: string) => {
