@@ -46,7 +46,6 @@ jobs:
             domains
             images
             intro
-            kvm
             login
             machines
             networkDiscovery
@@ -75,10 +74,39 @@ jobs:
                             awk -F'/' '{print $5}' | \
                             sort -u)
 
+          # Collect the step_definitions/ subdirectories touched by this PR.
+          # These live alongside the features/ dirs and back their step
+          # implementations, so a change here affects tests without the
+          # feature files themselves changing.
+          CHANGED_STEP_DEFS=$(git diff --name-only "$BASE_SHA" "$HEAD_SHA" | \
+                              (grep '^cypress/support/step_definitions/' || true) | \
+                              awk -F'/' '{print $4}' | \
+                              sort -u)
+
+          # cypress/support/commands.ts (and the e2e.ts file that loads it)
+          # register global custom commands used by every spec via Cypress's
+          # default supportFile - a change here can affect any test, so treat
+          # it the same as a shared step_definitions/common change.
+          GLOBAL_SUPPORT_CHANGED=$(git diff --name-only "$BASE_SHA" "$HEAD_SHA" | \
+                                    grep -qx -e "cypress/support/commands.ts" -e "cypress/support/e2e.ts" && echo yes || true)
+
           echo "Changed app/ directories:"
           echo "$CHANGED_APP"
           echo "Changed feature/ directories:"
           echo "$CHANGED_FEATURE"
+          echo "Changed step_definitions/ directories:"
+          echo "$CHANGED_STEP_DEFS"
+          echo "Global support file changed: ${GLOBAL_SUPPORT_CHANGED:-no}"
+
+          # step_definitions/common holds shared steps used across every
+          # feature, and commands.ts/e2e.ts register global commands loaded
+          # by every spec - either can affect any test, so run the full
+          # with-users suite rather than trying to scope it down.
+          if echo "$CHANGED_STEP_DEFS" | grep -qx "common" || [ "$GLOBAL_SUPPORT_CHANGED" = "yes" ]; then
+            echo "Shared step_definitions/common or global support file changed - running full suite"
+            echo "spec_glob=all" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
 
           # Helper: add a feature dir to the glob list, skipping duplicates.
           declare -A SEEN
@@ -105,6 +133,12 @@ jobs:
 
           # Source 2: feature directories changed directly.
           for dir in $CHANGED_FEATURE; do
+            add_feature_dir "$dir"
+          done
+
+          # Source 3: step_definitions directories changed directly (maps
+          # 1-to-1 onto the same-named features/ directory).
+          for dir in $CHANGED_STEP_DEFS; do
             add_feature_dir "$dir"
           done
 
