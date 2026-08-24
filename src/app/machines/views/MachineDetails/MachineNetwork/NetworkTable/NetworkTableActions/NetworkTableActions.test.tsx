@@ -1,8 +1,5 @@
-import EditInterface from "../../EditInterface";
-
 import NetworkTableActions from "./NetworkTableActions";
 
-import MarkConnectedForm from "@/app/machines/views/MachineDetails/MachineNetwork/MarkConnectedForm";
 import type { MachineDetails } from "@/app/store/machine/types";
 import type { RootState } from "@/app/store/root/types";
 import { NetworkInterfaceTypes, NetworkLinkMode } from "@/app/store/types/enum";
@@ -165,7 +162,8 @@ describe("NetworkTableActions", () => {
     await userEvent.click(editBondButton);
     expect(mockOpen).toHaveBeenCalledWith(
       expect.objectContaining({
-        component: EditInterface,
+        component: expect.any(Function),
+        title: "Edit Bond",
       })
     );
   });
@@ -177,6 +175,7 @@ describe("NetworkTableActions", () => {
     renderWithProviders(<NetworkTableActions nic={nic} systemId="abc123" />, {
       state,
     });
+
     // Open the menu:
     await openMenu();
     const editPhysicalButton = screen.getByRole("menuitem", {
@@ -186,7 +185,8 @@ describe("NetworkTableActions", () => {
     await userEvent.click(editPhysicalButton);
     expect(mockOpen).toHaveBeenCalledWith(
       expect.objectContaining({
-        component: MarkConnectedForm,
+        component: expect.any(Function),
+        title: "Mark as connected",
       })
     );
   });

@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-import { Spinner, Strip } from "@canonical/react-components";
+import { SidePanel } from "@canonical/maas-react-components";
 
 import type { FormikFormProps } from "@/app/base/components/FormikForm";
 import FormikForm from "@/app/base/components/FormikForm";
@@ -73,11 +73,7 @@ const ActionForm = <V extends object, E = null>({
   });
 
   if (!loaded) {
-    return (
-      <Strip>
-        <Spinner aria-label={Labels.LoadingForm} text="Loading..." />
-      </Strip>
-    );
+    return <SidePanel.Skeleton />;
   }
   // TODO: remove processingComplete once actionStatus has been implemented across all forms
   // https://warthogs.atlassian.net/browse/MAASENG-2312

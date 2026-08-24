@@ -1,8 +1,11 @@
 import type { ReactElement } from "react";
 import { useState } from "react";
 
-import { ExternalLink, useSidePanel } from "@canonical/maas-react-components";
-import { Spinner, Strip } from "@canonical/react-components";
+import {
+  ExternalLink,
+  SidePanel,
+  useSidePanel,
+} from "@canonical/maas-react-components";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 
@@ -102,9 +105,7 @@ export const AddMachineForm = (): ReactElement => {
   return (
     <>
       {!allLoaded ? (
-        <Strip data-testid="loading" shallow>
-          <Spinner text="Loading" />
-        </Strip>
+        <SidePanel.Skeleton />
       ) : (
         <FormikForm<AddMachineValues>
           buttonsHelp={

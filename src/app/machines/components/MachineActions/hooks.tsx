@@ -1,23 +1,12 @@
-import { useSidePanel } from "@canonical/maas-react-components";
+import {
+  lazyLoadSidePanel,
+  useSidePanel,
+} from "@canonical/maas-react-components";
 import { Button, Icon, Switch } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 
-import DeleteMachine from "../MachineForms/DeleteMachine/DeleteMachine";
-import CloneForm from "../MachineForms/MachineActionFormWrapper/CloneForm";
-import CommissionForm from "../MachineForms/MachineActionFormWrapper/CommissionForm";
-import DeployForm from "../MachineForms/MachineActionFormWrapper/DeployForm";
-import MarkBrokenForm from "../MachineForms/MachineActionFormWrapper/MarkBrokenForm";
-import OverrideTestForm from "../MachineForms/MachineActionFormWrapper/OverrideTestForm";
-import ReleaseForm from "../MachineForms/MachineActionFormWrapper/ReleaseForm";
-import SetMachineZoneForm from "../MachineForms/MachineActionFormWrapper/SetMachineZoneForm/SetMachineZoneForm";
-import SetPoolForm from "../MachineForms/MachineActionFormWrapper/SetPoolForm";
-import TagForm from "../MachineForms/MachineActionFormWrapper/TagForm";
-import TestMachineForm from "../MachineForms/MachineActionFormWrapper/TestMachineForm";
-
 import type { MachineActionGroup } from "./types";
 
-import FieldlessForm from "@/app/base/components/node/FieldlessForm";
-import PowerOffForm from "@/app/base/components/node/PowerOffForm";
 import { machineActions } from "@/app/store/machine";
 import machineSelectors from "@/app/store/machine/selectors";
 import type { Machine } from "@/app/store/machine/types";
@@ -26,6 +15,47 @@ import { useSelectedMachinesActionsDispatch } from "@/app/store/machine/utils/ho
 import type { RootState } from "@/app/store/root/types";
 import { NodeActions } from "@/app/store/types/node";
 import { canOpenActionForm } from "@/app/store/utils";
+
+const CommissionForm = lazyLoadSidePanel(
+  () => import("../MachineForms/MachineActionFormWrapper/CommissionForm")
+);
+const DeployForm = lazyLoadSidePanel(
+  () => import("../MachineForms/MachineActionFormWrapper/DeployForm")
+);
+const ReleaseForm = lazyLoadSidePanel(
+  () => import("../MachineForms/MachineActionFormWrapper/ReleaseForm")
+);
+const CloneForm = lazyLoadSidePanel(
+  () => import("../MachineForms/MachineActionFormWrapper/CloneForm")
+);
+const MarkBrokenForm = lazyLoadSidePanel(
+  () => import("../MachineForms/MachineActionFormWrapper/MarkBrokenForm")
+);
+const OverrideTestForm = lazyLoadSidePanel(
+  () => import("../MachineForms/MachineActionFormWrapper/OverrideTestForm")
+);
+const TagForm = lazyLoadSidePanel(
+  () => import("../MachineForms/MachineActionFormWrapper/TagForm")
+);
+const SetMachineZoneForm = lazyLoadSidePanel(
+  () =>
+    import("../MachineForms/MachineActionFormWrapper/SetMachineZoneForm/SetMachineZoneForm")
+);
+const SetPoolForm = lazyLoadSidePanel(
+  () => import("../MachineForms/MachineActionFormWrapper/SetPoolForm")
+);
+const TestMachineForm = lazyLoadSidePanel(
+  () => import("../MachineForms/MachineActionFormWrapper/TestMachineForm")
+);
+const DeleteMachine = lazyLoadSidePanel(
+  () => import("../MachineForms/DeleteMachine/DeleteMachine")
+);
+const FieldlessForm = lazyLoadSidePanel(
+  () => import("@/app/base/components/node/FieldlessForm")
+);
+const PowerOffForm = lazyLoadSidePanel(
+  () => import("@/app/base/components/node/PowerOffForm")
+);
 
 export const useMachineActionMenus = (
   isViewingDetails: boolean,

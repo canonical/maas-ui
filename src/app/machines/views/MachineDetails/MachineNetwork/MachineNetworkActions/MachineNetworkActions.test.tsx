@@ -1,6 +1,5 @@
 import MachineNetworkActions from "./MachineNetworkActions";
 
-import TestMachineForm from "@/app/machines/components/MachineForms/MachineActionFormWrapper/TestMachineForm";
 import AddBondForm from "@/app/machines/views/MachineDetails/MachineNetwork/AddBondForm";
 import AddBridgeForm from "@/app/machines/views/MachineDetails/MachineNetwork/AddBridgeForm";
 import type { RootState } from "@/app/store/root/types";
@@ -76,7 +75,7 @@ describe("MachineNetworkActions", () => {
         screen.getByRole("button", { name: /Validate network configuration/i })
       );
       expect(mockOpen).toHaveBeenCalledWith({
-        component: TestMachineForm,
+        component: expect.any(Function),
         title: "Test machine",
         props: {
           applyConfiguredNetworking: true,

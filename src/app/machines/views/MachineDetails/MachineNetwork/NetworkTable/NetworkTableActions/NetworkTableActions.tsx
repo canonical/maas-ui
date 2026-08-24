@@ -1,9 +1,10 @@
-import type { ComponentType, ReactElement } from "react";
+import type { ReactElement } from "react";
 
-import { useSidePanel } from "@canonical/maas-react-components";
+import {
+  lazyLoadSidePanel,
+  useSidePanel,
+} from "@canonical/maas-react-components";
 import { useSelector } from "react-redux";
-
-import EditInterface from "../../EditInterface";
 
 import TableMenu from "@/app/base/components/TableMenu";
 import type { Props as TableMenuProps } from "@/app/base/components/TableMenu/TableMenu";
@@ -13,10 +14,7 @@ import type {
   SetSelected,
 } from "@/app/base/components/node/networking/types";
 import { useIsAllNetworkingDisabled } from "@/app/base/hooks";
-import AddAliasOrVlan from "@/app/machines/views/MachineDetails/MachineNetwork/AddAliasOrVlan";
-import MarkConnectedForm from "@/app/machines/views/MachineDetails/MachineNetwork/MarkConnectedForm";
 import { ConnectionState } from "@/app/machines/views/MachineDetails/MachineNetwork/MarkConnectedForm/MarkConnectedForm";
-import RemovePhysicalForm from "@/app/machines/views/MachineDetails/MachineNetwork/RemovePhysicalForm";
 import machineSelectors from "@/app/store/machine/selectors";
 import type { Machine } from "@/app/store/machine/types";
 import {
@@ -32,6 +30,20 @@ import {
   getInterfaceTypeText,
   hasInterfaceType,
 } from "@/app/store/utils";
+
+const EditInterface = lazyLoadSidePanel(() => import("../../EditInterface"));
+const AddAliasOrVlan = lazyLoadSidePanel(
+  () =>
+    import("@/app/machines/views/MachineDetails/MachineNetwork/AddAliasOrVlan")
+);
+const MarkConnectedForm = lazyLoadSidePanel(
+  () =>
+    import("@/app/machines/views/MachineDetails/MachineNetwork/MarkConnectedForm")
+);
+const RemovePhysicalForm = lazyLoadSidePanel(
+  () =>
+    import("@/app/machines/views/MachineDetails/MachineNetwork/RemovePhysicalForm")
+);
 
 type NetworkTableActionsProps = {
   link?: NetworkLink | null;
@@ -204,10 +216,7 @@ const NetworkTableActions = ({
         children: `Remove ${getInterfaceTypeText(machine, nic, link)}...`,
         onClick: () => {
           openSidePanel({
-            // Cast component type to appease TiCS, local compiler shows no error
-            component: RemovePhysicalForm as ComponentType<
-              Record<string, unknown>
-            >,
+            component: RemovePhysicalForm,
             title: `Remove ${getInterfaceTypeText(machine, nic, link)}`,
             props: {
               systemId: machine.system_id,
