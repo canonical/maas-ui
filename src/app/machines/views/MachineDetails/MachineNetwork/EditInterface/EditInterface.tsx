@@ -1,6 +1,6 @@
 import type { ReactElement, ReactNode } from "react";
 
-import { Spinner } from "@canonical/react-components";
+import { SidePanel } from "@canonical/maas-react-components";
 import { useSelector } from "react-redux";
 
 import EditAliasOrVlanForm from "../EditAliasOrVlanForm";
@@ -43,7 +43,7 @@ const EditInterface = ({
   );
   const link = getLinkFromNic(nic, linkId);
   if (!isMachineDetails(machine)) {
-    return <Spinner text="Loading..." />;
+    return <SidePanel.Skeleton />;
   }
   const interfaceType = getInterfaceType(machine, nic, link);
   let form: ReactNode;

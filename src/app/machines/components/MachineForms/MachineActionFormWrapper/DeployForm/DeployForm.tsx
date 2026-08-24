@@ -1,7 +1,6 @@
 import type { ReactElement } from "react";
 
-import { useSidePanel } from "@canonical/maas-react-components";
-import { Spinner } from "@canonical/react-components";
+import { SidePanel, useSidePanel } from "@canonical/maas-react-components";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation } from "react-router";
 import * as Yup from "yup";
@@ -99,7 +98,7 @@ export const DeployForm = ({
     !configLoaded ||
     selectedCountLoading
   ) {
-    return <Spinner text="Loading..." />;
+    return <SidePanel.Skeleton />;
   }
 
   // Default OS+release is set in the backend even if the image has not yet been

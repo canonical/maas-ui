@@ -1,8 +1,11 @@
 import type { ReactElement } from "react";
 import { useEffect, useState } from "react";
 
-import { ExternalLink, useSidePanel } from "@canonical/maas-react-components";
-import { Spinner } from "@canonical/react-components";
+import {
+  ExternalLink,
+  SidePanel,
+  useSidePanel,
+} from "@canonical/maas-react-components";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 
@@ -90,7 +93,7 @@ export const CloneForm = ({
   }, [dispatch]);
 
   if (selectedCountLoading) {
-    return <Spinner text={"Loading..."} />;
+    return <SidePanel.Skeleton />;
   }
 
   return (

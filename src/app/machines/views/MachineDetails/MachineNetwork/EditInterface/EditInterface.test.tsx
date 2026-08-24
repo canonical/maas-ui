@@ -22,15 +22,17 @@ describe("EditInterface", () => {
     });
   });
 
-  it("displays a spinner when data is loading", () => {
+  it("displays a skeleton when data is loading", () => {
     state.machine.items = [];
-    renderWithProviders(
+    const { result } = renderWithProviders(
       <EditInterface selected={[]} setSelected={vi.fn()} systemId="abc123" />,
       {
         state,
       }
     );
-    expect(screen.getByText(/Loading/i)).toBeInTheDocument();
+    expect(
+      result.container.querySelector(".aside-skeleton")
+    ).toBeInTheDocument();
   });
 
   it("displays a form for editing a physical interface", () => {

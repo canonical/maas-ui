@@ -96,11 +96,13 @@ describe("AddMachineForm", () => {
     });
   });
 
-  it("displays a spinner if data has not loaded", () => {
-    renderWithProviders(<AddMachineForm />, {
+  it("displays a skeleton if data has not loaded", () => {
+    const { result } = renderWithProviders(<AddMachineForm />, {
       state,
     });
-    expect(screen.getByTestId("loading")).toBeInTheDocument();
+    expect(
+      result.container.querySelector(".aside-skeleton")
+    ).toBeInTheDocument();
   });
 
   it("enables submit when a power type with no fields is chosen", async () => {

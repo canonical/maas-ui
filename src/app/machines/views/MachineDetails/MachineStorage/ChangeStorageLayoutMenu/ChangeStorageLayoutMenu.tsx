@@ -1,11 +1,18 @@
 import type { ReactElement } from "react";
 
-import { useSidePanel } from "@canonical/maas-react-components";
+import {
+  lazyLoadSidePanel,
+  useSidePanel,
+} from "@canonical/maas-react-components";
 import { ContextualMenu } from "@canonical/react-components";
 
-import ChangeStorageLayout from "@/app/machines/views/MachineDetails/MachineStorage/ChangeStorageLayout";
 import type { Machine, StorageLayoutOption } from "@/app/store/machine/types";
 import { StorageLayout } from "@/app/store/types/enum";
+
+const ChangeStorageLayout = lazyLoadSidePanel(
+  () =>
+    import("@/app/machines/views/MachineDetails/MachineStorage/ChangeStorageLayout")
+);
 
 // TODO: Once the API returns a list of allowed storage layouts for a given
 // machine we should either filter this list, or add a boolean e.g. "allowable"
