@@ -54,10 +54,6 @@ const AppSideNavItemGroup = ({
     return false;
   }, [group, path]);
 
-  const canViewControllersLink = useHasEntitlements([
-    Entitlement.CAN_VIEW_CONTROLLERS,
-  ]);
-
   const filteredGroups = group.navLinks.map((navLink) => ({
     ...navLink,
     disabled: !hasPermissions(entitlements, navLink.requiredEntitlements || []),
@@ -73,28 +69,24 @@ const AppSideNavItemGroup = ({
           </Navigation.Label>
         </Navigation.Text>
         <Navigation.List aria-labelledby={`${group.groupTitle}-${id}`}>
-          {filteredGroups.map((navLink) => {
-            if (!navLink.adminOnly || canViewControllersLink) {
-              return (
-                <AppSideNavItem
-                  disabled={navLink.disabled}
-                  icon={
-                    navLink.label === "Controllers" && vaultIncomplete ? (
-                      <Icon
-                        aria-label="warning"
-                        data-testid="warning-icon"
-                        name="security-warning-grey"
-                      />
-                    ) : undefined
-                  }
-                  key={navLink.label}
-                  navLink={navLink}
-                  path={path}
-                  setIsCollapsed={setIsCollapsed}
-                />
-              );
-            } else return null;
-          })}
+          {filteredGroups.map((navLink) => (
+            <AppSideNavItem
+              disabled={navLink.disabled}
+              icon={
+                navLink.label === "Controllers" && vaultIncomplete ? (
+                  <Icon
+                    aria-label="warning"
+                    data-testid="warning-icon"
+                    name="security-warning-grey"
+                  />
+                ) : undefined
+              }
+              key={navLink.label}
+              navLink={navLink}
+              path={path}
+              setIsCollapsed={setIsCollapsed}
+            />
+          ))}
         </Navigation.List>
       </Navigation.Item>
     </>
@@ -113,7 +105,7 @@ export const AppSideNavItems = ({
 }: Props): React.ReactElement => {
   const { data: userEntitlements } = useGetUserEntitlements();
   const canViewSettingsLink = useHasEntitlements([
-    Entitlement.CAN_VIEW_GLOBAL_ENTITIES,
+    Entitlement.CAN_VIEW_CONFIGURATIONS,
   ]);
   return (
     <>
@@ -134,7 +126,7 @@ export const AppSideNavItems = ({
       ) : null}
       {isAuthenticated ? (
         <>
-          {canViewSettingsLink && showLinks ? (
+          {showLinks ? (
             <ul className="p-side-navigation__list">
               <>
                 <AppSideNavItem
