@@ -9,6 +9,7 @@ import GroupDetails from "./app/settings/views/UserManagement/views/Groups/views
 import GroupsList from "./app/settings/views/UserManagement/views/Groups/views/GroupsList";
 import TagDetails from "./app/tags/views/TagDetails";
 import TagList from "./app/tags/views/TagList";
+import ZonesList from "./app/zones/views";
 
 import App from "@/app/App";
 import ErrorBoundary from "@/app/base/components/ErrorBoundary";
@@ -111,6 +112,7 @@ const NetworkDiscoverySettings = lazy(
   () => import("@/app/settings/views/Network/NetworkDiscoverySettings")
 );
 const Networks = lazy(() => import("@/app/networks"));
+const Pools = lazy(() => import("@/app/pools"));
 const PoolsList = lazy(() => import("@/app/pools/views/PoolsList"));
 const RacksList = lazy(() => import("@/app/racks/views/RacksList"));
 const SwitchesList = lazy(() => import("@/app/switches/views/SwitchesList"));
@@ -138,14 +140,14 @@ const SubnetsList = lazy(
 const Synchronization = lazy(
   () => import("@/app/settings/views/Images/Synchronization")
 );
+const Tags = lazy(() => import("@/app/tags/views"));
 const VLANDetails = lazy(
   () => import("@/app/networks/views/VLANs/views/VLANDetails")
 );
 const VLANsList = lazy(
   () => import("@/app/networks/views/VLANs/views/VLANsList")
 );
-const ZonesList = lazy(() => import("@/app/zones/views"));
-
+const Zones = lazy(() => import("@/app/zones"));
 const MachineRedirect = ({
   to,
 }: {
@@ -189,9 +191,19 @@ export const router = createBrowserRouter(
               path: `${urls.zones.index}`,
               element: (
                 <ErrorBoundary>
-                  <ZonesList />
+                  <Zones />
                 </ErrorBoundary>
               ),
+              children: [
+                {
+                  path: `${urls.zones.index}`,
+                  element: (
+                    <ErrorBoundary>
+                      <ZonesList />
+                    </ErrorBoundary>
+                  ),
+                },
+              ],
             },
             {
               path: urls.networkDiscovery.index,
@@ -244,12 +256,30 @@ export const router = createBrowserRouter(
               ),
             },
             {
-              path: `${urls.tags.index}/*`,
+              path: `${urls.tags.index}`,
               element: (
                 <ErrorBoundary>
-                  <TagList />
+                  <Tags />
                 </ErrorBoundary>
               ),
+              children: [
+                {
+                  path: `${urls.tags.index}`,
+                  element: (
+                    <ErrorBoundary>
+                      <TagList />
+                    </ErrorBoundary>
+                  ),
+                },
+                {
+                  path: `${urls.tags.tag}`,
+                  element: (
+                    <ErrorBoundary>
+                      <TagDetails />
+                    </ErrorBoundary>
+                  ),
+                },
+              ],
             },
             {
               path: `${urls.tags.tag.index(null)}/*`,
@@ -489,12 +519,22 @@ export const router = createBrowserRouter(
               ),
             },
             {
-              path: `${urls.pools.index}/*`,
+              path: `${urls.pools.index}`,
               element: (
                 <ErrorBoundary>
-                  <PoolsList />
+                  <Pools />
                 </ErrorBoundary>
               ),
+              children: [
+                {
+                  path: `${urls.pools.index}`,
+                  element: (
+                    <ErrorBoundary>
+                      <PoolsList />
+                    </ErrorBoundary>
+                  ),
+                },
+              ],
             },
             {
               path: urls.networks.index,
