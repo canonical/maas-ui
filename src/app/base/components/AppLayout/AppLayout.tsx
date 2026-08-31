@@ -10,6 +10,7 @@ import { matchPath, useLocation } from "react-router";
 import SecondaryNavigation from "../SecondaryNavigation";
 
 import { useThemeContext } from "@/app/base/theme-context";
+import { MAAS_UI_ID } from "@/app/constants";
 import { preferencesNavItems } from "@/app/preferences/constants";
 import { useSettingsNavItems } from "@/app/settings/hooks/useSettingsNavItems";
 import status from "@/app/store/status/selectors";
@@ -34,6 +35,7 @@ const AppLayout = ({ children }: AppLayoutProps): ReactElement => {
 
   return (
     <Layout
+      id={MAAS_UI_ID}
       isSecondaryNavVisible={isSecondaryNavVisible}
       navigation={
         <Suspense fallback={null}>
