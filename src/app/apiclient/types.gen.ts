@@ -2593,6 +2593,76 @@ export type SshKeysListResponse = {
 export type SshKeysProtocolType = "gh" | "lp";
 
 /**
+ * SshHostKeyResponse
+ * Base HAL response class that every response object must extend. The response object will look like
+ * {
+ * '_links': {
+ * 'self': {'href': '/api/v3/'}
+ * },
+ * '_embedded': {}
+ * }
+ */
+export type SshHostKeyResponse = {
+  _links?: BaseHal;
+  /**
+   *  Embedded
+   */
+  _embedded?: Record<string, unknown>;
+  /**
+   * Id
+   */
+  id: number;
+  /**
+   * Created
+   */
+  created: string;
+  /**
+   * Updated
+   */
+  updated: string;
+  /**
+   * Host
+   */
+  host: string;
+  /**
+   * Key Type
+   */
+  key_type: string;
+  /**
+   * Public Key
+   */
+  public_key: string;
+  /**
+   * Label
+   */
+  label?: string;
+};
+
+/**
+ * SshHostKeysListResponse
+ * Base class for offset-paginated responses.
+ * Derived classes should overwrite the items property
+ */
+export type SshHostKeysListResponse = {
+  /**
+   * Items
+   */
+  items: SshHostKeyResponse[];
+  /**
+   * Total
+   */
+  total: number;
+  /**
+   * Next
+   */
+  next?: string;
+  /**
+   * Kind
+   */
+  kind?: string;
+};
+
+/**
  * StaticRouteRequest
  */
 export type StaticRouteRequest = {
@@ -6261,6 +6331,46 @@ export type ListUserSshkeysResponses = {
 
 export type ListUserSshkeysResponse =
   ListUserSshkeysResponses[keyof ListUserSshkeysResponses];
+
+export type ListSshHostKeysData = {
+  body?: never;
+  path?: never;
+  query?: {
+    /**
+     * Page
+     */
+    page?: number;
+    /**
+     * Size
+     */
+    size?: number;
+  };
+  url: "/MAAS/a/v3/ssh-host-keys";
+};
+
+export type ListSshHostKeysErrors = {
+  /**
+   * Unauthorized
+   */
+  401: UnauthorizedBodyResponse;
+  /**
+   * Unprocessable Entity
+   */
+  422: ValidationErrorBodyResponse;
+};
+
+export type ListSshHostKeysError =
+  ListSshHostKeysErrors[keyof ListSshHostKeysErrors];
+
+export type ListSshHostKeysResponses = {
+  /**
+   * Successful Response
+   */
+  200: SshHostKeysListResponse;
+};
+
+export type ListSshHostKeysResponse =
+  ListSshHostKeysResponses[keyof ListSshHostKeysResponses];
 
 export type CreateUserSshkeysData = {
   body: SshKeyManualUploadRequest;

@@ -205,6 +205,9 @@ import type {
   ListUserSshkeysData,
   ListUserSshkeysResponses,
   ListUserSshkeysErrors,
+  ListSshHostKeysData,
+  ListSshHostKeysResponses,
+  ListSshHostKeysErrors,
   CreateUserSshkeysData,
   CreateUserSshkeysResponses,
   CreateUserSshkeysErrors,
@@ -1914,6 +1917,28 @@ export const listUserSshkeys = <ThrowOnError extends boolean = false>(
       },
     ],
     url: "/MAAS/a/v3/users/me/sshkeys",
+    ...options,
+  });
+};
+
+/**
+ * List Ssh Host Keys
+ */
+export const listSshHostKeys = <ThrowOnError extends boolean = false>(
+  options?: Options<ListSshHostKeysData, ThrowOnError>
+) => {
+  return (options?.client ?? _heyApiClient).get<
+    ListSshHostKeysResponses,
+    ListSshHostKeysErrors,
+    ThrowOnError
+  >({
+    security: [
+      {
+        scheme: "bearer",
+        type: "http",
+      },
+    ],
+    url: "/MAAS/a/v3/ssh-host-keys",
     ...options,
   });
 };

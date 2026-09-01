@@ -68,6 +68,7 @@ import {
   getSpace,
   updateSpace,
   listUserSshkeys,
+  listSshHostKeys,
   createUserSshkeys,
   deleteUserSshkey,
   getUserSshkey,
@@ -285,6 +286,9 @@ import type {
   ListUserSshkeysData,
   ListUserSshkeysError,
   ListUserSshkeysResponse,
+  ListSshHostKeysData,
+  ListSshHostKeysError,
+  ListSshHostKeysResponse,
   CreateUserSshkeysData,
   CreateUserSshkeysError,
   CreateUserSshkeysResponse,
@@ -3405,6 +3409,81 @@ export const importUserSshkeysMutation = (
     },
   };
   return mutationOptions;
+};
+
+export const listSshHostKeysQueryKey = (
+  options?: Options<ListSshHostKeysData>
+) => createQueryKey("listSshHostKeys", options);
+
+/**
+ * List Ssh Host Keys
+ */
+export const listSshHostKeysOptions = (
+  options?: Options<ListSshHostKeysData>
+) => {
+  return queryOptions({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await listSshHostKeys({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: listSshHostKeysQueryKey(options),
+  });
+};
+
+export const listSshHostKeysInfiniteQueryKey = (
+  options?: Options<ListSshHostKeysData>
+): QueryKey<Options<ListSshHostKeysData>> =>
+  createQueryKey("listSshHostKeys", options, true);
+
+/**
+ * List Ssh Host Keys
+ */
+export const listSshHostKeysInfiniteOptions = (
+  options?: Options<ListSshHostKeysData>
+) => {
+  return infiniteQueryOptions<
+    ListSshHostKeysResponse,
+    ListSshHostKeysError,
+    InfiniteData<ListSshHostKeysResponse>,
+    QueryKey<Options<ListSshHostKeysData>>,
+    | Pick<
+        QueryKey<Options<ListSshHostKeysData>>[0],
+        "body" | "headers" | "path" | "query"
+      >
+    | number
+  >(
+    // @ts-ignore
+    {
+      queryFn: async ({ pageParam, queryKey, signal }) => {
+        // @ts-ignore
+        const page: Pick<
+          QueryKey<Options<ListSshHostKeysData>>[0],
+          "body" | "headers" | "path" | "query"
+        > =
+          typeof pageParam === "object"
+            ? pageParam
+            : {
+                query: {
+                  page: pageParam,
+                },
+              };
+        const params = createInfiniteParams(queryKey, page);
+        const { data } = await listSshHostKeys({
+          ...options,
+          ...params,
+          signal,
+          throwOnError: true,
+        });
+        return data;
+      },
+      queryKey: listSshHostKeysInfiniteQueryKey(options),
+    }
+  );
 };
 
 export const getUserSslkeysQueryKey = (options?: Options<GetUserSslkeysData>) =>
