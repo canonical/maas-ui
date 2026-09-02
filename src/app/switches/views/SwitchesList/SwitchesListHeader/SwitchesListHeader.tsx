@@ -4,7 +4,9 @@ import { MainToolbar, useSidePanel } from "@canonical/maas-react-components";
 import { Button } from "@canonical/react-components";
 
 import DebounceSearchBox from "@/app/base/components/DebounceSearchBox";
+import { useHasEntitlements } from "@/app/base/hooks";
 import type { SetSearchFilter } from "@/app/base/types";
+import { Entitlement } from "@/app/settings/views/UserManagement/views/Groups/constants";
 import AddSwitch from "@/app/switches/components/AddSwitch";
 
 type Props = {
@@ -15,6 +17,7 @@ type Props = {
 const SwitchesListHeader = ({ searchFilter, setSearchFilter }: Props) => {
   const { openSidePanel } = useSidePanel();
   const [searchText, setSearchText] = useState(searchFilter);
+  const canEdit = useHasEntitlements([Entitlement.CAN_EDIT_GLOBAL_ENTITIES]);
 
   useEffect(() => {
     setSearchText(searchFilter);
@@ -34,6 +37,7 @@ const SwitchesListHeader = ({ searchFilter, setSearchFilter }: Props) => {
         />
         <Button
           data-testid="add-switch"
+          disabled={!canEdit}
           onClick={() => {
             openSidePanel({ component: AddSwitch, title: "Add switch" });
           }}
