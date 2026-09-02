@@ -1,6 +1,7 @@
 import type { NavGroup } from "./types";
 
 import urls from "@/app/base/urls";
+import { Entitlement } from "@/app/settings/views/UserManagement/views/Groups/constants";
 
 const navGroups: NavGroup[] = [
   {
@@ -10,6 +11,7 @@ const navGroups: NavGroup[] = [
       {
         highlight: [urls.machines.index, urls.machines.machine.index(null)],
         label: "Machines",
+        requiredEntitlements: [Entitlement.CAN_VIEW_MACHINES],
         url: urls.machines.index,
       },
       ...(import.meta.env.VITE_APP_SWITCH_PROVISIONING === "true"
@@ -17,6 +19,7 @@ const navGroups: NavGroup[] = [
             {
               highlight: [urls.switches.index],
               label: "Switches",
+              requiredEntitlements: [Entitlement.CAN_VIEW_GLOBAL_ENTITIES],
               url: urls.switches.index,
             },
           ]
@@ -24,6 +27,7 @@ const navGroups: NavGroup[] = [
       {
         highlight: [urls.devices.index, urls.devices.device.index(null)],
         label: "Devices",
+        requiredEntitlements: [Entitlement.CAN_VIEW_DEVICES],
         url: urls.devices.index,
       },
       {
@@ -33,6 +37,7 @@ const navGroups: NavGroup[] = [
           urls.controllers.controller.index(null),
         ],
         label: "Controllers",
+        requiredEntitlements: [Entitlement.CAN_VIEW_CONTROLLERS],
         url: urls.controllers.index,
       },
       ...(import.meta.env.VITE_APP_AGENT_ENROLLMENT === "true"
@@ -40,6 +45,7 @@ const navGroups: NavGroup[] = [
             {
               highlight: [urls.racks.index],
               label: "Racks",
+              requiredEntitlements: [Entitlement.CAN_VIEW_CONTROLLERS],
               url: urls.racks.index,
             },
           ]
@@ -53,15 +59,18 @@ const navGroups: NavGroup[] = [
       {
         highlight: [urls.tags.index, urls.tags.tag.index(null)],
         label: "Tags",
+        requiredEntitlements: [Entitlement.CAN_VIEW_GLOBAL_ENTITIES],
         url: urls.tags.index,
       },
       {
         highlight: [urls.zones.index],
         label: "AZs",
+        requiredEntitlements: [Entitlement.CAN_VIEW_GLOBAL_ENTITIES],
         url: urls.zones.index,
       },
       {
         label: "Pools",
+        requiredEntitlements: [Entitlement.CAN_VIEW_GLOBAL_ENTITIES],
         url: urls.pools.index,
       },
     ],
@@ -72,6 +81,7 @@ const navGroups: NavGroup[] = [
     navLinks: [
       {
         label: "Images",
+        requiredEntitlements: [Entitlement.CAN_VIEW_BOOT_ENTITIES],
         url: urls.images.index,
       },
     ],
@@ -93,14 +103,17 @@ const navGroups: NavGroup[] = [
           urls.networks.vlan.index(null),
         ],
         label: "Networks",
+        requiredEntitlements: [Entitlement.CAN_VIEW_GLOBAL_ENTITIES],
         url: urls.networks.subnets.indexWithParams({ by: "fabric" }),
       },
       {
         highlight: [urls.domains.index, urls.domains.details(null)],
+        requiredEntitlements: [Entitlement.CAN_VIEW_GLOBAL_ENTITIES],
         label: "DNS",
         url: urls.domains.index,
       },
       {
+        requiredEntitlements: [Entitlement.CAN_VIEW_GLOBAL_ENTITIES],
         label: "Network discovery",
         url: urls.networkDiscovery.index,
       },
