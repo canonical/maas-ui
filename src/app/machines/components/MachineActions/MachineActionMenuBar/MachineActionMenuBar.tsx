@@ -4,11 +4,15 @@ import type { MenuLink } from "@canonical/react-components";
 import { ContextualMenu, Icon } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 
-import { useMachineActionMenus } from "../hooks";
+import {
+  useMachineActionMenus,
+  useLifecycleActionEntitlements,
+} from "../hooks";
 import type { MachineActionsProps } from "../types";
 
 import machineSelectors from "@/app/store/machine/selectors";
 import type { RootState } from "@/app/store/root/types";
+import { NodeActions } from "@/app/store/types/node";
 import { canOpenActionForm } from "@/app/store/utils";
 
 import "./_index.scss";
@@ -22,6 +26,8 @@ const MachineActionMenuBar = ({
   systemId,
 }: MachineActionMenuBarProps): ReactElement => {
   const actionMenus = useMachineActionMenus(isViewingDetails, systemId);
+  const { actionsDisabled, deployDisabled } =
+    useLifecycleActionEntitlements(isViewingDetails);
 
   const machine = useSelector((state: RootState) =>
     machineSelectors.getById(state, systemId)
@@ -31,7 +37,7 @@ const MachineActionMenuBar = ({
       {actionMenus.map((menu) => (
         <span className="p-action-button--wrapper" key={menu.title}>
           {menu.render ? (
-            menu.render()
+            menu.render(actionsDisabled)
           ) : (
             <ContextualMenu
               dropdownProps={{ "aria-label": `${menu.title} submenu` }}
@@ -44,9 +50,13 @@ const MachineActionMenuBar = ({
                   return links;
                 }
 
+                const isDeployGated =
+                  item.action === NodeActions.DEPLOY && deployDisabled;
+
                 if (
-                  disabledActions &&
-                  disabledActions.some((action) => action === item.action)
+                  isDeployGated ||
+                  (disabledActions &&
+                    disabledActions.some((action) => action === item.action))
                 ) {
                   links.push({
                     children: (
@@ -84,6 +94,7 @@ const MachineActionMenuBar = ({
                 return links;
               }, [])}
               position="left"
+              toggleDisabled={actionsDisabled}
               toggleLabel={
                 !menu.icon ? (
                   menu.title

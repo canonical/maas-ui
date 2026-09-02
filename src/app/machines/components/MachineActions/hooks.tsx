@@ -7,6 +7,8 @@ import { useDispatch, useSelector } from "react-redux";
 
 import type { MachineActionGroup } from "./types";
 
+import { useGetUserEntitlements } from "@/app/api/query/auth";
+import { Entitlement } from "@/app/settings/views/UserManagement/views/Groups/constants";
 import { machineActions } from "@/app/store/machine";
 import machineSelectors from "@/app/store/machine/selectors";
 import type { Machine } from "@/app/store/machine/types";
@@ -15,6 +17,7 @@ import { useSelectedMachinesActionsDispatch } from "@/app/store/machine/utils/ho
 import type { RootState } from "@/app/store/root/types";
 import { NodeActions } from "@/app/store/types/node";
 import { canOpenActionForm } from "@/app/store/utils";
+import { hasEntitlementForPool, hasPermissions } from "@/app/utils/permissions";
 
 const CommissionForm = lazyLoadSidePanel(
   () => import("../MachineForms/MachineActionFormWrapper/CommissionForm")
@@ -496,8 +499,9 @@ export const useMachineActionMenus = (
           },
         },
       ],
-      render: () => (
+      render: (disabled?: boolean) => (
         <Button
+          disabled={disabled}
           onClick={() => {
             openSidePanel({
               component: DeleteMachine,
@@ -518,4 +522,78 @@ export const useMachineActionMenus = (
   ];
 
   return actionMenus;
+};
+
+/**
+ * Computes the disabled state of the lifecycle ("Actions") menu for the
+ * machine list header, based on the current user's resource-pool entitlements.
+ *
+ * The "Actions" menu is disabled unless the user has CAN_EDIT_MACHINES for
+ * every selected machine's resource pool. The "Deploy" item additionally
+ * requires CAN_DEPLOY_MACHINES for every selected pool. Group/filter selections
+ * (whose pools can't be resolved from the header) fall back to a global check.
+ */
+export const useLifecycleActionEntitlements = (
+  isViewingDetails: boolean
+): { actionsDisabled: boolean; deployDisabled: boolean } => {
+  const selected = useSelector(machineSelectors.selected);
+  const allMachines = useSelector(machineSelectors.all);
+  const { data: userEntitlements } = useGetUserEntitlements();
+
+  // Only the multi-select list header is gated; the details view and
+  // single-machine (systemId-based) usage are left unchanged.
+  if (isViewingDetails || !selected) {
+    return { actionsDisabled: false, deployDisabled: false };
+  }
+
+  // Resolve the resource pool ids of an explicit item selection. Returns null
+  // when the pools can't be determined (filter/group selection or unresolved
+  // machines), signalling a fallback to the global entitlement check.
+  const getSelectedPoolIds = (): number[] | null => {
+    if ("filter" in selected) {
+      return null;
+    }
+    if ((selected.groups ?? []).length > 0) {
+      return null;
+    }
+    const items = selected.items ?? [];
+    if (items.length === 0) {
+      return null;
+    }
+    const poolIds: number[] = [];
+    for (const systemId of items) {
+      const machine = allMachines.find((m) => m.system_id === systemId);
+      if (!machine) {
+        return null;
+      }
+      poolIds.push(machine.pool.id);
+    }
+    return Array.from(new Set(poolIds));
+  };
+
+  const poolIds = getSelectedPoolIds();
+
+  const canEdit =
+    poolIds === null
+      ? hasPermissions(userEntitlements, [Entitlement.CAN_EDIT_MACHINES])
+      : poolIds.every((poolId) =>
+          hasEntitlementForPool(
+            userEntitlements,
+            Entitlement.CAN_EDIT_MACHINES,
+            poolId
+          )
+        );
+
+  const canDeploy =
+    poolIds === null
+      ? hasPermissions(userEntitlements, [Entitlement.CAN_DEPLOY_MACHINES])
+      : poolIds.every((poolId) =>
+          hasEntitlementForPool(
+            userEntitlements,
+            Entitlement.CAN_DEPLOY_MACHINES,
+            poolId
+          )
+        );
+
+  return { actionsDisabled: !canEdit, deployDisabled: !canDeploy };
 };
