@@ -65,7 +65,6 @@ export {
   nodePartition,
   testStatus,
 } from "./nodes";
-export { notification } from "./notification";
 export { packageRepository } from "./packagerepository";
 export { reservedIp, reservedIpNodeSummary } from "./reservedip";
 export { resourcePool } from "./resourcepool";
@@ -128,7 +127,6 @@ export {
   msmStatus,
   nodeDeviceState,
   nodeScriptResultState,
-  notificationState,
   osInfoState,
   packageRepositoryState,
   pocketsToDisableState,

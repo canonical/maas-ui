@@ -17,7 +17,6 @@ import message from "@/app/store/message";
 import msm from "@/app/store/msm";
 import nodedevice from "@/app/store/nodedevice";
 import nodescriptresult from "@/app/store/nodescriptresult";
-import notification from "@/app/store/notification";
 import packagerepository from "@/app/store/packagerepository";
 import reservedip from "@/app/store/reservedip";
 import type { RootState } from "@/app/store/root/types";
@@ -50,7 +49,6 @@ const createAppReducer = (routerReducer: Reducer<RouterState, Action>) =>
     msm,
     nodedevice,
     nodescriptresult,
-    notification,
     packagerepository,
     reservedip,
     router: routerReducer,
