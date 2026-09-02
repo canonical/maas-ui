@@ -7,6 +7,7 @@ import { Label as ZoneSelectLabel } from "@/app/base/components/ZoneSelect/ZoneS
 import { deviceActions } from "@/app/store/device";
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
+import { authResolvers } from "@/testing/resolvers/auth";
 import { zoneResolvers } from "@/testing/resolvers/zones";
 import {
   userEvent,
@@ -16,7 +17,11 @@ import {
   renderWithProviders,
 } from "@/testing/utils";
 
-setupMockServer(zoneResolvers.listZones.handler());
+const mockServer = setupMockServer(
+  zoneResolvers.listZones.handler(),
+  authResolvers.getCurrentUser.handler(),
+  authResolvers.getMeEntitlements.handler()
+);
 
 describe("DeviceConfiguration", () => {
   let state: RootState;
@@ -128,5 +133,18 @@ describe("DeviceConfiguration", () => {
         actualActions.find((action) => action.type === expectedAction.type)
       ).toStrictEqual(expectedAction);
     });
+  });
+
+  it("hides the edit button without the edit entitlement", async () => {
+    mockServer.use(authResolvers.getMeEntitlements.handler([]));
+    renderWithProviders(<DeviceConfiguration systemId="abc123" />, {
+      state,
+    });
+    await waitFor(() => {
+      expect(screen.getByTestId("device-details")).toBeInTheDocument();
+    });
+    expect(
+      screen.queryByRole("button", { name: EditableSectionLabels.EditButton })
+    ).not.toBeInTheDocument();
   });
 });

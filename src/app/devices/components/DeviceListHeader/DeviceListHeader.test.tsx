@@ -3,12 +3,20 @@ import DeviceListHeader from "./DeviceListHeader";
 import AddDeviceForm from "@/app/devices/components/AddDeviceForm";
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
+import { authResolvers } from "@/testing/resolvers/auth";
 import {
   mockSidePanel,
   renderWithProviders,
   screen,
+  setupMockServer,
   userEvent,
+  waitFor,
 } from "@/testing/utils";
+
+const mockServer = setupMockServer(
+  authResolvers.getCurrentUser.handler(),
+  authResolvers.getMeEntitlements.handler()
+);
 
 const { mockOpen } = await mockSidePanel();
 
@@ -80,6 +88,11 @@ describe("DeviceListHeader", () => {
       />,
       { state }
     );
+    await waitFor(() => {
+      expect(
+        screen.getByRole("button", { name: "Add device" })
+      ).not.toBeAriaDisabled();
+    });
     await userEvent.click(screen.getByRole("button", { name: "Add device" }));
     expect(mockOpen).toHaveBeenCalledWith(
       expect.objectContaining({
@@ -87,6 +100,27 @@ describe("DeviceListHeader", () => {
         title: "Add device",
       })
     );
+  });
+
+  it("disables the add device button and take action dropdown without the edit entitlement", async () => {
+    mockServer.use(authResolvers.getMeEntitlements.handler([]));
+    renderWithProviders(
+      <DeviceListHeader
+        rowSelection={{ [state.device.items[0].id]: true }}
+        searchFilter=""
+        setRowSelection={vi.fn()}
+        setSearchFilter={vi.fn()}
+      />,
+      { state }
+    );
+    await waitFor(() => {
+      expect(
+        screen.getByRole("button", { name: "Add device" })
+      ).toBeAriaDisabled();
+    });
+    expect(
+      screen.getByRole("button", { name: "Take action" })
+    ).toBeAriaDisabled();
   });
 
   it("changes the search text when the filters change", () => {

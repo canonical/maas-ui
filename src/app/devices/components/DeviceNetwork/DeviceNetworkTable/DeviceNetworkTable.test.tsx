@@ -7,14 +7,21 @@ import type { DeviceDetails } from "@/app/store/device/types";
 import type { RootState } from "@/app/store/root/types";
 import { NetworkInterfaceTypes } from "@/app/store/types/enum";
 import * as factory from "@/testing/factories";
+import { authResolvers } from "@/testing/resolvers/auth";
 import {
   mockSidePanel,
   renderWithProviders,
   screen,
+  setupMockServer,
   userEvent,
   waitFor,
   within,
 } from "@/testing/utils";
+
+const mockServer = setupMockServer(
+  authResolvers.getCurrentUser.handler(),
+  authResolvers.getMeEntitlements.handler()
+);
 
 const { mockOpen } = await mockSidePanel();
 
@@ -202,6 +209,11 @@ describe("DeviceNetworkTable", () => {
         state,
       });
 
+      await waitFor(() => {
+        expect(
+          screen.getByRole("button", { name: "Edit" })
+        ).not.toBeAriaDisabled();
+      });
       await userEvent.click(screen.getByRole("button", { name: "Edit" }));
 
       await waitFor(() => {
@@ -222,6 +234,11 @@ describe("DeviceNetworkTable", () => {
         state,
       });
 
+      await waitFor(() => {
+        expect(
+          screen.getByRole("button", { name: "Delete" })
+        ).not.toBeAriaDisabled();
+      });
       await userEvent.click(screen.getByRole("button", { name: "Delete" }));
 
       await waitFor(() => {
@@ -234,6 +251,18 @@ describe("DeviceNetworkTable", () => {
           },
         });
       });
+    });
+
+    it("disables the table actions without the edit entitlement", async () => {
+      mockServer.use(authResolvers.getMeEntitlements.handler([]));
+      renderWithProviders(<DeviceNetworkTable systemId="abc123" />, {
+        state,
+      });
+
+      await waitFor(() => {
+        expect(screen.getByRole("button", { name: "Edit" })).toBeAriaDisabled();
+      });
+      expect(screen.getByRole("button", { name: "Delete" })).toBeAriaDisabled();
     });
   });
 });

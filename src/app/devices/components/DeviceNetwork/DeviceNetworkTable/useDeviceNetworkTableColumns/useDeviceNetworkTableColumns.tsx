@@ -9,6 +9,8 @@ import RemoveInterface from "../RemoveInterface";
 import MacAddressDisplay from "@/app/base/components/MacAddressDisplay";
 import TableActions from "@/app/base/components/TableActions";
 import SubnetColumn from "@/app/base/components/node/networking/SubnetColumn";
+import { useHasEntitlements } from "@/app/base/hooks";
+import { Entitlement } from "@/app/settings/views/UserManagement/views/Groups/constants";
 import type { Device, DeviceMeta } from "@/app/store/device/types";
 import type { Subnet } from "@/app/store/subnet/types";
 import type { NetworkInterface, NetworkLink } from "@/app/store/types/node";
@@ -37,6 +39,7 @@ const useDeviceNetworkTableColumns = ({
   systemId: Device[DeviceMeta.PK];
 }): DeviceNetworkTableColumnDef[] => {
   const { openSidePanel } = useSidePanel();
+  const canEdit = useHasEntitlements([Entitlement.CAN_EDIT_GLOBAL_ENTITIES]);
 
   return useMemo(
     (): DeviceNetworkTableColumnDef[] => [
@@ -84,8 +87,8 @@ const useDeviceNetworkTableColumns = ({
           },
         }) => (
           <TableActions
-            deleteDisabled={isAllNetworkingDisabled}
-            editDisabled={isAllNetworkingDisabled}
+            deleteDisabled={isAllNetworkingDisabled || !canEdit}
+            editDisabled={isAllNetworkingDisabled || !canEdit}
             onDelete={() => {
               openSidePanel({
                 component: RemoveInterface,
@@ -111,7 +114,7 @@ const useDeviceNetworkTableColumns = ({
         ),
       },
     ],
-    [isAllNetworkingDisabled, openSidePanel, systemId]
+    [canEdit, isAllNetworkingDisabled, openSidePanel, systemId]
   );
 };
 

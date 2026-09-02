@@ -10,8 +10,9 @@ import NodeConfigurationFields, {
 } from "@/app/base/components/NodeConfigurationFields";
 import type { NodeConfigurationValues } from "@/app/base/components/NodeConfigurationFields/types";
 import TagLinks from "@/app/base/components/TagLinks";
-import { useWindowTitle } from "@/app/base/hooks";
+import { useHasEntitlements, useWindowTitle } from "@/app/base/hooks";
 import urls from "@/app/base/urls";
+import { Entitlement } from "@/app/settings/views/UserManagement/views/Groups/constants";
 import { deviceActions } from "@/app/store/device";
 import deviceSelectors from "@/app/store/device/selectors";
 import type { Device, DeviceMeta } from "@/app/store/device/types";
@@ -44,6 +45,7 @@ const DeviceConfiguration = ({ systemId }: Props): React.ReactElement => {
   );
   const zones = useZones();
   const loaded = isDeviceDetails(device) && !zones.isPending;
+  const canEdit = useHasEntitlements([Entitlement.CAN_EDIT_GLOBAL_ENTITIES]);
   useWindowTitle(`${`${device?.hostname}` || "Device"} configuration`);
 
   if (!loaded) {
@@ -55,6 +57,7 @@ const DeviceConfiguration = ({ systemId }: Props): React.ReactElement => {
   }
   return (
     <EditableSection
+      canEdit={canEdit}
       className="u-no-padding--top"
       hasSidebarTitle
       renderContent={(editing, setEditing) =>
