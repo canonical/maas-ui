@@ -7,13 +7,16 @@ import FabricLink from "@/app/base/components/FabricLink";
 import SpaceLink from "@/app/base/components/SpaceLink";
 import TableActions from "@/app/base/components/TableActions";
 import VLANLink from "@/app/base/components/VLANLink";
+import { useHasEntitlements } from "@/app/base/hooks";
 import { DeleteVLAN, EditVLAN } from "@/app/networks/views/VLANs/components";
+import { Entitlement } from "@/app/settings/views/UserManagement/views/Groups/constants";
 import type { VLAN } from "@/app/store/vlan/types";
 
 export type VLANsColumnDef = ColumnDef<VLAN, Partial<VLAN>>;
 
 const useVlansTableColumns = (): VLANsColumnDef[] => {
   const { openSidePanel } = useSidePanel();
+  const canEdit = useHasEntitlements([Entitlement.CAN_EDIT_GLOBAL_ENTITIES]);
   return useMemo(
     (): VLANsColumnDef[] => [
       {
@@ -72,6 +75,8 @@ const useVlansTableColumns = (): VLANsColumnDef[] => {
           },
         }) => (
           <TableActions
+            deleteDisabled={!canEdit}
+            editDisabled={!canEdit}
             onDelete={() => {
               openSidePanel({
                 component: DeleteVLAN,
@@ -90,7 +95,7 @@ const useVlansTableColumns = (): VLANsColumnDef[] => {
         ),
       },
     ],
-    [openSidePanel]
+    [canEdit, openSidePanel]
   );
 };
 

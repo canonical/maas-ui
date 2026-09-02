@@ -6,7 +6,19 @@ import {
   vlan as vlanFactory,
   vlanState as vlanStateFactory,
 } from "@/testing/factories";
-import { renderWithProviders, screen, userEvent } from "@/testing/utils";
+import { authResolvers } from "@/testing/resolvers/auth";
+import {
+  renderWithProviders,
+  screen,
+  setupMockServer,
+  userEvent,
+  waitFor,
+} from "@/testing/utils";
+
+setupMockServer(
+  authResolvers.getCurrentUser.handler(),
+  authResolvers.getMeEntitlements.handler()
+);
 
 describe("VLANsList", () => {
   let state: RootState;
@@ -37,6 +49,11 @@ describe("VLANsList", () => {
   it("renders the EditVLAN form", async () => {
     renderWithProviders(<VLANsList />, { state });
 
+    await waitFor(() => {
+      expect(
+        screen.getByRole("button", { name: "Edit" })
+      ).not.toBeAriaDisabled();
+    });
     await userEvent.click(screen.getByRole("button", { name: "Edit" }));
 
     expect(
@@ -47,6 +64,11 @@ describe("VLANsList", () => {
   it("renders the DeleteVLAN form", async () => {
     renderWithProviders(<VLANsList />, { state });
 
+    await waitFor(() => {
+      expect(
+        screen.getByRole("button", { name: "Delete" })
+      ).not.toBeAriaDisabled();
+    });
     await userEvent.click(screen.getByRole("button", { name: "Delete" }));
 
     expect(
