@@ -32,10 +32,6 @@ import type {
   NodeScriptResultMeta,
 } from "@/app/store/nodescriptresult/types";
 import type {
-  NotificationState,
-  NotificationMeta,
-} from "@/app/store/notification/types";
-import type {
   PackageRepositoryState,
   PackageRepositoryMeta,
 } from "@/app/store/packagerepository/types";
@@ -74,7 +70,6 @@ export type RootState = {
   [MsmMeta.MODEL]: MsmState;
   [NodeDeviceMeta.MODEL]: NodeDeviceState;
   [NodeScriptResultMeta.MODEL]: NodeScriptResultState;
-  [NotificationMeta.MODEL]: NotificationState;
   [PackageRepositoryMeta.MODEL]: PackageRepositoryState;
   [ReservedIpMeta.MODEL]: ReservedIpState;
   router: RouterState;
