@@ -178,9 +178,46 @@ describe("ZonesTable", () => {
   //  and will be discussed as to whether they should be added everywhere.
   //  Enable these tests if they are added to zones
   describe("permissions", () => {
-    it.todo("enables the action buttons with correct permissions");
+    it("enables the action buttons with correct permissions", async () => {
+      mockServer.use(
+        zoneResolvers.listZones.handler({
+          items: [factory.zone({ id: 2 })],
+          total: 1,
+        })
+      );
 
-    it.todo("disables the action buttons without permissions");
+      renderWithProviders(<ZonesTable />);
+
+      await waitFor(() => {
+        expect(
+          screen.getByRole("button", { name: "Edit" })
+        ).not.toBeAriaDisabled();
+      });
+      expect(
+        screen.getByRole("button", { name: "Delete" })
+      ).not.toBeAriaDisabled();
+    });
+
+    it("disables the action buttons without permissions", async () => {
+      mockServer.use(
+        authResolvers.getMeEntitlements.handler([]),
+        zoneResolvers.listZones.handler({
+          items: [factory.zone({ id: 2 })],
+          total: 1,
+        })
+      );
+
+      renderWithProviders(<ZonesTable />);
+
+      await waitFor(() => {
+        expect(screen.getByRole("button", { name: "Edit" })).toBeAriaDisabled();
+      });
+      expect(screen.getByRole("button", { name: "Delete" })).toBeAriaDisabled();
+
+      await userEvent.click(screen.getByRole("button", { name: "Edit" }));
+      await userEvent.click(screen.getByRole("button", { name: "Delete" }));
+      expect(mockOpen).not.toHaveBeenCalled();
+    });
 
     it("disables the delete button for default zones", async () => {
       mockServer.use(
