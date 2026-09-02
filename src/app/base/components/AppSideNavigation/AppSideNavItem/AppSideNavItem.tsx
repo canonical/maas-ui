@@ -12,6 +12,7 @@ import { useId } from "@/app/base/hooks/base";
 import { MOBILE_VIEW_MAX_WIDTH } from "@/app/constants";
 
 type Props = {
+  disabled: boolean;
   navLink: NavItem;
   icon?: ReactNode | string;
   path: string;
@@ -19,19 +20,23 @@ type Props = {
 };
 
 export const AppSideNavItem = ({
+  disabled,
   navLink,
   icon,
   path,
   setIsCollapsed,
 }: Props): React.ReactElement => {
   const id = useId();
+
   return (
     <Navigation.Item
+      aria-disabled={disabled}
       aria-labelledby={`${navLink.label}-${id}`}
       className={classNames({ "is-selected": isSelected(path, navLink) })}
     >
       <Navigation.Link
         aria-current={isSelected(path, navLink) ? "page" : undefined}
+        aria-disabled={disabled}
         as={Link}
         id={`${navLink.label}-${id}`}
         onClick={(e: MouseEvent<HTMLAnchorElement>) => {

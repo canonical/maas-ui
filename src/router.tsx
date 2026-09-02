@@ -9,10 +9,12 @@ import GroupDetails from "./app/settings/views/UserManagement/views/Groups/views
 import GroupsList from "./app/settings/views/UserManagement/views/Groups/views/GroupsList";
 import TagDetails from "./app/tags/views/TagDetails";
 import TagList from "./app/tags/views/TagList";
+import ZonesList from "./app/zones/views";
 
 import App from "@/app/App";
 import ErrorBoundary from "@/app/base/components/ErrorBoundary";
 import PageContent from "@/app/base/components/PageContent";
+import RequireEntitlements from "@/app/base/components/RequireEntitlements";
 import { useGetURLId } from "@/app/base/hooks/urls";
 import urls from "@/app/base/urls";
 import NotFound from "@/app/base/views/NotFound";
@@ -44,6 +46,7 @@ import SecurityProtocols from "@/app/settings/views/Security/SecurityProtocols";
 import SessionTimeout from "@/app/settings/views/Security/SessionTimeout";
 import StorageForm from "@/app/settings/views/Storage/StorageForm";
 import UserManagement from "@/app/settings/views/UserManagement";
+import { Entitlement } from "@/app/settings/views/UserManagement/views/Groups/constants";
 import SingleSignOn from "@/app/settings/views/UserManagement/views/SingleSignOn";
 import UsersList from "@/app/settings/views/UserManagement/views/UsersList/UsersList";
 import { MachineMeta } from "@/app/store/machine/types";
@@ -150,8 +153,6 @@ const VLANDetails = lazy(
 const VLANsList = lazy(
   () => import("@/app/networks/views/VLANs/views/VLANsList")
 );
-const ZonesList = lazy(() => import("@/app/zones/views"));
-
 const MachineRedirect = ({
   to,
 }: {
@@ -186,25 +187,37 @@ export const router = createBrowserRouter(
             {
               path: urls.machines.index,
               element: (
-                <ErrorBoundary>
-                  <Machines />
-                </ErrorBoundary>
+                <RequireEntitlements
+                  entitlements={[Entitlement.CAN_VIEW_MACHINES]}
+                >
+                  <ErrorBoundary>
+                    <Machines />
+                  </ErrorBoundary>
+                </RequireEntitlements>
               ),
             },
             {
               path: `${urls.zones.index}`,
               element: (
-                <ErrorBoundary>
-                  <ZonesList />
-                </ErrorBoundary>
+                <RequireEntitlements
+                  entitlements={[Entitlement.CAN_VIEW_GLOBAL_ENTITIES]}
+                >
+                  <ErrorBoundary>
+                    <ZonesList />
+                  </ErrorBoundary>
+                </RequireEntitlements>
               ),
             },
             {
               path: urls.networkDiscovery.index,
               element: (
-                <ErrorBoundary>
-                  <DiscoveriesList />
-                </ErrorBoundary>
+                <RequireEntitlements
+                  entitlements={[Entitlement.CAN_VIEW_GLOBAL_ENTITIES]}
+                >
+                  <ErrorBoundary>
+                    <DiscoveriesList />
+                  </ErrorBoundary>
+                </RequireEntitlements>
               ),
             },
             {
@@ -220,65 +233,97 @@ export const router = createBrowserRouter(
             {
               path: `${urls.devices.index}/*`,
               element: (
-                <ErrorBoundary>
-                  <DeviceList />
-                </ErrorBoundary>
+                <RequireEntitlements
+                  entitlements={[Entitlement.CAN_VIEW_DEVICES]}
+                >
+                  <ErrorBoundary>
+                    <DeviceList />
+                  </ErrorBoundary>
+                </RequireEntitlements>
               ),
             },
             {
               path: `${urls.devices.device.index(null)}/*`,
               element: (
-                <ErrorBoundary>
-                  <DeviceDetails />
-                </ErrorBoundary>
+                <RequireEntitlements
+                  entitlements={[Entitlement.CAN_VIEW_DEVICES]}
+                >
+                  <ErrorBoundary>
+                    <DeviceDetails />
+                  </ErrorBoundary>
+                </RequireEntitlements>
               ),
             },
             {
               path: `${urls.domains.index}/*`,
               element: (
-                <ErrorBoundary>
-                  <DomainsList />
-                </ErrorBoundary>
+                <RequireEntitlements
+                  entitlements={[Entitlement.CAN_VIEW_GLOBAL_ENTITIES]}
+                >
+                  <ErrorBoundary>
+                    <DomainsList />
+                  </ErrorBoundary>
+                </RequireEntitlements>
               ),
             },
             {
               path: `${urls.domains.details(null)}/*`,
               element: (
-                <ErrorBoundary>
-                  <DomainDetails />
-                </ErrorBoundary>
+                <RequireEntitlements
+                  entitlements={[Entitlement.CAN_VIEW_GLOBAL_ENTITIES]}
+                >
+                  <ErrorBoundary>
+                    <DomainDetails />
+                  </ErrorBoundary>
+                </RequireEntitlements>
               ),
             },
             {
               path: `${urls.tags.index}/*`,
               element: (
-                <ErrorBoundary>
-                  <TagList />
-                </ErrorBoundary>
+                <RequireEntitlements
+                  entitlements={[Entitlement.CAN_VIEW_GLOBAL_ENTITIES]}
+                >
+                  <ErrorBoundary>
+                    <TagList />
+                  </ErrorBoundary>
+                </RequireEntitlements>
               ),
             },
             {
               path: `${urls.tags.tag.index(null)}/*`,
               element: (
-                <ErrorBoundary>
-                  <TagDetails />
-                </ErrorBoundary>
+                <RequireEntitlements
+                  entitlements={[Entitlement.CAN_VIEW_GLOBAL_ENTITIES]}
+                >
+                  <ErrorBoundary>
+                    <TagDetails />
+                  </ErrorBoundary>
+                </RequireEntitlements>
               ),
             },
             {
               path: `${urls.networks.space.index(null)}/*`,
               element: (
-                <ErrorBoundary>
-                  <SpaceDetails />
-                </ErrorBoundary>
+                <RequireEntitlements
+                  entitlements={[Entitlement.CAN_VIEW_GLOBAL_ENTITIES]}
+                >
+                  <ErrorBoundary>
+                    <SpaceDetails />
+                  </ErrorBoundary>
+                </RequireEntitlements>
               ),
             },
             {
               path: `${urls.settings.index}/*`,
               element: (
-                <ErrorBoundary>
-                  <Settings />
-                </ErrorBoundary>
+                <RequireEntitlements
+                  entitlements={[Entitlement.CAN_VIEW_CONFIGURATIONS]}
+                >
+                  <ErrorBoundary>
+                    <Settings />
+                  </ErrorBoundary>
+                </RequireEntitlements>
               ),
             },
             {
@@ -292,9 +337,13 @@ export const router = createBrowserRouter(
             {
               path: `${urls.images.index}/*`,
               element: (
-                <ErrorBoundary>
-                  <ImageList />
-                </ErrorBoundary>
+                <RequireEntitlements
+                  entitlements={[Entitlement.CAN_VIEW_BOOT_ENTITIES]}
+                >
+                  <ErrorBoundary>
+                    <ImageList />
+                  </ErrorBoundary>
+                </RequireEntitlements>
               ),
             },
             {
@@ -359,9 +408,13 @@ export const router = createBrowserRouter(
             {
               path: urls.machines.machine.index(null),
               element: (
-                <ErrorBoundary>
-                  <MachineDetails />
-                </ErrorBoundary>
+                <RequireEntitlements
+                  entitlements={[Entitlement.CAN_VIEW_MACHINES]}
+                >
+                  <ErrorBoundary>
+                    <MachineDetails />
+                  </ErrorBoundary>
+                </RequireEntitlements>
               ),
               children: [
                 {
@@ -473,25 +526,37 @@ export const router = createBrowserRouter(
             {
               path: `${urls.networks.fabric.index(null)}/*`,
               element: (
-                <ErrorBoundary>
-                  <FabricDetails />
-                </ErrorBoundary>
+                <RequireEntitlements
+                  entitlements={[Entitlement.CAN_VIEW_GLOBAL_ENTITIES]}
+                >
+                  <ErrorBoundary>
+                    <FabricDetails />
+                  </ErrorBoundary>
+                </RequireEntitlements>
               ),
             },
             {
               path: `${urls.controllers.controller.index(null)}/*`,
               element: (
-                <ErrorBoundary>
-                  <ControllerDetails />
-                </ErrorBoundary>
+                <RequireEntitlements
+                  entitlements={[Entitlement.CAN_VIEW_CONTROLLERS]}
+                >
+                  <ErrorBoundary>
+                    <ControllerDetails />
+                  </ErrorBoundary>
+                </RequireEntitlements>
               ),
             },
             {
               path: `${urls.controllers.index}/*`,
               element: (
-                <ErrorBoundary>
-                  <ControllerList />
-                </ErrorBoundary>
+                <RequireEntitlements
+                  entitlements={[Entitlement.CAN_VIEW_CONTROLLERS]}
+                >
+                  <ErrorBoundary>
+                    <ControllerList />
+                  </ErrorBoundary>
+                </RequireEntitlements>
               ),
             },
             {
@@ -555,14 +620,24 @@ export const router = createBrowserRouter(
             {
               path: `${urls.pools.index}/*`,
               element: (
-                <ErrorBoundary>
-                  <PoolsList />
-                </ErrorBoundary>
+                <RequireEntitlements
+                  entitlements={[Entitlement.CAN_VIEW_GLOBAL_ENTITIES]}
+                >
+                  <ErrorBoundary>
+                    <PoolsList />
+                  </ErrorBoundary>
+                </RequireEntitlements>
               ),
             },
             {
               path: urls.networks.index,
-              element: <Networks />,
+              element: (
+                <RequireEntitlements
+                  entitlements={[Entitlement.CAN_VIEW_GLOBAL_ENTITIES]}
+                >
+                  <Networks />
+                </RequireEntitlements>
+              ),
               children: [
                 {
                   path: `${urls.networks.index}`,
@@ -619,46 +694,72 @@ export const router = createBrowserRouter(
             {
               path: `${urls.networks.subnet.index(null)}/*`,
               element: (
-                <ErrorBoundary>
-                  <SubnetDetails />
-                </ErrorBoundary>
+                <RequireEntitlements
+                  entitlements={[Entitlement.CAN_VIEW_GLOBAL_ENTITIES]}
+                >
+                  <ErrorBoundary>
+                    <SubnetDetails />
+                  </ErrorBoundary>
+                </RequireEntitlements>
               ),
             },
             {
               path: `${urls.networks.vlan.index(null)}/*`,
               element: (
-                <ErrorBoundary>
-                  <VLANDetails />
-                </ErrorBoundary>
+                <RequireEntitlements
+                  entitlements={[Entitlement.CAN_VIEW_GLOBAL_ENTITIES]}
+                >
+                  <ErrorBoundary>
+                    <VLANDetails />
+                  </ErrorBoundary>
+                </RequireEntitlements>
               ),
             },
             {
               path: `${urls.racks.index}/*`,
               element: (
-                <ErrorBoundary>
-                  <RacksList />
-                </ErrorBoundary>
+                <RequireEntitlements
+                  entitlements={[Entitlement.CAN_VIEW_CONTROLLERS]}
+                >
+                  <ErrorBoundary>
+                    <RacksList />
+                  </ErrorBoundary>
+                </RequireEntitlements>
               ),
             },
             {
               path: `${urls.switches.index}/*`,
               element: (
-                <ErrorBoundary>
-                  <SwitchesList />
-                </ErrorBoundary>
+                <RequireEntitlements
+                  entitlements={[Entitlement.CAN_VIEW_GLOBAL_ENTITIES]}
+                >
+                  <ErrorBoundary>
+                    <SwitchesList />
+                  </ErrorBoundary>
+                </RequireEntitlements>
               ),
             },
             {
               path: `${urls.switches.details(":id")}/*`,
               element: (
-                <ErrorBoundary>
-                  <SwitchDetails />
-                </ErrorBoundary>
+                <RequireEntitlements
+                  entitlements={[Entitlement.CAN_VIEW_GLOBAL_ENTITIES]}
+                >
+                  <ErrorBoundary>
+                    <SwitchDetails />
+                  </ErrorBoundary>
+                </RequireEntitlements>
               ),
             },
             {
               path: urls.settings.index,
-              element: <Settings />,
+              element: (
+                <RequireEntitlements
+                  entitlements={[Entitlement.CAN_VIEW_CONFIGURATIONS]}
+                >
+                  <Settings />
+                </RequireEntitlements>
+              ),
               children: [
                 {
                   path: urls.settings.index,
@@ -789,9 +890,13 @@ export const router = createBrowserRouter(
                 },
                 {
                   element: (
-                    <ErrorBoundary>
-                      <UserManagement />
-                    </ErrorBoundary>
+                    <RequireEntitlements
+                      entitlements={[Entitlement.CAN_VIEW_IDENTITIES]}
+                    >
+                      <ErrorBoundary>
+                        <UserManagement />
+                      </ErrorBoundary>
+                    </RequireEntitlements>
                   ),
                   children: [
                     {
@@ -843,9 +948,13 @@ export const router = createBrowserRouter(
                     urls.settings.index
                   ),
                   element: (
-                    <ErrorBoundary>
-                      <LicenseKeyList />
-                    </ErrorBoundary>
+                    <RequireEntitlements
+                      entitlements={[Entitlement.CAN_VIEW_LICENSE_KEYS]}
+                    >
+                      <ErrorBoundary>
+                        <LicenseKeyList />
+                      </ErrorBoundary>
+                    </RequireEntitlements>
                   ),
                 },
                 {
@@ -916,9 +1025,13 @@ export const router = createBrowserRouter(
                 },
                 {
                   element: (
-                    <ErrorBoundary>
-                      <Scripts />
-                    </ErrorBoundary>
+                    <RequireEntitlements
+                      entitlements={[Entitlement.CAN_VIEW_GLOBAL_ENTITIES]}
+                    >
+                      <ErrorBoundary>
+                        <Scripts />
+                      </ErrorBoundary>
+                    </RequireEntitlements>
                   ),
                   children: [
                     {
@@ -1002,9 +1115,13 @@ export const router = createBrowserRouter(
                 },
                 {
                   element: (
-                    <ErrorBoundary>
-                      <ImageSettings />
-                    </ErrorBoundary>
+                    <RequireEntitlements
+                      entitlements={[Entitlement.CAN_VIEW_BOOT_ENTITIES]}
+                    >
+                      <ErrorBoundary>
+                        <ImageSettings />
+                      </ErrorBoundary>
+                    </RequireEntitlements>
                   ),
                   children: [
                     {
