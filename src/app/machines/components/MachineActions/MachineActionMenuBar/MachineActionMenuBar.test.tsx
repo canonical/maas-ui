@@ -253,7 +253,7 @@ describe("MachineActionMenuBar", () => {
   });
 });
 
-describe("MachineActionMenuBar entitlements gating", () => {
+describe("MachineActionMenuBar entitlements check", () => {
   let state: RootState;
 
   const editPoolEntitlement = (poolId: number) =>
@@ -505,7 +505,9 @@ describe("MachineActionMenuBar details view entitlements gating", () => {
           factory.machine({
             system_id: "abc123",
             pool: factory.modelRef({ id: 2, name: "pool-2" }),
-            actions: Object.values(NodeActions),
+            actions: Object.values(NodeActions).filter(
+              (action) => action !== NodeActions.IMPORT_IMAGES
+            ),
           }),
         ],
       }),

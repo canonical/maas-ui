@@ -12,7 +12,9 @@ export const useHasEntitlements = (requiredEntitlements: Entitlement[]) => {
   return hasPermissions(userEntitlements || [], requiredEntitlements);
 };
 
-export const useCanEditMachine = (systemId?: Machine["system_id"]): boolean => {
+export const useCanEditMachine = (
+  systemId?: Machine["system_id"] | null
+): boolean => {
   const { data: userEntitlements } = useGetUserEntitlements();
   const machine = useSelector((state: RootState) =>
     machineSelectors.getById(state, systemId)
