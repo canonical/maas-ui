@@ -487,3 +487,103 @@ describe("MachineActionMenuBar entitlements gating", () => {
     });
   });
 });
+
+describe("MachineActionMenuBar details view entitlements gating", () => {
+  let state: RootState;
+
+  const editPoolEntitlement = (poolId: number) =>
+    factory.entitlement({
+      entitlement: Entitlement.CAN_EDIT_MACHINES,
+      resource_type: "pool",
+      resource_id: poolId,
+    });
+
+  beforeEach(() => {
+    state = factory.rootState({
+      machine: factory.machineState({
+        items: [
+          factory.machine({
+            system_id: "abc123",
+            pool: factory.modelRef({ id: 2, name: "pool-2" }),
+            actions: Object.values(NodeActions),
+          }),
+        ],
+      }),
+    });
+  });
+
+  it("disables every dropdown and the Delete button without an edit entitlement for the viewed machine's pool", async () => {
+    mockServer.use(authResolvers.getMeEntitlements.handler([]));
+    renderWithProviders(
+      <MachineActionMenuBar isViewingDetails systemId="abc123" />,
+      { state }
+    );
+
+    await waitFor(() => {
+      expect(
+        screen.getByRole("button", { name: "Actions" })
+      ).toBeAriaDisabled();
+    });
+    ["Power", "Troubleshoot", "Categorise", "Delete"].forEach((name) => {
+      expect(screen.getByRole("button", { name })).toBeAriaDisabled();
+    });
+  });
+
+  it("enables every dropdown and the Delete button with an edit entitlement for the viewed machine's pool", async () => {
+    mockServer.use(
+      authResolvers.getMeEntitlements.handler([editPoolEntitlement(2)])
+    );
+    renderWithProviders(
+      <MachineActionMenuBar isViewingDetails systemId="abc123" />,
+      { state }
+    );
+
+    await waitFor(() => {
+      expect(
+        screen.getByRole("button", { name: "Actions" })
+      ).not.toBeAriaDisabled();
+    });
+    ["Power", "Troubleshoot", "Categorise", "Delete"].forEach((name) => {
+      expect(screen.getByRole("button", { name })).not.toBeAriaDisabled();
+    });
+  });
+
+  it("disables every dropdown when the edit entitlement is for a different pool", async () => {
+    mockServer.use(
+      authResolvers.getMeEntitlements.handler([editPoolEntitlement(999)])
+    );
+    renderWithProviders(
+      <MachineActionMenuBar isViewingDetails systemId="abc123" />,
+      { state }
+    );
+
+    await waitFor(() => {
+      expect(
+        screen.getByRole("button", { name: "Actions" })
+      ).toBeAriaDisabled();
+    });
+  });
+
+  it("disables the Deploy option without a deploy entitlement for the viewed machine's pool", async () => {
+    mockServer.use(
+      authResolvers.getMeEntitlements.handler([editPoolEntitlement(2)])
+    );
+    renderWithProviders(
+      <MachineActionMenuBar isViewingDetails systemId="abc123" />,
+      { state }
+    );
+
+    const actionsToggle = screen.getByRole("button", { name: "Actions" });
+    await waitFor(() => {
+      expect(actionsToggle).not.toBeAriaDisabled();
+    });
+    await userEvent.click(actionsToggle);
+
+    const actionsMenu = screen.getByLabelText("Actions submenu");
+    expect(
+      within(actionsMenu).getByRole("menuitem", {
+        name: RegExp(getNodeActionTitle(NodeActions.DEPLOY)),
+      })
+    ).toBeAriaDisabled();
+  });
+});

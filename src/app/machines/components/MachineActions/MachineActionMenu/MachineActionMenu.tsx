@@ -47,8 +47,10 @@ const MachineActionMenu = ({
     machineSelectors.getById(state, systemId)
   );
 
-  const { actionsDisabled, deployDisabled } =
-    useLifecycleActionEntitlements(isViewingDetails);
+  const { actionsDisabled, deployDisabled } = useLifecycleActionEntitlements(
+    isViewingDetails,
+    systemId
+  );
 
   return (
     <ContextualMenu
@@ -62,35 +64,27 @@ const MachineActionMenu = ({
             return actions;
           }
 
+          const isDisabledAction =
+            disabledActions &&
+            disabledActions.some((action) => action === item.action);
+
+          const isVisible =
+            isDisabledAction ||
+            !machine ||
+            canOpenActionForm(machine, item.action);
+          if (!isVisible) {
+            return actions;
+          }
+
           const isGated =
             actionsDisabled ||
             (item.action === NodeActions.DEPLOY && deployDisabled);
 
-          if (
-            isGated ||
-            (disabledActions &&
-              disabledActions.some((action) => action === item.action))
-          ) {
-            actions.push({
-              children: <span>{item.label}...</span>,
-              disabled: true,
-              onClick: item.onClick,
-            });
-
-            return actions;
-          }
-
-          if (!machine) {
-            actions.push({
-              children: <span>{item.label}...</span>,
-              onClick: item.onClick,
-            });
-          } else if (canOpenActionForm(machine, item.action)) {
-            actions.push({
-              children: <span>{item.label}...</span>,
-              onClick: item.onClick,
-            });
-          }
+          actions.push({
+            children: <span>{item.label}...</span>,
+            disabled: isDisabledAction || isGated || undefined,
+            onClick: item.onClick,
+          });
 
           return actions;
         }, []);

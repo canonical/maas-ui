@@ -525,32 +525,40 @@ export const useMachineActionMenus = (
 };
 
 /**
- * Computes the disabled state of the lifecycle ("Actions") menu for the
- * machine list header, based on the current user's resource-pool entitlements.
+ * Computes the disabled state of the machine action controls, based on the
+ * current user's resource-pool entitlements.
  *
- * The "Actions" menu is disabled unless the user has CAN_EDIT_MACHINES for
- * every selected machine's resource pool. The "Deploy" item additionally
- * requires CAN_DEPLOY_MACHINES for every selected pool. Group/filter selections
- * (whose pools can't be resolved from the header) fall back to a global check.
+ * The controls are disabled unless the user has CAN_EDIT_MACHINES for every
+ * resource pool being acted on — the selected machines' pools in the list
+ * header, or the viewed machine's pool in the details view. The "Deploy" item
+ * additionally requires CAN_DEPLOY_MACHINES for those pools. Group/filter
+ * selections (whose pools can't be resolved) fall back to a global check.
  */
 export const useLifecycleActionEntitlements = (
-  isViewingDetails: boolean
+  isViewingDetails: boolean,
+  systemId?: Machine["system_id"]
 ): { actionsDisabled: boolean; deployDisabled: boolean } => {
   const selected = useSelector(machineSelectors.selected);
   const allMachines = useSelector(machineSelectors.all);
+  const detailsMachine = useSelector((state: RootState) =>
+    machineSelectors.getById(state, systemId)
+  );
   const { data: userEntitlements } = useGetUserEntitlements();
 
-  // Only the multi-select list header is gated; the details view and
-  // single-machine (systemId-based) usage are left unchanged.
-  if (isViewingDetails || !selected) {
+  // Single-machine usage that is neither the details view nor a selection is
+  // left ungated.
+  if (!isViewingDetails && !selected) {
     return { actionsDisabled: false, deployDisabled: false };
   }
 
-  // Resolve the resource pool ids of an explicit item selection. Returns null
-  // when the pools can't be determined (filter/group selection or unresolved
-  // machines), signalling a fallback to the global entitlement check.
-  const getSelectedPoolIds = (): number[] | null => {
-    if ("filter" in selected) {
+  // Resolve the resource pool ids being acted on. Returns null when the pools
+  // can't be determined (filter/group selection or unresolved machines),
+  // signalling a fallback to the global entitlement check.
+  const getPoolIds = (): number[] | null => {
+    if (isViewingDetails) {
+      return detailsMachine ? [detailsMachine.pool.id] : null;
+    }
+    if (!selected || "filter" in selected) {
       return null;
     }
     if ((selected.groups ?? []).length > 0) {
@@ -561,8 +569,8 @@ export const useLifecycleActionEntitlements = (
       return null;
     }
     const poolIds: number[] = [];
-    for (const systemId of items) {
-      const machine = allMachines.find((m) => m.system_id === systemId);
+    for (const id of items) {
+      const machine = allMachines.find((m) => m.system_id === id);
       if (!machine) {
         return null;
       }
@@ -571,7 +579,7 @@ export const useLifecycleActionEntitlements = (
     return Array.from(new Set(poolIds));
   };
 
-  const poolIds = getSelectedPoolIds();
+  const poolIds = getPoolIds();
 
   const canEdit =
     poolIds === null

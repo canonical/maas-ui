@@ -11,6 +11,7 @@ import NodeNetworkTab from "@/app/base/components/NodeNetworkTab";
 import NetworkTable from "@/app/base/components/node/networking/NetworkTable";
 import type { Selected } from "@/app/base/components/node/networking/types";
 import { useWindowTitle } from "@/app/base/hooks";
+import { useCanEditMachine } from "@/app/base/hooks/permissions";
 import { useGetURLId } from "@/app/base/hooks/urls";
 import machineSelectors from "@/app/store/machine/selectors";
 import { MachineMeta } from "@/app/store/machine/types";
@@ -23,6 +24,7 @@ const MachineNetwork = (): ReactElement => {
   const machine = useSelector((state: RootState) =>
     machineSelectors.getById(state, id)
   );
+  const canEditMachine = useCanEditMachine(id);
 
   useWindowTitle(`${machine?.fqdn ? `${machine?.fqdn} ` : "Machine"} network`);
 
@@ -44,6 +46,7 @@ const MachineNetwork = (): ReactElement => {
       dhcpTable={() => (
         <DHCPTable
           className="u-no-padding--top"
+          editDisabled={!canEditMachine}
           modelName={MachineMeta.MODEL}
           node={machine}
         />

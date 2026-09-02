@@ -8,6 +8,7 @@ import ChangeStorageLayoutMenu from "./ChangeStorageLayoutMenu";
 import StorageTables from "@/app/base/components/node/StorageTables";
 import docsUrls from "@/app/base/docsUrls";
 import { useSendAnalytics, useWindowTitle } from "@/app/base/hooks";
+import { useCanEditMachine } from "@/app/base/hooks/permissions";
 import { useGetURLId } from "@/app/base/hooks/urls";
 import settingsURLs from "@/app/settings/urls";
 import machineSelectors from "@/app/store/machine/selectors";
@@ -23,6 +24,7 @@ const MachineStorage = (): React.ReactElement => {
     machineSelectors.getById(state, id)
   );
   const canEditStorage = useCanEditStorage(machine);
+  const canEditMachine = useCanEditMachine(id);
 
   useWindowTitle(`${`${machine?.fqdn} ` || "Machine"} storage`);
 
@@ -30,7 +32,10 @@ const MachineStorage = (): React.ReactElement => {
     return (
       <>
         {canEditStorage && <ChangeStorageLayoutMenu systemId={id} />}
-        <StorageTables canEditStorage={canEditStorage} node={machine} />
+        <StorageTables
+          canEditStorage={canEditStorage && canEditMachine}
+          node={machine}
+        />
         <Strip shallow>
           <p>
             Learn more about deploying{" "}

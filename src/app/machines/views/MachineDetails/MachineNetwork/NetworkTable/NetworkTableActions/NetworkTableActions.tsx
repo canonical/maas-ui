@@ -14,6 +14,7 @@ import type {
   SetSelected,
 } from "@/app/base/components/node/networking/types";
 import { useIsAllNetworkingDisabled } from "@/app/base/hooks";
+import { useCanEditMachine } from "@/app/base/hooks/permissions";
 import { ConnectionState } from "@/app/machines/views/MachineDetails/MachineNetwork/MarkConnectedForm/MarkConnectedForm";
 import machineSelectors from "@/app/store/machine/selectors";
 import type { Machine } from "@/app/store/machine/types";
@@ -67,6 +68,7 @@ const NetworkTableActions = ({
   const isAllNetworkingDisabled = useIsAllNetworkingDisabled(machine);
   const isLimitedEditingAllowed = useIsLimitedEditingAllowed(nic, machine);
   const canAddVLAN = useCanAddVLAN(machine, nic, link);
+  const canEditMachine = useCanEditMachine(systemId);
   const itCanAddAlias = canAddAlias(machine, nic, link);
   if (!isMachineDetails(machine)) {
     return null;
@@ -230,7 +232,9 @@ const NetworkTableActions = ({
   }
   return (
     <TableMenu
-      disabled={isAllNetworkingDisabled && !isLimitedEditingAllowed}
+      disabled={
+        (isAllNetworkingDisabled && !isLimitedEditingAllowed) || !canEditMachine
+      }
       links={actions}
       position="right"
       title="Take action:"

@@ -4,12 +4,20 @@ import type { RootState } from "@/app/store/root/types";
 import { NodeActions } from "@/app/store/types/node";
 import { getNodeActionTitle } from "@/app/store/utils";
 import * as factory from "@/testing/factories";
+import { authResolvers } from "@/testing/resolvers/auth";
 import {
   mockSidePanel,
   renderWithProviders,
   screen,
+  setupMockServer,
   userEvent,
+  waitFor,
 } from "@/testing/utils";
+
+setupMockServer(
+  authResolvers.getCurrentUser.handler(),
+  authResolvers.getMeEntitlements.handler()
+);
 
 describe("MachineActionMenu", async () => {
   let state: RootState;
@@ -210,6 +218,9 @@ describe("MachineActionMenu", async () => {
 
       await openMenu();
 
+      await waitFor(() => {
+        expect(getActionButton(NodeActions.CHECK_POWER)).not.toBeAriaDisabled();
+      });
       await userEvent.click(getActionButton(NodeActions.CHECK_POWER));
 
       expect(

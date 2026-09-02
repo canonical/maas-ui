@@ -26,8 +26,10 @@ const MachineActionMenuBar = ({
   systemId,
 }: MachineActionMenuBarProps): ReactElement => {
   const actionMenus = useMachineActionMenus(isViewingDetails, systemId);
-  const { actionsDisabled, deployDisabled } =
-    useLifecycleActionEntitlements(isViewingDetails);
+  const { actionsDisabled, deployDisabled } = useLifecycleActionEntitlements(
+    isViewingDetails,
+    systemId
+  );
 
   const machine = useSelector((state: RootState) =>
     machineSelectors.getById(state, systemId)
@@ -50,46 +52,30 @@ const MachineActionMenuBar = ({
                   return links;
                 }
 
-                const isDeployGated =
-                  item.action === NodeActions.DEPLOY && deployDisabled;
+                const isDisabledAction =
+                  disabledActions &&
+                  disabledActions.some((action) => action === item.action);
 
-                if (
-                  isDeployGated ||
-                  (disabledActions &&
-                    disabledActions.some((action) => action === item.action))
-                ) {
-                  links.push({
-                    children: (
-                      <div className="u-flex--between">
-                        <span>{item.label}...</span>
-                      </div>
-                    ),
-                    disabled: true,
-                    onClick: item.onClick,
-                  });
-
+                const isVisible =
+                  isDisabledAction ||
+                  !machine ||
+                  canOpenActionForm(machine, item.action);
+                if (!isVisible) {
                   return links;
                 }
 
-                if (!machine) {
-                  links.push({
-                    children: (
-                      <div className="u-flex--between">
-                        <span>{item.label}...</span>
-                      </div>
-                    ),
-                    onClick: item.onClick,
-                  });
-                } else if (canOpenActionForm(machine, item.action)) {
-                  links.push({
-                    children: (
-                      <div className="u-flex--between">
-                        <span>{item.label}...</span>
-                      </div>
-                    ),
-                    onClick: item.onClick,
-                  });
-                }
+                const isDeployGated =
+                  item.action === NodeActions.DEPLOY && deployDisabled;
+
+                links.push({
+                  children: (
+                    <div className="u-flex--between">
+                      <span>{item.label}...</span>
+                    </div>
+                  ),
+                  disabled: isDisabledAction || isDeployGated || undefined,
+                  onClick: item.onClick,
+                });
 
                 return links;
               }, [])}
