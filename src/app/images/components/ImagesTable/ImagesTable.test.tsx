@@ -11,6 +11,7 @@ import {
   imageSourceFactory,
   imageStatusFactory,
 } from "@/testing/factories";
+import { authResolvers } from "@/testing/resolvers/auth";
 import { configurationsResolvers } from "@/testing/resolvers/configurations";
 import { imageSourceResolvers } from "@/testing/resolvers/imageSources";
 import { imageSyncResolvers } from "@/testing/resolvers/imageSync";
@@ -56,7 +57,9 @@ const mockServer = setupMockServer(
   configurationsResolvers.getConfiguration.handler({
     name: ConfigNames.COMMISSIONING_DISTRO_SERIES,
     value: "noble",
-  })
+  }),
+  authResolvers.getCurrentUser.handler(),
+  authResolvers.getMeEntitlements.handler()
 );
 const { mockOpen } = await mockSidePanel();
 
@@ -381,6 +384,49 @@ describe("ImagesTable", () => {
           screen.getByText("Image is already synchronized.")
         ).toBeInTheDocument();
       });
+    });
+
+    it("disables start sync, delete and source change without the edit entitlement", async () => {
+      mockServer.use(
+        authResolvers.getMeEntitlements.handler([]),
+        imageResolvers.listSelections.handler({
+          items: [
+            imageFactory.build({
+              id: 1,
+              release: "jammy",
+              title: "22.04 LTS",
+              boot_source_id: 1,
+            }),
+          ],
+          total: 1,
+        }),
+        imageResolvers.listSelectionStatuses.handler({
+          items: [
+            imageStatusFactory.build({
+              id: 1,
+              selected: true,
+              status: "Waiting for download",
+              update_status: "Update available",
+            }),
+          ],
+          total: 1,
+        })
+      );
+      renderWithProviders(
+        <ImagesTable selectedRows={{}} setSelectedRows={vi.fn} />
+      );
+      await waitForLoading();
+
+      const row = screen.getByRole("row", { name: /jammy/i });
+      expect(
+        within(row).getByRole("button", { name: "Start synchronization" })
+      ).toBeAriaDisabled();
+      expect(
+        within(row).getByRole("button", { name: "Delete" })
+      ).toBeAriaDisabled();
+      expect(
+        within(row).getByRole("button", { name: /MAAS Stable/i })
+      ).toBeAriaDisabled();
     });
   });
 
