@@ -12,7 +12,8 @@ import Definition from "@/app/base/components/Definition";
 import EditableSection from "@/app/base/components/EditableSection";
 import FabricLink from "@/app/base/components/FabricLink";
 import VLANLink from "@/app/base/components/VLANLink";
-import { useFetchActions } from "@/app/base/hooks";
+import { useFetchActions, useHasEntitlements } from "@/app/base/hooks";
+import { Entitlement } from "@/app/settings/views/UserManagement/views/Groups/constants";
 import { fabricActions } from "@/app/store/fabric";
 import type { RootState } from "@/app/store/root/types";
 import { spaceActions } from "@/app/store/space";
@@ -32,6 +33,7 @@ const SubnetSummary = ({ id }: Props): React.ReactElement | null => {
   const vlan = useSelector((state: RootState) =>
     vlanSelectors.getById(state, subnet?.vlan)
   );
+  const canEdit = useHasEntitlements([Entitlement.CAN_EDIT_GLOBAL_ENTITIES]);
 
   useFetchActions([spaceActions.fetch, vlanActions.fetch, fabricActions.fetch]);
 
@@ -41,6 +43,7 @@ const SubnetSummary = ({ id }: Props): React.ReactElement | null => {
 
   return (
     <EditableSection
+      canEdit={canEdit}
       className="u-no-padding--top"
       renderContent={(editing, setEditing) =>
         editing ? (

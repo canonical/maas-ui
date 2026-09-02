@@ -20,7 +20,8 @@ import useReservedRangesColumns from "./useReservedRangesTableColumns/useReserve
 
 import TitledSection from "@/app/base/components/TitledSection";
 import docsUrls from "@/app/base/docsUrls";
-import { useFetchActions } from "@/app/base/hooks";
+import { useFetchActions, useHasEntitlements } from "@/app/base/hooks";
+import { Entitlement } from "@/app/settings/views/UserManagement/views/Groups/constants";
 import { ipRangeActions } from "@/app/store/iprange";
 import ipRangeSelectors from "@/app/store/iprange/selectors";
 import { IPRangeType } from "@/app/store/iprange/types";
@@ -76,6 +77,7 @@ const ReservedRangesTable = ({
   );
   const isDisabled = isId(vlanId) && !hasVLANSubnets;
   const showSubnetColumn = isId(vlanId);
+  const canEdit = useHasEntitlements([Entitlement.CAN_EDIT_GLOBAL_ENTITIES]);
 
   useFetchActions([ipRangeActions.fetch]);
 
@@ -130,7 +132,7 @@ const ReservedRangesTable = ({
           ]}
           position="right"
           toggleAppearance="positive"
-          toggleDisabled={isDisabled}
+          toggleDisabled={isDisabled || !canEdit}
           toggleLabel={
             isAddingDynamic ? Labels.ReserveDynamicRange : Labels.ReserveRange
           }

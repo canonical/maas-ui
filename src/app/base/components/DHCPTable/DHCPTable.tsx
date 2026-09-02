@@ -24,6 +24,7 @@ type BaseProps = {
   node?: Node;
   subnets?: Subnet[];
   ipRanges?: IPRange[];
+  editDisabled?: boolean;
 };
 
 type NodeProps = BaseProps & {
@@ -51,6 +52,7 @@ const DHCPTable = ({
   subnets,
   ipRanges,
   modelName,
+  editDisabled = false,
 }: Props): React.ReactElement | null => {
   const dhcpsnippetLoading = useSelector(dhcpsnippetSelectors.loading);
   const subnetIds = subnets?.map(({ id }) => id) || null;
@@ -67,6 +69,7 @@ const DHCPTable = ({
     originalNode: node,
     subnets,
     ipranges: ipRanges,
+    editDisabled,
   });
 
   return (
