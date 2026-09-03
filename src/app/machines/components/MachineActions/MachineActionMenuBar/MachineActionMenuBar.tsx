@@ -64,8 +64,12 @@ const MachineActionMenuBar = ({
                   return links;
                 }
 
-                const isDeployGated =
-                  item.action === NodeActions.DEPLOY && deployDisabled;
+                // Deploy is permitted with either an edit or deploy
+                // entitlement; all other actions require edit.
+                const isEntitlementGated =
+                  item.action === NodeActions.DEPLOY
+                    ? deployDisabled
+                    : actionsDisabled;
 
                 links.push({
                   children: (
@@ -73,14 +77,20 @@ const MachineActionMenuBar = ({
                       <span>{item.label}...</span>
                     </div>
                   ),
-                  disabled: isDisabledAction || isDeployGated || undefined,
+                  disabled: isDisabledAction || isEntitlementGated || undefined,
                   onClick: item.onClick,
                 });
 
                 return links;
               }, [])}
               position="left"
-              toggleDisabled={actionsDisabled}
+              toggleDisabled={
+                // The lifecycle submenu stays available for deploy-only users
+                // so they can reach the Deploy action.
+                menu.name === "lifecycle"
+                  ? actionsDisabled && deployDisabled
+                  : actionsDisabled
+              }
               toggleLabel={
                 !menu.icon ? (
                   menu.title

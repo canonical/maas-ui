@@ -404,7 +404,7 @@ describe("MachineActionMenuBar entitlements check", () => {
     });
   });
 
-  it("disables the Deploy option without a deploy entitlement for the selected pool", async () => {
+  it("enables the Deploy option with only an edit entitlement (edit implies deploy)", async () => {
     mockServer.use(
       authResolvers.getMeEntitlements.handler([editPoolEntitlement(2)])
     );
@@ -423,7 +423,21 @@ describe("MachineActionMenuBar entitlements check", () => {
       within(actionsMenu).getByRole("menuitem", {
         name: RegExp(getNodeActionTitle(NodeActions.DEPLOY)),
       })
-    ).toBeAriaDisabled();
+    ).not.toBeAriaDisabled();
+  });
+
+  it("disables the Deploy option without an edit or deploy entitlement for the selected pool", async () => {
+    mockServer.use(
+      authResolvers.getMeEntitlements.handler([deployPoolEntitlement(999)])
+    );
+    renderWithProviders(<MachineActionMenuBar isViewingDetails={false} />, {
+      state,
+    });
+
+    const actionsToggle = screen.getByRole("button", { name: "Actions" });
+    await waitFor(() => {
+      expect(actionsToggle).toBeAriaDisabled();
+    });
   });
 
   it("enables the Deploy option with a deploy entitlement for the selected pool", async () => {
@@ -449,6 +463,40 @@ describe("MachineActionMenuBar entitlements check", () => {
         name: RegExp(getNodeActionTitle(NodeActions.DEPLOY)),
       })
     ).not.toBeAriaDisabled();
+  });
+
+  it("keeps the Actions submenu available for a deploy-only user with Deploy enabled and other actions disabled", async () => {
+    mockServer.use(
+      authResolvers.getMeEntitlements.handler([deployPoolEntitlement(2)])
+    );
+    renderWithProviders(<MachineActionMenuBar isViewingDetails={false} />, {
+      state,
+    });
+
+    const actionsToggle = screen.getByRole("button", { name: "Actions" });
+    await waitFor(() => {
+      expect(actionsToggle).not.toBeAriaDisabled();
+    });
+    // Other submenus that require edit remain disabled.
+    ["Power", "Troubleshoot", "Categorise", "Lock", "Delete"].forEach(
+      (name) => {
+        expect(screen.getByRole("button", { name })).toBeAriaDisabled();
+      }
+    );
+
+    await userEvent.click(actionsToggle);
+
+    const actionsMenu = screen.getByLabelText("Actions submenu");
+    expect(
+      within(actionsMenu).getByRole("menuitem", {
+        name: RegExp(getNodeActionTitle(NodeActions.DEPLOY)),
+      })
+    ).not.toBeAriaDisabled();
+    expect(
+      within(actionsMenu).getByRole("menuitem", {
+        name: RegExp(getNodeActionTitle(NodeActions.RELEASE)),
+      })
+    ).toBeAriaDisabled();
   });
 
   it("falls back to the global edit entitlement for group selections", async () => {
@@ -566,7 +614,7 @@ describe("MachineActionMenuBar details view entitlements gating", () => {
     });
   });
 
-  it("disables the Deploy option without a deploy entitlement for the viewed machine's pool", async () => {
+  it("enables the Deploy option with only an edit entitlement for the viewed machine's pool (edit implies deploy)", async () => {
     mockServer.use(
       authResolvers.getMeEntitlements.handler([editPoolEntitlement(2)])
     );
@@ -585,6 +633,44 @@ describe("MachineActionMenuBar details view entitlements gating", () => {
     expect(
       within(actionsMenu).getByRole("menuitem", {
         name: RegExp(getNodeActionTitle(NodeActions.DEPLOY)),
+      })
+    ).not.toBeAriaDisabled();
+  });
+
+  it("keeps the Actions submenu available for a deploy-only user with Deploy enabled and other actions disabled", async () => {
+    mockServer.use(
+      authResolvers.getMeEntitlements.handler([
+        factory.entitlement({
+          entitlement: Entitlement.CAN_DEPLOY_MACHINES,
+          resource_type: "pool",
+          resource_id: 2,
+        }),
+      ])
+    );
+    renderWithProviders(
+      <MachineActionMenuBar isViewingDetails systemId="abc123" />,
+      { state }
+    );
+
+    const actionsToggle = screen.getByRole("button", { name: "Actions" });
+    await waitFor(() => {
+      expect(actionsToggle).not.toBeAriaDisabled();
+    });
+    ["Power", "Troubleshoot", "Categorise", "Delete"].forEach((name) => {
+      expect(screen.getByRole("button", { name })).toBeAriaDisabled();
+    });
+
+    await userEvent.click(actionsToggle);
+
+    const actionsMenu = screen.getByLabelText("Actions submenu");
+    expect(
+      within(actionsMenu).getByRole("menuitem", {
+        name: RegExp(getNodeActionTitle(NodeActions.DEPLOY)),
+      })
+    ).not.toBeAriaDisabled();
+    expect(
+      within(actionsMenu).getByRole("menuitem", {
+        name: RegExp(getNodeActionTitle(NodeActions.RELEASE)),
       })
     ).toBeAriaDisabled();
   });

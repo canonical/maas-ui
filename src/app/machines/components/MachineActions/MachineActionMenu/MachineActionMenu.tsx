@@ -77,8 +77,9 @@ const MachineActionMenu = ({
           }
 
           const isGated =
-            actionsDisabled ||
-            (item.action === NodeActions.DEPLOY && deployDisabled);
+            item.action === NodeActions.DEPLOY
+              ? deployDisabled
+              : actionsDisabled;
 
           actions.push({
             children: <span>{item.label}...</span>,

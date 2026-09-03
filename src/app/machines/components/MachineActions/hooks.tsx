@@ -527,12 +527,6 @@ export const useMachineActionMenus = (
 /**
  * Computes the disabled state of the machine action controls, based on the
  * current user's resource-pool entitlements.
- *
- * The controls are disabled unless the user has CAN_EDIT_MACHINES for every
- * resource pool being acted on — the selected machines' pools in the list
- * header, or the viewed machine's pool in the details view. The "Deploy" item
- * additionally requires CAN_DEPLOY_MACHINES for those pools. Group/filter
- * selections (whose pools can't be resolved) fall back to a global check.
  */
 export const useLifecycleActionEntitlements = (
   isViewingDetails: boolean,
@@ -592,15 +586,24 @@ export const useLifecycleActionEntitlements = (
           )
         );
 
+  // Per the OpenFGA model, can_deploy_machines is granted by either a deploy or
+  // an edit entitlement (can_edit_machines implies deploy), scoped per pool.
   const canDeploy =
     poolIds === null
-      ? hasPermissions(userEntitlements, [Entitlement.CAN_DEPLOY_MACHINES])
-      : poolIds.every((poolId) =>
-          hasEntitlementForPool(
-            userEntitlements,
-            Entitlement.CAN_DEPLOY_MACHINES,
-            poolId
-          )
+      ? hasPermissions(userEntitlements, [Entitlement.CAN_EDIT_MACHINES]) ||
+        hasPermissions(userEntitlements, [Entitlement.CAN_DEPLOY_MACHINES])
+      : poolIds.every(
+          (poolId) =>
+            hasEntitlementForPool(
+              userEntitlements,
+              Entitlement.CAN_EDIT_MACHINES,
+              poolId
+            ) ||
+            hasEntitlementForPool(
+              userEntitlements,
+              Entitlement.CAN_DEPLOY_MACHINES,
+              poolId
+            )
         );
 
   return { actionsDisabled: !canEdit, deployDisabled: !canDeploy };
