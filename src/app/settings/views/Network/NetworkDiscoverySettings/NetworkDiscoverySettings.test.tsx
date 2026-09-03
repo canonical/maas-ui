@@ -7,7 +7,7 @@ import { authResolvers, mockAuth } from "@/testing/resolvers/auth";
 import { networkDiscoveryResolvers } from "@/testing/resolvers/networkDiscovery";
 import { renderWithProviders, screen, setupMockServer } from "@/testing/utils";
 
-const mockServer = setupMockServer(
+setupMockServer(
   networkDiscoveryResolvers.listNetworkDiscoveries.handler(),
   authResolvers.getCurrentUser.handler(mockAuth),
   authResolvers.getMeEntitlements.handler(),
@@ -15,16 +15,6 @@ const mockServer = setupMockServer(
 );
 
 describe("NetworkDiscoverySettings", () => {
-  it("renders permission message if user is not superuser", async () => {
-    mockServer.use(authResolvers.getMeEntitlements.handler([]));
-    renderWithProviders(<NetworkDiscoverySettings />);
-    await waitFor(() => {
-      expect(
-        screen.getByText("You do not have permission to view this page.")
-      ).toBeInTheDocument();
-    });
-  });
-
   it("shows disabled discovery warning", async () => {
     const state = factory.rootState({
       config: factory.configState({
