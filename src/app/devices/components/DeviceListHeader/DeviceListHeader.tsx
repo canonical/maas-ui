@@ -10,13 +10,11 @@ import DeviceFilterAccordion from "./DeviceFilterAccordion";
 import DebounceSearchBox from "@/app/base/components/DebounceSearchBox";
 import ModelListSubtitle from "@/app/base/components/ModelListSubtitle";
 import NodeActionMenu from "@/app/base/components/NodeActionMenu";
-import { useHasEntitlements } from "@/app/base/hooks";
 import type { SetSearchFilter } from "@/app/base/types";
 import {
   AddDeviceForm,
   DeviceActionFormWrapper,
 } from "@/app/devices/components";
-import { Entitlement } from "@/app/settings/views/UserManagement/views/Groups/constants";
 import deviceSelectors from "@/app/store/device/selectors";
 import type { Device } from "@/app/store/device/types";
 import { NodeActions } from "@/app/store/types/node";
@@ -41,7 +39,6 @@ const DeviceListHeader = ({
   );
   const [searchText, setSearchText] = useState(searchFilter);
   const { openSidePanel } = useSidePanel();
-  const canEdit = useHasEntitlements([Entitlement.CAN_EDIT_GLOBAL_ENTITIES]);
 
   useEffect(() => {
     // If the filters change then update the search input text.
@@ -78,7 +75,7 @@ const DeviceListHeader = ({
         />
         <Button
           data-testid="add-device-button"
-          disabled={selectedDevices.length > 0 || !canEdit}
+          disabled={selectedDevices.length > 0}
           onClick={() => {
             openSidePanel({
               component: AddDeviceForm,
@@ -90,7 +87,9 @@ const DeviceListHeader = ({
           Add device
         </Button>
         <NodeActionMenu
-          disabled={!canEdit}
+          disabled={selectedDevices.every(
+            (device) => device.actions.length === 0
+          )}
           filterActions
           hasSelection={selectedDevices.length > 0}
           nodeDisplay="device"

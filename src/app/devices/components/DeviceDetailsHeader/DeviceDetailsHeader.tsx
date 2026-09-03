@@ -8,10 +8,8 @@ import DeviceName from "./DeviceName";
 
 import NodeActionMenu from "@/app/base/components/NodeActionMenu";
 import SectionHeader from "@/app/base/components/SectionHeader";
-import { useHasEntitlements } from "@/app/base/hooks";
 import urls from "@/app/base/urls";
 import { DeviceActionFormWrapper } from "@/app/devices/components";
-import { Entitlement } from "@/app/settings/views/UserManagement/views/Groups/constants";
 import deviceSelectors from "@/app/store/device/selectors";
 import type { Device } from "@/app/store/device/types";
 import { isDeviceDetails } from "@/app/store/device/utils";
@@ -29,7 +27,6 @@ const DeviceDetailsHeader = ({ systemId }: Props): React.ReactElement => {
     deviceSelectors.getById(state, systemId)
   );
   const { pathname } = useLocation();
-  const canEdit = useHasEntitlements([Entitlement.CAN_EDIT_GLOBAL_ENTITIES]);
 
   if (!device) {
     return <SectionHeader loading />;
@@ -39,7 +36,7 @@ const DeviceDetailsHeader = ({ systemId }: Props): React.ReactElement => {
     <SectionHeader
       buttons={[
         <NodeActionMenu
-          disabled={!canEdit}
+          disabled={device.actions.length === 0}
           filterActions
           hasSelection={true}
           nodeDisplay="device"

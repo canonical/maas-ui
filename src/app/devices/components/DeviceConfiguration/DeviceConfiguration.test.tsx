@@ -7,7 +7,6 @@ import { Label as ZoneSelectLabel } from "@/app/base/components/ZoneSelect/ZoneS
 import { deviceActions } from "@/app/store/device";
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
-import { authResolvers } from "@/testing/resolvers/auth";
 import { zoneResolvers } from "@/testing/resolvers/zones";
 import {
   userEvent,
@@ -17,11 +16,7 @@ import {
   renderWithProviders,
 } from "@/testing/utils";
 
-const mockServer = setupMockServer(
-  zoneResolvers.listZones.handler(),
-  authResolvers.getCurrentUser.handler(),
-  authResolvers.getMeEntitlements.handler()
-);
+setupMockServer(zoneResolvers.listZones.handler());
 
 describe("DeviceConfiguration", () => {
   let state: RootState;
@@ -135,8 +130,10 @@ describe("DeviceConfiguration", () => {
     });
   });
 
-  it("hides the edit button without the edit entitlement", async () => {
-    mockServer.use(authResolvers.getMeEntitlements.handler([]));
+  it("hides the edit button when the user cannot edit the device", async () => {
+    state.device.items = [
+      factory.deviceDetails({ permissions: [], system_id: "abc123" }),
+    ];
     renderWithProviders(<DeviceConfiguration systemId="abc123" />, {
       state,
     });
