@@ -95,6 +95,7 @@ export {
 } from "./scriptResult";
 export { service } from "./service";
 export { space } from "./space";
+export { sshHostKey } from "./sshHostKey";
 export { sshKey } from "./sshkey";
 export { sslKey } from "./sslkey";
 export {
