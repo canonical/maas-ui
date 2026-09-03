@@ -29,6 +29,7 @@ import IpmiSettings from "@/app/settings/views/Security/IpmiSettings";
 import SecretStorage from "@/app/settings/views/Security/SecretStorage";
 import SecurityProtocols from "@/app/settings/views/Security/SecurityProtocols";
 import SessionTimeout from "@/app/settings/views/Security/SessionTimeout";
+import TrustedSSHHostKeys from "@/app/settings/views/Security/TrustedSSHHostKeys";
 import StorageForm from "@/app/settings/views/Storage/StorageForm";
 import UsersList from "@/app/settings/views/Users/views";
 import { getRelativeRoute } from "@/app/utils";
@@ -111,6 +112,14 @@ const Routes = (): React.ReactElement => {
           </PageContent>
         }
         path={getRelativeRoute(urls.settings.security.ipmiSettings, base)}
+      />
+      <Route
+        element={
+          <PageContent sidePanelContent={null} sidePanelTitle={null}>
+            <TrustedSSHHostKeys />
+          </PageContent>
+        }
+        path={getRelativeRoute(urls.settings.security.trustedSshHostKeys, base)}
       />
       <Route
         element={

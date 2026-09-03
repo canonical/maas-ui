@@ -1871,6 +1871,7 @@ export type PreconditionFailedBodyResponse = {
  */
 export type PublicConfigName =
   | "active_discovery_interval"
+  | "allow_only_trusted_transfers"
   | "auto_vlan_creation"
   | "boot_images_auto_import"
   | "boot_images_no_proxy"
@@ -2487,6 +2488,106 @@ export type SpacesListResponse = {
    * Items
    */
   items: SpaceResponse[];
+  /**
+   * Total
+   */
+  total: number;
+  /**
+   * Next
+   */
+  next?: string;
+  /**
+   * Kind
+   */
+  kind?: string;
+};
+
+/**
+ * SshHostKeyRequest
+ */
+export type SshHostKeyRequest = {
+  /**
+   * Host
+   * The hostname or IP address.
+   */
+  host: string;
+  /**
+   * Key Type
+   * The SSH key type (e.g. ssh-rsa).
+   */
+  key_type: string;
+  /**
+   * Public Key
+   * The Base64-encoded public key.
+   */
+  public_key: string;
+  /**
+   * Label
+   * An optional human-readable label.
+   */
+  label?: string;
+};
+
+/**
+ * SshHostKeyResponse
+ * Base HAL response class that every response object must extend. The response object will look like
+ * {
+ * '_links': {
+ * 'self': {'href': '/api/v3/'}
+ * },
+ * '_embedded': {}
+ * }
+ */
+export type SshHostKeyResponse = {
+  _links?: BaseHal;
+  /**
+   *  Embedded
+   */
+  _embedded?: Record<string, unknown>;
+  /**
+   * Id
+   */
+  id: number;
+  /**
+   * Created
+   */
+  created: string;
+  /**
+   * Updated
+   */
+  updated: string;
+  /**
+   * Host
+   */
+  host: string;
+  /**
+   * Key Type
+   */
+  key_type: string;
+  /**
+   * Public Key
+   */
+  public_key: string;
+  /**
+   * Label
+   */
+  label?: string;
+  /**
+   * Kind
+   */
+  kind?: string;
+};
+
+/**
+ * SshHostKeysListResponse
+ * Base class for offset-paginated responses.
+ * Derived classes should overwrite the items property
+ */
+export type SshHostKeysListResponse = {
+  /**
+   * Items
+   */
+  items: SshHostKeyResponse[];
   /**
    * Total
    */
@@ -6597,6 +6698,150 @@ export type GetUserSslkeysWithSummaryResponses = {
 export type GetUserSslkeysWithSummaryResponse =
   GetUserSslkeysWithSummaryResponses[keyof GetUserSslkeysWithSummaryResponses];
 
+export type ListSshHostKeysData = {
+  body?: never;
+  path?: never;
+  query?: {
+    /**
+     * Page
+     */
+    page?: number;
+    /**
+     * Size
+     */
+    size?: number;
+  };
+  url: "/MAAS/a/v3/ssh-host-keys";
+};
+
+export type ListSshHostKeysErrors = {
+  /**
+   * Unprocessable Entity
+   */
+  422: ValidationErrorBodyResponse;
+};
+
+export type ListSshHostKeysError =
+  ListSshHostKeysErrors[keyof ListSshHostKeysErrors];
+
+export type ListSshHostKeysResponses = {
+  /**
+   * Successful Response
+   */
+  200: SshHostKeysListResponse;
+};
+
+export type ListSshHostKeysResponse =
+  ListSshHostKeysResponses[keyof ListSshHostKeysResponses];
+
+export type CreateSshHostKeyData = {
+  body: SshHostKeyRequest;
+  path?: never;
+  query?: never;
+  url: "/MAAS/a/v3/ssh-host-keys";
+};
+
+export type CreateSshHostKeyErrors = {
+  /**
+   * Unprocessable Entity
+   */
+  422: ValidationErrorBodyResponse;
+};
+
+export type CreateSshHostKeyError =
+  CreateSshHostKeyErrors[keyof CreateSshHostKeyErrors];
+
+export type CreateSshHostKeyResponses = {
+  /**
+   * Successful Response
+   */
+  201: SshHostKeyResponse;
+};
+
+export type CreateSshHostKeyResponse =
+  CreateSshHostKeyResponses[keyof CreateSshHostKeyResponses];
+
+export type DeleteSshHostKeyData = {
+  body?: never;
+  headers?: {
+    /**
+     * If-Match
+     */
+    "if-match"?: string;
+  };
+  path: {
+    /**
+     * Ssh Host Key Id
+     */
+    ssh_host_key_id: number;
+  };
+  query?: never;
+  url: "/MAAS/a/v3/ssh-host-keys/{ssh_host_key_id}";
+};
+
+export type DeleteSshHostKeyErrors = {
+  /**
+   * Not Found
+   */
+  404: NotFoundBodyResponse;
+  /**
+   * Precondition Failed
+   */
+  412: PreconditionFailedBodyResponse;
+  /**
+   * Unprocessable Entity
+   */
+  422: ValidationErrorBodyResponse;
+};
+
+export type DeleteSshHostKeyError =
+  DeleteSshHostKeyErrors[keyof DeleteSshHostKeyErrors];
+
+export type DeleteSshHostKeyResponses = {
+  /**
+   * Successful Response
+   */
+  204: void;
+};
+
+export type DeleteSshHostKeyResponse =
+  DeleteSshHostKeyResponses[keyof DeleteSshHostKeyResponses];
+
+export type GetSshHostKeyData = {
+  body?: never;
+  path: {
+    /**
+     * Ssh Host Key Id
+     */
+    ssh_host_key_id: number;
+  };
+  query?: never;
+  url: "/MAAS/a/v3/ssh-host-keys/{ssh_host_key_id}";
+};
+
+export type GetSshHostKeyErrors = {
+  /**
+   * Not Found
+   */
+  404: NotFoundBodyResponse;
+  /**
+   * Unprocessable Entity
+   */
+  422: ValidationErrorBodyResponse;
+};
+
+export type GetSshHostKeyError = GetSshHostKeyErrors[keyof GetSshHostKeyErrors];
+
+export type GetSshHostKeyResponses = {
+  /**
+   * Successful Response
+   */
+  200: SshHostKeyResponse;
+};
+
+export type GetSshHostKeyResponse =
+  GetSshHostKeyResponses[keyof GetSshHostKeyResponses];
+
 export type ListFabricVlanSubnetsData = {
   body?: never;
   path: {
@@ -6704,7 +6949,13 @@ export type DeleteFabricVlanSubnetData = {
      */
     id: number;
   };
-  query?: never;
+  query?: {
+    /**
+     * Force
+     * If true, delete the subnet even if it has IP addresses in use by nodes.
+     */
+    force?: boolean;
+  };
   url: "/MAAS/a/v3/fabrics/{fabric_id}/vlans/{vlan_id}/subnets/{id}";
 };
 
@@ -6713,6 +6964,10 @@ export type DeleteFabricVlanSubnetErrors = {
    * Not Found
    */
   404: NotFoundBodyResponse;
+  /**
+   * Precondition Failed
+   */
+  412: PreconditionFailedBodyResponse;
   /**
    * Unprocessable Entity
    */
