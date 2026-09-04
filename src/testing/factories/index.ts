@@ -192,6 +192,7 @@ export {
   subnetStatistics,
   subnetStatisticsRange,
 } from "./subnet";
+export { systemInfo } from "./system";
 export { tag } from "./tag";
 export { token } from "./token";
 export { entitlement, user, userEntitlements, userStatistics } from "./user";
