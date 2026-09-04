@@ -1844,6 +1844,92 @@ export type PowerTypeEnum =
   | "wedge";
 
 /**
+ * PowerTypeField
+ */
+export type PowerTypeField = {
+  /**
+   * Name
+   */
+  name: string;
+  /**
+   * Label
+   */
+  label: string;
+  /**
+   * Required
+   */
+  required: boolean;
+  /**
+   * Field Type
+   */
+  field_type: string;
+  /**
+   * Default
+   */
+  default?: unknown;
+  /**
+   * Choices
+   */
+  choices?: [unknown, unknown][];
+};
+
+/**
+ * PowerTypeResponse
+ */
+export type PowerTypeResponse = {
+  /**
+   * Driver Type
+   */
+  driver_type: string;
+  /**
+   * Name
+   */
+  name: string;
+  /**
+   * Description
+   */
+  description: string;
+  /**
+   * Fields
+   */
+  fields: PowerTypeField[];
+  /**
+   * Chassis
+   */
+  chassis: boolean;
+  /**
+   * Can Probe
+   */
+  can_probe: boolean;
+  /**
+   * Missing Packages
+   */
+  missing_packages: string[];
+  /**
+   * Queryable
+   */
+  queryable: boolean;
+  /**
+   * Fips Supported
+   */
+  fips_supported: boolean;
+  /**
+   * Fips Unsupported Reason
+   */
+  fips_unsupported_reason?: string;
+};
+
+/**
+ * PowerTypesListResponse
+ */
+export type PowerTypesListResponse = {
+  /**
+   * Items
+   */
+  items: PowerTypeResponse[];
+};
+
+/**
  * PreconditionFailedBodyResponse
  */
 export type PreconditionFailedBodyResponse = {
@@ -2928,6 +3014,24 @@ export type SubnetsListResponse = {
 };
 
 /**
+ * SystemInfoResponse
+ */
+export type SystemInfoResponse = {
+  /**
+   * Fips Active
+   */
+  fips_active: boolean;
+  /**
+   * Hardening Active
+   */
+  hardening_active: boolean;
+  /**
+   * Version
+   */
+  version: string;
+};
+
+/**
  * TXTRecord
  */
 export type TxtRecord = {
@@ -3465,6 +3569,10 @@ export type ValidationErrorBodyResponse = {
    * Kind
    */
   kind?: string;
+  /**
+   * Fips Violation
+   */
+  fips_violation?: boolean;
 };
 
 /**
@@ -5428,6 +5536,33 @@ export type UpdatePackageRepositoryResponses = {
 export type UpdatePackageRepositoryResponse =
   UpdatePackageRepositoryResponses[keyof UpdatePackageRepositoryResponses];
 
+export type ListPowerTypesData = {
+  body?: never;
+  path?: never;
+  query?: never;
+  url: "/MAAS/a/v3/power-types";
+};
+
+export type ListPowerTypesErrors = {
+  /**
+   * Unprocessable Entity
+   */
+  422: ValidationErrorBodyResponse;
+};
+
+export type ListPowerTypesError =
+  ListPowerTypesErrors[keyof ListPowerTypesErrors];
+
+export type ListPowerTypesResponses = {
+  /**
+   * Successful Response
+   */
+  200: PowerTypesListResponse;
+};
+
+export type ListPowerTypesResponse =
+  ListPowerTypesResponses[keyof ListPowerTypesResponses];
+
 export type ListFabricVlanSubnetReservedIpsData = {
   body?: never;
   path: {
@@ -5901,6 +6036,32 @@ export type ListResourcePoolsWithSummaryResponses = {
 
 export type ListResourcePoolsWithSummaryResponse =
   ListResourcePoolsWithSummaryResponses[keyof ListResourcePoolsWithSummaryResponses];
+
+export type GetSystemInfoData = {
+  body?: never;
+  path?: never;
+  query?: never;
+  url: "/MAAS/a/v3/system/info";
+};
+
+export type GetSystemInfoErrors = {
+  /**
+   * Unprocessable Entity
+   */
+  422: ValidationErrorBodyResponse;
+};
+
+export type GetSystemInfoError = GetSystemInfoErrors[keyof GetSystemInfoErrors];
+
+export type GetSystemInfoResponses = {
+  /**
+   * Successful Response
+   */
+  200: SystemInfoResponse;
+};
+
+export type GetSystemInfoResponse =
+  GetSystemInfoResponses[keyof GetSystemInfoResponses];
 
 export type ListFabricVlanSubnetStaticroutesData = {
   body?: never;
@@ -8055,5 +8216,5 @@ export type ListZonesWithSummaryResponse =
   ListZonesWithSummaryResponses[keyof ListZonesWithSummaryResponses];
 
 export type ClientOptions = {
-  baseUrl: `${string}://${string}` | (string & {});
+  baseUrl: "http://localhost:8400" | (string & {});
 };

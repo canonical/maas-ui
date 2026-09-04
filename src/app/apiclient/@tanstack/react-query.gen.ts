@@ -46,6 +46,7 @@ import {
   deletePackageRepository,
   getPackageRepository,
   updatePackageRepository,
+  listPowerTypes,
   listFabricVlanSubnetReservedIps,
   createFabricVlanSubnetReservedIp,
   deleteFabricVlanSubnetReservedIp,
@@ -57,6 +58,7 @@ import {
   getResourcePool,
   updateResourcePool,
   listResourcePoolsWithSummary,
+  getSystemInfo,
   listFabricVlanSubnetStaticroutes,
   createFabricVlanSubnetStaticroute,
   deleteFabricVlanSubnetStaticroute,
@@ -231,6 +233,7 @@ import type {
   UpdatePackageRepositoryData,
   UpdatePackageRepositoryError,
   UpdatePackageRepositoryResponse,
+  ListPowerTypesData,
   ListFabricVlanSubnetReservedIpsData,
   ListFabricVlanSubnetReservedIpsError,
   ListFabricVlanSubnetReservedIpsResponse,
@@ -260,6 +263,7 @@ import type {
   ListResourcePoolsWithSummaryData,
   ListResourcePoolsWithSummaryError,
   ListResourcePoolsWithSummaryResponse,
+  GetSystemInfoData,
   ListFabricVlanSubnetStaticroutesData,
   ListFabricVlanSubnetStaticroutesError,
   ListFabricVlanSubnetStaticroutesResponse,
@@ -2312,6 +2316,29 @@ export const updatePackageRepositoryMutation = (
   return mutationOptions;
 };
 
+export const listPowerTypesQueryKey = (options?: Options<ListPowerTypesData>) =>
+  createQueryKey("listPowerTypes", options);
+
+/**
+ * List Power Types
+ */
+export const listPowerTypesOptions = (
+  options?: Options<ListPowerTypesData>
+) => {
+  return queryOptions({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await listPowerTypes({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: listPowerTypesQueryKey(options),
+  });
+};
+
 export const listFabricVlanSubnetReservedIpsQueryKey = (
   options: Options<ListFabricVlanSubnetReservedIpsData>
 ) => createQueryKey("listFabricVlanSubnetReservedIps", options);
@@ -2795,6 +2822,27 @@ export const listResourcePoolsWithSummaryInfiniteOptions = (
       queryKey: listResourcePoolsWithSummaryInfiniteQueryKey(options),
     }
   );
+};
+
+export const getSystemInfoQueryKey = (options?: Options<GetSystemInfoData>) =>
+  createQueryKey("getSystemInfo", options);
+
+/**
+ * Get System Info
+ */
+export const getSystemInfoOptions = (options?: Options<GetSystemInfoData>) => {
+  return queryOptions({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await getSystemInfo({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: getSystemInfoQueryKey(options),
+  });
 };
 
 export const listFabricVlanSubnetStaticroutesQueryKey = (

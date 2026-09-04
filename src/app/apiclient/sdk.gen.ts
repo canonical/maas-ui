@@ -139,6 +139,9 @@ import type {
   UpdatePackageRepositoryData,
   UpdatePackageRepositoryResponses,
   UpdatePackageRepositoryErrors,
+  ListPowerTypesData,
+  ListPowerTypesResponses,
+  ListPowerTypesErrors,
   ListFabricVlanSubnetReservedIpsData,
   ListFabricVlanSubnetReservedIpsResponses,
   ListFabricVlanSubnetReservedIpsErrors,
@@ -172,6 +175,9 @@ import type {
   ListResourcePoolsWithSummaryData,
   ListResourcePoolsWithSummaryResponses,
   ListResourcePoolsWithSummaryErrors,
+  GetSystemInfoData,
+  GetSystemInfoResponses,
+  GetSystemInfoErrors,
   ListFabricVlanSubnetStaticroutesData,
   ListFabricVlanSubnetStaticroutesResponses,
   ListFabricVlanSubnetStaticroutesErrors,
@@ -1392,6 +1398,28 @@ export const updatePackageRepository = <ThrowOnError extends boolean = false>(
 };
 
 /**
+ * List Power Types
+ */
+export const listPowerTypes = <ThrowOnError extends boolean = false>(
+  options?: Options<ListPowerTypesData, ThrowOnError>
+) => {
+  return (options?.client ?? _heyApiClient).get<
+    ListPowerTypesResponses,
+    ListPowerTypesErrors,
+    ThrowOnError
+  >({
+    security: [
+      {
+        scheme: "bearer",
+        type: "http",
+      },
+    ],
+    url: "/MAAS/a/v3/power-types",
+    ...options,
+  });
+};
+
+/**
  * List Fabric Vlan Subnet Reserved Ips
  */
 export const listFabricVlanSubnetReservedIps = <
@@ -1658,6 +1686,28 @@ export const listResourcePoolsWithSummary = <
       },
     ],
     url: "/MAAS/a/v3/resource_pools_with_summary",
+    ...options,
+  });
+};
+
+/**
+ * Get System Info
+ */
+export const getSystemInfo = <ThrowOnError extends boolean = false>(
+  options?: Options<GetSystemInfoData, ThrowOnError>
+) => {
+  return (options?.client ?? _heyApiClient).get<
+    GetSystemInfoResponses,
+    GetSystemInfoErrors,
+    ThrowOnError
+  >({
+    security: [
+      {
+        scheme: "bearer",
+        type: "http",
+      },
+    ],
+    url: "/MAAS/a/v3/system/info",
     ...options,
   });
 };
