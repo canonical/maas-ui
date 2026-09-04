@@ -5,6 +5,7 @@ import { useSelector } from "react-redux";
 
 import TooltipButton from "../TooltipButton";
 
+import { useSystemInfo } from "@/app/api/query/system";
 import { useFetchActions, useUsabilla } from "@/app/base/hooks";
 import configSelectors from "@/app/store/config/selectors";
 import controllerSelectors from "@/app/store/controller/selectors";
@@ -13,7 +14,6 @@ import {
   isRack,
   isRegionAndRack,
 } from "@/app/store/controller/utils";
-import { version as versionSelectors } from "@/app/store/general/selectors";
 import machineSelectors from "@/app/store/machine/selectors";
 import type { MachineDetails } from "@/app/store/machine/types";
 import {
@@ -88,14 +88,15 @@ const getSyncStatusString = (syncStatus: UtcDatetime) => {
 export const StatusBar = (): React.ReactElement | null => {
   const activeController = useSelector(controllerSelectors.active);
   const activeMachine = useSelector(machineSelectors.active);
-  const version = useSelector(versionSelectors.get);
   const maasName = useSelector(configSelectors.maasName);
   const allowUsabilla = useUsabilla();
   const msmRunning = useSelector(msmSelectors.running);
 
+  const systemInfo = useSystemInfo();
+
   useFetchActions([msmActions.fetch]);
 
-  if (!(maasName && version)) {
+  if (!(maasName && systemInfo.isSuccess)) {
     return null;
   }
 
@@ -136,7 +137,9 @@ export const StatusBar = (): React.ReactElement | null => {
         <div className="p-status-bar__primary u-flex--no-shrink u-flex--wrap">
           <strong data-testid="status-bar-maas-name">{maasName} MAAS</strong>
           :&nbsp;
-          <span data-testid="status-bar-version">{version}</span>
+          <span data-testid="status-bar-version">
+            {systemInfo.data.version}
+          </span>
         </div>
         <div className="p-status-bar__primary u-flex--no-shrink u-flex--wrap">
           <span data-testid="status-bar-msm-status">
@@ -153,6 +156,40 @@ Site Manager as its upstream image source."
           </span>
         </div>
         <ul className="p-inline-list--middot u-no-margin--bottom">
+          {systemInfo.data.fips_active || systemInfo.data.hardening_active ? (
+            <li className="p-inline-list__item">
+              {systemInfo.data.fips_active &&
+              !systemInfo.data.hardening_active ? (
+                <>FIPS enabled</>
+              ) : null}
+              {!systemInfo.data.fips_active &&
+              systemInfo.data.hardening_active ? (
+                <>
+                  <Link
+                    href={`${import.meta.env.VITE_APP_BASENAME}/docs/reference/configuration-guides/security-hardening/`}
+                    rel="noreferrer"
+                    target="_blank"
+                  >
+                    Hardening enabled
+                  </Link>
+                </>
+              ) : null}
+              {systemInfo.data.fips_active &&
+              systemInfo.data.hardening_active ? (
+                <>
+                  FIPS and{" "}
+                  <Link
+                    href={`${import.meta.env.VITE_APP_BASENAME}/docs/reference/configuration-guides/security-hardening/`}
+                    rel="noreferrer"
+                    target="_blank"
+                  >
+                    hardening
+                  </Link>{" "}
+                  enabled
+                </>
+              ) : null}
+            </li>
+          ) : null}
           <li className="p-inline-list__item">
             <Link
               href={`${import.meta.env.VITE_APP_BASENAME}/docs/`}
