@@ -120,6 +120,7 @@ const useZonesTableColumns = (): ZoneColumnDef[] => {
               deleteTooltip={
                 !canBeDeleted ? "Cannot delete the default zone." : null
               }
+              editDisabled={!canEdit}
               onDelete={() => {
                 openSidePanel({
                   component: DeleteZone,

@@ -10,6 +10,7 @@ import TitledSection from "@/app/base/components/TitledSection";
 type Props = PropsWithSpread<
   {
     canEdit?: boolean;
+    editDisabled?: boolean;
     renderContent: (
       editing: boolean,
       setEditing: (editing: boolean) => void
@@ -24,6 +25,7 @@ export enum Labels {
 
 const EditableSection = ({
   canEdit = true,
+  editDisabled = false,
   renderContent,
   ...titledSectionProps
 }: Props): React.ReactElement => {
@@ -36,6 +38,7 @@ const EditableSection = ({
         showEditButton ? (
           <Button
             className="u-no-margin--bottom"
+            disabled={editDisabled}
             onClick={() => {
               setEditing(true);
             }}

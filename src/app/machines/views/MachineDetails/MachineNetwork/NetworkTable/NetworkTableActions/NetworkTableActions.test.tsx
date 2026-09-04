@@ -1,25 +1,37 @@
 import NetworkTableActions from "./NetworkTableActions";
 
+import { Entitlement } from "@/app/settings/views/UserManagement/views/Groups/constants";
 import type { MachineDetails } from "@/app/store/machine/types";
 import type { RootState } from "@/app/store/root/types";
 import { NetworkInterfaceTypes, NetworkLinkMode } from "@/app/store/types/enum";
 import type { NetworkInterface } from "@/app/store/types/node";
 import { NodeStatus } from "@/app/store/types/node";
 import * as factory from "@/testing/factories";
+import { authResolvers } from "@/testing/resolvers/auth";
 import {
   expectTooltipOnHover,
   mockSidePanel,
   renderWithProviders,
   screen,
+  setupMockServer,
   userEvent,
   waitFor,
   within,
 } from "@/testing/utils";
 
+const mockServer = setupMockServer(
+  authResolvers.getCurrentUser.handler(),
+  authResolvers.getMeEntitlements.handler()
+);
+
 const { mockOpen } = await mockSidePanel();
 
 const openMenu = async () => {
-  await userEvent.click(screen.getByRole("button", { name: "Take action:" }));
+  const button = screen.getByRole("button", { name: "Take action:" });
+  await waitFor(() => {
+    expect(button).not.toBeAriaDisabled();
+  });
+  await userEvent.click(button);
 };
 
 describe("NetworkTableActions", () => {
@@ -287,13 +299,59 @@ describe("NetworkTableActions", () => {
     renderWithProviders(<NetworkTableActions nic={nic} systemId="abc123" />, {
       state,
     });
-    // Open the menu:
-    await openMenu();
+    // The menu toggle is disabled, so clicking it does not open the menu.
+    await userEvent.click(screen.getByRole("button", { name: "Take action:" }));
     expect(
       screen.queryByRole("button", { name: /Add alias/i })
     ).not.toBeInTheDocument();
     expect(
       screen.queryByRole("button", { name: /Add VLAN/i })
     ).not.toBeInTheDocument();
+  });
+
+  it("disables the menu without an edit entitlement for the machine's pool", async () => {
+    state.machine.items[0].pool = factory.modelRef({ id: 5, name: "pool-5" });
+    mockServer.use(
+      authResolvers.getMeEntitlements.handler([
+        factory.entitlement({
+          entitlement: Entitlement.CAN_EDIT_MACHINES,
+          resource_type: "pool",
+          resource_id: 42,
+        }),
+      ])
+    );
+
+    renderWithProviders(<NetworkTableActions nic={nic} systemId="abc123" />, {
+      state,
+    });
+
+    await waitFor(() => {
+      expect(
+        screen.getByRole("button", { name: "Take action:" })
+      ).toBeAriaDisabled();
+    });
+  });
+
+  it("enables the menu with a pool-scoped edit entitlement", async () => {
+    state.machine.items[0].pool = factory.modelRef({ id: 5, name: "pool-5" });
+    mockServer.use(
+      authResolvers.getMeEntitlements.handler([
+        factory.entitlement({
+          entitlement: Entitlement.CAN_EDIT_MACHINES,
+          resource_type: "pool",
+          resource_id: 5,
+        }),
+      ])
+    );
+
+    renderWithProviders(<NetworkTableActions nic={nic} systemId="abc123" />, {
+      state,
+    });
+
+    await waitFor(() => {
+      expect(
+        screen.getByRole("button", { name: "Take action:" })
+      ).not.toBeAriaDisabled();
+    });
   });
 });

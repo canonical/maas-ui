@@ -24,7 +24,7 @@ const controller = factory.controllerDetails({ system_id: "abc123" });
 const route = urls.controllers.controller.index({ id: controller.system_id });
 
 let state: ReturnType<typeof factory.rootState>;
-setupMockServer(
+const mockServer = setupMockServer(
   zoneResolvers.listZones.handler(),
   zoneResolvers.listZonesWithStatistics.handler(),
   authResolvers.getCurrentUser.handler(),
@@ -130,6 +130,13 @@ describe("ControllerConfiguration", () => {
       }
     );
 
+    await waitFor(() => {
+      expect(
+        screen.getAllByRole("button", {
+          name: EditableSectionLabels.EditButton,
+        })[0]
+      ).toBeInTheDocument();
+    });
     await userEvent.click(
       screen.getAllByRole("button", {
         name: EditableSectionLabels.EditButton,
@@ -164,6 +171,13 @@ describe("ControllerConfiguration", () => {
         initialEntries: [route],
       }
     );
+    await waitFor(() => {
+      expect(
+        screen.getAllByRole("button", {
+          name: EditableSectionLabels.EditButton,
+        })[0]
+      ).toBeInTheDocument();
+    });
     await userEvent.click(
       screen.getAllByRole("button", {
         name: EditableSectionLabels.EditButton,
@@ -229,5 +243,24 @@ describe("ControllerConfiguration", () => {
         /Changing the IP address or outlet delay will affect all these nodes./
       )
     ).toBeInTheDocument();
+  });
+
+  it("hides the edit buttons without the edit entitlement", async () => {
+    mockServer.use(authResolvers.getMeEntitlements.handler([]));
+    renderWithProviders(
+      <ControllerConfiguration systemId={controller.system_id} />,
+      {
+        state,
+        initialEntries: [route],
+      }
+    );
+    await waitFor(() => {
+      expect(
+        screen.getByRole("heading", { name: /Controller configuration/i })
+      ).toBeInTheDocument();
+    });
+    expect(
+      screen.queryByRole("button", { name: EditableSectionLabels.EditButton })
+    ).not.toBeInTheDocument();
   });
 });

@@ -4,14 +4,20 @@ import { AddFabric, AddSpace, AddSubnet, AddVlan } from "../../components";
 
 import NetworksHeader from "./NetworksHeader";
 
+import { authResolvers } from "@/testing/resolvers/auth";
 import {
   mockSidePanel,
   renderWithProviders,
   screen,
+  setupMockServer,
   userEvent,
   waitFor,
 } from "@/testing/utils";
 
+const mockServer = setupMockServer(
+  authResolvers.getCurrentUser.handler(),
+  authResolvers.getMeEntitlements.handler()
+);
 const { mockOpen } = await mockSidePanel();
 
 describe("NetworksHeader", () => {
@@ -47,6 +53,11 @@ describe("NetworksHeader", () => {
     it("displays the form when Add->Fabric is clicked", async () => {
       renderWithProviders(<NetworksHeader />);
 
+      await waitFor(() => {
+        expect(
+          screen.getByRole("button", { name: "Add" })
+        ).not.toBeAriaDisabled();
+      });
       await userEvent.click(screen.getByRole("button", { name: "Add" }));
       await userEvent.click(screen.getByRole("menuitem", { name: "Fabric" }));
 
@@ -59,6 +70,11 @@ describe("NetworksHeader", () => {
     it("displays the form when Add->VLAN is clicked", async () => {
       renderWithProviders(<NetworksHeader />);
 
+      await waitFor(() => {
+        expect(
+          screen.getByRole("button", { name: "Add" })
+        ).not.toBeAriaDisabled();
+      });
       await userEvent.click(screen.getByRole("button", { name: "Add" }));
       await userEvent.click(screen.getByRole("menuitem", { name: "VLAN" }));
 
@@ -71,6 +87,11 @@ describe("NetworksHeader", () => {
     it("displays the form when Add->Space is clicked", async () => {
       renderWithProviders(<NetworksHeader />);
 
+      await waitFor(() => {
+        expect(
+          screen.getByRole("button", { name: "Add" })
+        ).not.toBeAriaDisabled();
+      });
       await userEvent.click(screen.getByRole("button", { name: "Add" }));
       await userEvent.click(screen.getByRole("menuitem", { name: "Space" }));
 
@@ -83,12 +104,26 @@ describe("NetworksHeader", () => {
     it("displays the form when Add->Subnet is clicked", async () => {
       renderWithProviders(<NetworksHeader />);
 
+      await waitFor(() => {
+        expect(
+          screen.getByRole("button", { name: "Add" })
+        ).not.toBeAriaDisabled();
+      });
       await userEvent.click(screen.getByRole("button", { name: "Add" }));
       await userEvent.click(screen.getByRole("menuitem", { name: "Subnet" }));
 
       expect(mockOpen).toHaveBeenCalledWith({
         component: AddSubnet,
         title: "Add subnet",
+      });
+    });
+
+    it("disables the Add button without the edit entitlement", async () => {
+      mockServer.use(authResolvers.getMeEntitlements.handler([]));
+      renderWithProviders(<NetworksHeader />);
+
+      await waitFor(() => {
+        expect(screen.getByRole("button", { name: "Add" })).toBeAriaDisabled();
       });
     });
   });

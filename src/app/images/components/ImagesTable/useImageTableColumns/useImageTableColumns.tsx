@@ -25,11 +25,13 @@ import {
   useDeleteSelections,
 } from "@/app/api/query/images";
 import DoubleRow from "@/app/base/components/DoubleRow/DoubleRow";
+import { useHasEntitlements } from "@/app/base/hooks";
 import DeleteImages from "@/app/images/components/DeleteImages";
 import ImageSourceMenu from "@/app/images/components/ImageSourceMenu";
 import ReleaseTitleCell from "@/app/images/components/ReleaseTitleCell";
 import type { Image } from "@/app/images/types";
 import { buildSourcesByImageKey, getOsDisplayName } from "@/app/images/utils";
+import { Entitlement } from "@/app/settings/views/UserManagement/views/Groups/constants";
 
 export type ImageColumnDef = ColumnDef<Image, Partial<Image>>;
 
@@ -79,6 +81,7 @@ const useImageTableColumns = ({
   const { failure } = useToastNotification();
   const startSync = useStartImageSync();
   const stopSync = useStopImageSync();
+  const canEdit = useHasEntitlements([Entitlement.CAN_EDIT_BOOT_ENTITIES]);
 
   const { data: sources, isPending: isSourcesPending } = useImageSources();
   const { data: availableImages, isPending: isAvailableImagesPending } =
@@ -359,6 +362,7 @@ const useImageTableColumns = ({
               <ImageSourceMenu
                 currentSourceId={boot_source_id}
                 disabled={
+                  !canEdit ||
                   status === "Downloading" ||
                   status === "OptimisticDownloading" ||
                   status === "OptimisticStopping" ||
@@ -446,6 +450,7 @@ const useImageTableColumns = ({
                       appearance="base"
                       className="is-dense u-table-cell-padding-overlap"
                       disabled={
+                        !canEdit ||
                         startSync.isPending ||
                         isOptimisticDownloading ||
                         isOptimisticStopping ||
@@ -483,6 +488,7 @@ const useImageTableColumns = ({
                       appearance="base"
                       className="is-dense u-table-cell-padding-overlap"
                       disabled={
+                        !canEdit ||
                         !selected ||
                         !downloadAvailable ||
                         stopSync.isPending ||
@@ -520,7 +526,7 @@ const useImageTableColumns = ({
                   <Button
                     appearance="base"
                     className="is-dense u-table-cell-padding-overlap"
-                    disabled={!canBeDeleted}
+                    disabled={!canBeDeleted || !canEdit}
                     hasIcon
                     onClick={() => {
                       if (id) {
@@ -561,6 +567,7 @@ const useImageTableColumns = ({
       failure,
       openSidePanel,
       setSelectedRows,
+      canEdit,
     ]
   );
 };

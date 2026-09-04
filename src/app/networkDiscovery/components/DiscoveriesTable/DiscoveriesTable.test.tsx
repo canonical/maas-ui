@@ -22,7 +22,8 @@ import {
 
 const mockServer = setupMockServer(
   networkDiscoveryResolvers.listNetworkDiscoveries.handler(),
-  authResolvers.getCurrentUser.handler()
+  authResolvers.getCurrentUser.handler(),
+  authResolvers.getMeEntitlements.handler()
 );
 const { mockOpen } = await mockSidePanel();
 
@@ -123,7 +124,7 @@ describe("DiscoveriesTable", () => {
       await waitFor(() => {
         expect(
           screen.getByRole("button", { name: "Toggle menu" })
-        ).toBeInTheDocument();
+        ).not.toBeAriaDisabled();
       });
 
       await userEvent.click(
@@ -157,7 +158,7 @@ describe("DiscoveriesTable", () => {
       await waitFor(() => {
         expect(
           screen.getByRole("button", { name: "Toggle menu" })
-        ).toBeInTheDocument();
+        ).not.toBeAriaDisabled();
       });
 
       await userEvent.click(
@@ -174,6 +175,25 @@ describe("DiscoveriesTable", () => {
           title: "Delete discovery",
           props: { discovery: mockDiscovery },
         });
+      });
+    });
+
+    it("disables the table actions without the edit entitlement", async () => {
+      mockServer.use(authResolvers.getMeEntitlements.handler([]));
+      const mockDiscovery = discovery({ id: 1 });
+      mockServer.use(
+        networkDiscoveryResolvers.listNetworkDiscoveries.handler({
+          items: [mockDiscovery],
+          total: 1,
+        })
+      );
+
+      renderWithProviders(<DiscoveriesTable />);
+
+      await waitFor(() => {
+        expect(
+          screen.getByRole("button", { name: "Toggle menu" })
+        ).toBeAriaDisabled();
       });
     });
   });

@@ -11,7 +11,14 @@ import {
   NodeStatusCode,
 } from "@/app/store/types/node";
 import * as factory from "@/testing/factories";
-import { renderWithProviders, screen, userEvent } from "@/testing/utils";
+import { authResolvers } from "@/testing/resolvers/auth";
+import {
+  renderWithProviders,
+  screen,
+  setupMockServer,
+  userEvent,
+  waitFor,
+} from "@/testing/utils";
 
 vi.mock("@reduxjs/toolkit", async () => {
   const actual: object = await vi.importActual("@reduxjs/toolkit");
@@ -20,6 +27,11 @@ vi.mock("@reduxjs/toolkit", async () => {
     nanoid: vi.fn(),
   };
 });
+
+setupMockServer(
+  authResolvers.getCurrentUser.handler(),
+  authResolvers.getMeEntitlements.handler()
+);
 
 describe("MachineHeader", () => {
   let state: RootState;
@@ -123,7 +135,11 @@ describe("MachineHeader", () => {
         { state }
       );
 
-      await userEvent.click(screen.getByRole("button", { name: /Power/i }));
+      const powerToggle = screen.getByRole("button", { name: /Power/i });
+      await waitFor(() => {
+        expect(powerToggle).not.toBeAriaDisabled();
+      });
+      await userEvent.click(powerToggle);
       await userEvent.click(
         screen.getByRole("menuitem", { name: /check power/i })
       );

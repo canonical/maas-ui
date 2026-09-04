@@ -24,6 +24,7 @@ type Action = {
 };
 
 type NetworkActionRowProps = {
+  addInterfaceDisabled?: boolean;
   extraActions?: Action[];
   node: Node;
   rightContent?: ReactNode;
@@ -35,6 +36,7 @@ export const NETWORK_DISABLED_MESSAGE =
   "Network can't be modified for this machine.";
 
 const NetworkActionRow = ({
+  addInterfaceDisabled = false,
   extraActions,
   node,
   rightContent,
@@ -48,7 +50,10 @@ const NetworkActionRow = ({
 
   const actions: Action[] = [
     {
-      disabled: [[isAllNetworkingDisabled, NETWORK_DISABLED_MESSAGE]],
+      disabled: [
+        [isAllNetworkingDisabled, NETWORK_DISABLED_MESSAGE],
+        [addInterfaceDisabled],
+      ],
       label: "Add interface",
       state: ExpandedState.ADD_PHYSICAL,
     },

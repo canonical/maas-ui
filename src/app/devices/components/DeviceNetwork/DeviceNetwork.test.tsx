@@ -32,4 +32,19 @@ describe("DeviceNetwork", () => {
     ).toBeInTheDocument();
     expect(screen.queryByText("Loading...")).not.toBeInTheDocument();
   });
+
+  it("disables the Add interface button when the user cannot edit the device", () => {
+    const state = factory.rootState({
+      device: factory.deviceState({
+        items: [
+          factory.deviceDetails({ permissions: [], system_id: "abc123" }),
+        ],
+      }),
+    });
+
+    renderWithProviders(<DeviceNetwork systemId="abc123" />, { state });
+    expect(
+      screen.getByRole("button", { name: "Add interface" })
+    ).toBeAriaDisabled();
+  });
 });

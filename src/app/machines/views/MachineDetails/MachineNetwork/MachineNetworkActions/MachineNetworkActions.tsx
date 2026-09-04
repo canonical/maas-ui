@@ -13,6 +13,7 @@ import type { Expanded } from "@/app/base/components/NodeNetworkTab/NodeNetworkT
 import { ExpandedState } from "@/app/base/components/NodeNetworkTab/NodeNetworkTab";
 import type { Selected } from "@/app/base/components/node/networking/types";
 import { useIsAllNetworkingDisabled, useSendAnalytics } from "@/app/base/hooks";
+import { useCanEditMachine } from "@/app/base/hooks/permissions";
 import machineSelectors from "@/app/store/machine/selectors";
 import type { Machine, MachineDetails } from "@/app/store/machine/types";
 import { isMachineDetails } from "@/app/store/machine/utils";
@@ -93,6 +94,7 @@ const MachineNetworkActions = ({
     machineSelectors.getById(state, systemId)
   );
   const isAllNetworkingDisabled = useIsAllNetworkingDisabled(machine);
+  const canEditMachine = useCanEditMachine(systemId);
   const sendAnalytics = useSendAnalytics();
 
   if (!isMachineDetails(machine)) {
@@ -113,6 +115,7 @@ const MachineNetworkActions = ({
           selectedDifferentVLANs(machine, selected),
           "All selected interfaces must be on the same VLAN",
         ],
+        [!canEditMachine],
       ],
       label: "Create bond",
       state: ExpandedState.ADD_BOND,
@@ -129,6 +132,7 @@ const MachineNetworkActions = ({
           selectedIncludesType(machine, selected, NetworkInterfaceTypes.BRIDGE),
           "A bridge can not be created from another bridge",
         ],
+        [!canEditMachine],
       ],
       label: "Create bridge",
       state: ExpandedState.ADD_BRIDGE,
@@ -137,6 +141,7 @@ const MachineNetworkActions = ({
 
   return (
     <NetworkActionRow
+      addInterfaceDisabled={!canEditMachine}
       extraActions={actions}
       node={machine}
       rightContent={

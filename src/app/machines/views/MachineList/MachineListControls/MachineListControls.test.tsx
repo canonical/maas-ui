@@ -3,12 +3,19 @@ import MachineListControls from "./MachineListControls";
 import { machineActions } from "@/app/store/machine";
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
+import { authResolvers } from "@/testing/resolvers/auth";
 import {
   renderWithProviders,
   screen,
+  setupMockServer,
   userEvent,
   waitFor,
 } from "@/testing/utils";
+
+const mockServer = setupMockServer(
+  authResolvers.getCurrentUser.handler(),
+  authResolvers.getMeEntitlements.handler()
+);
 
 describe("MachineListControls", () => {
   let initialState: RootState;
@@ -170,5 +177,52 @@ describe("MachineListControls", () => {
     expect(actions).toEqual(
       expect.arrayContaining([machineActions.setSelected(null)])
     );
+  });
+
+  it("enables the Add hardware button with a machine edit entitlement", async () => {
+    renderWithProviders(
+      <MachineListControls
+        filter=""
+        grouping={null}
+        hiddenColumns={[]}
+        machineCount={1}
+        resourcePoolsCount={1}
+        setFilter={vi.fn()}
+        setGrouping={vi.fn()}
+        setHiddenColumns={vi.fn()}
+        setHiddenGroups={vi.fn()}
+      />,
+      { state: initialState }
+    );
+
+    await waitFor(() => {
+      expect(
+        screen.getByRole("button", { name: "Add hardware" })
+      ).not.toBeAriaDisabled();
+    });
+  });
+
+  it("disables the Add hardware button without a machine edit entitlement", async () => {
+    mockServer.use(authResolvers.getMeEntitlements.handler([]));
+    renderWithProviders(
+      <MachineListControls
+        filter=""
+        grouping={null}
+        hiddenColumns={[]}
+        machineCount={1}
+        resourcePoolsCount={1}
+        setFilter={vi.fn()}
+        setGrouping={vi.fn()}
+        setHiddenColumns={vi.fn()}
+        setHiddenGroups={vi.fn()}
+      />,
+      { state: initialState }
+    );
+
+    await waitFor(() => {
+      expect(
+        screen.getByRole("button", { name: "Add hardware" })
+      ).toBeAriaDisabled();
+    });
   });
 });
