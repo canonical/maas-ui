@@ -8216,5 +8216,5 @@ export type ListZonesWithSummaryResponse =
   ListZonesWithSummaryResponses[keyof ListZonesWithSummaryResponses];
 
 export type ClientOptions = {
-  baseUrl: "http://10.10.0.22:5240" | (string & {});
+  baseUrl: "http://localhost:8400" | (string & {});
 };
