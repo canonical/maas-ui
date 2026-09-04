@@ -2,7 +2,18 @@ import { waitFor } from "@testing-library/react";
 
 import SwitchesListHeader from "./SwitchesListHeader";
 
-import { userEvent, screen, renderWithProviders } from "@/testing/utils";
+import { authResolvers } from "@/testing/resolvers/auth";
+import {
+  userEvent,
+  screen,
+  renderWithProviders,
+  setupMockServer,
+} from "@/testing/utils";
+
+const mockServer = setupMockServer(
+  authResolvers.getCurrentUser.handler(),
+  authResolvers.getMeEntitlements.handler()
+);
 
 describe("SwitchesListHeader", () => {
   it("changes the search text when the filters change", () => {
@@ -34,6 +45,19 @@ describe("SwitchesListHeader", () => {
 
     await waitFor(() => {
       expect(mockSetSearchFilter).toHaveBeenCalledWith("test");
+    });
+  });
+
+  it("disables the Add switch button without the edit entitlement", async () => {
+    mockServer.use(authResolvers.getMeEntitlements.handler([]));
+    renderWithProviders(
+      <SwitchesListHeader searchFilter={""} setSearchFilter={vi.fn()} />
+    );
+
+    await waitFor(() => {
+      expect(
+        screen.getByRole("button", { name: "Add switch" })
+      ).toBeAriaDisabled();
     });
   });
 });

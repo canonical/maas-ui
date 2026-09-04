@@ -2,17 +2,26 @@ import MachineNetworkActions from "./MachineNetworkActions";
 
 import AddBondForm from "@/app/machines/views/MachineDetails/MachineNetwork/AddBondForm";
 import AddBridgeForm from "@/app/machines/views/MachineDetails/MachineNetwork/AddBridgeForm";
+import { Entitlement } from "@/app/settings/views/UserManagement/views/Groups/constants";
 import type { RootState } from "@/app/store/root/types";
 import { NetworkInterfaceTypes } from "@/app/store/types/enum";
 import { NodeStatus } from "@/app/store/types/node";
 import * as factory from "@/testing/factories";
+import { authResolvers } from "@/testing/resolvers/auth";
 import {
   expectTooltipOnHover,
   mockSidePanel,
   renderWithProviders,
   screen,
+  setupMockServer,
   userEvent,
+  waitFor,
 } from "@/testing/utils";
+
+const mockServer = setupMockServer(
+  authResolvers.getCurrentUser.handler(),
+  authResolvers.getMeEntitlements.handler()
+);
 
 const { mockOpen } = await mockSidePanel();
 
@@ -115,9 +124,13 @@ describe("MachineNetworkActions", () => {
         { state, initialEntries: ["/machine/abc123"] }
       );
 
-      await userEvent.click(
-        screen.getByRole("button", { name: /Create bond/i })
-      );
+      const createBondButton = screen.getByRole("button", {
+        name: /Create bond/i,
+      });
+      await waitFor(() => {
+        expect(createBondButton).not.toBeAriaDisabled();
+      });
+      await userEvent.click(createBondButton);
 
       expect(mockOpen).toHaveBeenCalledWith(
         expect.objectContaining({
@@ -290,9 +303,13 @@ describe("MachineNetworkActions", () => {
         { state, initialEntries: ["/machine/abc123"] }
       );
 
-      await userEvent.click(
-        screen.getByRole("button", { name: /create bridge/i })
-      );
+      const createBridgeButton = screen.getByRole("button", {
+        name: /create bridge/i,
+      });
+      await waitFor(() => {
+        expect(createBridgeButton).not.toBeAriaDisabled();
+      });
+      await userEvent.click(createBridgeButton);
       expect(mockOpen).toHaveBeenCalledWith(
         expect.objectContaining({
           component: AddBridgeForm,
@@ -405,6 +422,92 @@ describe("MachineNetworkActions", () => {
         /create bridge/i,
         /A bridge can not be created from another bridge/i
       );
+    });
+  });
+
+  describe("entitlements gating", () => {
+    const editPoolEntitlement = (poolId: number) =>
+      factory.entitlement({
+        entitlement: Entitlement.CAN_EDIT_MACHINES,
+        resource_type: "pool",
+        resource_id: poolId,
+      });
+
+    beforeEach(() => {
+      state.machine.items = [
+        factory.machineDetails({
+          interfaces: [
+            factory.machineInterface({
+              id: 1,
+              type: NetworkInterfaceTypes.PHYSICAL,
+              vlan_id: 1,
+            }),
+            factory.machineInterface({
+              id: 2,
+              type: NetworkInterfaceTypes.PHYSICAL,
+              vlan_id: 1,
+            }),
+          ],
+          pool: factory.modelRef({ id: 5, name: "pool-5" }),
+          system_id: "abc123",
+        }),
+      ];
+    });
+
+    it("disables the action buttons without an edit entitlement for the machine's pool", async () => {
+      mockServer.use(
+        authResolvers.getMeEntitlements.handler([editPoolEntitlement(42)])
+      );
+
+      renderWithProviders(
+        <MachineNetworkActions
+          expanded={null}
+          selected={[{ nicId: 1 }, { nicId: 2 }]}
+          setSelected={vi.fn()}
+          systemId="abc123"
+        />,
+        { state, initialEntries: ["/machine/abc123"] }
+      );
+
+      await waitFor(() => {
+        expect(
+          screen.getByRole("button", { name: /Add interface/i })
+        ).toBeAriaDisabled();
+      });
+      expect(
+        screen.getByRole("button", { name: /Create bond/i })
+      ).toBeAriaDisabled();
+      expect(
+        screen.getByRole("button", { name: /Create bridge/i })
+      ).toBeAriaDisabled();
+    });
+
+    it("enables the action buttons with a pool-scoped edit entitlement", async () => {
+      mockServer.use(
+        authResolvers.getMeEntitlements.handler([editPoolEntitlement(5)])
+      );
+
+      renderWithProviders(
+        <MachineNetworkActions
+          expanded={null}
+          selected={[{ nicId: 1 }, { nicId: 2 }]}
+          setSelected={vi.fn()}
+          systemId="abc123"
+        />,
+        { state, initialEntries: ["/machine/abc123"] }
+      );
+
+      await waitFor(() => {
+        expect(
+          screen.getByRole("button", { name: /Create bond/i })
+        ).not.toBeAriaDisabled();
+      });
+      expect(
+        screen.getByRole("button", { name: /Add interface/i })
+      ).not.toBeAriaDisabled();
+      expect(
+        screen.getByRole("button", { name: /Create bridge/i })
+      ).not.toBeAriaDisabled();
     });
   });
 });

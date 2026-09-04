@@ -12,7 +12,7 @@ export type MachineActionGroup = {
   icon?: string;
   name: string;
   title: string;
-  render?: () => ReactElement;
+  render?: (disabled?: boolean) => ReactElement;
 };
 
 export type MachineActionsProps = {

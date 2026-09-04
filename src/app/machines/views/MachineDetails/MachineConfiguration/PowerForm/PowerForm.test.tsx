@@ -1,17 +1,35 @@
 import PowerForm from "./PowerForm";
 
 import { Labels } from "@/app/base/components/EditableSection";
+import { Entitlement } from "@/app/settings/views/UserManagement/views/Groups/constants";
 import { PowerTypeNames } from "@/app/store/general/constants";
 import { PowerFieldScope, PowerFieldType } from "@/app/store/general/types";
 import { machineActions } from "@/app/store/machine";
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
+import { authResolvers } from "@/testing/resolvers/auth";
 import {
   userEvent,
   screen,
+  setupMockServer,
   waitFor,
   renderWithProviders,
 } from "@/testing/utils";
+
+const mockServer = setupMockServer(
+  authResolvers.getCurrentUser.handler(),
+  authResolvers.getMeEntitlements.handler()
+);
+
+const clickEditButton = async () => {
+  const editButton = screen.getAllByRole("button", {
+    name: Labels.EditButton,
+  })[0];
+  await waitFor(() => {
+    expect(editButton).not.toBeAriaDisabled();
+  });
+  await userEvent.click(editButton);
+};
 
 let state: RootState;
 beforeEach(() => {
@@ -104,9 +122,7 @@ it("renders read-only text fields until edit button is pressed", async () => {
     screen.queryByRole("combobox", { name: "Power type" })
   ).not.toBeInTheDocument();
 
-  await userEvent.click(
-    screen.getAllByRole("button", { name: Labels.EditButton })[0]
-  );
+  await clickEditButton();
 
   expect(
     screen.getByRole("combobox", { name: "Power type" })
@@ -116,9 +132,7 @@ it("renders read-only text fields until edit button is pressed", async () => {
 it("can validate IPv6 addresses with a port for IPMI power type", async () => {
   renderWithProviders(<PowerForm systemId="def456" />, { state });
 
-  await userEvent.click(
-    screen.getAllByRole("button", { name: Labels.EditButton })[0]
-  );
+  await clickEditButton();
 
   await userEvent.selectOptions(
     screen.getByRole("combobox", { name: "Power type" }),
@@ -155,9 +169,7 @@ it("can validate IPv6 addresses with a port for IPMI power type", async () => {
 it("can validate IPv4 addresses with a port for IPMI power type", async () => {
   renderWithProviders(<PowerForm systemId="def456" />, { state });
 
-  await userEvent.click(
-    screen.getAllByRole("button", { name: Labels.EditButton })[0]
-  );
+  await clickEditButton();
 
   await userEvent.selectOptions(
     screen.getByRole("combobox", { name: "Power type" }),
@@ -200,9 +212,7 @@ it("correctly dispatches an action to update a machine's power", async () => {
     state,
   });
 
-  await userEvent.click(
-    screen.getAllByRole("button", { name: Labels.EditButton })[0]
-  );
+  await clickEditButton();
   await userEvent.selectOptions(
     screen.getByRole("combobox", { name: "Power type" }),
     PowerTypeNames.APC
@@ -228,5 +238,47 @@ it("correctly dispatches an action to update a machine's power", async () => {
     expect(
       actualActions.find((action) => action.type === expectedAction.type)
     ).toStrictEqual(expectedAction);
+  });
+});
+
+it("disables the edit button without an edit entitlement for the machine's pool", async () => {
+  state.machine.items[0].pool = factory.modelRef({ id: 5, name: "pool-5" });
+  mockServer.use(
+    authResolvers.getMeEntitlements.handler([
+      factory.entitlement({
+        entitlement: Entitlement.CAN_EDIT_MACHINES,
+        resource_type: "pool",
+        resource_id: 42,
+      }),
+    ])
+  );
+
+  renderWithProviders(<PowerForm systemId="abc123" />, { state });
+
+  await waitFor(() => {
+    expect(
+      screen.getAllByRole("button", { name: Labels.EditButton })[0]
+    ).toBeAriaDisabled();
+  });
+});
+
+it("enables the edit button with a pool-scoped edit entitlement", async () => {
+  state.machine.items[0].pool = factory.modelRef({ id: 5, name: "pool-5" });
+  mockServer.use(
+    authResolvers.getMeEntitlements.handler([
+      factory.entitlement({
+        entitlement: Entitlement.CAN_EDIT_MACHINES,
+        resource_type: "pool",
+        resource_id: 5,
+      }),
+    ])
+  );
+
+  renderWithProviders(<PowerForm systemId="abc123" />, { state });
+
+  await waitFor(() => {
+    expect(
+      screen.getAllByRole("button", { name: Labels.EditButton })[0]
+    ).not.toBeAriaDisabled();
   });
 });

@@ -2,6 +2,7 @@ import DeviceListHeader from "./DeviceListHeader";
 
 import AddDeviceForm from "@/app/devices/components/AddDeviceForm";
 import type { RootState } from "@/app/store/root/types";
+import { NodeActions } from "@/app/store/types/node";
 import * as factory from "@/testing/factories";
 import {
   mockSidePanel,
@@ -87,6 +88,44 @@ describe("DeviceListHeader", () => {
         title: "Add device",
       })
     );
+  });
+
+  it("disables the Take action menu when no selected devices have actions", () => {
+    state.device.items = [
+      factory.device({ actions: [], system_id: "abc123" }),
+      factory.device({ actions: [], system_id: "def456" }),
+    ];
+    renderWithProviders(
+      <DeviceListHeader
+        rowSelection={{ [state.device.items[0].id]: true }}
+        searchFilter=""
+        setRowSelection={vi.fn()}
+        setSearchFilter={vi.fn()}
+      />,
+      { state }
+    );
+    expect(
+      screen.getByRole("button", { name: /Take action/ })
+    ).toBeAriaDisabled();
+  });
+
+  it("enables the Take action menu when a selected device has actions", () => {
+    state.device.items = [
+      factory.device({ actions: [NodeActions.SET_ZONE], system_id: "abc123" }),
+      factory.device({ actions: [], system_id: "def456" }),
+    ];
+    renderWithProviders(
+      <DeviceListHeader
+        rowSelection={{ [state.device.items[0].id]: true }}
+        searchFilter=""
+        setRowSelection={vi.fn()}
+        setSearchFilter={vi.fn()}
+      />,
+      { state }
+    );
+    expect(
+      screen.getByRole("button", { name: /Take action/ })
+    ).not.toBeAriaDisabled();
   });
 
   it("changes the search text when the filters change", () => {

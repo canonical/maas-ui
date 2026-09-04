@@ -6,8 +6,10 @@ import { Link } from "react-router";
 
 import type { ResourcePoolStatisticsResponse } from "@/app/apiclient";
 import TableActions from "@/app/base/components/TableActions";
+import { useHasEntitlements } from "@/app/base/hooks";
 import urls from "@/app/base/urls";
 import { DeletePool, EditPool } from "@/app/pools/components";
+import { Entitlement } from "@/app/settings/views/UserManagement/views/Groups/constants";
 import { FilterMachines } from "@/app/store/machine/utils";
 
 const getMachinesLabel = (row: Row<ResourcePoolStatisticsResponse>) => {
@@ -31,6 +33,7 @@ export type PoolsColumnDef = ColumnDef<
 
 const usePoolsTableColumns = (): PoolsColumnDef[] => {
   const { openSidePanel } = useSidePanel();
+  const canEdit = useHasEntitlements([Entitlement.CAN_EDIT_GLOBAL_ENTITIES]);
   return useMemo(
     () =>
       [
@@ -65,6 +68,7 @@ const usePoolsTableColumns = (): PoolsColumnDef[] => {
               <TableActions
                 data-testid="pool-actions"
                 deleteDisabled={
+                  !canEdit ||
                   !row.original.permissions.includes("delete") ||
                   row.original.is_default ||
                   row.original.machine_total_count > 0
@@ -76,7 +80,9 @@ const usePoolsTableColumns = (): PoolsColumnDef[] => {
                     "Cannot delete a pool that contains machines.") ||
                   null
                 }
-                editDisabled={!row.original.permissions.includes("edit")}
+                editDisabled={
+                  !canEdit || !row.original.permissions.includes("edit")
+                }
                 onDelete={() => {
                   openSidePanel({
                     component: DeletePool,
@@ -98,7 +104,7 @@ const usePoolsTableColumns = (): PoolsColumnDef[] => {
           },
         },
       ] as PoolsColumnDef[],
-    [openSidePanel]
+    [canEdit, openSidePanel]
   );
 };
 

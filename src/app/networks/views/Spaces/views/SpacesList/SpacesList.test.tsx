@@ -1,5 +1,6 @@
 import SpacesList from "./SpacesList";
 
+import { authResolvers } from "@/testing/resolvers/auth";
 import { mockSpaces, spacesResolvers } from "@/testing/resolvers/spaces";
 import {
   renderWithProviders,
@@ -9,7 +10,11 @@ import {
   waitFor,
 } from "@/testing/utils";
 
-setupMockServer(spacesResolvers.listSpaces.handler());
+setupMockServer(
+  spacesResolvers.listSpaces.handler(),
+  authResolvers.getCurrentUser.handler(),
+  authResolvers.getMeEntitlements.handler()
+);
 
 describe("SpacesList", () => {
   it("uses the correct window title", async () => {

@@ -129,4 +129,19 @@ describe("DeviceConfiguration", () => {
       ).toStrictEqual(expectedAction);
     });
   });
+
+  it("hides the edit button when the user cannot edit the device", async () => {
+    state.device.items = [
+      factory.deviceDetails({ permissions: [], system_id: "abc123" }),
+    ];
+    renderWithProviders(<DeviceConfiguration systemId="abc123" />, {
+      state,
+    });
+    await waitFor(() => {
+      expect(screen.getByTestId("device-details")).toBeInTheDocument();
+    });
+    expect(
+      screen.queryByRole("button", { name: EditableSectionLabels.EditButton })
+    ).not.toBeInTheDocument();
+  });
 });

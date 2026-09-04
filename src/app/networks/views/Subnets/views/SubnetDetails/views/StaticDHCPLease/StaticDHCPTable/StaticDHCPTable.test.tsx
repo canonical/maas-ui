@@ -4,14 +4,20 @@ import ReserveDHCPLease from "../ReserveDHCPLease";
 import StaticDHCPTable from "./StaticDHCPTable";
 
 import { reservedIp } from "@/testing/factories/reservedip";
+import { authResolvers } from "@/testing/resolvers/auth";
 import {
   mockSidePanel,
   renderWithProviders,
   screen,
+  setupMockServer,
   userEvent,
   waitFor,
 } from "@/testing/utils";
 
+const mockServer = setupMockServer(
+  authResolvers.getCurrentUser.handler(),
+  authResolvers.getMeEntitlements.handler()
+);
 const { mockOpen } = await mockSidePanel();
 
 describe("StaticDHCPTable", () => {
@@ -62,6 +68,11 @@ describe("StaticDHCPTable", () => {
       <StaticDHCPTable loading={false} reservedIps={reservedIps} subnetId={0} />
     );
 
+    await waitFor(() => {
+      expect(
+        screen.getByRole("button", { name: "Edit" })
+      ).not.toBeAriaDisabled();
+    });
     await userEvent.click(screen.getByRole("button", { name: "Edit" }));
 
     expect(mockOpen).toHaveBeenCalledWith({
@@ -80,6 +91,11 @@ describe("StaticDHCPTable", () => {
       <StaticDHCPTable loading={false} reservedIps={reservedIps} subnetId={0} />
     );
 
+    await waitFor(() => {
+      expect(
+        screen.getByRole("button", { name: "Delete" })
+      ).not.toBeAriaDisabled();
+    });
     await userEvent.click(screen.getByRole("button", { name: "Delete" }));
 
     expect(mockOpen).toHaveBeenCalledWith({
@@ -89,5 +105,18 @@ describe("StaticDHCPTable", () => {
         reservedIpId: reservedIps[0].id,
       },
     });
+  });
+
+  it("disables the table actions without the edit entitlement", async () => {
+    mockServer.use(authResolvers.getMeEntitlements.handler([]));
+    const reservedIps = [reservedIp()];
+    renderWithProviders(
+      <StaticDHCPTable loading={false} reservedIps={reservedIps} subnetId={0} />
+    );
+
+    await waitFor(() => {
+      expect(screen.getByRole("button", { name: "Edit" })).toBeAriaDisabled();
+    });
+    expect(screen.getByRole("button", { name: "Delete" })).toBeAriaDisabled();
   });
 });

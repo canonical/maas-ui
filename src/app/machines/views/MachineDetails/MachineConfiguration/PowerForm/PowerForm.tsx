@@ -11,6 +11,7 @@ import EditableSection from "@/app/base/components/EditableSection";
 import FormikForm from "@/app/base/components/FormikForm";
 import NodePowerParameters from "@/app/base/components/node/NodePowerParameters";
 import { useCanEdit } from "@/app/base/hooks";
+import { useCanEditMachine } from "@/app/base/hooks/permissions";
 import { powerTypes as powerTypesSelectors } from "@/app/store/general/selectors";
 import type { PowerType } from "@/app/store/general/types";
 import {
@@ -48,6 +49,7 @@ const PowerForm = ({ systemId }: Props): React.ReactElement | null => {
   const powerTypesLoading = useSelector(powerTypesSelectors.loading);
   const cleanup = useCallback(() => machineActions.cleanup(), []);
   const canEdit = useCanEdit(machine, true);
+  const canEditMachine = useCanEditMachine(systemId);
   const [selectedPowerType, setSelectedPowerType] = useState<PowerType | null>(
     null
   );
@@ -84,6 +86,7 @@ const PowerForm = ({ systemId }: Props): React.ReactElement | null => {
   return (
     <EditableSection
       canEdit={canEdit}
+      editDisabled={!canEditMachine}
       hasSidebarTitle
       renderContent={(editing, setEditing) =>
         editing ? (

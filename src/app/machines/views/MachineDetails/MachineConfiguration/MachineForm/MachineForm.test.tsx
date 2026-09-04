@@ -1,14 +1,22 @@
 import MachineForm from "./MachineForm";
 
 import { Labels } from "@/app/base/components/EditableSection";
+import { Entitlement } from "@/app/settings/views/UserManagement/views/Groups/constants";
 import { machineActions } from "@/app/store/machine";
 import * as factory from "@/testing/factories";
+import { authResolvers } from "@/testing/resolvers/auth";
 import {
   userEvent,
   screen,
+  setupMockServer,
   waitFor,
   renderWithProviders,
 } from "@/testing/utils";
+
+const mockServer = setupMockServer(
+  authResolvers.getCurrentUser.handler(),
+  authResolvers.getMeEntitlements.handler()
+);
 
 describe("MachineForm", () => {
   let state: ReturnType<typeof factory.rootState>;
@@ -66,9 +74,13 @@ describe("MachineForm", () => {
 
     expect(screen.queryByRole("textbox")).not.toBeInTheDocument();
 
-    await userEvent.click(
-      screen.getAllByRole("button", { name: Labels.EditButton })[0]
-    );
+    const editButton = screen.getAllByRole("button", {
+      name: Labels.EditButton,
+    })[0];
+    await waitFor(() => {
+      expect(editButton).not.toBeAriaDisabled();
+    });
+    await userEvent.click(editButton);
 
     expect(screen.getByRole("textbox")).toBeInTheDocument();
   });
@@ -116,9 +128,13 @@ describe("MachineForm", () => {
       initialEntries: ["/machine/abc123"],
     });
 
-    await userEvent.click(
-      screen.getAllByRole("button", { name: Labels.EditButton })[0]
-    );
+    const editButton = screen.getAllByRole("button", {
+      name: Labels.EditButton,
+    })[0];
+    await waitFor(() => {
+      expect(editButton).not.toBeAriaDisabled();
+    });
+    await userEvent.click(editButton);
     const noteField = screen.getByRole("textbox", { name: "Note" });
     await userEvent.clear(noteField);
     await userEvent.type(noteField, "New note");
@@ -140,6 +156,54 @@ describe("MachineForm", () => {
       expect(
         actualActions.find((action) => action.type === expectedAction.type)
       ).toStrictEqual(expectedAction);
+    });
+  });
+
+  it("disables the edit button without an edit entitlement for the machine's pool", async () => {
+    state.machine.items[0].pool = factory.modelRef({ id: 5, name: "pool-5" });
+    mockServer.use(
+      authResolvers.getMeEntitlements.handler([
+        factory.entitlement({
+          entitlement: Entitlement.CAN_EDIT_MACHINES,
+          resource_type: "pool",
+          resource_id: 42,
+        }),
+      ])
+    );
+
+    renderWithProviders(<MachineForm systemId="abc123" />, {
+      state,
+      initialEntries: ["/machine/abc123"],
+    });
+
+    await waitFor(() => {
+      expect(
+        screen.getAllByRole("button", { name: Labels.EditButton })[0]
+      ).toBeAriaDisabled();
+    });
+  });
+
+  it("enables the edit button with a pool-scoped edit entitlement", async () => {
+    state.machine.items[0].pool = factory.modelRef({ id: 5, name: "pool-5" });
+    mockServer.use(
+      authResolvers.getMeEntitlements.handler([
+        factory.entitlement({
+          entitlement: Entitlement.CAN_EDIT_MACHINES,
+          resource_type: "pool",
+          resource_id: 5,
+        }),
+      ])
+    );
+
+    renderWithProviders(<MachineForm systemId="abc123" />, {
+      state,
+      initialEntries: ["/machine/abc123"],
+    });
+
+    await waitFor(() => {
+      expect(
+        screen.getAllByRole("button", { name: Labels.EditButton })[0]
+      ).not.toBeAriaDisabled();
     });
   });
 });

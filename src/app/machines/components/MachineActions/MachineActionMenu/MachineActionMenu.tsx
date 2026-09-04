@@ -9,12 +9,16 @@ import type {
 import { ContextualMenu } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 
-import { useMachineActionMenus } from "../hooks";
+import {
+  useMachineActionMenus,
+  useLifecycleActionEntitlements,
+} from "../hooks";
 import type { MachineActionsProps } from "../types";
 
 import type { DataTestElement } from "@/app/base/types";
 import machineSelectors from "@/app/store/machine/selectors";
 import type { RootState } from "@/app/store/root/types";
+import { NodeActions } from "@/app/store/types/node";
 import { canOpenActionForm } from "@/app/store/utils";
 import "./_index.scss";
 
@@ -43,6 +47,11 @@ const MachineActionMenu = ({
     machineSelectors.getById(state, systemId)
   );
 
+  const { actionsDisabled, deployDisabled } = useLifecycleActionEntitlements(
+    isViewingDetails,
+    systemId
+  );
+
   return (
     <ContextualMenu
       hasToggleIcon
@@ -55,30 +64,28 @@ const MachineActionMenu = ({
             return actions;
           }
 
-          if (
+          const isDisabledAction =
             disabledActions &&
-            disabledActions.some((action) => action === item.action)
-          ) {
-            actions.push({
-              children: <span>{item.label}...</span>,
-              disabled: true,
-              onClick: item.onClick,
-            });
+            disabledActions.some((action) => action === item.action);
 
+          const isVisible =
+            isDisabledAction ||
+            !machine ||
+            canOpenActionForm(machine, item.action);
+          if (!isVisible) {
             return actions;
           }
 
-          if (!machine) {
-            actions.push({
-              children: <span>{item.label}...</span>,
-              onClick: item.onClick,
-            });
-          } else if (canOpenActionForm(machine, item.action)) {
-            actions.push({
-              children: <span>{item.label}...</span>,
-              onClick: item.onClick,
-            });
-          }
+          const isGated =
+            item.action === NodeActions.DEPLOY
+              ? deployDisabled
+              : actionsDisabled;
+
+          actions.push({
+            children: <span>{item.label}...</span>,
+            disabled: isDisabledAction || isGated || undefined,
+            onClick: item.onClick,
+          });
 
           return actions;
         }, []);

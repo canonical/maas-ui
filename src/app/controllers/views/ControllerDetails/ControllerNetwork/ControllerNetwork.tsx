@@ -4,7 +4,8 @@ import { useSelector } from "react-redux";
 import DHCPTable from "@/app/base/components/DHCPTable";
 import NodeNetworkTab from "@/app/base/components/NodeNetworkTab";
 import NetworkTable from "@/app/base/components/node/networking/NetworkTable";
-import { useWindowTitle } from "@/app/base/hooks";
+import { useHasEntitlements, useWindowTitle } from "@/app/base/hooks";
+import { Entitlement } from "@/app/settings/views/UserManagement/views/Groups/constants";
 import controllerSelectors from "@/app/store/controller/selectors";
 import { ControllerMeta } from "@/app/store/controller/types";
 import type { Controller } from "@/app/store/controller/types";
@@ -19,6 +20,7 @@ const ControllerNetwork = ({ systemId }: Props): React.ReactElement => {
   const controller = useSelector((state: RootState) =>
     controllerSelectors.getById(state, systemId)
   );
+  const canEdit = useHasEntitlements([Entitlement.CAN_EDIT_CONTROLLERS]);
   useWindowTitle(`${`${controller?.hostname}` || "Controller"} network`);
 
   if (!controller || !isControllerDetails(controller)) {
@@ -31,6 +33,7 @@ const ControllerNetwork = ({ systemId }: Props): React.ReactElement => {
       dhcpTable={() => (
         <DHCPTable
           className="u-no-padding--top"
+          editDisabled={!canEdit}
           modelName={ControllerMeta.MODEL}
           node={controller}
         />

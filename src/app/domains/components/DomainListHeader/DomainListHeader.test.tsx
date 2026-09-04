@@ -5,13 +5,20 @@ import DomainListHeaderForm from "./DomainListHeaderForm";
 
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
+import { authResolvers } from "@/testing/resolvers/auth";
 import {
   userEvent,
   screen,
   mockSidePanel,
   renderWithProviders,
+  setupMockServer,
+  waitFor,
 } from "@/testing/utils";
 
+const mockServer = setupMockServer(
+  authResolvers.getCurrentUser.handler(),
+  authResolvers.getMeEntitlements.handler()
+);
 const { mockOpen } = await mockSidePanel();
 
 describe("DomainListHeader", () => {
@@ -56,6 +63,12 @@ describe("DomainListHeader", () => {
       state,
     });
 
+    await waitFor(() => {
+      expect(
+        screen.getByRole("button", { name: DomainListHeaderLabels.AddDomains })
+      ).not.toBeAriaDisabled();
+    });
+
     await userEvent.click(
       screen.getByRole("button", { name: DomainListHeaderLabels.AddDomains })
     );
@@ -64,5 +77,25 @@ describe("DomainListHeader", () => {
       component: DomainListHeaderForm,
       title: "Add domains",
     });
+  });
+
+  it("disables the Add domains button without the edit entitlement", async () => {
+    mockServer.use(authResolvers.getMeEntitlements.handler([]));
+    const state = { ...initialState };
+    renderWithProviders(<DomainListHeader />, {
+      state,
+    });
+
+    await waitFor(() => {
+      expect(
+        screen.getByRole("button", { name: DomainListHeaderLabels.AddDomains })
+      ).toBeAriaDisabled();
+    });
+
+    await userEvent.click(
+      screen.getByRole("button", { name: DomainListHeaderLabels.AddDomains })
+    );
+
+    expect(mockOpen).not.toHaveBeenCalled();
   });
 });

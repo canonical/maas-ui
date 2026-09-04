@@ -1,15 +1,24 @@
 import MachineActionMenu from "./MachineActionMenu";
 
+import { Entitlement } from "@/app/settings/views/UserManagement/views/Groups/constants";
 import type { RootState } from "@/app/store/root/types";
 import { NodeActions } from "@/app/store/types/node";
 import { getNodeActionTitle } from "@/app/store/utils";
 import * as factory from "@/testing/factories";
+import { authResolvers } from "@/testing/resolvers/auth";
 import {
   mockSidePanel,
   renderWithProviders,
   screen,
+  setupMockServer,
   userEvent,
+  waitFor,
 } from "@/testing/utils";
+
+const mockServer = setupMockServer(
+  authResolvers.getCurrentUser.handler(),
+  authResolvers.getMeEntitlements.handler()
+);
 
 describe("MachineActionMenu", async () => {
   let state: RootState;
@@ -210,6 +219,9 @@ describe("MachineActionMenu", async () => {
 
       await openMenu();
 
+      await waitFor(() => {
+        expect(getActionButton(NodeActions.CHECK_POWER)).not.toBeAriaDisabled();
+      });
       await userEvent.click(getActionButton(NodeActions.CHECK_POWER));
 
       expect(
@@ -228,6 +240,83 @@ describe("MachineActionMenu", async () => {
         },
         type: "machine/checkPower",
       });
+    });
+  });
+});
+
+describe("MachineActionMenu entitlements gating", () => {
+  let state: RootState;
+
+  const openMenu = async () => {
+    await userEvent.click(screen.getByRole("button", { name: "Menu" }));
+  };
+
+  const getActionButton = (action: NodeActions) =>
+    screen.getByRole("menuitem", {
+      name: new RegExp(getNodeActionTitle(action)),
+    });
+
+  beforeEach(() => {
+    state = factory.rootState({
+      machine: factory.machineState({
+        items: [
+          factory.machine({
+            system_id: "abc123",
+            pool: factory.modelRef({ id: 2, name: "pool-2" }),
+          }),
+        ],
+        selected: { items: ["abc123"] },
+      }),
+    });
+  });
+
+  it("enables Deploy with only an edit entitlement (edit implies deploy)", async () => {
+    mockServer.use(
+      authResolvers.getMeEntitlements.handler([
+        factory.entitlement({
+          entitlement: Entitlement.CAN_EDIT_MACHINES,
+          resource_type: "pool",
+          resource_id: 2,
+        }),
+      ])
+    );
+    renderWithProviders(<MachineActionMenu />, { state });
+
+    await openMenu();
+
+    await waitFor(() => {
+      expect(getActionButton(NodeActions.DEPLOY)).not.toBeAriaDisabled();
+    });
+  });
+
+  it("enables Deploy but disables other actions for a deploy-only user", async () => {
+    mockServer.use(
+      authResolvers.getMeEntitlements.handler([
+        factory.entitlement({
+          entitlement: Entitlement.CAN_DEPLOY_MACHINES,
+          resource_type: "pool",
+          resource_id: 2,
+        }),
+      ])
+    );
+    renderWithProviders(<MachineActionMenu />, { state });
+
+    await openMenu();
+
+    await waitFor(() => {
+      expect(getActionButton(NodeActions.DEPLOY)).not.toBeAriaDisabled();
+    });
+    expect(getActionButton(NodeActions.RELEASE)).toBeAriaDisabled();
+  });
+
+  it("disables Deploy without an edit or deploy entitlement", async () => {
+    mockServer.use(authResolvers.getMeEntitlements.handler([]));
+    renderWithProviders(<MachineActionMenu />, { state });
+
+    await openMenu();
+
+    await waitFor(() => {
+      expect(getActionButton(NodeActions.DEPLOY)).toBeAriaDisabled();
     });
   });
 });

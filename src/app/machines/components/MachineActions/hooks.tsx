@@ -7,6 +7,8 @@ import { useDispatch, useSelector } from "react-redux";
 
 import type { MachineActionGroup } from "./types";
 
+import { useGetUserEntitlements } from "@/app/api/query/auth";
+import { Entitlement } from "@/app/settings/views/UserManagement/views/Groups/constants";
 import { machineActions } from "@/app/store/machine";
 import machineSelectors from "@/app/store/machine/selectors";
 import type { Machine } from "@/app/store/machine/types";
@@ -15,6 +17,7 @@ import { useSelectedMachinesActionsDispatch } from "@/app/store/machine/utils/ho
 import type { RootState } from "@/app/store/root/types";
 import { NodeActions } from "@/app/store/types/node";
 import { canOpenActionForm } from "@/app/store/utils";
+import { hasEntitlementForPool, hasPermissions } from "@/app/utils/permissions";
 
 const CommissionForm = lazyLoadSidePanel(
   () => import("../MachineForms/MachineActionFormWrapper/CommissionForm")
@@ -496,8 +499,9 @@ export const useMachineActionMenus = (
           },
         },
       ],
-      render: () => (
+      render: (disabled?: boolean) => (
         <Button
+          disabled={disabled}
           onClick={() => {
             openSidePanel({
               component: DeleteMachine,
@@ -518,4 +522,89 @@ export const useMachineActionMenus = (
   ];
 
   return actionMenus;
+};
+
+/**
+ * Computes the disabled state of the machine action controls, based on the
+ * current user's resource-pool entitlements.
+ */
+export const useLifecycleActionEntitlements = (
+  isViewingDetails: boolean,
+  systemId?: Machine["system_id"]
+): { actionsDisabled: boolean; deployDisabled: boolean } => {
+  const selected = useSelector(machineSelectors.selected);
+  const allMachines = useSelector(machineSelectors.all);
+  const detailsMachine = useSelector((state: RootState) =>
+    machineSelectors.getById(state, systemId)
+  );
+  const { data: userEntitlements } = useGetUserEntitlements();
+
+  // Single-machine usage that is neither the details view nor a selection is
+  // left ungated.
+  if (!isViewingDetails && !selected) {
+    return { actionsDisabled: false, deployDisabled: false };
+  }
+
+  // Resolve the resource pool ids being acted on. Returns null when the pools
+  // can't be determined (filter/group selection or unresolved machines),
+  // signalling a fallback to the global entitlement check.
+  const getPoolIds = (): number[] | null => {
+    if (isViewingDetails) {
+      return detailsMachine ? [detailsMachine.pool.id] : null;
+    }
+    if (!selected || "filter" in selected) {
+      return null;
+    }
+    if ((selected.groups ?? []).length > 0) {
+      return null;
+    }
+    const items = selected.items ?? [];
+    if (items.length === 0) {
+      return null;
+    }
+    const poolIds: number[] = [];
+    for (const id of items) {
+      const machine = allMachines.find((m) => m.system_id === id);
+      if (!machine) {
+        return null;
+      }
+      poolIds.push(machine.pool.id);
+    }
+    return Array.from(new Set(poolIds));
+  };
+
+  const poolIds = getPoolIds();
+
+  const canEdit =
+    poolIds === null
+      ? hasPermissions(userEntitlements, [Entitlement.CAN_EDIT_MACHINES])
+      : poolIds.every((poolId) =>
+          hasEntitlementForPool(
+            userEntitlements,
+            Entitlement.CAN_EDIT_MACHINES,
+            poolId
+          )
+        );
+
+  // Per the OpenFGA model, can_deploy_machines is granted by either a deploy or
+  // an edit entitlement (can_edit_machines implies deploy), scoped per pool.
+  const canDeploy =
+    poolIds === null
+      ? hasPermissions(userEntitlements, [Entitlement.CAN_EDIT_MACHINES]) ||
+        hasPermissions(userEntitlements, [Entitlement.CAN_DEPLOY_MACHINES])
+      : poolIds.every(
+          (poolId) =>
+            hasEntitlementForPool(
+              userEntitlements,
+              Entitlement.CAN_EDIT_MACHINES,
+              poolId
+            ) ||
+            hasEntitlementForPool(
+              userEntitlements,
+              Entitlement.CAN_DEPLOY_MACHINES,
+              poolId
+            )
+        );
+
+  return { actionsDisabled: !canEdit, deployDisabled: !canDeploy };
 };

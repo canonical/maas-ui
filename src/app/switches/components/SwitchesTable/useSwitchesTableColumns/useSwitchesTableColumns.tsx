@@ -8,6 +8,8 @@ import { Link } from "react-router";
 import type { SwitchResponse } from "@/app/apiclient";
 import DoubleRow from "@/app/base/components/DoubleRow";
 import TableActions from "@/app/base/components/TableActions";
+import { useHasEntitlements } from "@/app/base/hooks";
+import { Entitlement } from "@/app/settings/views/UserManagement/views/Groups/constants";
 import DeleteSwitch from "@/app/switches/components/DeleteSwitch";
 import EditSwitch from "@/app/switches/components/EditSwitch";
 
@@ -15,6 +17,7 @@ type SwitchColumnDef = ColumnDef<SwitchResponse>;
 
 const useSwitchesTableColumns = (): SwitchColumnDef[] => {
   const { openSidePanel } = useSidePanel();
+  const canEdit = useHasEntitlements([Entitlement.CAN_EDIT_GLOBAL_ENTITIES]);
   return useMemo(
     () => [
       {
@@ -83,6 +86,8 @@ const useSwitchesTableColumns = (): SwitchColumnDef[] => {
           },
         }) => (
           <TableActions
+            deleteDisabled={!canEdit}
+            editDisabled={!canEdit}
             onDelete={() => {
               openSidePanel({
                 component: DeleteSwitch,
@@ -101,7 +106,7 @@ const useSwitchesTableColumns = (): SwitchColumnDef[] => {
         ),
       },
     ],
-    [openSidePanel]
+    [canEdit, openSidePanel]
   );
 };
 

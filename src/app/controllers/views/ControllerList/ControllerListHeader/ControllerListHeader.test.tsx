@@ -3,12 +3,20 @@ import ControllerListHeader from "./ControllerListHeader";
 import AddController from "@/app/controllers/components/ControllerForms/AddController";
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
+import { authResolvers } from "@/testing/resolvers/auth";
 import {
   mockSidePanel,
   renderWithProviders,
   screen,
+  setupMockServer,
   userEvent,
+  waitFor,
 } from "@/testing/utils";
+
+const mockServer = setupMockServer(
+  authResolvers.getCurrentUser.handler(),
+  authResolvers.getMeEntitlements.handler()
+);
 
 const { mockOpen } = await mockSidePanel();
 
@@ -79,6 +87,11 @@ describe("ControllerListHeader", () => {
       />,
       { state }
     );
+    await waitFor(() => {
+      expect(
+        screen.getByRole("button", { name: "Add rack controller" })
+      ).not.toBeAriaDisabled();
+    });
     await userEvent.click(
       screen.getByRole("button", { name: "Add rack controller" })
     );
@@ -86,6 +99,26 @@ describe("ControllerListHeader", () => {
       component: AddController,
       title: "Add controller",
     });
+  });
+
+  it("disables the add controller button and take action dropdown without the edit entitlement", async () => {
+    mockServer.use(authResolvers.getMeEntitlements.handler([]));
+    renderWithProviders(
+      <ControllerListHeader
+        rowSelection={{ [state.controller.items[0].id]: true }}
+        searchFilter=""
+        setSearchFilter={vi.fn()}
+      />,
+      { state }
+    );
+    await waitFor(() => {
+      expect(
+        screen.getByRole("button", { name: "Add rack controller" })
+      ).toBeAriaDisabled();
+    });
+    expect(
+      screen.getByRole("button", { name: "Take action" })
+    ).toBeAriaDisabled();
   });
 
   it("changes the search text when the filters change", () => {

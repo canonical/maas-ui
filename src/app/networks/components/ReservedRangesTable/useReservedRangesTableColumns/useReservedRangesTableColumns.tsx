@@ -9,6 +9,8 @@ import { Labels } from "../ReservedRangesTable";
 
 import SubnetLink from "@/app/base/components/SubnetLink";
 import TableActions from "@/app/base/components/TableActions";
+import { useHasEntitlements } from "@/app/base/hooks";
+import { Entitlement } from "@/app/settings/views/UserManagement/views/Groups/constants";
 import type { IPRangeType } from "@/app/store/iprange/types";
 
 export type ReservedRangesTableData = {
@@ -32,6 +34,7 @@ const useReservedRangesColumns = (
   showSubnetColumn: boolean
 ): ReservedRangesColumnsDef[] => {
   const { openSidePanel } = useSidePanel();
+  const canEdit = useHasEntitlements([Entitlement.CAN_EDIT_GLOBAL_ENTITIES]);
   return useMemo((): ReservedRangesColumnsDef[] => {
     const columns: ReservedRangesColumnsDef[] = [
       {
@@ -64,6 +67,8 @@ const useReservedRangesColumns = (
           },
         }) => (
           <TableActions
+            deleteDisabled={!canEdit}
+            editDisabled={!canEdit}
             onDelete={() => {
               openSidePanel({
                 component: DeleteReservedRange,
@@ -101,7 +106,7 @@ const useReservedRangesColumns = (
       });
     }
     return columns;
-  }, [openSidePanel, showSubnetColumn]);
+  }, [canEdit, openSidePanel, showSubnetColumn]);
 };
 
 export default useReservedRangesColumns;

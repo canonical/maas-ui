@@ -8,6 +8,8 @@ import DeleteDHCPLease from "../../DeleteDHCPLease";
 import ReserveDHCPLease from "../../ReserveDHCPLease";
 
 import TableActions from "@/app/base/components/TableActions";
+import { useHasEntitlements } from "@/app/base/hooks";
+import { Entitlement } from "@/app/settings/views/UserManagement/views/Groups/constants";
 import type { ReservedIpNodeSummary } from "@/app/store/reservedip/types/base";
 import { getNodeUrl } from "@/app/store/reservedip/utils";
 import type { NodeType } from "@/app/store/types/node";
@@ -34,6 +36,7 @@ const useStaticDHCPTableColumns = ({
   subnetId: number;
 }): StaticDHCPColumnDef[] => {
   const { openSidePanel } = useSidePanel();
+  const canEdit = useHasEntitlements([Entitlement.CAN_EDIT_GLOBAL_ENTITIES]);
   return useMemo(
     (): StaticDHCPColumnDef[] => [
       {
@@ -112,6 +115,8 @@ const useStaticDHCPTableColumns = ({
           },
         }) => (
           <TableActions
+            deleteDisabled={!canEdit}
+            editDisabled={!canEdit}
             onDelete={() => {
               openSidePanel({
                 component: DeleteDHCPLease,
@@ -135,7 +140,7 @@ const useStaticDHCPTableColumns = ({
         ),
       },
     ],
-    [openSidePanel, subnetId]
+    [canEdit, openSidePanel, subnetId]
   );
 };
 

@@ -2,6 +2,7 @@ import { useMemo } from "react";
 
 import { useSidePanel } from "@canonical/maas-react-components";
 import type { ColumnDef } from "@tanstack/react-table";
+import { useSelector } from "react-redux";
 
 import EditInterface from "../../EditInterface";
 import RemoveInterface from "../RemoveInterface";
@@ -9,7 +10,10 @@ import RemoveInterface from "../RemoveInterface";
 import MacAddressDisplay from "@/app/base/components/MacAddressDisplay";
 import TableActions from "@/app/base/components/TableActions";
 import SubnetColumn from "@/app/base/components/node/networking/SubnetColumn";
+import { useCanEdit } from "@/app/base/hooks";
+import deviceSelectors from "@/app/store/device/selectors";
 import type { Device, DeviceMeta } from "@/app/store/device/types";
+import type { RootState } from "@/app/store/root/types";
 import type { Subnet } from "@/app/store/subnet/types";
 import type { NetworkInterface, NetworkLink } from "@/app/store/types/node";
 
@@ -37,6 +41,10 @@ const useDeviceNetworkTableColumns = ({
   systemId: Device[DeviceMeta.PK];
 }): DeviceNetworkTableColumnDef[] => {
   const { openSidePanel } = useSidePanel();
+  const device = useSelector((state: RootState) =>
+    deviceSelectors.getById(state, systemId)
+  );
+  const canEdit = useCanEdit(device, true);
 
   return useMemo(
     (): DeviceNetworkTableColumnDef[] => [
@@ -84,8 +92,8 @@ const useDeviceNetworkTableColumns = ({
           },
         }) => (
           <TableActions
-            deleteDisabled={isAllNetworkingDisabled}
-            editDisabled={isAllNetworkingDisabled}
+            deleteDisabled={isAllNetworkingDisabled || !canEdit}
+            editDisabled={isAllNetworkingDisabled || !canEdit}
             onDelete={() => {
               openSidePanel({
                 component: RemoveInterface,
@@ -111,7 +119,7 @@ const useDeviceNetworkTableColumns = ({
         ),
       },
     ],
-    [isAllNetworkingDisabled, openSidePanel, systemId]
+    [canEdit, isAllNetworkingDisabled, openSidePanel, systemId]
   );
 };
 

@@ -1,13 +1,22 @@
 import type { ChangeEvent } from "react";
+import { useState } from "react";
 
 import { useSidePanel } from "@canonical/maas-react-components";
-import { Icon, Select, Tooltip } from "@canonical/react-components";
+import {
+  Icon,
+  Notification as NotificationBanner,
+  Select,
+  Tooltip,
+} from "@canonical/react-components";
 import type { FormikContextType } from "formik";
 import * as Yup from "yup";
 
 import { Entitlement, RestrictableEntitlements } from "../../constants";
 
-import { useAddGroupEntitlement } from "@/app/api/query/groups";
+import {
+  useAddGroupEntitlement,
+  useGroupEntitlements,
+} from "@/app/api/query/groups";
 import { usePools } from "@/app/api/query/pools";
 import type {
   AddGroupEntitlementError,
@@ -40,6 +49,31 @@ const AddEntitlement = ({ group_id }: AddEntitlementProps) => {
   const { closeSidePanel } = useSidePanel();
   const pools = usePools();
   const addEntitlement = useAddGroupEntitlement();
+  const groupEntitlements = useGroupEntitlements({
+    path: { group_id },
+  });
+  const [isDuplicate, setIsDuplicate] = useState(false);
+
+  const checkIsDuplicate = (values: AddEntitlementValues): boolean => {
+    if (!values.entitlement) {
+      return false;
+    }
+    const isRestrictable = RestrictableEntitlements.includes(
+      values.entitlement as Entitlement
+    );
+    const resourceType =
+      isRestrictable && values.is_restricted ? "pool" : "maas";
+    if (resourceType === "pool" && !values.pool_id) {
+      return false;
+    }
+    const resourceId = resourceType === "pool" ? Number(values.pool_id) : 0;
+    return (groupEntitlements.data?.items ?? []).some(
+      (existing) =>
+        existing.entitlement === values.entitlement &&
+        existing.resource_type === resourceType &&
+        existing.resource_id === resourceId
+    );
+  };
 
   const entitlementOptions = [
     { label: "Select entitlement", value: "", disabled: true },
@@ -78,9 +112,13 @@ const AddEntitlement = ({ group_id }: AddEntitlementProps) => {
         });
       }}
       onSuccess={closeSidePanel}
+      onValuesChanged={(values) => {
+        setIsDuplicate(checkIsDuplicate(values));
+      }}
       resetOnSave
       saved={addEntitlement.isSuccess}
       saving={addEntitlement.isPending}
+      submitDisabled={isDuplicate}
       submitLabel="Add entitlement"
       validationSchema={AddEntitlementSchema}
     >
@@ -91,6 +129,11 @@ const AddEntitlement = ({ group_id }: AddEntitlementProps) => {
 
         return (
           <>
+            {isDuplicate && (
+              <NotificationBanner severity="negative">
+                This entitlement already exists in the group.
+              </NotificationBanner>
+            )}
             <FormikField
               component={Select}
               label="Entitlement"

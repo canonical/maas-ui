@@ -8,10 +8,11 @@ import ControllerName from "./ControllerName";
 
 import NodeActionMenu from "@/app/base/components/NodeActionMenu";
 import SectionHeader from "@/app/base/components/SectionHeader";
-import { useSendAnalytics } from "@/app/base/hooks";
+import { useHasEntitlements, useSendAnalytics } from "@/app/base/hooks";
 import urls from "@/app/base/urls";
 import ControllerActionFormWrapper from "@/app/controllers/components/ControllerForms/ControllerActionFormWrapper";
 import { ControllerDetailsTabLabels } from "@/app/controllers/constants";
+import { Entitlement } from "@/app/settings/views/UserManagement/views/Groups/constants";
 import controllerSelectors from "@/app/store/controller/selectors";
 import type {
   Controller,
@@ -33,6 +34,7 @@ const ControllerDetailsHeader = ({ systemId }: Props): React.ReactElement => {
   const [isEditing, setIsEditing] = useState(false);
   const sendAnalytics = useSendAnalytics();
   const { openSidePanel } = useSidePanel();
+  const canEdit = useHasEntitlements([Entitlement.CAN_EDIT_CONTROLLERS]);
 
   if (!controller) {
     return <SectionHeader loading />;
@@ -42,6 +44,7 @@ const ControllerDetailsHeader = ({ systemId }: Props): React.ReactElement => {
     <SectionHeader
       buttons={[
         <NodeActionMenu
+          disabled={!canEdit}
           filterActions
           hasSelection={true}
           key="action-dropdown"

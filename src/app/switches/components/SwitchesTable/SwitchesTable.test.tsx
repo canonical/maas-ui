@@ -1,5 +1,6 @@
 import SwitchesTable from "./SwitchesTable";
 
+import { authResolvers } from "@/testing/resolvers/auth";
 import { switchResolvers } from "@/testing/resolvers/switches";
 import {
   mockIsPending,
@@ -9,7 +10,11 @@ import {
   waitFor,
 } from "@/testing/utils";
 
-const mockServer = setupMockServer(switchResolvers.listSwitches.handler());
+const mockServer = setupMockServer(
+  switchResolvers.listSwitches.handler(),
+  authResolvers.getCurrentUser.handler(),
+  authResolvers.getMeEntitlements.handler()
+);
 
 describe("SwitchesTable", () => {
   describe("display", () => {
@@ -50,5 +55,19 @@ describe("SwitchesTable", () => {
     it.todo("opens edit switch side panel form");
 
     it.todo("opens delete switch side panel form");
+
+    it("disables the table actions without the edit entitlement", async () => {
+      mockServer.use(authResolvers.getMeEntitlements.handler([]));
+      renderWithProviders(<SwitchesTable />);
+
+      await waitFor(() => {
+        expect(
+          screen.getAllByRole("button", { name: "Edit" })[0]
+        ).toBeAriaDisabled();
+      });
+      expect(
+        screen.getAllByRole("button", { name: "Delete" })[0]
+      ).toBeAriaDisabled();
+    });
   });
 });

@@ -8,12 +8,15 @@ import EditStaticRouteForm from "../EditStaticRouteForm";
 
 import SubnetLink from "@/app/base/components/SubnetLink";
 import TableActions from "@/app/base/components/TableActions";
+import { useHasEntitlements } from "@/app/base/hooks";
+import { Entitlement } from "@/app/settings/views/UserManagement/views/Groups/constants";
 import type { StaticRoute } from "@/app/store/staticroute/types";
 
 export type StaticRouteColumnDef = ColumnDef<StaticRoute, Partial<StaticRoute>>;
 
 const useStaticRoutesColumns = (): StaticRouteColumnDef[] => {
   const { openSidePanel } = useSidePanel();
+  const canEdit = useHasEntitlements([Entitlement.CAN_EDIT_GLOBAL_ENTITIES]);
   return useMemo(
     () => [
       {
@@ -54,6 +57,8 @@ const useStaticRoutesColumns = (): StaticRouteColumnDef[] => {
           row: Row<StaticRoute>;
         }) => (
           <TableActions
+            deleteDisabled={!canEdit}
+            editDisabled={!canEdit}
             onDelete={() => {
               openSidePanel({
                 component: DeleteStaticRouteForm,
@@ -76,7 +81,7 @@ const useStaticRoutesColumns = (): StaticRouteColumnDef[] => {
         ),
       },
     ],
-    [openSidePanel]
+    [canEdit, openSidePanel]
   );
 };
 

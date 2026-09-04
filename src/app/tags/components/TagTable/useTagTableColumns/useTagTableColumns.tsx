@@ -10,7 +10,9 @@ import { Label } from "../TagTable";
 import TableActions from "@/app/base/components/TableActions";
 import TooltipButton from "@/app/base/components/TooltipButton";
 import docsUrls from "@/app/base/docsUrls";
+import { useHasEntitlements } from "@/app/base/hooks";
 import urls from "@/app/base/urls";
+import { Entitlement } from "@/app/settings/views/UserManagement/views/Groups/constants";
 import type { Tag, TagMeta } from "@/app/store/tag/types";
 import type { UtcDatetime } from "@/app/store/types/model";
 import AppliedTo from "@/app/tags/components/AppliedTo";
@@ -37,6 +39,7 @@ const useTagTableColumns = ({
   onDelete,
   onUpdate,
 }: Props): TagTableColumnDef[] => {
+  const canEdit = useHasEntitlements([Entitlement.CAN_EDIT_GLOBAL_ENTITIES]);
   return useMemo(
     (): TagTableColumnDef[] => [
       {
@@ -122,6 +125,8 @@ const useTagTableColumns = ({
           },
         }) => (
           <TableActions
+            deleteDisabled={!canEdit}
+            editDisabled={!canEdit}
             onDelete={() => {
               onDelete(id);
             }}
@@ -132,7 +137,7 @@ const useTagTableColumns = ({
         ),
       },
     ],
-    [onDelete, onUpdate]
+    [canEdit, onDelete, onUpdate]
   );
 };
 
