@@ -4,10 +4,17 @@ import { ConfigNames } from "@/app/store/config/types";
 import type { RootState } from "@/app/store/root/types";
 import { NodeStatus, NodeType } from "@/app/store/types/node";
 import * as factory from "@/testing/factories";
-import { renderWithProviders, screen } from "@/testing/utils";
+import { systemResolvers } from "@/testing/resolvers/system";
+import {
+  screen,
+  renderWithProviders,
+  setupMockServer,
+  waitFor,
+} from "@/testing/utils";
 
 let state: RootState;
 const originalEnv = import.meta.env;
+const mockServer = setupMockServer(systemResolvers.getSystemInfo.handler());
 
 beforeEach(() => {
   vi.useFakeTimers();
@@ -51,7 +58,7 @@ it("can show if the MAAS is a deb installation", () => {
   expect(screen.getByText(/(deb)/i)).toBeInTheDocument();
 });
 
-it("can show if a machine is currently commissioning", () => {
+it("can show if a machine is currently commissioning", async () => {
   state.machine.items = [
     factory.machineDetails({
       fqdn: "test.maas",
@@ -62,10 +69,14 @@ it("can show if a machine is currently commissioning", () => {
 
   renderWithProviders(<StatusBar />, { state });
 
-  expect(screen.getByText(/Commissioning in progress.../)).toBeInTheDocument();
+  await waitFor(() => {
+    expect(
+      screen.getByText(/Commissioning in progress.../)
+    ).toBeInTheDocument();
+  });
 });
 
-it("can show if a machine has not been commissioned yet", () => {
+it("can show if a machine has not been commissioned yet", async () => {
   state.machine.items = [
     factory.machineDetails({
       commissioning_start_time: factory.timestamp(""),
@@ -76,10 +87,12 @@ it("can show if a machine has not been commissioned yet", () => {
 
   renderWithProviders(<StatusBar />, { state });
 
-  expect(screen.getByText(/Not yet commissioned/)).toBeInTheDocument();
+  await waitFor(() => {
+    expect(screen.getByText(/Not yet commissioned/)).toBeInTheDocument();
+  });
 });
 
-it("can show the last time a machine was commissioned", () => {
+it("can show the last time a machine was commissioned", async () => {
   state.machine.items = [
     factory.machineDetails({
       enable_hw_sync: false,
@@ -92,12 +105,14 @@ it("can show the last time a machine was commissioned", () => {
 
   renderWithProviders(<StatusBar />, { state });
 
-  expect(
-    screen.getByText(/Last commissioned: 1 minute ago/)
-  ).toBeInTheDocument();
+  await waitFor(() => {
+    expect(
+      screen.getByText(/Last commissioned: 1 minute ago/)
+    ).toBeInTheDocument();
+  });
 });
 
-it("can handle an incorrectly formatted commissioning timestamp", () => {
+it("can handle an incorrectly formatted commissioning timestamp", async () => {
   state.machine.items = [
     factory.machineDetails({
       enable_hw_sync: false,
@@ -110,12 +125,14 @@ it("can handle an incorrectly formatted commissioning timestamp", () => {
 
   renderWithProviders(<StatusBar />, { state });
 
-  expect(
-    screen.getByText(/Unable to parse commissioning timestamp/)
-  ).toBeInTheDocument();
+  await waitFor(() => {
+    expect(
+      screen.getByText(/Unable to parse commissioning timestamp/)
+    ).toBeInTheDocument();
+  });
 });
 
-it("displays Last and Next sync instead of Last commissioned date for deployed machines with hardware sync enabled ", () => {
+it("displays Last and Next sync instead of Last commissioned date for deployed machines with hardware sync enabled ", async () => {
   state.machine.items = [
     factory.machineDetails({
       commissioning_start_time: factory.timestamp("Thu, 31 Dec. 2020 22:59:00"),
@@ -130,9 +147,11 @@ it("displays Last and Next sync instead of Last commissioned date for deployed m
 
   renderWithProviders(<StatusBar />, { state: state });
 
-  expect(screen.getByTestId("status-bar-status")).not.toHaveTextContent(
-    /Last commissioned/
-  );
+  await waitFor(() => {
+    expect(screen.getByTestId("status-bar-status")).not.toHaveTextContent(
+      /Last commissioned/
+    );
+  });
   expect(screen.getByTestId("status-bar-status")).toHaveTextContent(
     /test.maas/
   );
@@ -144,7 +163,7 @@ it("displays Last and Next sync instead of Last commissioned date for deployed m
   );
 });
 
-it("doesn't display last or next sync for deploying machines with hardware sync enabled", () => {
+it("doesn't display last or next sync for deploying machines with hardware sync enabled", async () => {
   state.machine.items = [
     factory.machineDetails({
       commissioning_start_time: factory.timestamp("Thu, 31 Dec. 2020 22:59:00"),
@@ -161,9 +180,11 @@ it("doesn't display last or next sync for deploying machines with hardware sync 
     state,
   });
 
-  expect(screen.getByTestId("status-bar-status")).toHaveTextContent(
-    /Last commissioned/
-  );
+  await waitFor(() => {
+    expect(screen.getByTestId("status-bar-status")).toHaveTextContent(
+      /Last commissioned/
+    );
+  });
   expect(screen.getByTestId("status-bar-status")).not.toHaveTextContent(
     /Last synced/
   );
@@ -172,7 +193,7 @@ it("doesn't display last or next sync for deploying machines with hardware sync 
   );
 });
 
-it("displays correct text for machines with hardware sync enabled and no last_sync or next_sync", () => {
+it("displays correct text for machines with hardware sync enabled and no last_sync or next_sync", async () => {
   state.machine.items = [
     factory.machineDetails({
       commissioning_start_time: factory.timestamp("Thu, 31 Dec. 2020 22:59:00"),
@@ -189,9 +210,11 @@ it("displays correct text for machines with hardware sync enabled and no last_sy
     state,
   });
 
-  expect(screen.getByTestId("status-bar-status")).not.toHaveTextContent(
-    /Last commissioned/
-  );
+  await waitFor(() => {
+    expect(screen.getByTestId("status-bar-status")).not.toHaveTextContent(
+      /Last commissioned/
+    );
+  });
   expect(screen.getByTestId("status-bar-status")).toHaveTextContent(
     /test.maas/
   );
@@ -203,7 +226,7 @@ it("displays correct text for machines with hardware sync enabled and no last_sy
   );
 });
 
-it("displays last image sync timestamp for a rack or region+rack controller", () => {
+it("displays last image sync timestamp for a rack or region+rack controller", async () => {
   const controller = factory.controllerDetails({
     last_image_sync: factory.timestamp("Thu, 02 Jun. 2022 00:48:41"),
     node_type: NodeType.RACK_CONTROLLER,
@@ -213,12 +236,14 @@ it("displays last image sync timestamp for a rack or region+rack controller", ()
 
   renderWithProviders(<StatusBar />, { state });
 
-  expect(screen.getByTestId("status-bar-status")).toHaveTextContent(
-    `Last image sync: Thu, 02 Jun. 2022 00:48:41 (UTC)`
-  );
+  await waitFor(() => {
+    expect(screen.getByTestId("status-bar-status")).toHaveTextContent(
+      `Last image sync: Thu, 02 Jun. 2022 00:48:41 (UTC)`
+    );
+  });
 });
 
-it("displays the feedback link when analytics enabled and not in development environment", () => {
+it("displays the feedback link when analytics enabled and not in development environment", async () => {
   Object.assign(import.meta.env, { ...originalEnv, DEV: false });
 
   state.config = factory.configState({
@@ -230,12 +255,14 @@ it("displays the feedback link when analytics enabled and not in development env
 
   renderWithProviders(<StatusBar />, { state });
 
-  expect(
-    screen.getByRole("button", { name: "Give feedback" })
-  ).toBeInTheDocument();
+  await waitFor(() => {
+    expect(
+      screen.getByRole("button", { name: "Give feedback" })
+    ).toBeInTheDocument();
+  });
 });
 
-it("hides the feedback link when analytics disabled", () => {
+it("hides the feedback link when analytics disabled", async () => {
   Object.assign(import.meta.env, { ...originalEnv, DEV: false });
   state.config = factory.configState({
     items: [
@@ -245,12 +272,14 @@ it("hides the feedback link when analytics disabled", () => {
   });
   renderWithProviders(<StatusBar />, { state });
 
-  expect(
-    screen.queryByRole("button", { name: "Give feedback" })
-  ).not.toBeInTheDocument();
+  await waitFor(() => {
+    expect(
+      screen.queryByRole("button", { name: "Give feedback" })
+    ).not.toBeInTheDocument();
+  });
 });
 
-it("hides the feedback link in development environment", () => {
+it("hides the feedback link in development environment", async () => {
   Object.assign(import.meta.env, { ...originalEnv, DEV: true });
   state.config = factory.configState({
     items: [
@@ -260,12 +289,14 @@ it("hides the feedback link in development environment", () => {
   });
   renderWithProviders(<StatusBar />, { state });
 
-  expect(
-    screen.queryByRole("button", { name: "Give feedback" })
-  ).not.toBeInTheDocument();
+  await waitFor(() => {
+    expect(
+      screen.queryByRole("button", { name: "Give feedback" })
+    ).not.toBeInTheDocument();
+  });
 });
 
-it("displays the status message when connected to MAAS Site Manager", () => {
+it("displays the status message when connected to MAAS Site Manager", async () => {
   state.msm = factory.msmState({
     status: factory.msmStatus({
       running: "not_connected",
@@ -274,9 +305,11 @@ it("displays the status message when connected to MAAS Site Manager", () => {
 
   const { rerender } = renderWithProviders(<StatusBar />, { state });
 
-  expect(
-    screen.queryByText("Connected to MAAS Site Manager")
-  ).not.toBeInTheDocument();
+  await waitFor(() => {
+    expect(
+      screen.queryByText("Connected to MAAS Site Manager")
+    ).not.toBeInTheDocument();
+  });
 
   state.msm = factory.msmState({
     status: factory.msmStatus({
@@ -286,12 +319,14 @@ it("displays the status message when connected to MAAS Site Manager", () => {
 
   rerender(<StatusBar />, { state });
 
-  expect(
-    screen.getByText("Connected to MAAS Site Manager")
-  ).toBeInTheDocument();
+  await waitFor(() => {
+    expect(
+      screen.getByText("Connected to MAAS Site Manager")
+    ).toBeInTheDocument();
+  });
 });
 
-it("correctly calculates the last commissioned time when multiple commissioning events are present", () => {
+it("correctly calculates the last commissioned time when multiple commissioning events are present", async () => {
   state.machine.items = [
     factory.machineDetails({
       fqdn: "multi-event.maas",
@@ -323,12 +358,14 @@ it("correctly calculates the last commissioned time when multiple commissioning 
 
   renderWithProviders(<StatusBar />, { state });
 
-  expect(
-    screen.getByText(/Last commissioned: about 1 hour ago/)
-  ).toBeInTheDocument();
+  await waitFor(() => {
+    expect(
+      screen.getByText(/Last commissioned: about 1 hour ago/)
+    ).toBeInTheDocument();
+  });
 });
 
-it("handles invalid commissioning event timestamp", () => {
+it("handles invalid commissioning event timestamp", async () => {
   state.machine.items = [
     factory.machineDetails({
       fqdn: "invalid-timestamp.maas",
@@ -348,7 +385,82 @@ it("handles invalid commissioning event timestamp", () => {
 
   renderWithProviders(<StatusBar />, { state });
 
-  expect(
-    screen.getByText(/Unable to parse commissioning timestamp/)
-  ).toBeInTheDocument();
+  await waitFor(() => {
+    expect(
+      screen.getByText(/Unable to parse commissioning timestamp/)
+    ).toBeInTheDocument();
+  });
+});
+
+it("displays 'FIPS enabled' when FIPS is active and hardening is not", async () => {
+  mockServer.use(
+    systemResolvers.getSystemInfo.handler(
+      factory.systemInfo({
+        fips_active: true,
+        hardening_active: false,
+      })
+    )
+  );
+
+  renderWithProviders(<StatusBar />, { state });
+
+  await waitFor(() => {
+    expect(screen.getByText("FIPS enabled")).toBeInTheDocument();
+  });
+});
+
+it("displays 'Hardening enabled' link when hardening is active and FIPS is not", async () => {
+  mockServer.use(
+    systemResolvers.getSystemInfo.handler(
+      factory.systemInfo({
+        fips_active: false,
+        hardening_active: true,
+      })
+    )
+  );
+
+  renderWithProviders(<StatusBar />, { state });
+
+  await waitFor(() => {
+    expect(
+      screen.getByRole("link", {
+        name: "Hardening enabled",
+      })
+    ).toBeInTheDocument();
+  });
+  const hardeningLink = screen.getByRole("link", {
+    name: "Hardening enabled",
+  });
+  expect(hardeningLink).toHaveAttribute(
+    "href",
+    expect.stringContaining(
+      "/docs/reference/configuration-guides/security-hardening/"
+    )
+  );
+});
+
+it("displays 'FIPS and hardening enabled' with hardening as a link when both are active", async () => {
+  mockServer.use(
+    systemResolvers.getSystemInfo.handler(
+      factory.systemInfo({
+        fips_active: true,
+        hardening_active: true,
+      })
+    )
+  );
+
+  renderWithProviders(<StatusBar />, { state });
+
+  await waitFor(() => {
+    expect(screen.getByText(/FIPS and/i)).toBeInTheDocument();
+  });
+  expect(screen.getByText(/enabled/i)).toBeInTheDocument();
+  const hardeningLink = screen.getByRole("link", { name: "hardening" });
+  expect(hardeningLink).toBeInTheDocument();
+  expect(hardeningLink).toHaveAttribute(
+    "href",
+    expect.stringContaining(
+      "/docs/reference/configuration-guides/security-hardening/"
+    )
+  );
 });

@@ -18,6 +18,7 @@ import { useSelector } from "react-redux";
 import TooltipButton from "../TooltipButton";
 
 import { useNotifications } from "@/app/api/query/notifications";
+import { useSystemInfo } from "@/app/api/query/system";
 import { useFetchActions, useUsabilla } from "@/app/base/hooks";
 import configSelectors from "@/app/store/config/selectors";
 import controllerSelectors from "@/app/store/controller/selectors";
@@ -27,10 +28,7 @@ import {
   isRegionAndRack,
 } from "@/app/store/controller/utils";
 import { generalActions } from "@/app/store/general";
-import {
-  installType as installTypeSelectors,
-  version as versionSelectors,
-} from "@/app/store/general/selectors";
+import { installType as installTypeSelectors } from "@/app/store/general/selectors";
 import machineSelectors from "@/app/store/machine/selectors";
 import type { MachineDetails } from "@/app/store/machine/types";
 import {
@@ -116,7 +114,6 @@ const getSyncStatusString = (syncStatus: UtcDatetime) => {
 export const StatusBar = (): React.ReactElement | null => {
   const activeController = useSelector(controllerSelectors.active);
   const activeMachine = useSelector(machineSelectors.active);
-  const version = useSelector(versionSelectors.get);
   const maasName = useSelector(configSelectors.maasName);
   const allowUsabilla = useUsabilla();
   const msmRunning = useSelector(msmSelectors.running);
@@ -144,11 +141,13 @@ export const StatusBar = (): React.ReactElement | null => {
     return null;
   });
 
+  const systemInfo = useSystemInfo();
+
   const hasNotifications = notifications.length > 0;
 
   useFetchActions([msmActions.fetch, generalActions.fetchInstallType]);
 
-  if (!(maasName && version)) {
+  if (!(maasName && systemInfo.isSuccess)) {
     return null;
   }
 
@@ -190,7 +189,7 @@ export const StatusBar = (): React.ReactElement | null => {
           <strong data-testid="status-bar-maas-name">{maasName} MAAS</strong>
           :&nbsp;
           <span data-testid="status-bar-version">
-            {version} ({installType})
+            {systemInfo.data.version} ({installType})
           </span>
         </div>
         <div className="p-status-bar__primary u-flex--no-shrink u-flex--wrap">
@@ -208,6 +207,40 @@ Site Manager as its upstream image source."
           </span>
         </div>
         <ul className="p-inline-list--middot u-no-margin--bottom">
+          {systemInfo.data.fips_active || systemInfo.data.hardening_active ? (
+            <li className="p-inline-list__item">
+              {systemInfo.data.fips_active &&
+              !systemInfo.data.hardening_active ? (
+                <>FIPS enabled</>
+              ) : null}
+              {!systemInfo.data.fips_active &&
+              systemInfo.data.hardening_active ? (
+                <>
+                  <Link
+                    href={`${import.meta.env.VITE_APP_BASENAME}/docs/reference/configuration-guides/security-hardening/`}
+                    rel="noreferrer"
+                    target="_blank"
+                  >
+                    Hardening enabled
+                  </Link>
+                </>
+              ) : null}
+              {systemInfo.data.fips_active &&
+              systemInfo.data.hardening_active ? (
+                <>
+                  FIPS and{" "}
+                  <Link
+                    href={`${import.meta.env.VITE_APP_BASENAME}/docs/reference/configuration-guides/security-hardening/`}
+                    rel="noreferrer"
+                    target="_blank"
+                  >
+                    hardening
+                  </Link>{" "}
+                  enabled
+                </>
+              ) : null}
+            </li>
+          ) : null}
           <li className="p-inline-list__item">
             <Link
               href={`${import.meta.env.VITE_APP_BASENAME}/docs/`}
