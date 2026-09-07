@@ -2,6 +2,7 @@ import { useMemo } from "react";
 
 import { Navigation } from "@canonical/maas-react-components";
 import { Button, Icon } from "@canonical/react-components";
+import { useSelector } from "react-redux";
 
 import AppSideNavItem from "../AppSideNavItem";
 import type { SideNavigationProps } from "../AppSideNavigation";
@@ -17,6 +18,7 @@ import { useHasEntitlements } from "@/app/base/hooks";
 import { useId } from "@/app/base/hooks/base";
 import urls from "@/app/base/urls";
 import { Entitlement } from "@/app/settings/views/UserManagement/views/Groups/constants";
+import configSelectors from "@/app/store/config/selectors";
 import { hasPermissions } from "@/app/utils/permissions";
 
 type Props = {
@@ -54,10 +56,22 @@ const AppSideNavItemGroup = ({
     return false;
   }, [group, path]);
 
-  const filteredGroups = group.navLinks.map((navLink) => ({
-    ...navLink,
-    disabled: !hasPermissions(entitlements, navLink.requiredEntitlements || []),
-  }));
+  const switchProvisioningEnabled = useSelector(
+    configSelectors.experimentalSwitchProvisioning
+  );
+
+  const filteredGroups = group.navLinks
+    .filter(
+      (navLink) =>
+        switchProvisioningEnabled || navLink.url !== urls.switches.index
+    )
+    .map((navLink) => ({
+      ...navLink,
+      disabled: !hasPermissions(
+        entitlements,
+        navLink.requiredEntitlements || []
+      ),
+    }));
 
   return (
     <>

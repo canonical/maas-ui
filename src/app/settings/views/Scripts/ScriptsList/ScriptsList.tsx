@@ -26,7 +26,7 @@ export enum Labels {
 }
 
 type Props = {
-  type?: "commissioning" | "deployment" | "switch" | "testing";
+  type?: "commissioning" | "deployment" | "testing";
 };
 
 const ScriptsList = ({ type = "commissioning" }: Props): React.ReactElement => {
@@ -60,7 +60,7 @@ const ScriptsList = ({ type = "commissioning" }: Props): React.ReactElement => {
         <div className="settings-table">
           <MainToolbar>
             <MainToolbar.Title>
-              {`${type === "commissioning" ? "Commissioning" : type === "testing" ? "Testing" : type === "switch" ? "Switch" : "Deployment"} scripts`}
+              {`${type === "commissioning" ? "Commissioning" : type === "testing" ? "Testing" : "Deployment"} scripts`}
             </MainToolbar.Title>
             <MainToolbar.Controls>
               <SearchBox
@@ -70,17 +70,13 @@ const ScriptsList = ({ type = "commissioning" }: Props): React.ReactElement => {
               />
               <Button
                 disabled={!canEdit}
-                onClick={
-                  type !== "switch"
-                    ? () => {
-                        openSidePanel({
-                          component: ScriptsUpload,
-                          title: `Upload ${type} script`,
-                          props: { type },
-                        });
-                      }
-                    : undefined
-                }
+                onClick={() => {
+                  openSidePanel({
+                    component: ScriptsUpload,
+                    title: `Upload ${type} script`,
+                    props: { type },
+                  });
+                }}
               >
                 Upload script
               </Button>
