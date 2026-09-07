@@ -161,6 +161,7 @@ export const AddMachineForm = (): ReactElement => {
             dispatch(machineActions.create(params));
           }}
           onSuccess={() => {
+            dispatch(machineActions.invalidateQueries());
             if (!secondarySubmit) {
               closeSidePanel();
             }
