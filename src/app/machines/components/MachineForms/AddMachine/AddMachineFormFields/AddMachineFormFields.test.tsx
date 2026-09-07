@@ -168,10 +168,8 @@ describe("AddMachineFormFields", () => {
     });
     expect(screen.getByRole("textbox", { name: "MAC address" })).toBeRequired();
 
-    await userEvent.selectOptions(
-      screen.getByRole("combobox", { name: "Power type" }),
-      "ipmi"
-    );
+    await userEvent.click(screen.getByRole("button", { name: "Power type" }));
+    await userEvent.click(screen.getByRole("option", { name: "IPMI" }));
 
     expect(
       screen.getByRole("textbox", { name: "MAC address" })

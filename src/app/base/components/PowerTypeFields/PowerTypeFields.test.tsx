@@ -9,6 +9,7 @@ import * as factory from "@/testing/factories";
 import { powerTypesResolvers } from "@/testing/resolvers/powerTypes";
 import { systemResolvers } from "@/testing/resolvers/system";
 import {
+  expectTooltipOnHover,
   renderWithMockStore,
   screen,
   setupMockServer,
@@ -193,6 +194,8 @@ describe("PowerTypeFields", () => {
 
     await waitForLoading();
 
+    await userEvent.click(screen.getByRole("button", { name: "Power type" }));
+
     expect(screen.getByRole("option", { name: "virsh" })).toBeInTheDocument();
     expect(
       screen.queryByRole("option", { name: "manual" })
@@ -228,7 +231,7 @@ describe("PowerTypeFields", () => {
     await waitForLoading();
 
     expect(
-      screen.getByRole("combobox", { name: "Power type" })
+      screen.getByRole("button", { name: "Power type" })
     ).toBeInTheDocument();
     expect(
       screen.getByRole("textbox", { name: "Parameter 1" })
@@ -255,7 +258,10 @@ describe("PowerTypeFields", () => {
 
     await waitForLoading();
 
-    expect(screen.getByRole("combobox", { name: "Power type" })).toBeDisabled();
+    expect(screen.getByRole("button", { name: "Power type" })).toHaveAttribute(
+      "aria-disabled",
+      "true"
+    );
   });
 
   it("resets the fields of the selected power type on change", async () => {
@@ -323,10 +329,8 @@ describe("PowerTypeFields", () => {
     );
 
     // Change power type to "virsh"
-    await userEvent.selectOptions(
-      screen.getByRole("combobox", { name: "Power type" }),
-      screen.getByRole("option", { name: "virsh" })
-    );
+    await userEvent.click(screen.getByRole("button", { name: "Power type" }));
+    await userEvent.click(screen.getByRole("option", { name: "virsh" }));
 
     // Fields of selected power type should be reset to defaults
     expect(screen.getByRole("textbox", { name: "Parameter 1" })).toHaveValue(
@@ -456,21 +460,22 @@ describe("PowerTypeFields", () => {
 
     await waitForLoading();
 
-    // Manual power type should be enabled
-    expect(screen.getByRole("option", { name: /Manual$/ })).not.toBeDisabled();
+    await userEvent.click(screen.getByRole("button", { name: "Power type" }));
 
-    // FIPS-unsupported power types should be disabled and show the reason
-    expect(
-      screen.getByRole("option", {
-        name: "Intel AMT - disabled due to uses non-approved cryptography",
-      })
-    ).toBeDisabled();
-
-    expect(
-      screen.getByRole("option", {
-        name: "APC PDU - disabled due to network vulnerability",
-      })
-    ).toBeDisabled();
+    // FIPS-unsupported power types should show their reason as a tooltip
+    // (hover the tooltip's inner wrapper, since it holds the hover handlers)
+    await expectTooltipOnHover(
+      within(screen.getByRole("option", { name: "Intel AMT" })).getByText(
+        "Intel AMT"
+      ).parentElement,
+      "Disabled due to uses non-approved cryptography"
+    );
+    await expectTooltipOnHover(
+      within(screen.getByRole("option", { name: "APC PDU" })).getByText(
+        "APC PDU"
+      ).parentElement,
+      "Disabled due to network vulnerability"
+    );
   });
 
   it("shows all power types without FIPS reasons when FIPS is not active", async () => {
@@ -525,17 +530,14 @@ describe("PowerTypeFields", () => {
 
     await waitForLoading();
 
-    // All power types should be enabled
-    expect(screen.getByRole("option", { name: "Manual" })).not.toBeDisabled();
+    await userEvent.click(screen.getByRole("button", { name: "Power type" }));
+
+    expect(screen.getByRole("option", { name: "Manual" })).toBeInTheDocument();
     expect(
       screen.getByRole("option", { name: "Intel AMT" })
-    ).not.toBeDisabled();
+    ).toBeInTheDocument();
 
-    // No FIPS reason messages should be shown in the labels
-    expect(
-      screen.queryByRole("option", {
-        name: /disabled due to/,
-      })
-    ).not.toBeInTheDocument();
+    // No FIPS reason tooltip should be shown for any option
+    expect(screen.queryByRole("tooltip")).not.toBeInTheDocument();
   });
 });
