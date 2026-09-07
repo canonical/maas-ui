@@ -32,6 +32,8 @@ import type { SSHKeySidePanelContent } from "@/app/preferences/views/SSHKeys/con
 import { SSHKeyActionSidePanelViews } from "@/app/preferences/views/SSHKeys/constants";
 import type { SSLKeySidePanelContent } from "@/app/preferences/views/SSLKeys/constants";
 import { SSLKeyActionSidePanelViews } from "@/app/preferences/views/SSLKeys/constants";
+import { TrustedSSHHostKeyActionSidePanelViews } from "@/app/settings/views/Security/TrustedSSHHostKeys/constants";
+import type { TrustedSSHHostKeySidePanelContent } from "@/app/settings/views/Security/TrustedSSHHostKeys/constants";
 import { UserActionSidePanelViews } from "@/app/settings/views/Users/constants";
 import type { UserSidePanelContent } from "@/app/settings/views/Users/constants";
 import type { NodeActions } from "@/app/store/types/node";
@@ -81,6 +83,7 @@ export type SidePanelContent =
   | SubnetDetailsSidePanelContent
   | SubnetSidePanelContent
   | TagSidePanelContent
+  | TrustedSSHHostKeySidePanelContent
   | UserSidePanelContent
   | VLANDetailsSidePanelContent
   | ZoneSidePanelContent
@@ -118,6 +121,7 @@ export const SidePanelViews = {
   ...SubnetDetailsSidePanelViews,
   ...SpaceDetailsSidePanelViews,
   ...RepositoryActionSidePanelViews,
+  ...TrustedSSHHostKeyActionSidePanelViews,
 } as const;
 
 const sidePanelTitleMap: Record<string, string> = {
@@ -185,6 +189,8 @@ const sidePanelTitleMap: Record<string, string> = {
   [SidePanelViews.ADD_PPA[1]]: "Add PPA",
   [SidePanelViews.EDIT_REPOSITORY[1]]: "Edit repository",
   [SidePanelViews.DELETE_REPOSITORY[1]]: "Delete repository",
+  [SidePanelViews.ADD_TRUSTED_SSH_HOST_KEY[1]]: "Add SSH host key",
+  [SidePanelViews.DELETE_TRUSTED_SSH_HOST_KEY[1]]: "Delete SSH host key",
 };
 
 /**
