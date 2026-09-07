@@ -9,6 +9,8 @@ import IPMIPowerFields from "./IPMIPowerFields";
 import type { LXDPowerFieldsProps } from "./LXDPowerFields";
 import LXDPowerFields from "./LXDPowerFields";
 
+import { usePowerTypes } from "@/app/api/query/powerTypes";
+import { useSystemInfo } from "@/app/api/query/system";
 import FormikField from "@/app/base/components/FormikField";
 import { FormikFieldChangeError } from "@/app/base/components/FormikField/FormikField";
 import { useFetchActions } from "@/app/base/hooks";
@@ -58,6 +60,15 @@ export const PowerTypeFields = <V extends AnyObject>({
 
   useFetchActions([generalActions.fetchPowerTypes]);
 
+  const systemInfo = useSystemInfo();
+  const powerTypesResponse = usePowerTypes();
+
+  const powerTypesResponseData = powerTypesResponse.data?.items || [];
+  const fipsDisabledPowerTypes = powerTypesResponseData.filter(
+    (powerType) => powerType.fips_supported === false
+  );
+  const fipsActive = systemInfo.data?.fips_active;
+
   // Only power types that can probe are suitable for use when adding a chassis.
   const powerTypes = forChassis ? chassisPowerTypes : allPowerTypes;
 
@@ -67,7 +78,11 @@ export const PowerTypeFields = <V extends AnyObject>({
   const selectedPowerType = powerTypes.find(
     (type) => type.name === values[powerTypeValueName]
   );
-  if (!powerTypesLoaded) {
+  if (
+    !powerTypesLoaded ||
+    systemInfo.isPending ||
+    powerTypesResponse.isPending
+  ) {
     fieldContent = <Spinner text="Loading..." />;
   } else if (selectedPowerType) {
     const fieldsInScope = getFieldsInScope(selectedPowerType, fieldScopes);
@@ -140,8 +155,13 @@ export const PowerTypeFields = <V extends AnyObject>({
             { label: "Select power type", value: "", disabled: true },
             ...powerTypes.map((powerType) => ({
               key: `power-type-${powerType.name}`,
-              label: powerType.description,
+              label: `${powerType.description}${fipsActive && fipsDisabledPowerTypes?.some((type) => powerType.name === type.name) ? ` - disabled due to ${fipsDisabledPowerTypes.find((type) => type.name === powerType.name)?.fips_unsupported_reason}` : ""}`,
               value: powerType.name,
+              disabled:
+                fipsActive &&
+                fipsDisabledPowerTypes?.some(
+                  (disabledType) => powerType.name === disabledType.name
+                ),
             })),
           ]}
           required
