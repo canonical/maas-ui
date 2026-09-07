@@ -3,6 +3,9 @@ import { useMemo } from "react";
 import type { ColumnDef } from "@tanstack/react-table";
 
 import type { SshHostKeyResponse } from "@/app/apiclient";
+import TableActions from "@/app/base/components/TableActions";
+import { useSidePanel } from "@/app/base/side-panel-context";
+import { TrustedSSHHostKeyActionSidePanelViews } from "@/app/settings/views/Security/TrustedSSHHostKeys/constants";
 
 type TrustedSSHHostKeysColumnDef = ColumnDef<
   SshHostKeyResponse,
@@ -10,6 +13,8 @@ type TrustedSSHHostKeysColumnDef = ColumnDef<
 >;
 
 const useTrustedSSHHostKeysTableColumns = (): TrustedSSHHostKeysColumnDef[] => {
+  const { setSidePanelContent } = useSidePanel();
+
   return useMemo(
     () => [
       {
@@ -65,8 +70,25 @@ const useTrustedSSHHostKeysTableColumns = (): TrustedSSHHostKeysColumnDef[] => {
           );
         },
       },
+      {
+        id: "action",
+        accessorKey: "id",
+        enableSorting: false,
+        header: "Actions",
+        cell: ({ row: { original } }) => (
+          <TableActions
+            data-testid="trusted-ssh-host-key-actions"
+            onDelete={() => {
+              setSidePanelContent({
+                view: TrustedSSHHostKeyActionSidePanelViews.DELETE_TRUSTED_SSH_HOST_KEY,
+                extras: { sshHostKeyId: original.id },
+              });
+            }}
+          />
+        ),
+      },
     ],
-    []
+    [setSidePanelContent]
   );
 };
 
