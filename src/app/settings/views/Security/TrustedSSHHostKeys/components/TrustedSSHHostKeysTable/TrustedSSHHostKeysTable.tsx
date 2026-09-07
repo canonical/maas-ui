@@ -1,12 +1,15 @@
 import { GenericTable, MainToolbar } from "@canonical/maas-react-components";
-import { Notification } from "@canonical/react-components";
+import { Button, Notification } from "@canonical/react-components";
 
 import useTrustedSSHHostKeysTableColumns from "./useTrustedSSHHostKeysTableColumns";
 
 import { useTrustedSshHostKeys } from "@/app/api/query/trustedSshHostKeys";
 import usePagination from "@/app/base/hooks/usePagination/usePagination";
+import { useSidePanel } from "@/app/base/side-panel-context";
+import { TrustedSSHHostKeyActionSidePanelViews } from "@/app/settings/views/Security/TrustedSSHHostKeys/constants";
 
 const TrustedSSHHostKeysTable = () => {
+  const { setSidePanelContent } = useSidePanel();
   const { page, debouncedPage, size, handlePageSizeChange, setPage } =
     usePagination();
 
@@ -23,6 +26,17 @@ const TrustedSSHHostKeysTable = () => {
     <div className="trusted-ssh-host-keys-table">
       <MainToolbar>
         <MainToolbar.Title>Trusted SSH host keys</MainToolbar.Title>
+        <MainToolbar.Controls>
+          <Button
+            onClick={() => {
+              setSidePanelContent({
+                view: TrustedSSHHostKeyActionSidePanelViews.ADD_TRUSTED_SSH_HOST_KEY,
+              });
+            }}
+          >
+            Add SSH key
+          </Button>
+        </MainToolbar.Controls>
       </MainToolbar>
       {isError && (
         <Notification
