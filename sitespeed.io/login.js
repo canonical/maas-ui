@@ -29,9 +29,5 @@ module.exports = async function (context, commands) {
     TIMEOUT
   );
   await commands.click.bySelector("button.p-button--positive");
-  await commands.wait.bySelector(
-    "[data-testid='section-header-title-spinner']",
-    TIMEOUT
-  );
   await commands.wait.byXpath("//a//span[text()='admin']", TIMEOUT);
 };
