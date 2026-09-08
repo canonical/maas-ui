@@ -66,6 +66,7 @@ const urls = {
     ipmiSettings: "/settings/security/ipmi-settings",
     sessionTimeout: "/settings/security/session-timeout",
     trustedSshHostKeys: "/settings/security/trusted-ssh-host-keys",
+    hardeningStatus: "/settings/security/hardening-status",
   },
   storage: "/settings/storage",
   users: {

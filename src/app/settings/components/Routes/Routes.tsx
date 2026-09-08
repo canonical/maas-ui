@@ -25,6 +25,7 @@ import SyslogForm from "@/app/settings/views/Network/SyslogForm";
 import RepositoriesList from "@/app/settings/views/Repositories/views";
 import ScriptsList from "@/app/settings/views/Scripts/ScriptsList";
 import ScriptsUpload from "@/app/settings/views/Scripts/ScriptsUpload";
+import HardeningStatus from "@/app/settings/views/Security/HardeningStatus";
 import IpmiSettings from "@/app/settings/views/Security/IpmiSettings";
 import SecretStorage from "@/app/settings/views/Security/SecretStorage";
 import SecurityProtocols from "@/app/settings/views/Security/SecurityProtocols";
@@ -116,6 +117,14 @@ const Routes = (): React.ReactElement => {
       <Route
         element={<TrustedSSHHostKeys />}
         path={getRelativeRoute(urls.settings.security.trustedSshHostKeys, base)}
+      />
+      <Route
+        element={
+          <PageContent sidePanelContent={null} sidePanelTitle={null}>
+            <HardeningStatus />
+          </PageContent>
+        }
+        path={getRelativeRoute(urls.settings.security.hardeningStatus, base)}
       />
       <Route
         element={

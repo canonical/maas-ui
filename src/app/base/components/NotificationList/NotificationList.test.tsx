@@ -220,4 +220,77 @@ describe("NotificationList", () => {
     });
     expect(container.firstChild).toHaveClass("u-nudge-down");
   });
+
+  it("aggregates hardening notifications into a single notification", () => {
+    state.notification.items = [
+      factory.notification({
+        id: 1,
+        category: NotificationCategory.ERROR,
+        ident: "hardening-wildcard-bind-api-bind",
+        message:
+          "api_bind is not configured Run: maas config-hardening set api_bind <specific-ip-address>",
+      }),
+      factory.notification({
+        id: 2,
+        category: NotificationCategory.ERROR,
+        ident: "hardening-wildcard-bind-dns-bind",
+        message:
+          "dns_bind is not configured Run: maas config-hardening set dns_bind <specific-ip-address>",
+      }),
+    ];
+    renderWithBrowserRouter(<NotificationList />, {
+      route: "/machines",
+      state,
+    });
+
+    const notification = screen.getByTestId("hardening-notification");
+    expect(notification).toHaveTextContent(
+      "Hardening has been enabled, but 2 conditions have not been met."
+    );
+    expect(
+      screen.getByRole("link", { name: "Go to hardening settings..." })
+    ).toBeInTheDocument();
+    // The raw hardening messages are not displayed directly.
+    expect(
+      screen.queryByText(/maas config-hardening set/)
+    ).not.toBeInTheDocument();
+  });
+
+  it("uses singular wording for a single hardening notification", () => {
+    state.notification.items = [
+      factory.notification({
+        id: 1,
+        category: NotificationCategory.ERROR,
+        ident: "hardening-wildcard-bind-api-bind",
+        message:
+          "api_bind is not configured Run: maas config-hardening set api_bind <specific-ip-address>",
+      }),
+    ];
+    renderWithBrowserRouter(<NotificationList />, {
+      route: "/machines",
+      state,
+    });
+
+    expect(screen.getByTestId("hardening-notification")).toHaveTextContent(
+      "Hardening has been enabled, but 1 condition has not been met."
+    );
+  });
+
+  it("does not display a hardening notification when there are none", () => {
+    state.notification.items = [
+      factory.notification({
+        id: 1,
+        category: NotificationCategory.ERROR,
+        message: "an error",
+      }),
+    ];
+    renderWithBrowserRouter(<NotificationList />, {
+      route: "/machines",
+      state,
+    });
+
+    expect(
+      screen.queryByTestId("hardening-notification")
+    ).not.toBeInTheDocument();
+  });
 });
