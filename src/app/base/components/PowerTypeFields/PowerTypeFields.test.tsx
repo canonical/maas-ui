@@ -6,12 +6,22 @@ import { PowerTypeNames } from "@/app/store/general/constants";
 import { PowerFieldScope, PowerFieldType } from "@/app/store/general/types";
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
+import { powerTypesResolvers } from "@/testing/resolvers/powerTypes";
+import { systemResolvers } from "@/testing/resolvers/system";
 import {
+  expectTooltipOnHover,
   renderWithMockStore,
   screen,
+  setupMockServer,
   userEvent,
+  waitForLoading,
   within,
 } from "@/testing/utils";
+
+const mockServer = setupMockServer(
+  powerTypesResolvers.listPowerTypes.handler(),
+  systemResolvers.getSystemInfo.handler()
+);
 
 describe("PowerTypeFields", () => {
   let state: RootState;
@@ -25,7 +35,7 @@ describe("PowerTypeFields", () => {
     });
   });
 
-  it("correctly generates power options from power type", () => {
+  it("correctly generates power options from power type", async () => {
     const powerTypes = [
       factory.powerType({
         fields: [
@@ -65,6 +75,8 @@ describe("PowerTypeFields", () => {
       { state }
     );
 
+    await waitForLoading();
+
     expect(
       screen.getByRole("textbox", { name: "Required text" })
     ).toBeInTheDocument();
@@ -92,7 +104,7 @@ describe("PowerTypeFields", () => {
     });
   });
 
-  it("does not show select if showSelect is false", () => {
+  it("does not show select if showSelect is false", async () => {
     const powerTypes = [
       factory.powerType({
         fields: [
@@ -113,10 +125,12 @@ describe("PowerTypeFields", () => {
       { state }
     );
 
+    await waitForLoading();
+
     expect(screen.queryByRole("combobox")).not.toBeInTheDocument();
   });
 
-  it("can limit the fields to show based on their scope", () => {
+  it("can limit the fields to show based on their scope", async () => {
     const powerTypes = [
       factory.powerType({
         fields: [
@@ -145,6 +159,8 @@ describe("PowerTypeFields", () => {
       { state }
     );
 
+    await waitForLoading();
+
     expect(
       screen.getByRole("textbox", { name: "Field 1" })
     ).toBeInTheDocument();
@@ -153,7 +169,7 @@ describe("PowerTypeFields", () => {
     ).not.toBeInTheDocument();
   });
 
-  it("can only show power types suitable for chassis", () => {
+  it("can only show power types suitable for chassis", async () => {
     const powerTypes = [
       factory.powerType({
         can_probe: true,
@@ -176,13 +192,17 @@ describe("PowerTypeFields", () => {
       { state }
     );
 
+    await waitForLoading();
+
+    await userEvent.click(screen.getByRole("button", { name: "Power type" }));
+
     expect(screen.getByRole("option", { name: "virsh" })).toBeInTheDocument();
     expect(
       screen.queryByRole("option", { name: "manual" })
     ).not.toBeInTheDocument();
   });
 
-  it("can be given different values for formik field names", () => {
+  it("can be given different values for formik field names", async () => {
     const powerTypes = [
       factory.powerType({
         fields: [
@@ -208,8 +228,10 @@ describe("PowerTypeFields", () => {
       { state }
     );
 
+    await waitForLoading();
+
     expect(
-      screen.getByRole("combobox", { name: "Power type" })
+      screen.getByRole("button", { name: "Power type" })
     ).toBeInTheDocument();
     expect(
       screen.getByRole("textbox", { name: "Parameter 1" })
@@ -220,7 +242,7 @@ describe("PowerTypeFields", () => {
     );
   });
 
-  it("can disable the power type select", () => {
+  it("can disable the power type select", async () => {
     renderWithMockStore(
       <Formik
         initialValues={{
@@ -234,7 +256,12 @@ describe("PowerTypeFields", () => {
       { state }
     );
 
-    expect(screen.getByRole("combobox", { name: "Power type" })).toBeDisabled();
+    await waitForLoading();
+
+    expect(screen.getByRole("button", { name: "Power type" })).toHaveAttribute(
+      "aria-disabled",
+      "true"
+    );
   });
 
   it("resets the fields of the selected power type on change", async () => {
@@ -291,6 +318,8 @@ describe("PowerTypeFields", () => {
       { state }
     );
 
+    await waitForLoading();
+
     // Fields should have changed parameters
     expect(screen.getByRole("textbox", { name: "Parameter 1" })).toHaveValue(
       "changed parameter1"
@@ -300,10 +329,8 @@ describe("PowerTypeFields", () => {
     );
 
     // Change power type to "virsh"
-    await userEvent.selectOptions(
-      screen.getByRole("combobox", { name: "Power type" }),
-      screen.getByRole("option", { name: "virsh" })
-    );
+    await userEvent.click(screen.getByRole("button", { name: "Power type" }));
+    await userEvent.click(screen.getByRole("option", { name: "virsh" }));
 
     // Fields of selected power type should be reset to defaults
     expect(screen.getByRole("textbox", { name: "Parameter 1" })).toHaveValue(
@@ -317,7 +344,7 @@ describe("PowerTypeFields", () => {
     );
   });
 
-  it("renders LXD power fields with custom props if selected", () => {
+  it("renders LXD power fields with custom props if selected", async () => {
     const powerTypes = [
       factory.powerType({
         fields: [
@@ -344,6 +371,8 @@ describe("PowerTypeFields", () => {
       { state }
     );
 
+    await waitForLoading();
+
     expect(
       screen.getByRole("textbox", { name: "Password" })
     ).toBeInTheDocument();
@@ -365,5 +394,150 @@ describe("PowerTypeFields", () => {
     expect(
       screen.getByRole("textbox", { name: "Upload private key" })
     ).toBeInTheDocument();
+  });
+
+  it("disables power types not supported by FIPS when FIPS is active and shows reasons", async () => {
+    const fipsUnsupportedPowerTypesResponse = {
+      items: [
+        factory.powerTypeV3({
+          name: "manual",
+          description: "Manual",
+          fips_supported: true,
+          fips_unsupported_reason: undefined,
+        }),
+        factory.powerTypeV3({
+          name: "amt",
+          description: "Intel AMT",
+          fips_supported: false,
+          fips_unsupported_reason: "uses non-approved cryptography",
+        }),
+        factory.powerTypeV3({
+          name: "apc",
+          description: "APC PDU",
+          fips_supported: false,
+          fips_unsupported_reason: "network vulnerability",
+        }),
+      ],
+    };
+
+    mockServer.use(
+      powerTypesResolvers.listPowerTypes.handler(
+        fipsUnsupportedPowerTypesResponse
+      ),
+      systemResolvers.getSystemInfo.handler(
+        factory.systemInfo({ fips_active: true })
+      )
+    );
+
+    const powerTypes = [
+      factory.powerType({
+        name: "manual",
+        description: "Manual",
+      }),
+      factory.powerType({
+        name: "amt",
+        description: "Intel AMT",
+      }),
+      factory.powerType({
+        name: "apc",
+        description: "APC PDU",
+      }),
+    ];
+    state.general.powerTypes.data = powerTypes;
+
+    renderWithMockStore(
+      <Formik
+        initialValues={{
+          power_parameters: {},
+          power_type: PowerTypeNames.MANUAL,
+        }}
+        onSubmit={vi.fn()}
+      >
+        <PowerTypeFields />
+      </Formik>,
+      { state }
+    );
+
+    await waitForLoading();
+
+    await userEvent.click(screen.getByRole("button", { name: "Power type" }));
+
+    // FIPS-unsupported power types should show their reason as a tooltip
+    // (hover the tooltip's inner wrapper, since it holds the hover handlers)
+    await expectTooltipOnHover(
+      within(screen.getByRole("option", { name: "Intel AMT" })).getByText(
+        "Intel AMT"
+      ).parentElement,
+      "Disabled due to uses non-approved cryptography"
+    );
+    await expectTooltipOnHover(
+      within(screen.getByRole("option", { name: "APC PDU" })).getByText(
+        "APC PDU"
+      ).parentElement,
+      "Disabled due to network vulnerability"
+    );
+  });
+
+  it("shows all power types without FIPS reasons when FIPS is not active", async () => {
+    const noFipsRestrictionsResponse = {
+      items: [
+        factory.powerTypeV3({
+          name: "manual",
+          description: "Manual",
+          fips_supported: true,
+          fips_unsupported_reason: undefined,
+        }),
+        factory.powerTypeV3({
+          name: "amt",
+          description: "Intel AMT",
+          fips_supported: false,
+          fips_unsupported_reason: "uses non-approved cryptography",
+        }),
+      ],
+    };
+
+    mockServer.use(
+      powerTypesResolvers.listPowerTypes.handler(noFipsRestrictionsResponse),
+      systemResolvers.getSystemInfo.handler(
+        factory.systemInfo({ fips_active: false })
+      )
+    );
+
+    const powerTypes = [
+      factory.powerType({
+        name: "manual",
+        description: "Manual",
+      }),
+      factory.powerType({
+        name: "amt",
+        description: "Intel AMT",
+      }),
+    ];
+    state.general.powerTypes.data = powerTypes;
+
+    renderWithMockStore(
+      <Formik
+        initialValues={{
+          power_parameters: {},
+          power_type: PowerTypeNames.MANUAL,
+        }}
+        onSubmit={vi.fn()}
+      >
+        <PowerTypeFields />
+      </Formik>,
+      { state }
+    );
+
+    await waitForLoading();
+
+    await userEvent.click(screen.getByRole("button", { name: "Power type" }));
+
+    expect(screen.getByRole("option", { name: "Manual" })).toBeInTheDocument();
+    expect(
+      screen.getByRole("option", { name: "Intel AMT" })
+    ).toBeInTheDocument();
+
+    // No FIPS reason tooltip should be shown for any option
+    expect(screen.queryByRole("tooltip")).not.toBeInTheDocument();
   });
 });

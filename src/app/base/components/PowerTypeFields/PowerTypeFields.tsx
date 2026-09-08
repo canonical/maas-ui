@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 
-import { Select, Spinner } from "@canonical/react-components";
+import { CustomSelect, Spinner, Tooltip } from "@canonical/react-components";
 import { useFormikContext } from "formik";
 import { useSelector } from "react-redux";
 
@@ -9,6 +9,8 @@ import IPMIPowerFields from "./IPMIPowerFields";
 import type { LXDPowerFieldsProps } from "./LXDPowerFields";
 import LXDPowerFields from "./LXDPowerFields";
 
+import { usePowerTypes } from "@/app/api/query/powerTypes";
+import { useSystemInfo } from "@/app/api/query/system";
 import FormikField from "@/app/base/components/FormikField";
 import { FormikFieldChangeError } from "@/app/base/components/FormikField/FormikField";
 import { useFetchActions } from "@/app/base/hooks";
@@ -47,7 +49,6 @@ export const PowerTypeFields = <V extends AnyObject>({
   const chassisPowerTypes = useSelector(powerTypesSelectors.canProbe);
   const powerTypesLoaded = useSelector(powerTypesSelectors.loaded);
   const {
-    handleChange,
     initialErrors,
     initialTouched,
     setErrors,
@@ -58,6 +59,15 @@ export const PowerTypeFields = <V extends AnyObject>({
 
   useFetchActions([generalActions.fetchPowerTypes]);
 
+  const systemInfo = useSystemInfo();
+  const powerTypesResponse = usePowerTypes();
+
+  const powerTypesResponseData = powerTypesResponse.data?.items || [];
+  const fipsDisabledPowerTypes = powerTypesResponseData.filter(
+    (powerType) => powerType.fips_supported === false
+  );
+  const fipsActive = systemInfo.data?.fips_active;
+
   // Only power types that can probe are suitable for use when adding a chassis.
   const powerTypes = forChassis ? chassisPowerTypes : allPowerTypes;
 
@@ -67,7 +77,11 @@ export const PowerTypeFields = <V extends AnyObject>({
   const selectedPowerType = powerTypes.find(
     (type) => type.name === values[powerTypeValueName]
   );
-  if (!powerTypesLoaded) {
+  if (
+    !powerTypesLoaded ||
+    systemInfo.isPending ||
+    powerTypesResponse.isPending
+  ) {
     fieldContent = <Spinner text="Loading..." />;
   } else if (selectedPowerType) {
     const fieldsInScope = getFieldsInScope(selectedPowerType, fieldScopes);
@@ -104,19 +118,27 @@ export const PowerTypeFields = <V extends AnyObject>({
     <>
       {showSelect && (
         <FormikField
-          component={Select}
+          component={CustomSelect}
           disabled={!powerTypesLoaded || disableSelect}
           label="Power type"
           name={powerTypeValueName}
-          onChange={async (e: React.ChangeEvent<HTMLSelectElement>) => {
+          onChange={async (value: string) => {
             // Reset errors and touched formik state when selecting a new power
             // type, in order to start validation from new.
-            // eslint-disable-next-line @typescript-eslint/no-confusing-void-expression
-            await handleChange(e);
+
+            // CustomSelect passes the raw string value, not an event, so set
+            // the field directly rather than via formik's handleChange.
+            await setFieldValue(powerTypeValueName, value).catch((reason) => {
+              throw new FormikFieldChangeError(
+                powerTypeValueName,
+                "setFieldValue",
+                reason
+              );
+            });
             setErrors(initialErrors);
             setTouched(initialTouched);
 
-            const powerType = getPowerTypeFromName(powerTypes, e.target.value);
+            const powerType = getPowerTypeFromName(powerTypes, value);
             // Explicitly set the fields of the selected power type to defaults.
             // This is necessary because some field names are shared across
             // power types (e.g. "power_address"), meaning the value would otherwise
@@ -140,11 +162,39 @@ export const PowerTypeFields = <V extends AnyObject>({
             { label: "Select power type", value: "", disabled: true },
             ...powerTypes.map((powerType) => ({
               key: `power-type-${powerType.name}`,
-              label: powerType.description,
+              label: (
+                <>
+                  <Tooltip
+                    message={
+                      fipsActive &&
+                      fipsDisabledPowerTypes?.some(
+                        (type) => powerType.name === type.name
+                      )
+                        ? `Disabled due to ${
+                            fipsDisabledPowerTypes.find(
+                              (type) => type.name === powerType.name
+                            )?.fips_unsupported_reason
+                          }`
+                        : ""
+                    }
+                    position="left"
+                  >
+                    {powerType.description}
+                  </Tooltip>
+                </>
+              ),
+              text: powerType.description,
               value: powerType.name,
+              disabled:
+                fipsActive &&
+                fipsDisabledPowerTypes?.some(
+                  (disabledType) => powerType.name === disabledType.name
+                ),
             })),
           ]}
           required
+          searchable="never"
+          value={`${values[powerTypeValueName]}`}
         />
       )}
       {fieldContent}
