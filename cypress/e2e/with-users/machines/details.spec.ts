@@ -15,7 +15,8 @@ context("Machine details", () => {
     });
     cy.findByLabelText("Machine name").type(name);
     cy.findByLabelText("MAC address").type(generateMac());
-    cy.findByLabelText("Power type").select("Manual");
+    cy.findByRole("button", { name: /Power type/i }).click();
+    cy.findByText("Manual").click();
     cy.get("button[type='submit']").click();
     return { name };
   };
