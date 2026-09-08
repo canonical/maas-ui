@@ -1,6 +1,8 @@
 import { Formik } from "formik";
 
-import PowerTypeFields from "./PowerTypeFields";
+import PowerTypeFields, {
+  POWER_VERIFY_SSL_FIELD_NAME,
+} from "./PowerTypeFields";
 
 import { PowerTypeNames } from "@/app/store/general/constants";
 import { PowerFieldScope, PowerFieldType } from "@/app/store/general/types";
@@ -14,6 +16,7 @@ import {
   screen,
   setupMockServer,
   userEvent,
+  waitFor,
   waitForLoading,
   within,
 } from "@/testing/utils";
@@ -539,5 +542,142 @@ describe("PowerTypeFields", () => {
 
     // No FIPS reason tooltip should be shown for any option
     expect(screen.queryByRole("tooltip")).not.toBeInTheDocument();
+  });
+
+  it.each([
+    PowerTypeNames.WEBHOOK,
+    PowerTypeNames.PROXMOX,
+    PowerTypeNames.HMCZ,
+  ])(
+    "forces SSL verification on and disables the field for %s when FIPS is active",
+    async (powerTypeName) => {
+      mockServer.use(
+        systemResolvers.getSystemInfo.handler(
+          factory.systemInfo({ fips_active: true })
+        )
+      );
+      const powerTypes = [
+        factory.powerType({
+          fields: [
+            factory.powerField({
+              choices: [
+                ["n", "No"],
+                ["y", "Yes"],
+              ],
+              default: "n",
+              field_type: PowerFieldType.CHOICE,
+              label: "Verify SSL",
+              name: POWER_VERIFY_SSL_FIELD_NAME,
+            }),
+          ],
+          name: powerTypeName,
+        }),
+      ];
+      state.general.powerTypes.data = powerTypes;
+      renderWithMockStore(
+        <Formik
+          initialValues={{
+            power_parameters: { [POWER_VERIFY_SSL_FIELD_NAME]: "n" },
+            power_type: powerTypeName,
+          }}
+          onSubmit={vi.fn()}
+        >
+          <PowerTypeFields />
+        </Formik>,
+        { state }
+      );
+
+      await waitForLoading();
+
+      const verifySslField = screen.getByRole("combobox", {
+        name: "Verify SSL",
+      });
+      await waitFor(() => {
+        expect(verifySslField).toHaveValue("y");
+      });
+      expect(verifySslField).toBeDisabled();
+    }
+  );
+
+  it("does not force SSL verification for power types that don't require it", async () => {
+    const powerTypes = [
+      factory.powerType({
+        fields: [
+          factory.powerField({
+            choices: [
+              ["n", "No"],
+              ["y", "Yes"],
+            ],
+            default: "n",
+            field_type: PowerFieldType.CHOICE,
+            label: "Verify SSL",
+            name: POWER_VERIFY_SSL_FIELD_NAME,
+          }),
+        ],
+        name: PowerTypeNames.MANUAL,
+      }),
+    ];
+    state.general.powerTypes.data = powerTypes;
+    renderWithMockStore(
+      <Formik
+        initialValues={{
+          power_parameters: { [POWER_VERIFY_SSL_FIELD_NAME]: "n" },
+          power_type: PowerTypeNames.MANUAL,
+        }}
+        onSubmit={vi.fn()}
+      >
+        <PowerTypeFields />
+      </Formik>,
+      { state }
+    );
+
+    await waitForLoading();
+
+    const verifySslField = screen.getByRole("combobox", {
+      name: "Verify SSL",
+    });
+    expect(verifySslField).toHaveValue("n");
+    expect(verifySslField).not.toBeDisabled();
+  });
+
+  it("does not force SSL verification when FIPS is not active", async () => {
+    const powerTypes = [
+      factory.powerType({
+        fields: [
+          factory.powerField({
+            choices: [
+              ["n", "No"],
+              ["y", "Yes"],
+            ],
+            default: "n",
+            field_type: PowerFieldType.CHOICE,
+            label: "Verify SSL",
+            name: POWER_VERIFY_SSL_FIELD_NAME,
+          }),
+        ],
+        name: PowerTypeNames.WEBHOOK,
+      }),
+    ];
+    state.general.powerTypes.data = powerTypes;
+    renderWithMockStore(
+      <Formik
+        initialValues={{
+          power_parameters: { [POWER_VERIFY_SSL_FIELD_NAME]: "n" },
+          power_type: PowerTypeNames.WEBHOOK,
+        }}
+        onSubmit={vi.fn()}
+      >
+        <PowerTypeFields />
+      </Formik>,
+      { state }
+    );
+
+    await waitForLoading();
+
+    const verifySslField = screen.getByRole("combobox", {
+      name: "Verify SSL",
+    });
+    expect(verifySslField).toHaveValue("n");
+    expect(verifySslField).not.toBeDisabled();
   });
 });

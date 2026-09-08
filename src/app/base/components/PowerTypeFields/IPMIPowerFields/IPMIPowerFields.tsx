@@ -13,6 +13,7 @@ import type { PowerParameters } from "@/app/store/types/node";
 
 type Props = {
   fields: PowerFieldType[];
+  fipsActive?: boolean;
   powerParametersValueName?: string;
 };
 
@@ -20,8 +21,15 @@ export const WORKAROUNDS_FIELD_NAME = "workaround_flags";
 
 export const NONE_WORKAROUND_VALUE = "";
 
+export const CIPHER_SUITE_ID_FIELD_NAME = "cipher_suite_id";
+
+// Cipher suite 17 (HMAC-SHA256::HMAC_SHA256_128::AES-CBC-128) is the only
+// secure IPMI cipher suite, so it's enforced as the only selectable choice.
+export const SECURE_CIPHER_SUITE_ID = "17";
+
 export const IPMIPowerFields = <V extends AnyObject>({
   fields,
+  fipsActive = false,
   powerParametersValueName = "power_parameters",
 }: Props): React.ReactElement | null => {
   const { setFieldValue, values } = useFormikContext<V>();
@@ -30,6 +38,10 @@ export const IPMIPowerFields = <V extends AnyObject>({
     values[powerParametersValueName] as PowerParameters
   )[WORKAROUNDS_FIELD_NAME];
   const isMultiChoice = Array.isArray(workaroundsFieldValue);
+  const cipherSuiteFieldName = `${powerParametersValueName}.${CIPHER_SUITE_ID_FIELD_NAME}`;
+  const cipherSuiteFieldValue = (
+    values[powerParametersValueName] as PowerParameters
+  )[CIPHER_SUITE_ID_FIELD_NAME];
 
   // Automatically set workaround flags to "None" value if all choices are
   // unselected.
@@ -51,6 +63,22 @@ export const IPMIPowerFields = <V extends AnyObject>({
     workaroundsFieldName,
     workaroundsFieldValue,
   ]);
+
+  // Enforce the secure cipher suite as the only usable value when FIPS is
+  // active, regardless of what value the field previously had or defaults to.
+  useEffect(() => {
+    if (fipsActive && cipherSuiteFieldValue !== SECURE_CIPHER_SUITE_ID) {
+      setFieldValue(cipherSuiteFieldName, SECURE_CIPHER_SUITE_ID).catch(
+        (reason) => {
+          throw new FormikFieldChangeError(
+            cipherSuiteFieldName,
+            "setFieldValue",
+            reason
+          );
+        }
+      );
+    }
+  }, [cipherSuiteFieldName, cipherSuiteFieldValue, fipsActive, setFieldValue]);
 
   return (
     <>
@@ -105,8 +133,18 @@ export const IPMIPowerFields = <V extends AnyObject>({
             </div>
           );
         } else {
+          const isCipherSuiteField = name === CIPHER_SUITE_ID_FIELD_NAME;
           content.push(
             <BasePowerField
+              disabledChoices={
+                isCipherSuiteField && fipsActive
+                  ? choices
+                      .map(([choiceValue]) => choiceValue)
+                      .filter(
+                        (choiceValue) => choiceValue !== SECURE_CIPHER_SUITE_ID
+                      )
+                  : undefined
+              }
               field={field}
               key={field.name}
               powerParametersValueName={powerParametersValueName}
