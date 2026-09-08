@@ -83,6 +83,7 @@ export {
   testStatus,
 } from "./nodes";
 export { packageRepository } from "./packagerepository";
+export { powerTypeV3 } from "./powertype";
 export { reservedIp, reservedIpNodeSummary } from "./reservedip";
 export { resourcePool } from "./resourcepool";
 export { zonesGet } from "./response";
