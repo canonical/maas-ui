@@ -50,17 +50,6 @@ const preselectedCommissioning = createSelector(
 );
 
 /**
- * Returns all switch scripts
- * @param {RootState} state - Redux state
- * @returns {Script[]} Switch scripts
- */
-const switchScripts = createSelector(
-  [defaultSelectors.all],
-  (scriptItems: Script[]) =>
-    scriptItems.filter((item: Script) => item.script_type === ScriptType.SWITCH)
-);
-
-/**
  * Returns all testing scripts
  * @param {RootState} state - Redux state
  * @returns {Script[]} Testing scripts
@@ -131,7 +120,6 @@ const scripts = {
   preselectedCommissioning,
   hasErrors,
   search,
-  switchScripts,
   testing,
   defaultTesting,
   testingWithUrl,

@@ -59,9 +59,6 @@ const urls = {
       index: "/settings/scripts/deploying",
       upload: "/settings/scripts/deploying/upload",
     },
-    switch: {
-      index: "/settings/scripts/switch",
-    },
     testing: {
       index: "/settings/scripts/testing",
       upload: "/settings/scripts/testing/upload",
