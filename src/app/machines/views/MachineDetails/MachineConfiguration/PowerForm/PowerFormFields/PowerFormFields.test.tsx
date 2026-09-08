@@ -5,7 +5,19 @@ import PowerFormFields from ".";
 import { PowerFieldScope } from "@/app/store/general/types";
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
-import { screen, renderWithProviders } from "@/testing/utils";
+import { powerTypesResolvers } from "@/testing/resolvers/powerTypes";
+import { systemResolvers } from "@/testing/resolvers/system";
+import {
+  screen,
+  renderWithProviders,
+  setupMockServer,
+  waitForLoading,
+} from "@/testing/utils";
+
+setupMockServer(
+  powerTypesResolvers.listPowerTypes.handler(),
+  systemResolvers.getSystemInfo.handler()
+);
 
 describe("PowerFormFields", () => {
   let state: RootState;
@@ -21,7 +33,7 @@ describe("PowerFormFields", () => {
     });
   });
 
-  it("renders all field scopes and an enabled power select", () => {
+  it("renders all field scopes and an enabled power select", async () => {
     state.general.powerTypes.data = [
       factory.powerType({
         fields: [
@@ -58,7 +70,12 @@ describe("PowerFormFields", () => {
       { state }
     );
 
-    expect(screen.getByRole("combobox", { name: /Power type/ })).toBeEnabled();
+    await waitForLoading();
+
+    expect(screen.getByRole("button", { name: /Power type/ })).toHaveAttribute(
+      "aria-disabled",
+      "true"
+    );
     expect(
       screen.getByRole("textbox", { name: "Node field" })
     ).toBeInTheDocument();
