@@ -1073,19 +1073,6 @@ export const router = createBrowserRouter(
                         </ErrorBoundary>
                       ),
                     },
-                    {
-                      path: getRelativeRoute(
-                        urls.settings.scripts.switch.index,
-                        urls.settings.index
-                      ),
-                      element: (
-                        <ErrorBoundary>
-                          <PageContent>
-                            <ScriptsList type="switch" />
-                          </PageContent>
-                        </ErrorBoundary>
-                      ),
-                    },
                   ],
                 },
                 {

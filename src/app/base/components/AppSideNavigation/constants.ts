@@ -14,16 +14,12 @@ const navGroups: NavGroup[] = [
         requiredEntitlements: [Entitlement.CAN_VIEW_MACHINES],
         url: urls.machines.index,
       },
-      ...(import.meta.env.VITE_APP_SWITCH_PROVISIONING === "true"
-        ? [
-            {
-              highlight: [urls.switches.index],
-              label: "Switches",
-              requiredEntitlements: [Entitlement.CAN_VIEW_GLOBAL_ENTITIES],
-              url: urls.switches.index,
-            },
-          ]
-        : []),
+      {
+        highlight: [urls.switches.index],
+        label: "Switches",
+        requiredEntitlements: [Entitlement.CAN_VIEW_GLOBAL_ENTITIES],
+        url: urls.switches.index,
+      },
       {
         highlight: [urls.devices.index, urls.devices.device.index(null)],
         label: "Devices",
