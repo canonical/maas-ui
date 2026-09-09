@@ -103,6 +103,33 @@ describe("BasePowerField", () => {
     expect(screen.getByRole("combobox")).toBeInTheDocument();
   });
 
+  it("disables the field when disabled is true", () => {
+    const field = factory.powerField({ field_type: PowerFieldType.STRING });
+    render(
+      <Formik initialValues={{}} onSubmit={vi.fn()}>
+        <BasePowerField disabled field={field} />
+      </Formik>
+    );
+    expect(screen.getByRole("textbox")).toBeDisabled();
+  });
+
+  it("disables individual choices given in disabledChoices", () => {
+    const field = factory.powerField({
+      choices: [
+        ["choice1", "Choice 1"],
+        ["choice2", "Choice 2"],
+      ],
+      field_type: PowerFieldType.CHOICE,
+    });
+    render(
+      <Formik initialValues={{}} onSubmit={vi.fn()}>
+        <BasePowerField disabledChoices={["choice2"]} field={field} />
+      </Formik>
+    );
+    expect(screen.getByRole("option", { name: "Choice 1" })).not.toBeDisabled();
+    expect(screen.getByRole("option", { name: "Choice 2" })).toBeDisabled();
+  });
+
   it("correctly handles a multiple choice field type", async () => {
     const field = factory.powerField({
       choices: [
