@@ -155,4 +155,21 @@ describe("notification selectors", () => {
     });
     expect(notification.getById(state, 909)).toStrictEqual(items[1]);
   });
+
+  it("can get hardening notifications", () => {
+    const hardeningNotification = factory.notification({
+      ident: "hardening-wildcard-bind-api-bind",
+    });
+    const state = factory.rootState({
+      notification: factory.notificationState({
+        items: [
+          hardeningNotification,
+          factory.notification({ ident: "default" }),
+        ],
+      }),
+    });
+    expect(notification.hardening(state)).toStrictEqual([
+      hardeningNotification,
+    ]);
+  });
 });

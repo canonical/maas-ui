@@ -1,4 +1,8 @@
-import { isReleaseNotification, isUpgradeNotification } from "./utils";
+import {
+  isHardeningNotification,
+  isReleaseNotification,
+  isUpgradeNotification,
+} from "./utils";
 
 import { NotificationIdent } from "@/app/store/notification/types";
 import * as factory from "@/testing/factories";
@@ -40,6 +44,22 @@ describe("utils", () => {
         ident: NotificationIdent.RELEASE,
       });
       expect(isUpgradeNotification(notification)).toBe(false);
+    });
+  });
+
+  describe("isHardeningNotification", () => {
+    it("identifies a hardening notification by its ident prefix", () => {
+      const notification = factory.notification({
+        ident: "hardening-wildcard-bind-api-bind",
+      });
+      expect(isHardeningNotification(notification)).toBe(true);
+    });
+
+    it("handles other notifications", () => {
+      const notification = factory.notification({
+        ident: NotificationIdent.RELEASE,
+      });
+      expect(isHardeningNotification(notification)).toBe(false);
     });
   });
 });

@@ -1,0 +1,36 @@
+.hardening-status-table {
+  // Shrink the leading columns so the resolution command has room to breathe.
+  .configKey {
+    width: 10rem;
+  }
+
+  .status {
+    width: 8rem;
+  }
+
+  // Bound the resolution cell so its command scrolls within the cell instead
+  // of widening the table and clipping off the page.
+  .command {
+    max-width: 32rem;
+  }
+
+  // Override the GenericTable rule that right-aligns the last column.
+  .p-generic-table__table thead th.command:last-child,
+  .p-generic-table__table tbody td.command:last-child {
+    text-align: left;
+  }
+
+  &__command {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    max-width: 100%;
+  }
+
+  &__command-snippet {
+    // Scroll the command on its own when it is too wide for the cell.
+    flex: 1 1 auto;
+    min-width: 0;
+    overflow-x: auto;
+  }
+}
