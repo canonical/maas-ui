@@ -1,5 +1,6 @@
 import { Children } from "react";
 
+import "./_index.scss";
 import { useId } from "@/app/base/hooks/base";
 
 type CommonProps = {
@@ -25,12 +26,14 @@ const Definition = ({
 }: Props): React.ReactElement => {
   const id = useId();
   return (
-    <div>
-      <p className="u-text--muted" id={id}>
+    <div className="p-definition">
+      <p className="p-definition__label u-text--muted" id={id}>
         {label}
       </p>
       {description ? (
-        <p aria-labelledby={id}>{description}</p>
+        <p aria-labelledby={id} className="p-definition__description">
+          {description}
+        </p>
       ) : Children.toArray(children).filter((child) => child !== "").length >
         0 ? (
         Children.map(
