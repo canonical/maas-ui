@@ -7,7 +7,6 @@ import {
   checkAuthenticatedSaga,
   loginSaga,
   logoutSaga,
-  externalLoginSaga,
   uploadScriptSaga,
   fetchLicenseKeysSaga,
   updateLicenseKeySaga,
@@ -21,8 +20,6 @@ import { ScriptType } from "@/app/store/script/types";
 import { ScriptResultNames } from "@/app/store/scriptresult/types";
 import { getCookie } from "@/app/utils";
 import * as factory from "@/testing/factories";
-
-vi.mock("@/bakery");
 
 describe("Auth API", () => {
   beforeEach(() => {
@@ -106,32 +103,6 @@ describe("Auth API", () => {
       expect(fetchMock.mock.calls[0][1]?.body?.toString()).toBe(
         "username=ko%26ala&password=gum%25tree"
       );
-    });
-  });
-
-  describe("externalLogin", () => {
-    it("returns a SUCCESS action", () => {
-      return expectSaga(externalLoginSaga)
-        .provide([[matchers.call.fn(api.auth.externalLogin), null]])
-        .put({ type: "status/externalLoginStart" })
-        .put({ type: "status/externalLoginSuccess" })
-        .put({ type: "status/websocketConnect" })
-        .run();
-    });
-
-    it("handles errors", () => {
-      const error = new Error("Unable to log in");
-      return expectSaga(externalLoginSaga)
-        .provide([
-          [matchers.call.fn(api.auth.externalLogin), throwError(error)],
-        ])
-        .put({ type: "status/externalLoginStart" })
-        .put({
-          type: "status/externalLoginError",
-          error: true,
-          payload: error.message,
-        })
-        .run();
     });
   });
 

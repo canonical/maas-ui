@@ -1,7 +1,6 @@
 import Login, { Labels } from "./Login";
 
 import type { RootState } from "@/app/store/root/types";
-import { statusActions } from "@/app/store/status";
 import * as factory from "@/testing/factories";
 import { authResolvers } from "@/testing/resolvers/auth";
 import {
@@ -23,9 +22,7 @@ describe("Login", () => {
 
   beforeEach(() => {
     state = factory.rootState({
-      status: factory.statusState({
-        externalAuthURL: null,
-      }),
+      status: factory.statusState(),
     });
   });
 
@@ -43,35 +40,6 @@ describe("Login", () => {
     expect(
       screen.getByRole("form", { name: Labels.APILoginForm })
     ).toBeInTheDocument();
-  });
-
-  it("can render external login link", () => {
-    state.status.externalAuthURL = "http://login.example.com";
-    renderWithProviders(<Login />, { initialEntries: ["/login"], state });
-
-    expect(
-      screen.getByRole("link", { name: Labels.ExternalLoginButton })
-    ).toBeInTheDocument();
-  });
-
-  it("does not restart external login when already authenticated", async () => {
-    state.status.authenticated = true;
-    state.status.externalAuthURL = "http://login.example.com";
-
-    const { router, store } = renderWithProviders(<Login />, {
-      initialEntries: ["/login"],
-      state,
-    });
-
-    await waitFor(() => {
-      expect(router.state.location.pathname).toBe("/machines");
-    });
-
-    expect(
-      store
-        .getActions()
-        .some((action) => action.type === statusActions.externalLogin().type)
-    ).toBe(false);
   });
 
   it("hides the password field when a username has not been entered", async () => {

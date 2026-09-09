@@ -28,9 +28,7 @@ describe("Details", () => {
 
   beforeEach(() => {
     state = factory.rootState({
-      status: factory.statusState({
-        externalAuthURL: null,
-      }),
+      status: factory.statusState(),
     });
   });
 
@@ -56,15 +54,5 @@ describe("Details", () => {
     await waitFor(() => {
       expect(usersResolvers.updateUser.resolved).toBe(true);
     });
-  });
-
-  it("shows a message when using external auth", () => {
-    state.status.externalAuthURL = "http://login.example.com";
-    renderWithProviders(<Details />, { state });
-    expect(
-      screen.getByText(
-        "Users for this MAAS are managed using an external service"
-      )
-    );
   });
 });

@@ -23,7 +23,7 @@ const mockServer = setupMockServer(
 
 describe("UsersList", () => {
   const state = factory.rootState({
-    status: factory.statusState({ externalAuthURL: null }),
+    status: factory.statusState(),
   });
 
   it("renders AddUser", async () => {
@@ -112,20 +112,5 @@ describe("UsersList", () => {
     expect(
       screen.queryByRole("complementary", { name: "Add user" })
     ).not.toBeInTheDocument();
-  });
-
-  it("renders external user maintenance notification", () => {
-    renderWithProviders(<UsersList />, {
-      state: factory.rootState({
-        status: factory.statusState({
-          externalAuthURL: "https://external-auth.org",
-        }),
-      }),
-    });
-    expect(
-      screen.getByText(
-        "Users for this MAAS are managed using an external service"
-      )
-    ).toBeInTheDocument();
   });
 });

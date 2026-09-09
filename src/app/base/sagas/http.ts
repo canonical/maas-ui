@@ -22,7 +22,6 @@ type UploadScript = {
   name?: Script["name"];
 };
 
-const BAKERY_LOGIN_API = "/MAAS/accounts/discharge-request/";
 export const SERVICE_API = "/MAAS/a/v2/";
 export const ROOT_API = "/MAAS/api/2.0/";
 const SCRIPTS_API = `${ROOT_API}scripts/`;
@@ -103,24 +102,6 @@ export const api = {
           return { authenticated: false };
         }
         return response.json();
-      });
-    },
-    externalLogin: (): Promise<XMLHttpRequest["response"]> => {
-      return new Promise(async (resolve, reject) => {
-        await import("@/bakery").then(({ default: bakery }) =>
-          bakery.get(
-            BAKERY_LOGIN_API,
-            DEFAULT_HEADERS,
-            (_: unknown, response: XMLHttpRequest["response"]) => {
-              if (response.currentTarget.status !== 200) {
-                localStorage.clear();
-                reject(Error(response.currentTarget.responseText));
-              } else {
-                resolve({ response });
-              }
-            }
-          )
-        );
       });
     },
     login: (credentials: LoginCredentials): Promise<void> => {
@@ -356,25 +337,6 @@ export function* logoutSaga(): SagaGenerator<void> {
   }
 }
 
-export function* externalLoginSaga(): SagaGenerator<void> {
-  try {
-    yield* put({ type: "status/externalLoginStart" });
-    yield* call(api.auth.externalLogin);
-    yield* put({
-      type: "status/externalLoginSuccess",
-    });
-    yield* put({
-      type: "status/websocketConnect",
-    });
-  } catch (error) {
-    yield* put({
-      error: true,
-      payload: error instanceof Error ? error.message : error,
-      type: "status/externalLoginError",
-    });
-  }
-}
-
 export function* fetchLicenseKeysSaga(): SagaGenerator<void> {
   const csrftoken = yield* call(getCookie, "csrftoken");
   if (!csrftoken) {
@@ -537,10 +499,6 @@ export function* addMachineChassisSaga(
       payload: err,
     });
   }
-}
-
-export function* watchExternalLogin(): SagaGenerator<void> {
-  yield* takeLatest("status/externalLogin", externalLoginSaga);
 }
 
 export function* watchLogin(): SagaGenerator<void> {

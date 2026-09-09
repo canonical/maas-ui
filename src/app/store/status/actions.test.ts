@@ -26,23 +26,6 @@ describe("status actions", () => {
     });
   });
 
-  it("should handle external log in", () => {
-    expect(actions.externalLogin()).toStrictEqual({
-      type: "status/externalLogin",
-      payload: null,
-    });
-  });
-
-  it("should handle storing the external login URL", () => {
-    const payload = {
-      url: "http://login.example.com",
-    };
-    expect(actions.externalLoginURL(payload)).toStrictEqual({
-      type: "status/externalLoginURL",
-      payload,
-    });
-  });
-
   it("should handle connection to a WebSocket", () => {
     expect(actions.websocketConnect()).toEqual({
       type: "status/websocketConnect",

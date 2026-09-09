@@ -445,8 +445,6 @@ export const statusState = define<StatusState>({
   connecting: false,
   connectedCount: 0,
   error: null,
-  externalAuthURL: "http://example.com/auth",
-  externalLoginURL: "http://example.com/login",
   noUsers: false,
 });
 

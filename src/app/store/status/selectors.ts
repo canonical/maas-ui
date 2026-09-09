@@ -54,22 +54,6 @@ const authenticationError = (state: RootState): APIError =>
   state.status.authenticationError;
 
 /**
- * Get the external auth url.
- * @param {RootState} state - The redux state.
- * @returns {StatusState["externalAuthURL"]} The external auth url.
- */
-const externalAuthURL = (state: RootState): string | null =>
-  state.status.externalAuthURL;
-
-/**
- * Get the external login url.
- * @param {RootState} state - The redux state.
- * @returns {StatusState["externalLoginURL"]} The external login url.
- */
-const externalLoginURL = (state: RootState): string | null =>
-  state.status.externalLoginURL;
-
-/**
  * Whether there are currently no MAAS users.
  * @param {RootState} state - The redux state.
  * @returns {StatusState["noUsers"]}StatusState users in MAAS.
@@ -84,8 +68,6 @@ const status = {
   connecting,
   connectedCount,
   error,
-  externalAuthURL,
-  externalLoginURL,
   noUsers,
 };
 
