@@ -1,4 +1,5 @@
 import type { FocusEventHandler, ReactNode } from "react";
+import { useEffect } from "react";
 
 import type { CustomSelectProps } from "@canonical/react-components";
 import { CustomSelect, Spinner, Tooltip } from "@canonical/react-components";
@@ -24,6 +25,19 @@ import {
   getFieldsInScope,
   getPowerTypeFromName,
 } from "@/app/store/general/utils";
+import type { PowerParameters } from "@/app/store/types/node";
+
+export const POWER_VERIFY_SSL_FIELD_NAME = "power_verify_ssl";
+
+export const SSL_VERIFICATION_ENABLED_VALUE = "y";
+
+// These power types connect over HTTPS; when FIPS is active their SSL
+// verification must always be on, so the field is locked on.
+export const SSL_VERIFICATION_ENFORCED_POWER_TYPES: string[] = [
+  PowerTypeNames.WEBHOOK,
+  PowerTypeNames.PROXMOX,
+  PowerTypeNames.HMCZ,
+];
 
 type Props = {
   customFieldProps?: {
@@ -91,6 +105,41 @@ export const PowerTypeFields = <V extends AnyObject>({
   const selectedPowerType = powerTypes.find(
     (type) => type.name === values[powerTypeValueName]
   );
+
+  const sslVerificationEnforced = Boolean(
+    fipsActive &&
+    selectedPowerType &&
+    SSL_VERIFICATION_ENFORCED_POWER_TYPES.includes(selectedPowerType.name)
+  );
+  const verifySslFieldName = `${powerParametersValueName}.${POWER_VERIFY_SSL_FIELD_NAME}`;
+  const verifySslFieldValue = (
+    values[powerParametersValueName] as PowerParameters | undefined
+  )?.[POWER_VERIFY_SSL_FIELD_NAME];
+
+  // Force SSL verification on for power types that require it, regardless of
+  // what value the field previously had or defaults to.
+  useEffect(() => {
+    if (
+      sslVerificationEnforced &&
+      verifySslFieldValue !== SSL_VERIFICATION_ENABLED_VALUE
+    ) {
+      setFieldValue(verifySslFieldName, SSL_VERIFICATION_ENABLED_VALUE).catch(
+        (reason: unknown) => {
+          throw new FormikFieldChangeError(
+            verifySslFieldName,
+            "setFieldValue",
+            String(reason)
+          );
+        }
+      );
+    }
+  }, [
+    setFieldValue,
+    sslVerificationEnforced,
+    verifySslFieldName,
+    verifySslFieldValue,
+  ]);
+
   if (
     !powerTypesLoaded ||
     systemInfo.isPending ||
@@ -104,6 +153,7 @@ export const PowerTypeFields = <V extends AnyObject>({
         fieldContent = (
           <IPMIPowerFields
             fields={fieldsInScope}
+            fipsActive={fipsActive}
             powerParametersValueName={powerParametersValueName}
           />
         );
@@ -120,6 +170,10 @@ export const PowerTypeFields = <V extends AnyObject>({
       default:
         fieldContent = fieldsInScope.map((field) => (
           <BasePowerField
+            disabled={
+              sslVerificationEnforced &&
+              field.name === POWER_VERIFY_SSL_FIELD_NAME
+            }
             field={field}
             key={field.name}
             powerParametersValueName={powerParametersValueName}
