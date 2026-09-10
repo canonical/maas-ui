@@ -8,7 +8,5 @@ export type StatusState = {
   connecting: boolean;
   connectedCount: number;
   error: APIError;
-  externalAuthURL: string | null;
-  externalLoginURL: string | null;
   noUsers: boolean;
 };

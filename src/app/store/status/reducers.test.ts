@@ -12,8 +12,6 @@ describe("status", () => {
         connected: false,
         connecting: false,
         error: null,
-        externalAuthURL: null,
-        externalLoginURL: null,
         noUsers: false,
       })
     );
@@ -188,7 +186,6 @@ describe("status", () => {
           type: "status/checkAuthenticatedSuccess",
           payload: {
             is_authenticated: true,
-            external_legacy_login_url: "http://login.example.com",
             no_users: true,
           },
         }
@@ -197,7 +194,6 @@ describe("status", () => {
       factory.statusState({
         authenticating: false,
         authenticated: true,
-        externalAuthURL: "http://login.example.com",
         noUsers: true,
       })
     );
@@ -242,28 +238,6 @@ describe("status", () => {
     );
   });
 
-  it("should correctly reduce status/externalLoginSuccess", () => {
-    expect(
-      reducers(
-        factory.statusState({
-          authenticationError: null,
-          authenticated: false,
-          authenticating: true,
-        }),
-        {
-          type: "status/externalLoginSuccess",
-        }
-      )
-    ).toStrictEqual(
-      factory.statusState({
-        authenticationError: null,
-        authenticated: true,
-        authenticating: false,
-        error: null,
-      })
-    );
-  });
-
   it("should correctly reduce status/loginError", () => {
     expect(
       reducers(
@@ -282,52 +256,6 @@ describe("status", () => {
         authenticating: false,
         authenticationError: "Username not provided",
         error: null,
-      })
-    );
-  });
-
-  it("should correctly reduce status/externalLoginError", () => {
-    expect(
-      reducers(
-        factory.statusState({
-          error: null,
-        }),
-        {
-          error: true,
-          payload: "Username not provided",
-          type: "status/externalLoginError",
-        }
-      )
-    ).toStrictEqual(
-      factory.statusState({
-        authenticating: false,
-        authenticationError: "Username not provided",
-        error: null,
-      })
-    );
-  });
-
-  it("should correctly reduce status/externalSessionExpired", () => {
-    expect(
-      reducers(
-        factory.statusState({
-          authenticated: true,
-          authenticating: true,
-          authenticationError: null,
-          connected: true,
-          connecting: true,
-        }),
-        {
-          type: "status/externalSessionExpired",
-        }
-      )
-    ).toStrictEqual(
-      factory.statusState({
-        authenticated: false,
-        authenticating: false,
-        authenticationError: "Session expired",
-        connected: false,
-        connecting: false,
       })
     );
   });
@@ -367,24 +295,6 @@ describe("status", () => {
     ).toStrictEqual(
       factory.statusState({
         authenticated: false,
-      })
-    );
-  });
-
-  it("should correctly reduce status/externalLoginUrl", () => {
-    expect(
-      reducers(
-        factory.statusState({
-          externalLoginURL: null,
-        }),
-        {
-          payload: { url: "http://login.example.com" },
-          type: "status/externalLoginURL",
-        }
-      )
-    ).toStrictEqual(
-      factory.statusState({
-        externalLoginURL: "http://login.example.com",
       })
     );
   });

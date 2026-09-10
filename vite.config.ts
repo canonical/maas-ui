@@ -7,7 +7,6 @@ import eslint from "vite-plugin-eslint";
 const manualChunks = [
   "@canonical/react-components",
   "@canonical/maas-react-components",
-  "@canonical/macaroon-bakery",
   "@/app/store/machine/slice",
 ];
 

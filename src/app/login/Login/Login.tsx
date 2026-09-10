@@ -41,7 +41,6 @@ export type LoginValues = {
 export const Labels = {
   APILoginForm: "Login",
   Back: "Back",
-  ExternalLoginButton: "Go to login page",
   NoUsers: "No admin user has been created yet",
   Password: "Password",
   Submit: "Login",
@@ -57,8 +56,6 @@ type LoginStep = "OIDC" | "PASSWORD" | "USERNAME";
 
 export const Login = (): ReactElement => {
   const dispatch = useDispatch();
-  const externalAuthURL = useSelector(statusSelectors.externalAuthURL);
-  const externalLoginURL = useSelector(statusSelectors.externalLoginURL);
   const authenticationError = useSelector(statusSelectors.authenticationError);
   const authenticated = useSelector(statusSelectors.authenticated);
   const noUsers = useSelector(statusSelectors.noUsers);
@@ -102,12 +99,6 @@ export const Login = (): ReactElement => {
   }, [authenticate.isSuccess, authenticated, handleRedirect]);
 
   useWindowTitle("Login");
-
-  useEffect(() => {
-    if (externalAuthURL && !authenticated) {
-      dispatch(statusActions.externalLogin());
-    }
-  }, [authenticated, dispatch, externalAuthURL]);
 
   const handleBack = useCallback(
     (
@@ -153,7 +144,7 @@ export const Login = (): ReactElement => {
                 </NotificationBanner>
               )
             ) : null}
-            {noUsers && !externalAuthURL ? (
+            {noUsers ? (
               <Card title={Labels.NoUsers}>
                 <p>Use the following command to create one:</p>
                 <Code copyable>sudo maas createadmin</Code>
@@ -167,77 +158,63 @@ export const Login = (): ReactElement => {
             ) : (
               <Card>
                 <h1 className="p-card__title p-heading--3">Login</h1>
-                {externalAuthURL ? (
-                  <Button
-                    appearance="positive"
-                    className="login__external"
-                    element="a"
-                    href={externalLoginURL}
-                    rel="noopener noreferrer"
-                    target="_blank"
-                  >
-                    {Labels.ExternalLoginButton}
-                  </Button>
-                ) : (
-                  <FormikForm<LoginValues, LoginError>
-                    aria-label={Labels.APILoginForm}
-                    cancelLabel={Labels.Back}
-                    initialValues={{
-                      password: "",
-                      username: "",
-                    }}
-                    onCancel={hasEnteredUsername ? handleBack : null}
-                    onSubmit={(values) => {
-                      if (!hasEnteredUsername) {
-                        setSubmittedUsername(values.username);
+                <FormikForm<LoginValues, LoginError>
+                  aria-label={Labels.APILoginForm}
+                  cancelLabel={Labels.Back}
+                  initialValues={{
+                    password: "",
+                    username: "",
+                  }}
+                  onCancel={hasEnteredUsername ? handleBack : null}
+                  onSubmit={(values) => {
+                    if (!hasEnteredUsername) {
+                      setSubmittedUsername(values.username);
+                    } else {
+                      if (isOIDCUser) {
+                        // OIDC login - redirect to provider's auth page
+                        window.location.href = loginState.oidcURL;
                       } else {
-                        if (isOIDCUser) {
-                          // OIDC login - redirect to provider's auth page
-                          window.location.href = loginState.oidcURL;
-                        } else {
-                          // Local login
-                          handleSubmit(values);
-                        }
+                        // Local login
+                        handleSubmit(values);
                       }
-                    }}
-                    saved={authenticate.isSuccess}
-                    saving={loginState.isPending || authenticate.isPending}
-                    submitLabel={
-                      !hasEnteredUsername
-                        ? "Next"
-                        : isOIDCUser
-                          ? `Login with ${loginState.providerName}`
-                          : Labels.Submit
                     }
-                    validationSchema={generateSchema(
-                      hasEnteredUsername && !isOIDCUser
-                    )}
-                  >
-                    {isOIDCUser ? (
-                      <p>
-                        Please sign in with {loginState.providerName} to
-                        continue.
-                      </p>
-                    ) : null}
-                    <FormikField
-                      disabled={hasEnteredUsername}
-                      label={Labels.Username}
-                      name="username"
-                      required={true}
-                      takeFocus={!hasEnteredUsername}
-                      type="text"
-                    />
-                    <FormikField
-                      aria-hidden={!requirePassword}
-                      hidden={!requirePassword}
-                      label={requirePassword ? Labels.Password : ""}
-                      name="password"
-                      required={requirePassword}
-                      takeFocus={requirePassword}
-                      type="password"
-                    />
-                  </FormikForm>
-                )}
+                  }}
+                  saved={authenticate.isSuccess}
+                  saving={loginState.isPending || authenticate.isPending}
+                  submitLabel={
+                    !hasEnteredUsername
+                      ? "Next"
+                      : isOIDCUser
+                        ? `Login with ${loginState.providerName}`
+                        : Labels.Submit
+                  }
+                  validationSchema={generateSchema(
+                    hasEnteredUsername && !isOIDCUser
+                  )}
+                >
+                  {isOIDCUser ? (
+                    <p>
+                      Please sign in with {loginState.providerName} to continue.
+                    </p>
+                  ) : null}
+                  <FormikField
+                    disabled={hasEnteredUsername}
+                    label={Labels.Username}
+                    name="username"
+                    required={true}
+                    takeFocus={!hasEnteredUsername}
+                    type="text"
+                  />
+                  <FormikField
+                    aria-hidden={!requirePassword}
+                    hidden={!requirePassword}
+                    label={requirePassword ? Labels.Password : ""}
+                    name="password"
+                    required={requirePassword}
+                    takeFocus={requirePassword}
+                    type="password"
+                  />
+                </FormikForm>
               </Card>
             )}
           </Col>

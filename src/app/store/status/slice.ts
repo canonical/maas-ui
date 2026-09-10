@@ -11,8 +11,6 @@ const statusSlice = createSlice({
     authenticating: true,
     authenticated: false,
     authenticationError: null,
-    externalAuthURL: null,
-    externalLoginURL: null,
     connected: false,
     connecting: false,
     // The number of times the websocket connection has been successful
@@ -33,14 +31,12 @@ const statusSlice = createSlice({
     checkAuthenticatedSuccess: (
       state: StatusState,
       action: PayloadAction<{
-        external_legacy_login_url?: StatusState["externalAuthURL"];
         is_authenticated: StatusState["authenticated"];
         no_users: StatusState["noUsers"];
       }>
     ) => {
       state.authenticating = false;
       state.authenticated = action.payload.is_authenticated;
-      state.externalAuthURL = action.payload.external_legacy_login_url || "";
       state.noUsers = action.payload.no_users;
     },
     login: {
@@ -64,33 +60,6 @@ const statusSlice = createSlice({
       state.authenticating = false;
       state.authenticationError = null;
       state.error = null;
-    },
-    externalLogin: {
-      prepare: () => ({
-        payload: null,
-      }),
-      reducer: () => {},
-    },
-    externalLoginSuccess: (state: StatusState) => {
-      state.authenticated = true;
-      state.authenticating = false;
-      state.authenticationError = null;
-      state.error = null;
-    },
-    externalLoginError: (
-      state: StatusState,
-      action: PayloadAction<StatusState["authenticationError"]>
-    ) => {
-      state.authenticationError = action.payload;
-      state.authenticating = false;
-    },
-    // TODO [candid/rbac] Delete this when we remove support for candid/rbac
-    externalSessionExpired: (state: StatusState) => {
-      state.authenticated = false;
-      state.authenticating = false;
-      state.authenticationError = "Session expired";
-      state.connected = false;
-      state.connecting = false;
     },
     logout: {
       prepare: () => ({
@@ -140,14 +109,6 @@ const statusSlice = createSlice({
       action: PayloadAction<StatusState["authenticationError"]>
     ) => {
       state.error = action.payload;
-    },
-    externalLoginURL: (
-      state: StatusState,
-      action: PayloadAction<{
-        url: StatusState["externalLoginURL"];
-      }>
-    ) => {
-      state.externalLoginURL = action.payload.url;
     },
   },
 });

@@ -48,24 +48,6 @@ describe("status", () => {
     expect(status.connecting(state)).toBe(false);
   });
 
-  it("can get the external auth url", () => {
-    const state = factory.rootState({
-      status: factory.statusState({
-        externalAuthURL: "http://login.example.com",
-      }),
-    });
-    expect(status.externalAuthURL(state)).toEqual("http://login.example.com");
-  });
-
-  it("can get the external login url", () => {
-    const state = factory.rootState({
-      status: factory.statusState({
-        externalLoginURL: "http://login.example.com",
-      }),
-    });
-    expect(status.externalLoginURL(state)).toEqual("http://login.example.com");
-  });
-
   it("can get the noUsers status", () => {
     const state = factory.rootState({
       status: factory.statusState({
