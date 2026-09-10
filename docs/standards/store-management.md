@@ -46,7 +46,7 @@ const authenticated = useSelector(status.authenticated);
 const connected = useSelector((state) => state.status.connected);
 ```
 
-Selector files live at `src/app/store/<slice>/selectors.ts`. The status selectors available are: `authenticated`, `authenticating`, `authenticationError`, `connected`, `connecting`, `connectedCount`, `error`, `externalAuthURL`, `externalLoginURL`, `noUsers`.
+Selector files live at `src/app/store/<slice>/selectors.ts`. The status selectors available are: `authenticated`, `authenticating`, `authenticationError`, `connected`, `connecting`, `connectedCount`, `error`, `noUsers`.
 
 ---
 
