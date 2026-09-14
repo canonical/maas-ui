@@ -178,6 +178,7 @@ import {
   listUsersStatistics,
   listZones,
   listZonesWithStatistics,
+  llmSearch,
   login,
   logout,
   type Options,
@@ -729,6 +730,9 @@ import type {
   ListZonesWithStatisticsData,
   ListZonesWithStatisticsError,
   ListZonesWithStatisticsResponse,
+  LlmSearchData,
+  LlmSearchError,
+  LlmSearchResponse2,
   LoginData,
   LoginError,
   LoginResponse,
@@ -3063,6 +3067,33 @@ export const getFabricVlanSubnetIprangeOptions = (
     },
     queryKey: getFabricVlanSubnetIprangeQueryKey(options),
   });
+
+/**
+ * Llm Search
+ */
+export const llmSearchMutation = (
+  options?: Partial<Options<LlmSearchData>>
+): UseMutationOptions<
+  LlmSearchResponse2,
+  LlmSearchError,
+  Options<LlmSearchData>
+> => {
+  const mutationOptions: UseMutationOptions<
+    LlmSearchResponse2,
+    LlmSearchError,
+    Options<LlmSearchData>
+  > = {
+    mutationFn: async (fnOptions) => {
+      const { data } = await llmSearch({
+        ...options,
+        ...fnOptions,
+        throwOnError: true,
+      });
+      return data;
+    },
+  };
+  return mutationOptions;
+};
 
 export const getMachinePowerParametersQueryKey = (
   options: Options<GetMachinePowerParametersData>
