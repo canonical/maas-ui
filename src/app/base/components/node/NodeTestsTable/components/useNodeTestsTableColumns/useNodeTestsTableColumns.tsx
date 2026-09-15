@@ -1,4 +1,4 @@
-import type { Dispatch } from "react";
+import type { Dispatch, SetStateAction } from "react";
 import { useMemo } from "react";
 
 import { Icon, Input, Tooltip } from "@canonical/react-components";
@@ -21,14 +21,7 @@ import { canBeSuppressed } from "@/app/store/scriptresult/utils";
 import { nodeIsMachine } from "@/app/store/utils";
 import { formatUtcDatetime } from "@/app/utils/time";
 
-type Props = {
-  node: ControllerDetails | MachineDetails;
-  scriptResults: ScriptResult[];
-  expanded: Expanded | null;
-  setExpanded: Dispatch<React.SetStateAction<Expanded | null>>;
-};
 export enum ScriptResultAction {
-  VIEW_METRICS = "viewMetrics",
   VIEW_PREVIOUS_TESTS = "viewPreviousTests",
 }
 
@@ -41,12 +34,41 @@ export type SetExpanded = (expanded: Expanded) => void;
 
 type NodeTestsTableColumnDef = ColumnDef<NodeTestRow, Partial<NodeTestRow>>;
 
+const getScriptResultUrl = (
+  node: ControllerDetails | MachineDetails,
+  isMachine: boolean,
+  scriptResult: ScriptResult
+) => {
+  const params = {
+    id: node.system_id,
+    scriptResultId: scriptResult.id,
+  };
+  if (!isMachine) {
+    return urls.controllers.controller.commissioning.scriptResult(params);
+  }
+  const { commissioning, deployment, testing } =
+    urls.machines.machine.scriptsResults;
+  switch (scriptResult.result_type) {
+    case ScriptResultType.COMMISSIONING:
+      return commissioning.scriptResult(params);
+    case ScriptResultType.DEPLOYMENT:
+      return deployment.scriptResult(params);
+    default:
+      return testing.scriptResult(params);
+  }
+};
+
 const useNodeTestsTableColumns = ({
   node,
   scriptResults,
   expanded,
   setExpanded,
-}: Props): NodeTestsTableColumnDef[] => {
+}: {
+  node: ControllerDetails | MachineDetails;
+  scriptResults: ScriptResult[];
+  expanded: Expanded | null;
+  setExpanded: Dispatch<SetStateAction<Expanded | null>>;
+}): NodeTestsTableColumnDef[] => {
   const dispatch = useDispatch();
   const sendAnalytics = useSendAnalytics();
 
@@ -133,34 +155,7 @@ const useNodeTestsTableColumns = ({
           !row.original.isHistory ? (
             <Link
               data-testid="details-link"
-              to={
-                isMachine
-                  ? row.original.result_type === ScriptResultType.COMMISSIONING
-                    ? urls.machines.machine.scriptsResults.commissioning.scriptResult(
-                        {
-                          id: node.system_id,
-
-                          scriptResultId: row.original.id,
-                        }
-                      )
-                    : row.original.result_type === ScriptResultType.DEPLOYMENT
-                      ? urls.machines.machine.scriptsResults.deployment.scriptResult(
-                          {
-                            id: node.system_id,
-                            scriptResultId: row.original.id,
-                          }
-                        )
-                      : urls.machines.machine.scriptsResults.testing.scriptResult(
-                          {
-                            id: node.system_id,
-                            scriptResultId: row.original.id,
-                          }
-                        )
-                  : urls.controllers.controller.commissioning.scriptResult({
-                      id: node.system_id,
-                      scriptResultId: row.original.id,
-                    })
-              }
+              to={getScriptResultUrl(node, isMachine, row.original)}
             >
               {row.original.name}
             </Link>
@@ -188,19 +183,7 @@ const useNodeTestsTableColumns = ({
                   {row.original.status_name}{" "}
                   <Link
                     data-testid="details-link"
-                    to={
-                      isMachine
-                        ? urls.machines.machine.testing.scriptResult({
-                            id: node.system_id,
-                            scriptResultId: row.original.id,
-                          })
-                        : urls.controllers.controller.commissioning.scriptResult(
-                            {
-                              id: node.system_id,
-                              scriptResultId: row.original.id,
-                            }
-                          )
-                    }
+                    to={getScriptResultUrl(node, isMachine, row.original)}
                   >
                     View log
                   </Link>
@@ -258,7 +241,7 @@ const useNodeTestsTableColumns = ({
               }}
               to="#"
             >
-              View previous tests
+              View history
             </Link>
           ) : null,
       },
