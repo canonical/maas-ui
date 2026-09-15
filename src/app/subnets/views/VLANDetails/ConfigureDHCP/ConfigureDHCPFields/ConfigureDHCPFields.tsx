@@ -140,7 +140,7 @@ const ConfigureDHCPFields = ({ vlan }: Props): React.ReactElement => {
               onChange={async (e: ChangeEvent) => {
                 // eslint-disable-next-line @typescript-eslint/no-confusing-void-expression
                 await handleChange(e);
-                setFieldValue("relayVLAN", vlansWithDHCP[0]?.id || "").catch(
+                setFieldValue("relayVLAN", vlansWithDHCP[0]?.id ?? "").catch(
                   (reason) => {
                     throw new FormikFieldChangeError(
                       "relayVLAN",

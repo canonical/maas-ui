@@ -423,7 +423,7 @@ const rowSort = (
 };
 
 export const generateUniqueId = ({ linkId, nicId }: Selected): string =>
-  `${nicId || ""}-${linkId || ""}`;
+  `${nicId ?? ""}-${linkId ?? ""}`;
 
 type BaseProps = {
   node: ControllerDetails | MachineDetails;

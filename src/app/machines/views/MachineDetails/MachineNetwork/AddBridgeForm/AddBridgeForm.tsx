@@ -112,7 +112,7 @@ const AddBridgeForm = ({
           bridge_stp: false,
           bridge_type: BridgeType.STANDARD,
           // Prefill the fabric from the parent interface.
-          fabric: vlan?.fabric || "",
+          fabric: vlan?.fabric,
           mac_address: nic.mac_address,
           name: nextName || "",
           tags: [],
