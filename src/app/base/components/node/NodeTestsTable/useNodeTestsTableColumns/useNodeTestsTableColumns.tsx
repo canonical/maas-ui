@@ -6,8 +6,8 @@ import type { ColumnDef, Row } from "@tanstack/react-table";
 import { useDispatch } from "react-redux";
 import { Link } from "react-router";
 
-import ScriptRunTime from "../../ScriptRunTime";
-import type { NodeTestRow } from "../NodeTestsTable/NodeTestsTable";
+import type { NodeTestRow } from "../NodeTestsTable";
+import ScriptRunTime from "../components/ScriptRunTime";
 
 import ScriptStatus from "@/app/base/components/ScriptStatus";
 import { useSendAnalytics } from "@/app/base/hooks";

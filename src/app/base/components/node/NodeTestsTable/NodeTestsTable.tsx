@@ -5,10 +5,10 @@ import { Button } from "@canonical/react-components";
 import type { SortingState } from "@tanstack/react-table";
 import { useDispatch, useSelector } from "react-redux";
 
-import type { Expanded } from "../useNodeTestsTableColumns/useNodeTestsTableColumns";
+import type { Expanded } from "./useNodeTestsTableColumns/useNodeTestsTableColumns";
 import useNodeTestsTableColumns, {
   ScriptResultAction,
-} from "../useNodeTestsTableColumns/useNodeTestsTableColumns";
+} from "./useNodeTestsTableColumns/useNodeTestsTableColumns";
 
 import type { ControllerDetails } from "@/app/store/controller/types";
 import type { MachineDetails } from "@/app/store/machine/types";
