@@ -3,6 +3,7 @@ import type { Props as FormikFieldProps } from "@/app/base/components/FormikFiel
 import type { Subnet } from "@/app/store/subnet/types";
 import { NetworkInterfaceTypes, NetworkLinkMode } from "@/app/store/types/enum";
 import { LINK_MODE_DISPLAY } from "@/app/store/utils";
+import { isId } from "@/app/utils";
 
 type Props = {
   defaultOption?: { label: string; value: string } | null;
@@ -20,7 +21,7 @@ const getAvailableLinkModes = (
   subnet?: Subnet["id"] | null
 ): NetworkLinkMode[] => {
   // If a subnet has not been chosen then the only allowed mode is LINK_UP.
-  if (!subnet) {
+  if (!isId(subnet)) {
     return [NetworkLinkMode.LINK_UP];
   }
   const modes = [NetworkLinkMode.AUTO, NetworkLinkMode.STATIC];

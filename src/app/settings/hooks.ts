@@ -16,6 +16,7 @@ import type { RootState } from "@/app/store/root/types";
 import { subnetActions } from "@/app/store/subnet";
 import subnetSelectors from "@/app/store/subnet/selectors";
 import type { Subnet } from "@/app/store/subnet/types";
+import { isId } from "@/app/utils";
 
 export const useDhcpTarget = (
   nodeId?: DHCPSnippet["node"],
@@ -52,10 +53,10 @@ export const useDhcpTarget = (
   } = useFetchMachine(nodeId);
 
   const isLoading =
-    (!!subnetId && subnetLoading) ||
+    (isId(subnetId) && subnetLoading) ||
     (!!nodeId && (controllerLoading || deviceLoading || machineLoading));
   const hasLoaded =
-    (!!subnetId && subnetLoaded) ||
+    (isId(subnetId) && subnetLoaded) ||
     // The machine loaded state will only be true if a machine was found.
     (!!nodeId && ((controllerLoaded && deviceLoaded) || machineLoaded));
 

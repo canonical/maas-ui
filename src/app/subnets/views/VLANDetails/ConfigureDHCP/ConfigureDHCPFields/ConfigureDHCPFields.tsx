@@ -125,7 +125,7 @@ const ConfigureDHCPFields = ({ vlan }: Props): JSX.Element => {
               name="dhcpType"
               onChange={async (e: ChangeEvent) => {
                 await handleChange(e);
-                setFieldValue("relayVLAN", vlansWithDHCP[0]?.id || "");
+                setFieldValue("relayVLAN", vlansWithDHCP[0]?.id ?? "");
                 setFieldValue("primaryRack", "");
                 setFieldValue("secondaryRack", "");
               }}
