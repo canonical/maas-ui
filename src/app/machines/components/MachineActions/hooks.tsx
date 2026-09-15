@@ -42,7 +42,9 @@ const TagForm = lazyLoadSidePanel(
 );
 const SetMachineZoneForm = lazyLoadSidePanel(
   () =>
-    import("../MachineForms/MachineActionFormWrapper/SetMachineZoneForm/SetMachineZoneForm")
+    import(
+      "../MachineForms/MachineActionFormWrapper/SetMachineZoneForm/SetMachineZoneForm"
+    )
 );
 const SetPoolForm = lazyLoadSidePanel(
   () => import("../MachineForms/MachineActionFormWrapper/SetPoolForm")

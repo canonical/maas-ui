@@ -1,12 +1,12 @@
 import type { ReactElement } from "react";
 
-import { useSidePanel } from "@canonical/maas-react-components";
 import { useDispatch, useSelector } from "react-redux";
 import type { Action, Dispatch } from "redux";
 
 import ActionForm from "@/app/base/components/ActionForm";
 import NodeActionConfirmationText from "@/app/base/components/NodeActionConfirmationText";
 import NodeActionWarning from "@/app/base/components/node/NodeActionWarning";
+import { useModal } from "@/app/base/modal-context";
 import type { EmptyObject } from "@/app/base/types";
 import urls from "@/app/base/urls";
 import { getProcessingCount } from "@/app/controllers/utils";
@@ -36,7 +36,7 @@ export const DeleteController = ({
   const processingControllers = useSelector(
     actionStatus ? statusSelectors[actionStatus] : () => []
   );
-  const { closeSidePanel } = useSidePanel();
+  const { closeModal } = useModal();
 
   const controllerSystemIds = controllers.map(({ system_id }) => system_id);
   // The form expects one error, so we only show the latest error with the
@@ -76,7 +76,7 @@ export const DeleteController = ({
         errors={actionErrors}
         initialValues={{}}
         modelName="controller"
-        onCancel={closeSidePanel}
+        onCancel={closeModal}
         onSaveAnalytics={{
           action: "Submit",
           category: `${capitaliseFirst("controller")} ${
@@ -86,7 +86,7 @@ export const DeleteController = ({
         }}
         onSubmit={handleSubmit}
         onSuccess={() => {
-          closeSidePanel();
+          closeModal();
         }}
         processingCount={processingCount}
         savedRedirect={isViewingDetails ? urls.controllers.index : undefined}

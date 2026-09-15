@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import type { NodeActionFormProps } from "../types";
 
 import ActionForm from "@/app/base/components/ActionForm";
+import { useModal } from "@/app/base/modal-context";
 import type { EmptyObject } from "@/app/base/types";
 import type { controllerActions } from "@/app/store/controller";
 import type { machineActions } from "@/app/store/machine";
@@ -25,6 +26,7 @@ export type FieldlessFormProps<E = null> = NodeActionFormProps<E> & {
   buttonsHelpClassName?: string;
   buttonsHelp?: ReactNode;
   cleanup: NonNullable<NodeActionFormProps<E>["cleanup"]>;
+  description?: ReactNode;
 };
 
 export const FieldlessForm = <E,>({
@@ -33,6 +35,7 @@ export const FieldlessForm = <E,>({
   buttonsHelp,
   buttonsHelpClassName,
   cleanup,
+  description,
   errors,
   modelName,
   nodes,
@@ -49,7 +52,9 @@ export const FieldlessForm = <E,>({
   const { dispatch: dispatchForSelectedMachines, ...actionProps } =
     useSelectedMachinesActionsDispatch({ selectedMachines, searchFilter });
 
-  const { closeSidePanel } = useSidePanel();
+  const { closeSidePanel, isOpen: isSidePanelOpen } = useSidePanel();
+  const { closeModal } = useModal();
+  const closeForm = isSidePanelOpen ? closeSidePanel : closeModal;
 
   return (
     <ActionForm<EmptyObject, E>
@@ -61,7 +66,7 @@ export const FieldlessForm = <E,>({
       errors={errors}
       initialValues={{}}
       modelName={modelName}
-      onCancel={closeSidePanel}
+      onCancel={closeForm}
       onSaveAnalytics={{
         action: "Submit",
         category: `${capitaliseFirst(modelName)} ${
@@ -86,11 +91,13 @@ export const FieldlessForm = <E,>({
           }
         }
       }}
-      onSuccess={closeSidePanel}
+      onSuccess={closeForm}
       processingCount={processingCount}
       selectedCount={nodes ? nodes.length : (selectedCount ?? 0)}
       {...actionProps}
-    />
+    >
+      {description}
+    </ActionForm>
   );
 };
 

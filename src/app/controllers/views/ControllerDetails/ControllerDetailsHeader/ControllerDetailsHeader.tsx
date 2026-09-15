@@ -9,9 +9,13 @@ import ControllerName from "./ControllerName";
 import NodeActionMenu from "@/app/base/components/NodeActionMenu";
 import SectionHeader from "@/app/base/components/SectionHeader";
 import { useHasEntitlements, useSendAnalytics } from "@/app/base/hooks";
+import { useModal } from "@/app/base/modal-context";
 import urls from "@/app/base/urls";
 import ControllerActionFormWrapper from "@/app/controllers/components/ControllerForms/ControllerActionFormWrapper";
-import { ControllerDetailsTabLabels } from "@/app/controllers/constants";
+import {
+  ControllerActionConfirmations,
+  ControllerDetailsTabLabels,
+} from "@/app/controllers/constants";
 import { Entitlement } from "@/app/settings/views/UserManagement/views/Groups/constants";
 import controllerSelectors from "@/app/store/controller/selectors";
 import type {
@@ -34,6 +38,7 @@ const ControllerDetailsHeader = ({ systemId }: Props): React.ReactElement => {
   const [isEditing, setIsEditing] = useState(false);
   const sendAnalytics = useSendAnalytics();
   const { openSidePanel } = useSidePanel();
+  const { openModal } = useModal();
   const canEdit = useHasEntitlements([Entitlement.CAN_EDIT_CONTROLLERS]);
 
   if (!controller) {
@@ -53,7 +58,12 @@ const ControllerDetailsHeader = ({ systemId }: Props): React.ReactElement => {
           onActionClick={(action) => {
             const title = getNodeActionTitle(action);
             sendAnalytics("Controller details action form", title, "Open");
-            openSidePanel({
+            const openForm = ControllerActionConfirmations.some(
+              (nodeAction) => nodeAction === action
+            )
+              ? openModal
+              : openSidePanel;
+            openForm({
               component: ControllerActionFormWrapper,
               props: {
                 // action is a NodeAction, but is guarenteed to be a NodeAction that comprises ControllerActions.

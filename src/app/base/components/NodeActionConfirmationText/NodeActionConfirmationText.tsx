@@ -14,7 +14,9 @@ const NodeActionConfirmationText = ({
     <p>
       Are you sure you want to{" "}
       {getNodeActionLabel(
-        selectedCount > 1 ? `${selectedCount} ${modelName}s` : `a ${modelName}`,
+        selectedCount > 1
+          ? `${selectedCount} ${modelName}s`
+          : `this ${modelName}`,
         action,
         false
       ).toLowerCase()}
