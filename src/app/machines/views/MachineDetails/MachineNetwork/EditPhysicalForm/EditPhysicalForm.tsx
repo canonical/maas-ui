@@ -201,7 +201,7 @@ const EditPhysicalForm = ({
           : nic.interface_speed / 1000,
         ip_address: getInitialIpAddressValue(),
         // The current link is required to update the subnet and ip address.
-        link_id: linkId || "",
+        link_id: linkId ?? "",
         link_speed: isNaN(Number(nic.link_speed)) ? 0 : nic.link_speed / 1000,
         mac_address: nic.mac_address,
         mode: getLinkMode(link),

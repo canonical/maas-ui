@@ -15,7 +15,7 @@ import type {
   NodeDetails,
 } from "@/app/store/types/node";
 import type { VLAN } from "@/app/store/vlan/types";
-import { getNextName } from "@/app/utils";
+import { getNextName, isId } from "@/app/utils";
 
 export const INTERFACE_TYPE_DISPLAY = {
   [NetworkInterfaceTypes.PHYSICAL]: "Physical",
@@ -36,7 +36,7 @@ export const getLinkInterfaceById = (
   node: Node,
   linkId?: NetworkLink["id"] | null
 ): [NodeDetails["interfaces"][0] | null, number | null] => {
-  if (!linkId || !isNodeDetails(node)) {
+  if (!isId(linkId) || !isNodeDetails(node)) {
     return [null, null];
   }
   for (let i = 0; i < node.interfaces.length; i++) {
@@ -66,6 +66,7 @@ export const getLinkInterface = (
 /**
  * Get an interface by id.
  * @param node - The nic's node.
+ * @param interfaceId - An interface ID.
  * @param linkId - A link's ID.
  * @return An interface.
  */
@@ -74,10 +75,10 @@ export const getInterfaceById = <N extends NodeDetails>(
   interfaceId?: Node["id"] | null,
   linkId?: NetworkLink["id"] | null
 ): N["interfaces"][0] | null => {
-  if (!isNodeDetails(node) || (!linkId && !interfaceId)) {
+  if (!isNodeDetails(node) || (!isId(linkId) && !isId(interfaceId))) {
     return null;
   }
-  if (linkId && !interfaceId) {
+  if (isId(linkId) && !isId(interfaceId)) {
     const [nic] = getLinkInterfaceById(node, linkId);
     return nic;
   }
@@ -640,11 +641,11 @@ export const getInterfaceSubnet = (
   }
   const fabric = getInterfaceFabric(node, fabrics, vlans, nic, link);
   const discovered = getInterfaceDiscovered(node, nic, link);
-  const discoveredSubnetId = discovered?.subnet_id || null;
+  const discoveredSubnetId = discovered?.subnet_id ?? null;
   let subnetId: Subnet["id"] | null | undefined;
-  if (fabric && !discoveredSubnetId) {
+  if (fabric && !isId(discoveredSubnetId)) {
     subnetId = link?.subnet_id;
-  } else if (isAllNetworkingDisabled && discoveredSubnetId) {
+  } else if (isAllNetworkingDisabled && isId(discoveredSubnetId)) {
     subnetId = discoveredSubnetId;
   } else {
     return null;
@@ -679,7 +680,7 @@ export const getRemoveTypeText = (
  * @param node - A node.
  * @param interfaceType - A network interface type.
  * @param nic - A network interface.
- * @param vlan - A VLAN.
+ * @param vid - A VLAN ID.
  * @return An available name.
  */
 export const getNextNicName = (
@@ -758,4 +759,4 @@ export const getLinkFromNic = (
   nic?: NetworkInterface | null,
   linkId?: NetworkLink["id"] | null
 ): NetworkLink | null =>
-  linkId ? nic?.links.find(({ id }) => id === linkId) || null : null;
+  isId(linkId) ? nic?.links.find(({ id }) => id === linkId) || null : null;
