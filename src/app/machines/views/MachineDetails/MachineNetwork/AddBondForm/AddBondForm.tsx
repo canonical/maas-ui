@@ -119,7 +119,7 @@ const AddBondForm = ({
   );
   const firstLink = getLinkFromNic(firstNic, firstSelected?.linkId);
   const vlan = useSelector((state: RootState) =>
-    vlanSelectors.getById(state, bondVLAN || firstNic?.vlan_id)
+    vlanSelectors.getById(state, bondVLAN ?? firstNic?.vlan_id)
   );
   const fabrics = useSelector(fabricSelectors.all);
   const fabricsLoaded = useSelector(fabricSelectors.loaded);
@@ -150,7 +150,7 @@ const AddBondForm = ({
     // When the form is first shown then store the VLAN for this bond. This needs
     // to be done so that if all interfaces become deselected then the VLAN
     // information is not lost.
-    if (!bondVLAN && hasEnoughNics && firstNic) {
+    if (bondVLAN === null && hasEnoughNics && firstNic) {
       setBondVLAN(firstNic.vlan_id);
     }
   }, [bondVLAN, firstNic, hasEnoughNics, setBondVLAN]);
@@ -160,7 +160,7 @@ const AddBondForm = ({
     !vlansLoaded ||
     !fabricsLoaded ||
     !subnetsLoaded ||
-    !bondVLAN
+    bondVLAN === null
   ) {
     return <Spinner data-testid="data-loading" />;
   }

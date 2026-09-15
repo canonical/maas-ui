@@ -126,7 +126,7 @@ const InterfaceForm = ({
         ip_assignment: nic?.ip_assignment || DeviceIpAssignment.DYNAMIC,
         mac_address: nic?.mac_address || "",
         name: nic?.name || nextName || "",
-        subnet: subnet?.id || "",
+        subnet: subnet?.id ?? "",
         tags: nic?.tags || [],
         [TAG_SELECTOR_INPUT_NAME]: "",
       }}
