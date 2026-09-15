@@ -23,7 +23,7 @@ import type {
   NodeVlan,
 } from "@/app/store/types/node";
 import type { VLAN } from "@/app/store/vlan/types";
-import { toFormikNumber } from "@/app/utils";
+import { isId, toFormikNumber } from "@/app/utils";
 import {
   getImmutableAndEditableOctets,
   getIpRangeFromCidr,
@@ -32,7 +32,7 @@ import {
 export type NetworkValues = {
   ip_address?: NetworkLink["ip_address"];
   mode?: NetworkLinkMode | "";
-  fabric: NodeVlan["fabric_id"] | "";
+  fabric?: NodeVlan["fabric_id"];
   subnet?: NetworkLink["subnet_id"] | "";
   subnet_cidr?: Subnet["cidr"] | "";
   vlan: NetworkInterface["vlan_id"] | "";
@@ -49,7 +49,7 @@ export const networkFieldsSchema = {
 export const networkFieldsInitialValues = {
   ip_address: "",
   mode: "",
-  fabric: "",
+  fabric: undefined,
   subnet: "",
   subnet_cidr: "",
   vlan: "",
@@ -89,7 +89,7 @@ const NetworkFields = ({
     if (
       interfaceType === NetworkInterfaceTypes.PHYSICAL &&
       subnets &&
-      values.subnet
+      isId(values.subnet)
     ) {
       const subnet = subnets.find(
         ({ id }) => id === toFormikNumber(values.subnet)
@@ -184,7 +184,7 @@ const NetworkFields = ({
         }}
         vlan={toFormikNumber(values.vlan)}
       />
-      {values.subnet ? (
+      {isId(values.subnet) ? (
         <LinkModeSelect
           defaultOption={null}
           help="To manage static DHCP leases for a machine, go to the address reservation tab of a subnet."
@@ -262,7 +262,7 @@ const NetworkFields = ({
               });
             }
           }}
-          subnet={values.subnet}
+          subnet={toFormikNumber(values.subnet)}
         />
       ) : null}
       {values.mode === NetworkLinkMode.STATIC ? (

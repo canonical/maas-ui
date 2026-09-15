@@ -21,6 +21,7 @@ import ipRangeSelectors from "@/app/store/iprange/selectors";
 import { useFetchMachines } from "@/app/store/machine/utils/hooks";
 import type { RootState } from "@/app/store/root/types";
 import { subnetActions } from "@/app/store/subnet";
+import { isId } from "@/app/utils";
 
 const DhcpSchema = Yup.object()
   .shape({
@@ -95,7 +96,7 @@ export const DhcpForm = ({
 
   if (
     editing &&
-    (dhcpSnippet?.node || dhcpSnippet?.subnet) &&
+    (isId(dhcpSnippet?.node) || isId(dhcpSnippet?.subnet)) &&
     (loading || !loaded)
   ) {
     return <Spinner aria-label={Labels.LoadingData} text="Loading..." />;
@@ -111,8 +112,7 @@ export const DhcpForm = ({
         enabled: dhcpSnippet ? dhcpSnippet.enabled : false,
         entity: dhcpSnippet
           ? dhcpSnippet.node ||
-            `${dhcpSnippet.iprange || dhcpSnippet.subnet}` ||
-            ""
+            `${dhcpSnippet.iprange ?? dhcpSnippet.subnet ?? ""}`
           : "",
         name: dhcpSnippet ? dhcpSnippet.name : "",
         type: (dhcpSnippet && targetType) || "",
