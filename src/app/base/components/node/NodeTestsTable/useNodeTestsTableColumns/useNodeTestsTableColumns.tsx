@@ -166,17 +166,6 @@ const useNodeTestsTableColumns = ({
         cell: ({ row }) => (
           <ScriptStatus status={row.original.status}>
             {row.original.status_name}
-            {row.original.isHistory ? (
-              <>
-                {" "}
-                <Link
-                  data-testid="details-link"
-                  to={getScriptResultUrl(node, isMachine, row.original)}
-                >
-                  View log
-                </Link>
-              </>
-            ) : null}
           </ScriptStatus>
         ),
       },
@@ -212,7 +201,11 @@ const useNodeTestsTableColumns = ({
         accessorKey: "history",
         enableSorting: false,
         cell: ({ row }) =>
-          !row.original.isHistory && row.original.hasHistory ? (
+          row.original.isHistory ? (
+            <Link to={getScriptResultUrl(node, isMachine, row.original)}>
+              View log
+            </Link>
+          ) : row.original.hasHistory ? (
             <Link
               aria-expanded={expandedId === row.original.id}
               data-testid="view-history-link"

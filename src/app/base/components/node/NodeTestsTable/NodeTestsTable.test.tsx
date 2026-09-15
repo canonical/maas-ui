@@ -193,35 +193,6 @@ describe("NodeTestsTable", () => {
       expect(screen.getByText("No results available.")).toBeInTheDocument();
     });
 
-    it("displays a test history table if test has been run more than once", async () => {
-      const scriptResult = factory.scriptResult({ id: 1 });
-      state.scriptresult.items = [scriptResult];
-      state.scriptresult.history = {
-        1: [
-          factory.partialScriptResult({ id: 1 }),
-          factory.partialScriptResult({ id: 2 }),
-        ],
-      };
-
-      renderWithProviders(
-        <NodeTestsTable node={machine} scriptResults={[scriptResult]} />,
-        {
-          initialEntries: ["/machine/abc123"],
-          state,
-        }
-      );
-      await waitForLoading();
-
-      await userEvent.click(screen.getByRole("link", { name: "View history" }));
-
-      expect(
-        screen.getByRole("link", { name: "View log" })
-      ).toBeInTheDocument();
-      expect(
-        screen.getByRole("link", { name: "Hide history" })
-      ).toHaveAttribute("aria-expanded", "true");
-    });
-
     it.each([
       {
         nodeType: "machine",
@@ -281,6 +252,21 @@ describe("NodeTestsTable", () => {
           "href",
           `/${nodeType}/${node.system_id}/${root}/2/details`
         );
+
+        const parentCells = within(
+          screen.getByRole("row", { name: /script-name/ })
+        ).getAllByRole("gridcell");
+        const historyColumnIndex = parentCells.findIndex((cell) =>
+          within(cell).queryByRole("link", { name: "Hide history" })
+        );
+        const historyCells = within(
+          screen.getByRole("row", { name: /View log/ })
+        ).getAllByRole("gridcell");
+        expect(
+          within(historyCells[historyColumnIndex]).getByRole("link", {
+            name: "View log",
+          })
+        ).toBeInTheDocument();
       }
     );
 
@@ -306,9 +292,6 @@ describe("NodeTestsTable", () => {
 
         expect(
           screen.queryByRole("link", { name: /history/i })
-        ).not.toBeInTheDocument();
-        expect(
-          screen.queryByText("This test has only been run once.")
         ).not.toBeInTheDocument();
       }
     );
