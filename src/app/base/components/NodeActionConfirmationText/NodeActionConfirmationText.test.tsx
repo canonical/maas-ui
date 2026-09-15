@@ -12,7 +12,7 @@ it("displays correct confirmation text for deleting a single node", () => {
     />
   );
   expect(
-    screen.getByText("Are you sure you want to delete a machine?")
+    screen.getByText("Are you sure you want to delete this machine?")
   ).toBeInTheDocument();
 });
 

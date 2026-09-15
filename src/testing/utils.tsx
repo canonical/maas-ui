@@ -22,9 +22,11 @@ import { Provider } from "react-redux";
 import type { DataRouter, InitialEntry } from "react-router";
 import type { MockStoreEnhanced } from "redux-mock-store";
 import configureStore from "redux-mock-store";
+import type { Mock } from "vitest";
 import { vi } from "vitest";
 
 import { client } from "@/app/apiclient/client.gen";
+import { ModalContextProvider } from "@/app/base/modal-context";
 import ThemeContextProvider from "@/app/base/theme-context";
 import { WebSocketProvider } from "@/app/base/websocket-context";
 import type { RootState } from "@/app/store/root/types";
@@ -156,7 +158,9 @@ const makeAdditionalProviders = (getStore: () => MaasStore) => {
       <Profiler id="TestComponent" onRender={onRender}>
         <WebSocketProvider>
           <Provider store={getStore()}>
-            <ThemeContextProvider>{children}</ThemeContextProvider>
+            <ThemeContextProvider>
+              <ModalContextProvider>{children}</ModalContextProvider>
+            </ThemeContextProvider>
           </Provider>
         </WebSocketProvider>
       </Profiler>
@@ -269,6 +273,51 @@ const renderHookWithProviders = <T,>(
   });
 
   return { result, store, queryClient };
+};
+
+/**
+ * Mocks the `useModal` hook, returning `mockOpen`/`mockClose` spies.
+ */
+export const mockModal = async (): Promise<{
+  mockOpen: Mock<unknown[], unknown>;
+  mockClose: Mock<unknown[], unknown>;
+}> => {
+  const mockUseModal = vi.spyOn(
+    await import("@/app/base/modal-context"),
+    "useModal"
+  );
+
+  const mockOpen: Mock<unknown[], unknown> = vi.fn();
+  const mockClose: Mock<unknown[], unknown> = vi.fn();
+  let isOpen = false;
+
+  const makeReturnValue = () => ({
+    isOpen,
+    title: "",
+    component: null,
+    props: {},
+    openModal: mockOpen,
+    closeModal: mockClose,
+  });
+
+  beforeEach(() => {
+    vi.clearAllMocks();
+    isOpen = false;
+
+    mockOpen.mockImplementation(() => {
+      isOpen = true;
+      mockUseModal.mockReturnValue(makeReturnValue());
+    });
+
+    mockClose.mockImplementation(() => {
+      isOpen = false;
+      mockUseModal.mockReturnValue(makeReturnValue());
+    });
+
+    mockUseModal.mockReturnValue(makeReturnValue());
+  });
+
+  return { mockOpen, mockClose };
 };
 
 const waitFor = vi.waitFor;

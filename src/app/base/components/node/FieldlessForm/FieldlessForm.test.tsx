@@ -5,6 +5,7 @@ import type { RootState } from "@/app/store/root/types";
 import { NodeActions } from "@/app/store/types/node";
 import * as factory from "@/testing/factories";
 import {
+  mockModal,
   mockSidePanel,
   renderWithProviders,
   screen,
@@ -15,7 +16,9 @@ vi.mock("@canonical/react-components/dist/hooks", () => ({
   usePrevious: vi.fn(),
 }));
 
-const { mockClose } = await mockSidePanel();
+const { mockOpen: mockOpenSidePanel, mockClose: mockCloseSidePanel } =
+  await mockSidePanel();
+const { mockClose: mockCloseModal } = await mockModal();
 
 describe("FieldlessForm", () => {
   let state: RootState;
@@ -45,7 +48,10 @@ describe("FieldlessForm", () => {
     vi.restoreAllMocks();
   });
 
-  it("can unset the selected action", async () => {
+  it("closes the side panel on cancel when opened as a side panel", async () => {
+    // Casting because the upstream `Mock` type from maas-react-components's
+    // testing package resolves to a single required function argument here.
+    (mockOpenSidePanel as unknown as () => void)();
     renderWithProviders(
       <FieldlessForm
         action={NodeActions.ON}
@@ -60,7 +66,27 @@ describe("FieldlessForm", () => {
     );
     await userEvent.click(screen.getByRole("button", { name: "Cancel" }));
 
-    expect(mockClose).toHaveBeenCalled();
+    expect(mockCloseSidePanel).toHaveBeenCalled();
+    expect(mockCloseModal).not.toHaveBeenCalled();
+  });
+
+  it("closes the modal on cancel when opened as a modal", async () => {
+    renderWithProviders(
+      <FieldlessForm
+        action={NodeActions.ON}
+        actions={machineActions}
+        cleanup={machineActions.cleanup}
+        modelName="machine"
+        nodes={[state.machine.items[0]]}
+        processingCount={0}
+        viewingDetails={false}
+      />,
+      { state }
+    );
+    await userEvent.click(screen.getByRole("button", { name: "Cancel" }));
+
+    expect(mockCloseModal).toHaveBeenCalled();
+    expect(mockCloseSidePanel).not.toHaveBeenCalled();
   });
 
   it("can dispatch abort action on given machines", async () => {

@@ -22,6 +22,7 @@ import {
 import PageContent from "./base/components/PageContent/PageContent";
 import SectionHeader from "./base/components/SectionHeader";
 import useSessionExtender from "./base/hooks/useSessionExtender/useSessionExtender";
+import { ModalContextProvider } from "./base/modal-context";
 import ThemePreviewContextProvider from "./base/theme-context";
 import { getCookie } from "./utils";
 
@@ -188,8 +189,10 @@ export const App = (): React.ReactElement => {
     <ThemePreviewContextProvider>
       <ToastNotificationProvider onDismiss={dismiss}>
         <NotificationProvider pathname={location.pathname}>
-          <ConnectionStatus />
-          <AppLayout>{content}</AppLayout>
+          <ModalContextProvider>
+            <ConnectionStatus />
+            <AppLayout>{content}</AppLayout>
+          </ModalContextProvider>
         </NotificationProvider>
       </ToastNotificationProvider>
     </ThemePreviewContextProvider>
