@@ -129,23 +129,20 @@ const getRowData = ({
   return {
     "aria-label": fabric?.name,
     fabric: getColumn(getFabricDisplay(fabric), getFabricLink(fabric?.id)),
-    vlan: getColumn(
-      getVLANDisplay(vlan),
-      vlan?.id ? getVLANLink(vlan?.id) : null
-    ),
+    vlan: getColumn(getVLANDisplay(vlan), getVLANLink(vlan?.id)),
     dhcp: getColumn(
       data ? getDHCPStatus(vlan, data.vlans, data.fabrics, true) : null
     ),
     subnet: getColumn(
-      subnet?.id ? getSubnetDisplay(subnet) : null,
-      subnet?.id ? getSubnetLink(subnet?.id) : null
+      subnet ? getSubnetDisplay(subnet) : null,
+      getSubnetLink(subnet?.id)
     ),
     ips: getColumn(subnet ? getAvailableIPs(subnet) : null),
     space: getColumn(getSpaceDisplay(space), getSpaceLink(space?.id)),
     sortData: {
-      fabricId: fabric?.id || "",
+      fabricId: fabric?.id ?? "",
       fabricName: getFabricDisplay(fabric)?.toLowerCase() || "",
-      vlanId: vlan?.id || "",
+      vlanId: vlan?.id ?? "",
 
       spaceName: getSpaceDisplay(space)?.toLowerCase() || "",
       cidr: subnet?.cidr || "",

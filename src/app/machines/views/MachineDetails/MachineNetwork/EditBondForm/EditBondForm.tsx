@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useState } from "react";
 
 import { Spinner } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
@@ -81,11 +81,23 @@ const EditBondForm = ({
   close,
   link,
   nic,
-  selected,
-  setSelected,
+  selected: _selected,
+  setSelected: setParentSelected,
   systemId,
 }: Props): JSX.Element | null => {
   const [editingMembers, setEditingMembers] = useState(false);
+  // Local state is required because `selected` is frozen in the side panel context when the panel opens and won't reflect parent updates.
+  // Initialize directly from the bond's parents so the table is populated regardless of the network table selection.
+  const [selected, setLocalSelected] = useState<Selected[]>(
+    () => nic?.parents.map((id) => ({ nicId: id })) ?? []
+  );
+  const setSelected: SetSelected = useCallback(
+    (newSelected) => {
+      setLocalSelected(newSelected);
+      setParentSelected(newSelected);
+    },
+    [setParentSelected]
+  );
   const dispatch = useDispatch();
   const machine = useSelector((state: RootState) =>
     machineSelectors.getById(state, systemId)
@@ -118,18 +130,6 @@ const EditBondForm = ({
     subnetActions.fetch,
     vlanActions.fetch,
   ]);
-
-  useEffect(() => {
-    // Set the bond parents as selected so that they appear in the table and the
-    // parents can be edited.
-    if (nic) {
-      setSelected(
-        nic.parents.map((id) => ({
-          nicId: id,
-        }))
-      );
-    }
-  }, [setSelected, nic]);
 
   if (
     !nic ||
@@ -178,7 +178,7 @@ const EditBondForm = ({
         bond_mode: nic.params?.bond_mode || BondMode.ACTIVE_BACKUP,
         bond_updelay: nic.params?.bond_updelay || 0,
         bond_xmit_hash_policy: nic.params?.bond_xmit_hash_policy || "",
-        fabric: vlan ? vlan.fabric : "",
+        fabric: vlan?.fabric,
         ip_address: ipAddress || "",
         linkMonitoring,
         mac_address: macAddress,
