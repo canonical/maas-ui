@@ -197,7 +197,10 @@ describe("NodeTestsTable", () => {
       const scriptResult = factory.scriptResult({ id: 1 });
       state.scriptresult.items = [scriptResult];
       state.scriptresult.history = {
-        1: [factory.partialScriptResult(), factory.partialScriptResult()],
+        1: [
+          factory.partialScriptResult({ id: 1 }),
+          factory.partialScriptResult({ id: 2 }),
+        ],
       };
 
       renderWithProviders(
@@ -209,11 +212,14 @@ describe("NodeTestsTable", () => {
       );
       await waitForLoading();
 
-      const previousTestsButton = screen.getByTestId("view-history-link");
-      await userEvent.click(previousTestsButton);
+      await userEvent.click(screen.getByRole("link", { name: "View history" }));
 
-      expect(screen.queryByTestId("no-history")).not.toBeInTheDocument();
-      expect(screen.getByTestId("view-history-link")).toBeInTheDocument();
+      expect(
+        screen.getByRole("link", { name: "View log" })
+      ).toBeInTheDocument();
+      expect(
+        screen.getByRole("link", { name: "Hide history" })
+      ).toHaveAttribute("aria-expanded", "true");
     });
 
     it.each([
@@ -248,7 +254,10 @@ describe("NodeTestsTable", () => {
         });
         state.scriptresult.items = [scriptResult];
         state.scriptresult.history = {
-          1: [factory.partialScriptResult({ id: 2 })],
+          1: [
+            factory.partialScriptResult({ id: 1 }),
+            factory.partialScriptResult({ id: 2 }),
+          ],
         };
 
         renderWithProviders(
@@ -275,31 +284,38 @@ describe("NodeTestsTable", () => {
       }
     );
 
-    it("displays a message if the test has no history", async () => {
-      const scriptResult = factory.scriptResult({ id: 1 });
-      state.scriptresult.items = [scriptResult];
-      state.scriptresult.history = {
-        1: [],
-      };
+    it.each([undefined, 0, 1])(
+      "hides the history toggle when the run count is %s",
+      (runCount) => {
+        const scriptResult = factory.scriptResult({ id: 1 });
+        state.scriptresult.items = [scriptResult];
+        state.scriptresult.history =
+          runCount === undefined
+            ? {}
+            : {
+                1:
+                  runCount === 0
+                    ? []
+                    : [factory.partialScriptResult({ id: 1 })],
+              };
 
-      renderWithProviders(
-        <NodeTestsTable node={machine} scriptResults={[scriptResult]} />,
-        {
-          initialEntries: ["/machine/abc123"],
-          state,
-        }
-      );
-      await waitForLoading();
+        renderWithProviders(
+          <NodeTestsTable node={machine} scriptResults={[scriptResult]} />,
+          { state }
+        );
 
-      const previousTestsButton = screen.getByTestId("view-history-link");
-      await userEvent.click(previousTestsButton);
-
-      expect(screen.getByTestId("no-history")).toBeInTheDocument();
-    });
+        expect(
+          screen.queryByRole("link", { name: /history/i })
+        ).not.toBeInTheDocument();
+        expect(
+          screen.queryByText("This test has only been run once.")
+        ).not.toBeInTheDocument();
+      }
+    );
   });
 
   describe("actions", () => {
-    it("shows historical rows when expanded and hides them when closed", async () => {
+    it("toggles historical rows using View history and Hide history", async () => {
       const scriptResult = factory.scriptResult({ id: 1, name: "script-name" });
       state.scriptresult.items = [scriptResult];
       state.scriptresult.history = {
@@ -323,13 +339,24 @@ describe("NodeTestsTable", () => {
       expect(
         table.queryByRole("link", { name: "View log" })
       ).not.toBeInTheDocument();
+      expect(table.getByRole("link", { name: "View history" })).toHaveAttribute(
+        "aria-expanded",
+        "false"
+      );
 
       await userEvent.click(table.getByRole("link", { name: "View history" }));
 
       expect(table.getAllByRole("row")).toHaveLength(4);
       expect(table.getAllByRole("link", { name: "View log" })).toHaveLength(2);
+      expect(table.getByRole("link", { name: "Hide history" })).toHaveAttribute(
+        "aria-expanded",
+        "true"
+      );
+      expect(
+        table.queryByRole("link", { name: "View history" })
+      ).not.toBeInTheDocument();
 
-      await userEvent.click(screen.getByRole("button", { name: "Close" }));
+      await userEvent.click(table.getByRole("link", { name: "Hide history" }));
 
       expect(table.getAllByRole("row")).toHaveLength(2);
       expect(
@@ -339,8 +366,60 @@ describe("NodeTestsTable", () => {
         table.getByRole("link", { name: "script-name" })
       ).toBeInTheDocument();
       expect(
-        screen.queryByRole("button", { name: "Close" })
+        table.queryByRole("link", { name: "Hide history" })
       ).not.toBeInTheDocument();
+      expect(table.getByRole("link", { name: "View history" })).toHaveAttribute(
+        "aria-expanded",
+        "false"
+      );
+    });
+
+    it("collapses the previous history when another script is expanded", async () => {
+      const scriptResults = [
+        factory.scriptResult({ id: 1, name: "first-script" }),
+        factory.scriptResult({ id: 2, name: "second-script" }),
+      ];
+      state.scriptresult.items = scriptResults;
+      state.scriptresult.history = {
+        1: [
+          factory.partialScriptResult({ id: 1 }),
+          factory.partialScriptResult({ id: 3, status_name: "First history" }),
+        ],
+        2: [
+          factory.partialScriptResult({ id: 2 }),
+          factory.partialScriptResult({ id: 4, status_name: "Second history" }),
+        ],
+      };
+
+      renderWithProviders(
+        <NodeTestsTable node={machine} scriptResults={scriptResults} />,
+        { state }
+      );
+
+      const firstRow = within(
+        screen.getByRole("row", { name: /first-script/ })
+      );
+      const secondRow = within(
+        screen.getByRole("row", { name: /second-script/ })
+      );
+
+      await userEvent.click(
+        firstRow.getByRole("link", { name: "View history" })
+      );
+      expect(screen.getByText("First history")).toBeInTheDocument();
+
+      await userEvent.click(
+        secondRow.getByRole("link", { name: "View history" })
+      );
+
+      expect(screen.queryByText("First history")).not.toBeInTheDocument();
+      expect(screen.getByText("Second history")).toBeInTheDocument();
+      expect(
+        firstRow.getByRole("link", { name: "View history" })
+      ).toHaveAttribute("aria-expanded", "false");
+      expect(
+        secondRow.getByRole("link", { name: "Hide history" })
+      ).toHaveAttribute("aria-expanded", "true");
     });
 
     it("disables suppress checkbox if test did not fail", async () => {
