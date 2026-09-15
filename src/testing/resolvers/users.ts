@@ -12,6 +12,7 @@ import type {
   ListUsersStatisticsResponse,
   UpdateUserError,
   UserResponse,
+  UserUpdateRequestAdmin,
 } from "@/app/apiclient";
 import {
   user as userFactory,
@@ -145,9 +146,12 @@ const usersResolvers = {
   },
   updateUser: {
     resolved: false,
+    body: null as UserUpdateRequestAdmin | null,
     handler: () =>
-      http.put(`${BASE_URL}MAAS/a/v3/users/:id`, () => {
+      http.put(`${BASE_URL}MAAS/a/v3/users/:id`, async ({ request }) => {
         usersResolvers.updateUser.resolved = true;
+        usersResolvers.updateUser.body =
+          (await request.json()) as UserUpdateRequestAdmin;
         return HttpResponse.json({});
       }),
     error: (error: UpdateUserError = mockUpdateUserError) =>

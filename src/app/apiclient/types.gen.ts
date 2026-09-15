@@ -4793,6 +4793,20 @@ export type UsbDevicesListResponse = {
  */
 export type UserChangePasswordRequest = {
   /**
+   * Current Password
+   */
+  current_password: string;
+  /**
+   * New Password
+   */
+  new_password: string;
+};
+
+/**
+ * UserChangePasswordRequestAdmin
+ */
+export type UserChangePasswordRequestAdmin = {
+  /**
    * Password
    */
   password: string;
@@ -5095,32 +5109,6 @@ export type UserStatisticsResponse = {
 };
 
 /**
- * UserUpdateRequest
- */
-export type UserUpdateRequest = {
-  /**
-   * Username
-   */
-  username: string;
-  /**
-   * First Name
-   */
-  first_name: string;
-  /**
-   * Last Name
-   */
-  last_name: string;
-  /**
-   * Email
-   */
-  email?: string;
-  /**
-   * Password
-   */
-  password?: string;
-};
-
-/**
  * UserUpdateRequestAdmin
  */
 export type UserUpdateRequestAdmin = {
@@ -5150,6 +5138,36 @@ export type UserUpdateRequestAdmin = {
    * The IDs of the groups the user will be a member of.
    */
   groups?: number[];
+};
+
+/**
+ * UserUpdateRequestSelf
+ */
+export type UserUpdateRequestSelf = {
+  /**
+   * Username
+   */
+  username: string;
+  /**
+   * First Name
+   */
+  first_name: string;
+  /**
+   * Last Name
+   */
+  last_name: string;
+  /**
+   * Email
+   */
+  email?: string;
+  /**
+   * Current Password
+   */
+  current_password?: string;
+  /**
+   * New Password
+   */
+  new_password?: string;
 };
 
 /**
@@ -12562,13 +12580,17 @@ export type GetUserInfoResponse =
   GetUserInfoResponses[keyof GetUserInfoResponses];
 
 export type UpdateUserMeData = {
-  body: UserUpdateRequest;
+  body: UserUpdateRequestSelf;
   path?: never;
   query?: never;
   url: "/MAAS/a/v3/users/me";
 };
 
 export type UpdateUserMeErrors = {
+  /**
+   * Bad Request
+   */
+  400: BadRequestBodyResponse;
   /**
    * Unauthorized
    */
@@ -12664,6 +12686,10 @@ export type ChangePasswordUserData = {
 };
 
 export type ChangePasswordUserErrors = {
+  /**
+   * Bad Request
+   */
+  400: BadRequestBodyResponse;
   /**
    * Unauthorized
    */
@@ -12871,6 +12897,10 @@ export type UpdateUserData = {
 
 export type UpdateUserErrors = {
   /**
+   * Bad Request
+   */
+  400: BadRequestBodyResponse;
+  /**
    * Not Found
    */
   404: NotFoundBodyResponse;
@@ -12892,7 +12922,7 @@ export type UpdateUserResponses = {
 export type UpdateUserResponse = UpdateUserResponses[keyof UpdateUserResponses];
 
 export type ChangePasswordAdminData = {
-  body: UserChangePasswordRequest;
+  body: UserChangePasswordRequestAdmin;
   path: {
     /**
      * User Id
@@ -12905,9 +12935,9 @@ export type ChangePasswordAdminData = {
 
 export type ChangePasswordAdminErrors = {
   /**
-   * Unauthorized
+   * Bad Request
    */
-  401: UnauthorizedBodyResponse;
+  400: BadRequestBodyResponse;
   /**
    * Not Found
    */
