@@ -4,7 +4,7 @@ import { DeleteSpace } from "@/app/networks/views/Spaces/components";
 import { mockSpaces, spacesResolvers } from "@/testing/resolvers/spaces";
 import {
   mockIsPending,
-  mockSidePanel,
+  mockModal,
   renderWithProviders,
   screen,
   setupMockServer,
@@ -12,7 +12,7 @@ import {
   waitFor,
 } from "@/testing/utils";
 
-const { mockOpen } = await mockSidePanel();
+const { mockOpen } = await mockModal();
 const mockServer = setupMockServer(spacesResolvers.listSpaces.handler());
 
 describe("SpacesTable", () => {

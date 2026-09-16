@@ -5,7 +5,7 @@ import { authResolvers } from "@/testing/resolvers/auth";
 import { fabricsResolvers, mockFabrics } from "@/testing/resolvers/fabrics";
 import {
   mockIsPending,
-  mockSidePanel,
+  mockModal,
   renderWithProviders,
   screen,
   setupMockServer,
@@ -13,7 +13,7 @@ import {
   waitFor,
 } from "@/testing/utils";
 
-const { mockOpen } = await mockSidePanel();
+const { mockOpen } = await mockModal();
 const mockServer = setupMockServer(
   fabricsResolvers.listFabrics.handler(),
   authResolvers.getCurrentUser.handler(),

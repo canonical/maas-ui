@@ -1,11 +1,11 @@
 import type { ReactElement } from "react";
 
-import { useSidePanel } from "@canonical/maas-react-components";
 import { Notification as NotificationBanner } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 
 import FormikForm from "@/app/base/components/FormikForm";
 import { useFetchActions } from "@/app/base/hooks";
+import { useModal } from "@/app/base/modal-context";
 import type { EmptyObject } from "@/app/base/types";
 import urls from "@/app/networks/urls";
 import type { RootState } from "@/app/store/root/types";
@@ -19,7 +19,7 @@ type DeleteSpaceProps = {
 };
 
 export const DeleteSpace = ({ id }: DeleteSpaceProps): ReactElement => {
-  const { closeSidePanel } = useSidePanel();
+  const { closeModal } = useModal();
   const space = useSelector((state: RootState) =>
     spaceSelectors.getById(state, id)
   );
@@ -36,12 +36,12 @@ export const DeleteSpace = ({ id }: DeleteSpaceProps): ReactElement => {
       cleanup={spaceActions.cleanup}
       errors={errors}
       initialValues={{}}
-      onCancel={closeSidePanel}
+      onCancel={closeModal}
       onSubmit={() => {
         dispatch(spaceActions.cleanup());
         dispatch(spaceActions.delete(id));
       }}
-      onSuccess={closeSidePanel}
+      onSuccess={closeModal}
       saved={saved}
       savedRedirect={urls.spaces.index}
       saving={saving}

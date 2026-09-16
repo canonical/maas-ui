@@ -7,7 +7,7 @@ import type { RootState } from "@/app/store/root/types";
 import type { Space } from "@/app/store/space/types";
 import * as factory from "@/testing/factories";
 import {
-  mockSidePanel,
+  mockModal,
   renderWithProviders,
   screen,
   userEvent,
@@ -16,7 +16,7 @@ import {
 let state: RootState;
 let space: Space;
 
-const { mockOpen } = await mockSidePanel();
+const { mockOpen } = await mockModal();
 
 describe("SpaceDetailsHeader", () => {
   beforeEach(() => {

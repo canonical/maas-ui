@@ -8,6 +8,7 @@ import SpaceLink from "@/app/base/components/SpaceLink";
 import TableActions from "@/app/base/components/TableActions";
 import VLANLink from "@/app/base/components/VLANLink";
 import { useHasEntitlements } from "@/app/base/hooks";
+import { useModal } from "@/app/base/modal-context";
 import { DeleteVLAN, EditVLAN } from "@/app/networks/views/VLANs/components";
 import { Entitlement } from "@/app/settings/views/UserManagement/views/Groups/constants";
 import type { VLAN } from "@/app/store/vlan/types";
@@ -16,6 +17,7 @@ export type VLANsColumnDef = ColumnDef<VLAN, Partial<VLAN>>;
 
 const useVlansTableColumns = (): VLANsColumnDef[] => {
   const { openSidePanel } = useSidePanel();
+  const { openModal } = useModal();
   const canEdit = useHasEntitlements([Entitlement.CAN_EDIT_GLOBAL_ENTITIES]);
   return useMemo(
     (): VLANsColumnDef[] => [
@@ -78,7 +80,7 @@ const useVlansTableColumns = (): VLANsColumnDef[] => {
             deleteDisabled={!canEdit}
             editDisabled={!canEdit}
             onDelete={() => {
-              openSidePanel({
+              openModal({
                 component: DeleteVLAN,
                 title: "Delete VLAN",
                 props: { id },
@@ -95,7 +97,7 @@ const useVlansTableColumns = (): VLANsColumnDef[] => {
         ),
       },
     ],
-    [canEdit, openSidePanel]
+    [canEdit, openModal, openSidePanel]
   );
 };
 
