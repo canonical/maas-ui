@@ -1,7 +1,6 @@
 import type { ReactElement } from "react";
 import { useCallback } from "react";
 
-import { useSidePanel } from "@canonical/maas-react-components";
 import {
   Notification as NotificationBanner,
   Spinner,
@@ -12,6 +11,7 @@ import { Link } from "react-router";
 
 import FormikForm from "@/app/base/components/FormikForm";
 import { useCycled } from "@/app/base/hooks";
+import { useModal } from "@/app/base/modal-context";
 import type { EmptyObject } from "@/app/base/types";
 import urls from "@/app/base/urls";
 import type { RootState } from "@/app/store/root/types";
@@ -25,7 +25,7 @@ type MapSubnetProps = {
 export const MapSubnet = ({
   subnetId,
 }: MapSubnetProps): ReactElement | null => {
-  const { closeSidePanel } = useSidePanel();
+  const { closeModal } = useModal();
   const dispatch = useDispatch();
   const cleanup = useCallback(() => subnetActions.cleanup(), []);
   const subnet = useSelector((state: RootState) =>
@@ -54,13 +54,13 @@ export const MapSubnet = ({
       cleanup={cleanup}
       errors={scanError}
       initialValues={{}}
-      onCancel={closeSidePanel}
+      onCancel={closeModal}
       onSubmit={() => {
         resetScanned();
         dispatch(cleanup());
         dispatch(subnetActions.scan(subnetId));
       }}
-      onSuccess={closeSidePanel}
+      onSuccess={closeModal}
       saved={saved}
       saving={scanning}
       submitDisabled={!isIPv4}

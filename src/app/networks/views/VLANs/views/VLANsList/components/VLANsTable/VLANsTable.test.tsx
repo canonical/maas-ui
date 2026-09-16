@@ -9,6 +9,7 @@ import {
 } from "@/testing/factories";
 import { authResolvers } from "@/testing/resolvers/auth";
 import {
+  mockModal,
   mockSidePanel,
   renderWithProviders,
   screen,
@@ -22,6 +23,7 @@ const mockServer = setupMockServer(
   authResolvers.getMeEntitlements.handler()
 );
 const { mockOpen } = await mockSidePanel();
+const { mockOpen: mockOpenModal } = await mockModal();
 
 describe("VLANsTable", () => {
   let state: RootState;
@@ -106,7 +108,7 @@ describe("VLANsTable", () => {
       await userEvent.click(screen.getByRole("button", { name: "Delete" }));
 
       await waitFor(() => {
-        expect(mockOpen).toHaveBeenCalledWith({
+        expect(mockOpenModal).toHaveBeenCalledWith({
           component: DeleteVLAN,
           title: "Delete VLAN",
           props: {

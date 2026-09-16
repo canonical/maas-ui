@@ -1,5 +1,6 @@
 import VLANsList from "./VLANsList";
 
+import { DeleteVLAN } from "@/app/networks/views/VLANs/components";
 import type { RootState } from "@/app/store/root/types";
 import {
   rootState as rootStateFactory,
@@ -8,6 +9,7 @@ import {
 } from "@/testing/factories";
 import { authResolvers } from "@/testing/resolvers/auth";
 import {
+  mockModal,
   renderWithProviders,
   screen,
   setupMockServer,
@@ -19,6 +21,7 @@ setupMockServer(
   authResolvers.getCurrentUser.handler(),
   authResolvers.getMeEntitlements.handler()
 );
+const { mockOpen } = await mockModal();
 
 describe("VLANsList", () => {
   let state: RootState;
@@ -71,8 +74,12 @@ describe("VLANsList", () => {
     });
     await userEvent.click(screen.getByRole("button", { name: "Delete" }));
 
-    expect(
-      screen.getByRole("complementary", { name: "Delete VLAN" })
-    ).toBeInTheDocument();
+    expect(mockOpen).toHaveBeenCalledWith({
+      component: DeleteVLAN,
+      title: "Delete VLAN",
+      props: {
+        id: state.vlan.items[0].id,
+      },
+    });
   });
 });

@@ -1,11 +1,11 @@
 import type { ReactElement } from "react";
 
-import { useSidePanel } from "@canonical/maas-react-components";
 import { Notification as NotificationBanner } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 
 import FormikForm from "@/app/base/components/FormikForm";
 import { useFetchActions } from "@/app/base/hooks";
+import { useModal } from "@/app/base/modal-context";
 import type { EmptyObject } from "@/app/base/types";
 import subnetURLs from "@/app/networks/urls";
 import type { RootState } from "@/app/store/root/types";
@@ -23,7 +23,7 @@ type DeleteSubnetProps = {
 export const DeleteSubnet = ({
   subnet,
 }: DeleteSubnetProps): ReactElement | null => {
-  const { closeSidePanel } = useSidePanel();
+  const { closeModal } = useModal();
   const dispatch = useDispatch();
   const errors = useSelector(subnetSelectors.errors);
   const saving = useSelector(subnetSelectors.saving);
@@ -43,11 +43,11 @@ export const DeleteSubnet = ({
       cleanup={subnetActions.cleanup}
       errors={errors}
       initialValues={{}}
-      onCancel={closeSidePanel}
+      onCancel={closeModal}
       onSubmit={() => {
         dispatch(subnetActions.delete(subnet.id));
       }}
-      onSuccess={closeSidePanel}
+      onSuccess={closeModal}
       saved={saved}
       savedRedirect={subnetURLs.index}
       saving={saving}

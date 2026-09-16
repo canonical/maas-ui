@@ -1,8 +1,10 @@
 import FabricsList from "./FabricsList";
 
+import { DeleteFabric } from "@/app/networks/views/Fabrics/components";
 import { authResolvers } from "@/testing/resolvers/auth";
 import { fabricsResolvers, mockFabrics } from "@/testing/resolvers/fabrics";
 import {
+  mockModal,
   renderWithProviders,
   screen,
   setupMockServer,
@@ -15,6 +17,7 @@ setupMockServer(
   authResolvers.getCurrentUser.handler(),
   authResolvers.getMeEntitlements.handler()
 );
+const { mockOpen } = await mockModal();
 
 describe("FabricsList", () => {
   it("uses the correct window title", async () => {
@@ -47,8 +50,12 @@ describe("FabricsList", () => {
     });
     await userEvent.click(screen.getAllByRole("button", { name: "Delete" })[0]);
 
-    expect(
-      screen.getByRole("complementary", { name: "Delete fabric" })
-    ).toBeInTheDocument();
+    expect(mockOpen).toHaveBeenCalledWith({
+      component: DeleteFabric,
+      title: "Delete fabric",
+      props: {
+        id: mockFabrics.items[0].id,
+      },
+    });
   });
 });

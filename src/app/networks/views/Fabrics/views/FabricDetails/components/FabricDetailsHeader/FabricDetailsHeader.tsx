@@ -1,10 +1,10 @@
 import type { ReactElement } from "react";
 
-import { useSidePanel } from "@canonical/maas-react-components";
 import { Button } from "@canonical/react-components";
 
 import SectionHeader from "@/app/base/components/SectionHeader";
 import { useHasEntitlements } from "@/app/base/hooks";
+import { useModal } from "@/app/base/modal-context";
 import { DeleteFabric } from "@/app/networks/views/Fabrics/components";
 import { Entitlement } from "@/app/settings/views/UserManagement/views/Groups/constants";
 import type { Fabric } from "@/app/store/fabric/types";
@@ -16,7 +16,7 @@ type FabricDetailsHeaderProps = {
 const FabricDetailsHeader = ({
   fabric,
 }: FabricDetailsHeaderProps): ReactElement => {
-  const { openSidePanel } = useSidePanel();
+  const { openModal } = useModal();
   const canEdit = useHasEntitlements([Entitlement.CAN_EDIT_GLOBAL_ENTITIES]);
 
   return (
@@ -27,7 +27,7 @@ const FabricDetailsHeader = ({
               <Button
                 appearance="neutral"
                 onClick={() => {
-                  openSidePanel({
+                  openModal({
                     component: DeleteFabric,
                     title: "Delete fabric",
                     props: { id: fabric?.id },
