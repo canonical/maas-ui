@@ -10,6 +10,7 @@ import ModelNotFound from "@/app/base/components/ModelNotFound";
 import PageContent from "@/app/base/components/PageContent";
 import { useFetchActions, useWindowTitle } from "@/app/base/hooks";
 import { useGetURLId } from "@/app/base/hooks/urls";
+import { useModal } from "@/app/base/modal-context";
 import urls from "@/app/base/urls";
 import type { RootState } from "@/app/store/root/types";
 import { tagActions } from "@/app/store/tag";
@@ -33,6 +34,7 @@ export enum Label {
 
 const TagDetails = (): React.ReactElement => {
   const { openSidePanel } = useSidePanel();
+  const { openModal } = useModal();
   const id = useGetURLId(TagMeta.PK);
   const tag = useSelector((state: RootState) =>
     tagSelectors.getById(state, id)
@@ -40,7 +42,7 @@ const TagDetails = (): React.ReactElement => {
   const tagsLoading = useSelector(tagSelectors.loading);
 
   const onDelete = (id: Tag[TagMeta.PK], fromDetails?: boolean) => {
-    openSidePanel({
+    openModal({
       component: DeleteTagForm,
       title: "Delete tag",
       props: {

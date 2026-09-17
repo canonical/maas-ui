@@ -10,6 +10,7 @@ import UpdateTagForm from "../../components/UpdateTagForm";
 
 import PageContent from "@/app/base/components/PageContent";
 import { useWindowTitle } from "@/app/base/hooks";
+import { useModal } from "@/app/base/modal-context";
 import type { RootState } from "@/app/store/root/types";
 import tagSelectors, { TagSearchFilter } from "@/app/store/tag/selectors";
 import type { Tag, TagMeta } from "@/app/store/tag/types";
@@ -22,6 +23,7 @@ const TagList = (): React.ReactElement => {
   useWindowTitle("Tags");
 
   const { openSidePanel } = useSidePanel();
+  const { openModal } = useModal();
   const [filter, setFilter] = useState(TagSearchFilter.All);
   const [searchText, setSearchText] = useState("");
   const tags = useSelector((state: RootState) =>
@@ -30,7 +32,7 @@ const TagList = (): React.ReactElement => {
 
   const tableId = useId();
   const onDelete = (id: Tag[TagMeta.PK], fromDetails?: boolean) => {
-    openSidePanel({
+    openModal({
       component: DeleteTagForm,
       title: "Delete tag",
       props: { fromDetails, id },
