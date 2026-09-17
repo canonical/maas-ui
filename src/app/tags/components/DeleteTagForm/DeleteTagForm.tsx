@@ -1,4 +1,3 @@
-import { useSidePanel } from "@canonical/maas-react-components";
 import { Col, Row } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router";
@@ -7,6 +6,7 @@ import DeleteTagFormWarnings from "./DeleteTagFormWarnings";
 
 import FormikForm from "@/app/base/components/FormikForm";
 import { useScrollToTop } from "@/app/base/hooks";
+import { useModal } from "@/app/base/modal-context";
 import type { EmptyObject, SyncNavigateFunction } from "@/app/base/types";
 import urls from "@/app/base/urls";
 import type { RootState } from "@/app/store/root/types";
@@ -23,7 +23,7 @@ export const DeleteTagForm = ({
   fromDetails = false,
   id,
 }: Props): React.ReactElement | null => {
-  const { closeSidePanel } = useSidePanel();
+  const { closeModal } = useModal();
   const dispatch = useDispatch();
   const navigate: SyncNavigateFunction = useNavigate();
   const saved = useSelector(tagSelectors.saved);
@@ -35,7 +35,7 @@ export const DeleteTagForm = ({
 
   useScrollToTop();
   const onCancel = () => {
-    closeSidePanel();
+    closeModal();
     if (fromDetails) {
       // Explicitly return to the page they user came from in case they have opened
       // the list of machines.
@@ -63,7 +63,7 @@ export const DeleteTagForm = ({
         dispatch(tagActions.cleanup());
         dispatch(tagActions.delete(tag.id));
       }}
-      onSuccess={closeSidePanel}
+      onSuccess={closeModal}
       saved={saved}
       savedRedirect={urls.tags.index}
       saving={saving}
