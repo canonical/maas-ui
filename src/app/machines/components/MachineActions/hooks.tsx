@@ -1,23 +1,14 @@
-import { useSidePanel } from "@canonical/maas-react-components";
+import {
+  lazyLoadSidePanel,
+  useSidePanel,
+} from "@canonical/maas-react-components";
 import { Button, Icon, Switch } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 
-import DeleteMachine from "../MachineForms/DeleteMachine/DeleteMachine";
-import CloneForm from "../MachineForms/MachineActionFormWrapper/CloneForm";
-import CommissionForm from "../MachineForms/MachineActionFormWrapper/CommissionForm";
-import DeployForm from "../MachineForms/MachineActionFormWrapper/DeployForm";
-import MarkBrokenForm from "../MachineForms/MachineActionFormWrapper/MarkBrokenForm";
-import OverrideTestForm from "../MachineForms/MachineActionFormWrapper/OverrideTestForm";
-import ReleaseForm from "../MachineForms/MachineActionFormWrapper/ReleaseForm";
-import SetMachineZoneForm from "../MachineForms/MachineActionFormWrapper/SetMachineZoneForm/SetMachineZoneForm";
-import SetPoolForm from "../MachineForms/MachineActionFormWrapper/SetPoolForm";
-import TagForm from "../MachineForms/MachineActionFormWrapper/TagForm";
-import TestMachineForm from "../MachineForms/MachineActionFormWrapper/TestMachineForm";
-
 import type { MachineActionGroup } from "./types";
 
-import FieldlessForm from "@/app/base/components/node/FieldlessForm";
-import PowerOffForm from "@/app/base/components/node/PowerOffForm";
+import { useGetUserEntitlements } from "@/app/api/query/auth";
+import { Entitlement } from "@/app/settings/views/UserManagement/views/Groups/constants";
 import { machineActions } from "@/app/store/machine";
 import machineSelectors from "@/app/store/machine/selectors";
 import type { Machine } from "@/app/store/machine/types";
@@ -26,6 +17,48 @@ import { useSelectedMachinesActionsDispatch } from "@/app/store/machine/utils/ho
 import type { RootState } from "@/app/store/root/types";
 import { NodeActions } from "@/app/store/types/node";
 import { canOpenActionForm } from "@/app/store/utils";
+import { hasEntitlementForPool, hasPermissions } from "@/app/utils/permissions";
+
+const CommissionForm = lazyLoadSidePanel(
+  () => import("../MachineForms/MachineActionFormWrapper/CommissionForm")
+);
+const DeployForm = lazyLoadSidePanel(
+  () => import("../MachineForms/MachineActionFormWrapper/DeployForm")
+);
+const ReleaseForm = lazyLoadSidePanel(
+  () => import("../MachineForms/MachineActionFormWrapper/ReleaseForm")
+);
+const CloneForm = lazyLoadSidePanel(
+  () => import("../MachineForms/MachineActionFormWrapper/CloneForm")
+);
+const MarkBrokenForm = lazyLoadSidePanel(
+  () => import("../MachineForms/MachineActionFormWrapper/MarkBrokenForm")
+);
+const OverrideTestForm = lazyLoadSidePanel(
+  () => import("../MachineForms/MachineActionFormWrapper/OverrideTestForm")
+);
+const TagForm = lazyLoadSidePanel(
+  () => import("../MachineForms/MachineActionFormWrapper/TagForm")
+);
+const SetMachineZoneForm = lazyLoadSidePanel(
+  () =>
+    import("../MachineForms/MachineActionFormWrapper/SetMachineZoneForm/SetMachineZoneForm")
+);
+const SetPoolForm = lazyLoadSidePanel(
+  () => import("../MachineForms/MachineActionFormWrapper/SetPoolForm")
+);
+const TestMachineForm = lazyLoadSidePanel(
+  () => import("../MachineForms/MachineActionFormWrapper/TestMachineForm")
+);
+const DeleteMachine = lazyLoadSidePanel(
+  () => import("../MachineForms/DeleteMachine/DeleteMachine")
+);
+const FieldlessForm = lazyLoadSidePanel(
+  () => import("@/app/base/components/node/FieldlessForm")
+);
+const PowerOffForm = lazyLoadSidePanel(
+  () => import("@/app/base/components/node/PowerOffForm")
+);
 
 export const useMachineActionMenus = (
   isViewingDetails: boolean,
@@ -466,8 +499,9 @@ export const useMachineActionMenus = (
           },
         },
       ],
-      render: () => (
+      render: (disabled?: boolean) => (
         <Button
+          disabled={disabled}
           onClick={() => {
             openSidePanel({
               component: DeleteMachine,
@@ -488,4 +522,89 @@ export const useMachineActionMenus = (
   ];
 
   return actionMenus;
+};
+
+/**
+ * Computes the disabled state of the machine action controls, based on the
+ * current user's resource-pool entitlements.
+ */
+export const useLifecycleActionEntitlements = (
+  isViewingDetails: boolean,
+  systemId?: Machine["system_id"]
+): { actionsDisabled: boolean; deployDisabled: boolean } => {
+  const selected = useSelector(machineSelectors.selected);
+  const allMachines = useSelector(machineSelectors.all);
+  const detailsMachine = useSelector((state: RootState) =>
+    machineSelectors.getById(state, systemId)
+  );
+  const { data: userEntitlements } = useGetUserEntitlements();
+
+  // Single-machine usage that is neither the details view nor a selection is
+  // left ungated.
+  if (!isViewingDetails && !selected) {
+    return { actionsDisabled: false, deployDisabled: false };
+  }
+
+  // Resolve the resource pool ids being acted on. Returns null when the pools
+  // can't be determined (filter/group selection or unresolved machines),
+  // signalling a fallback to the global entitlement check.
+  const getPoolIds = (): number[] | null => {
+    if (isViewingDetails) {
+      return detailsMachine ? [detailsMachine.pool.id] : null;
+    }
+    if (!selected || "filter" in selected) {
+      return null;
+    }
+    if ((selected.groups ?? []).length > 0) {
+      return null;
+    }
+    const items = selected.items ?? [];
+    if (items.length === 0) {
+      return null;
+    }
+    const poolIds: number[] = [];
+    for (const id of items) {
+      const machine = allMachines.find((m) => m.system_id === id);
+      if (!machine) {
+        return null;
+      }
+      poolIds.push(machine.pool.id);
+    }
+    return Array.from(new Set(poolIds));
+  };
+
+  const poolIds = getPoolIds();
+
+  const canEdit =
+    poolIds === null
+      ? hasPermissions(userEntitlements, [Entitlement.CAN_EDIT_MACHINES])
+      : poolIds.every((poolId) =>
+          hasEntitlementForPool(
+            userEntitlements,
+            Entitlement.CAN_EDIT_MACHINES,
+            poolId
+          )
+        );
+
+  // Per the OpenFGA model, can_deploy_machines is granted by either a deploy or
+  // an edit entitlement (can_edit_machines implies deploy), scoped per pool.
+  const canDeploy =
+    poolIds === null
+      ? hasPermissions(userEntitlements, [Entitlement.CAN_EDIT_MACHINES]) ||
+        hasPermissions(userEntitlements, [Entitlement.CAN_DEPLOY_MACHINES])
+      : poolIds.every(
+          (poolId) =>
+            hasEntitlementForPool(
+              userEntitlements,
+              Entitlement.CAN_EDIT_MACHINES,
+              poolId
+            ) ||
+            hasEntitlementForPool(
+              userEntitlements,
+              Entitlement.CAN_DEPLOY_MACHINES,
+              poolId
+            )
+        );
+
+  return { actionsDisabled: !canEdit, deployDisabled: !canDeploy };
 };

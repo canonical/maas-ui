@@ -6,12 +6,20 @@ import TagsListHeader, { Label } from "./TagsListHeader";
 
 import { TagSearchFilter } from "@/app/store/tag/selectors";
 import * as factory from "@/testing/factories";
+import { authResolvers } from "@/testing/resolvers/auth";
 import {
   mockSidePanel,
   renderWithProviders,
   screen,
+  setupMockServer,
   userEvent,
+  waitFor,
 } from "@/testing/utils";
+
+const mockServer = setupMockServer(
+  authResolvers.getCurrentUser.handler(),
+  authResolvers.getMeEntitlements.handler()
+);
 
 let scrollToSpy: Mock;
 const { mockOpen } = await mockSidePanel();
@@ -68,6 +76,12 @@ it("can call a function to display the add tag form", async () => {
     }
   );
 
+  await waitFor(() => {
+    expect(
+      screen.getByRole("button", { name: Label.CreateButton })
+    ).not.toBeAriaDisabled();
+  });
+
   await userEvent.click(
     screen.getByRole("button", { name: Label.CreateButton })
   );
@@ -76,6 +90,55 @@ it("can call a function to display the add tag form", async () => {
     component: AddTagForm,
     title: "Create new tag",
   });
+});
+
+it("enables the create button when the user has edit entitlements", async () => {
+  renderWithProviders(
+    <TagsListHeader
+      filter={TagSearchFilter.All}
+      searchText=""
+      setFilter={vi.fn()}
+      setSearchText={vi.fn()}
+    />,
+    {
+      initialEntries: ["/tags"],
+      state: factory.rootState(),
+    }
+  );
+
+  await waitFor(() => {
+    expect(
+      screen.getByRole("button", { name: Label.CreateButton })
+    ).not.toBeAriaDisabled();
+  });
+});
+
+it("disables the create button when the user lacks edit entitlements", async () => {
+  mockServer.use(authResolvers.getMeEntitlements.handler([]));
+  renderWithProviders(
+    <TagsListHeader
+      filter={TagSearchFilter.All}
+      searchText=""
+      setFilter={vi.fn()}
+      setSearchText={vi.fn()}
+    />,
+    {
+      initialEntries: ["/tags"],
+      state: factory.rootState(),
+    }
+  );
+
+  await waitFor(() => {
+    expect(
+      screen.getByRole("button", { name: Label.CreateButton })
+    ).toBeAriaDisabled();
+  });
+
+  await userEvent.click(
+    screen.getByRole("button", { name: Label.CreateButton })
+  );
+
+  expect(mockOpen).not.toHaveBeenCalled();
 });
 
 it("displays the default title", () => {

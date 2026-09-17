@@ -5,15 +5,21 @@ import DomainsTable, { Labels as DomainsTableLabels } from "./DomainsTable";
 import SetDefaultForm from "@/app/domains/components/SetDefaultForm";
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
+import { authResolvers } from "@/testing/resolvers/auth";
 import {
   userEvent,
   screen,
   within,
   mockSidePanel,
   renderWithProviders,
+  setupMockServer,
   waitFor,
 } from "@/testing/utils";
 
+const mockServer = setupMockServer(
+  authResolvers.getCurrentUser.handler(),
+  authResolvers.getMeEntitlements.handler()
+);
 const { mockOpen } = await mockSidePanel();
 
 describe("DomainsTable", () => {
@@ -95,6 +101,13 @@ describe("DomainsTable", () => {
       // Only one button is rendered within the contextual menu (the button to open it),
       // which is why I'm doing an unlabelled search - adding an aria-label to the button
       // would require a change to the component in canonical/react-components
+      await waitFor(() => {
+        expect(
+          within(
+            within(row).getByLabelText(DomainsTableLabels.Actions)
+          ).getByRole("button")
+        ).not.toBeAriaDisabled();
+      });
       await userEvent.click(
         within(
           within(row).getByLabelText(DomainsTableLabels.Actions)
@@ -114,6 +127,20 @@ describe("DomainsTable", () => {
           },
         })
       );
+    });
+
+    it("disables the domain actions without the edit entitlement", async () => {
+      mockServer.use(authResolvers.getMeEntitlements.handler([]));
+      renderWithProviders(<DomainsTable />, { state });
+
+      const row = screen.getByRole("row", { name: /^a/ });
+      await waitFor(() => {
+        expect(
+          within(
+            within(row).getByLabelText(DomainsTableLabels.Actions)
+          ).getByRole("button")
+        ).toBeAriaDisabled();
+      });
     });
   });
 });

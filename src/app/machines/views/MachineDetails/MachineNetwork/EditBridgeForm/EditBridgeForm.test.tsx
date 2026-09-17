@@ -1,5 +1,3 @@
-import userEvent from "@testing-library/user-event";
-
 import EditBridgeForm from "./EditBridgeForm";
 
 import type { RootState } from "@/app/store/root/types";
@@ -10,7 +8,7 @@ import {
 } from "@/app/store/types/enum";
 import type { NetworkInterface, NetworkLink } from "@/app/store/types/node";
 import * as factory from "@/testing/factories";
-import { renderWithProviders, screen } from "@/testing/utils";
+import { renderWithProviders, screen, userEvent } from "@/testing/utils";
 
 describe("EditBridgeForm", () => {
   let nic: NetworkInterface;
@@ -65,14 +63,16 @@ describe("EditBridgeForm", () => {
     ).toBe(true);
   });
 
-  it("displays a spinner when data is loading", () => {
+  it("displays a skeleton when data is loading", () => {
     state.vlan.loaded = false;
     state.vlan.loading = true;
-    renderWithProviders(
+    const { result } = renderWithProviders(
       <EditBridgeForm link={link} nic={nic} systemId="abc123" />,
       { state }
     );
-    expect(screen.getByText(/Loading/i)).toBeInTheDocument();
+    expect(
+      result.container.querySelector(".aside-skeleton")
+    ).toBeInTheDocument();
   });
 
   it("can dispatch an action to update a bridge", async () => {

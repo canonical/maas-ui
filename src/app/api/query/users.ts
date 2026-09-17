@@ -122,14 +122,15 @@ export const useUserCount = (options?: Options<ListUsersData>) => {
   });
 };
 
-export const useGetUser = (options: Options<GetUserData>) => {
-  return useWebsocketAwareQuery(
-    queryOptionsWithHeaders<GetUserResponses, GetUserErrors, GetUserData>(
+export const useGetUser = (options: Options<GetUserData>, enabled = true) => {
+  return useWebsocketAwareQuery({
+    ...queryOptionsWithHeaders<GetUserResponses, GetUserErrors, GetUserData>(
       options,
       getUser,
       getUserQueryKey(options)
-    )
-  );
+    ),
+    enabled,
+  });
 };
 
 export const useCreateUser = (mutationOptions?: Options<CreateUserData>) => {

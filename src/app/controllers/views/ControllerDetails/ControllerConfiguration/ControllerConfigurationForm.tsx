@@ -11,8 +11,13 @@ import NodeConfigurationFields, {
 } from "@/app/base/components/NodeConfigurationFields";
 import type { NodeConfigurationValues } from "@/app/base/components/NodeConfigurationFields";
 import TagLinks from "@/app/base/components/TagLinks";
-import { useFetchActions, useCanEdit } from "@/app/base/hooks";
+import {
+  useFetchActions,
+  useCanEdit,
+  useHasEntitlements,
+} from "@/app/base/hooks";
 import urls from "@/app/base/urls";
+import { Entitlement } from "@/app/settings/views/UserManagement/views/Groups/constants";
 import { controllerActions } from "@/app/store/controller";
 import controllerSelectors from "@/app/store/controller/selectors";
 import {
@@ -46,6 +51,7 @@ const ControllerConfigurationForm = ({
   const saving = useSelector(controllerSelectors.saving);
   const cleanup = useCallback(() => machineActions.cleanup(), []);
   const canEdit = useCanEdit(node, true);
+  const canEditUser = useHasEntitlements([Entitlement.CAN_EDIT_CONTROLLERS]);
 
   useFetchActions([tagActions.fetch]);
 
@@ -55,7 +61,7 @@ const ControllerConfigurationForm = ({
 
   return (
     <EditableSection
-      canEdit={canEdit}
+      canEdit={canEdit && canEditUser}
       className="u-no-padding--top"
       hasSidebarTitle
       renderContent={(editing, setEditing) =>

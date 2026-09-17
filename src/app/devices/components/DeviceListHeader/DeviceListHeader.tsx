@@ -87,6 +87,9 @@ const DeviceListHeader = ({
           Add device
         </Button>
         <NodeActionMenu
+          disabled={selectedDevices.every(
+            (device) => device.actions.length === 0
+          )}
           filterActions
           hasSelection={selectedDevices.length > 0}
           nodeDisplay="device"

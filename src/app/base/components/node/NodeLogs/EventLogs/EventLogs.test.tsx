@@ -3,7 +3,7 @@ import type { Mock } from "vitest";
 import EventLogs, { Label } from "./EventLogs";
 
 import { Labels as ArrowPaginationLabels } from "@/app/base/components/ArrowPagination";
-import { MAIN_CONTENT_SECTION_ID } from "@/app/base/components/MainContentSection";
+import { MAIN_CONTENT_SECTION_ID } from "@/app/base/components/PageContent/PageContent";
 import type { MachineDetails } from "@/app/store/machine/types";
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";

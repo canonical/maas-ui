@@ -12,7 +12,7 @@ When("the user opens the first subnet", () => {
 });
 
 When("the user navigates to static routes", () => {
-  cy.findByRole("heading", { level: 1 }).invoke("text").as("subnet");
+  cy.findAllByRole("heading", { level: 1 }).last().invoke("text").as("subnet");
 
   cy.findByRole("link", { name: /static routes/i }).click();
 });

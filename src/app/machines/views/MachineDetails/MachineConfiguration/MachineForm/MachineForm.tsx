@@ -11,6 +11,7 @@ import Definition from "@/app/base/components/Definition";
 import EditableSection from "@/app/base/components/EditableSection";
 import FormikForm from "@/app/base/components/FormikForm";
 import { useCanEdit } from "@/app/base/hooks";
+import { useCanEditMachine } from "@/app/base/hooks/permissions";
 import { machineActions } from "@/app/store/machine";
 import machineSelectors from "@/app/store/machine/selectors";
 import type { MachineDetails } from "@/app/store/machine/types";
@@ -49,6 +50,7 @@ const MachineForm = ({ systemId }: Props): React.ReactElement | null => {
   const saving = useSelector(machineSelectors.saving);
   const cleanup = useCallback(() => machineActions.cleanup(), []);
   const canEdit = useCanEdit(machine, true);
+  const canEditMachine = useCanEditMachine(systemId);
 
   if (!isMachineDetails(machine)) {
     return <Spinner text="Loading..." />;
@@ -58,6 +60,7 @@ const MachineForm = ({ systemId }: Props): React.ReactElement | null => {
     <EditableSection
       canEdit={canEdit}
       className="u-no-padding--top"
+      editDisabled={!canEditMachine}
       hasSidebarTitle
       renderContent={(editing, setEditing) =>
         editing ? (

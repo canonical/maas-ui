@@ -27,6 +27,7 @@ type ActionLink = DataTestElement<ButtonProps>;
 type Props = Pick<ContextualMenuDropdownProps, "constrainPanelWidth"> & {
   alwaysShowLifecycle?: boolean;
   className?: string;
+  disabled?: boolean;
   disabledTooltipPosition?: "left" | "top-left";
   excludeActions?: NodeActions[];
   filterActions?: boolean;
@@ -171,6 +172,7 @@ const getTakeActionLinks = (
 export const NodeActionMenu = ({
   alwaysShowLifecycle = false,
   className,
+  disabled = false,
   disabledTooltipPosition = "left",
   excludeActions = [],
   filterActions,
@@ -212,7 +214,7 @@ export const NodeActionMenu = ({
         position={menuPosition}
         toggleAppearance={toggleAppearance}
         toggleClassName={toggleClassName}
-        toggleDisabled={!hasSelection}
+        toggleDisabled={!hasSelection || disabled}
         toggleLabel={toggleLabel}
       />
     </Tooltip>

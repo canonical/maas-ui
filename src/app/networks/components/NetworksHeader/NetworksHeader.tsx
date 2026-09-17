@@ -10,7 +10,9 @@ import AddSubnet from "../AddSubnet";
 import AddVlan from "../AddVlan";
 
 import SectionHeader from "@/app/base/components/SectionHeader";
+import { useHasEntitlements } from "@/app/base/hooks";
 import urls from "@/app/base/urls";
+import { Entitlement } from "@/app/settings/views/UserManagement/views/Groups/constants";
 
 type Props = {
   controls?: ReactElement;
@@ -19,6 +21,7 @@ type Props = {
 const NetworksHeader = ({ controls }: Props) => {
   const { pathname } = useLocation();
   const { openSidePanel } = useSidePanel();
+  const canEdit = useHasEntitlements([Entitlement.CAN_EDIT_GLOBAL_ENTITIES]);
 
   return (
     <SectionHeader
@@ -55,6 +58,7 @@ const NetworksHeader = ({ controls }: Props) => {
             ]}
             position="right"
             toggleAppearance="positive"
+            toggleDisabled={!canEdit}
             toggleLabel="Add"
           />
         </>

@@ -31,6 +31,12 @@ When("the user selects and captures the first available option", () => {
     .click();
 });
 
+Then("the selected images table is visible", () => {
+  cy.findByRole("treegrid", { name: "Selected images table" }).should(
+    "be.visible"
+  );
+});
+
 Then(
   "the selected image row should show {string} in the table",
   (status: string) => {

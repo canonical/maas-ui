@@ -1,22 +1,29 @@
-import { waitFor } from "@testing-library/react";
-
 import PoolsList from "@/app/pools/views/PoolsList";
+import { authResolvers } from "@/testing/resolvers/auth";
 import { poolsResolvers } from "@/testing/resolvers/pools";
 import {
   renderWithProviders,
   screen,
   userEvent,
   setupMockServer,
+  waitFor,
 } from "@/testing/utils";
 
 setupMockServer(
   poolsResolvers.listPools.handler(),
-  poolsResolvers.getPool.handler()
+  poolsResolvers.getPool.handler(),
+  authResolvers.getCurrentUser.handler(),
+  authResolvers.getMeEntitlements.handler()
 );
 
 describe("PoolsList", () => {
   it("renders AddPool", async () => {
     renderWithProviders(<PoolsList />);
+    await waitFor(() => {
+      expect(
+        screen.getByRole("button", { name: "Add pool" })
+      ).not.toBeAriaDisabled();
+    });
     await userEvent.click(screen.getByRole("button", { name: "Add pool" }));
     expect(
       screen.getByRole("complementary", { name: "Add pool" })
@@ -26,7 +33,9 @@ describe("PoolsList", () => {
   it("renders EditPool when a valid poolId is provided", async () => {
     renderWithProviders(<PoolsList />);
     await waitFor(() => {
-      expect(screen.getAllByRole("button", { name: "Edit" }));
+      expect(
+        screen.getAllByRole("button", { name: "Edit" })[2]
+      ).not.toBeAriaDisabled();
     });
     await userEvent.click(screen.getAllByRole("button", { name: "Edit" })[2]);
     expect(
@@ -37,7 +46,9 @@ describe("PoolsList", () => {
   it("renders DeletePool when a valid poolId is provided", async () => {
     renderWithProviders(<PoolsList />);
     await waitFor(() => {
-      expect(screen.getAllByRole("button", { name: "Delete" }));
+      expect(
+        screen.getAllByRole("button", { name: "Delete" })[2]
+      ).not.toBeAriaDisabled();
     });
     await userEvent.click(screen.getAllByRole("button", { name: "Delete" })[2]);
     expect(
@@ -47,6 +58,11 @@ describe("PoolsList", () => {
 
   it("closes side panel form when canceled", async () => {
     renderWithProviders(<PoolsList />);
+    await waitFor(() => {
+      expect(
+        screen.getByRole("button", { name: "Add pool" })
+      ).not.toBeAriaDisabled();
+    });
     await userEvent.click(screen.getByRole("button", { name: "Add pool" }));
     expect(
       screen.getByRole("complementary", { name: "Add pool" })

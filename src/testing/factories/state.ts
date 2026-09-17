@@ -73,7 +73,6 @@ import type { MessageState } from "@/app/store/message/types";
 import type { MsmState, MsmStatus } from "@/app/store/msm/types/base";
 import type { NodeDeviceState } from "@/app/store/nodedevice/types";
 import type { NodeScriptResultState } from "@/app/store/nodescriptresult/types";
-import type { NotificationState } from "@/app/store/notification/types";
 import type { PackageRepositoryState } from "@/app/store/packagerepository/types";
 import { DEFAULT_STATUSES as DEFAULT_POD_STATUSES } from "@/app/store/pod/slice";
 import type { PodState, PodStatus, PodStatuses } from "@/app/store/pod/types";
@@ -354,11 +353,6 @@ export const podState = define<PodState>({
   statuses: () => ({}),
 });
 
-export const notificationState = define<NotificationState>({
-  ...defaultState,
-  errors: null,
-});
-
 export const messageState = define<MessageState>({
   items: () => [],
 });
@@ -605,7 +599,6 @@ export const rootState = define<RootState>({
   message: messageState,
   msm: msmState,
   nodedevice: nodeDeviceState,
-  notification: notificationState,
   nodescriptresult: nodeScriptResultState,
   packagerepository: packageRepositoryState,
   pod: podState,

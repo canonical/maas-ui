@@ -7,6 +7,7 @@ import type {
   CompleteIntroError,
   CreateOauthProviderError,
   CreateSessionError,
+  EntitlementResponse,
   ExtendSessionError,
   GetMeStatisticsError,
   GetOauthProviderError,
@@ -22,15 +23,27 @@ import type {
   PreLoginResponse,
   UpdateOauthProviderError,
   UpdateUserError,
-  UserInfoResponse,
+  UserResponse,
   UserStatisticsResponse,
 } from "@/app/apiclient";
-import { userInfo, userStatistics } from "@/testing/factories";
+import { user, userEntitlements, userStatistics } from "@/testing/factories";
 
-const mockAuth: UserInfoResponse = userInfo({
+// MSW treats `:` in string paths as a path param, so `me:statistics` and
+// `me:get_entitlements` collide (both match any `me:*` request). Match the exact
+// pathname instead so each handler only intercepts its own endpoint.
+const matchPath = (path: string) => {
+  const { pathname } = new URL(`${BASE_URL}${path}`);
+  return ({ request }: { request: Request }) =>
+    new URL(request.url).pathname === pathname;
+};
+
+const mockAuth: UserResponse = user({
   id: 1,
-  username: "user1",
+  username: "testuser",
+  email: "testuser@example.com",
 });
+
+const mockUserEntitlements: EntitlementResponse[] = userEntitlements();
 
 const mockAuthStatistics: UserStatisticsResponse = userStatistics({
   id: 1,
@@ -223,13 +236,26 @@ const authResolvers = {
   getMeStatistics: {
     resolved: false,
     handler: (data = mockAuthStatistics) =>
-      http.get(`${BASE_URL}MAAS/a/v3/users/me:statistics`, () => {
+      http.get(matchPath("MAAS/a/v3/users/me:statistics"), () => {
         authResolvers.getMeStatistics.resolved = true;
         return HttpResponse.json(data);
       }),
     error: (error: GetMeStatisticsError = mockAuthenticateError) =>
-      http.get(`${BASE_URL}MAAS/a/v3/users/me:statistics`, () => {
+      http.get(matchPath("MAAS/a/v3/users/me:statistics"), () => {
         authResolvers.getMeStatistics.resolved = true;
+        return HttpResponse.json(error, { status: error.code });
+      }),
+  },
+  getMeEntitlements: {
+    resolved: false,
+    handler: (data = mockUserEntitlements) =>
+      http.get(matchPath("MAAS/a/v3/users/me:get_entitlements"), () => {
+        authResolvers.getMeEntitlements.resolved = true;
+        return HttpResponse.json({ items: data });
+      }),
+    error: (error: GetUserInfoError = mockAuthenticateError) =>
+      http.get(matchPath("MAAS/a/v3/users/me:get_entitlements"), () => {
+        authResolvers.getMeEntitlements.resolved = true;
         return HttpResponse.json(error, { status: error.code });
       }),
   },
@@ -303,4 +329,4 @@ const authResolvers = {
   },
 };
 
-export { authResolvers, mockAuth };
+export { authResolvers, mockAuth, mockUserEntitlements };

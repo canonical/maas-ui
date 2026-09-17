@@ -3,8 +3,9 @@ import { Button, Icon } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 import { Link } from "react-router";
 
-import { useGetURLId } from "@/app/base/hooks";
+import { useGetURLId, useHasEntitlements } from "@/app/base/hooks";
 import urls from "@/app/base/urls";
+import { Entitlement } from "@/app/settings/views/UserManagement/views/Groups/constants";
 import type { RootState } from "@/app/store/root/types";
 import tagSelectors from "@/app/store/tag/selectors";
 import type { Tag } from "@/app/store/tag/types";
@@ -33,6 +34,7 @@ export const TagsDetailsHeader = ({
   const tag = useSelector((state: RootState) =>
     tagSelectors.getById(state, id)
   );
+  const canEdit = useHasEntitlements([Entitlement.CAN_EDIT_GLOBAL_ENTITIES]);
 
   return (
     <MainToolbar>
@@ -44,6 +46,7 @@ export const TagsDetailsHeader = ({
         {tag ? (
           <>
             <Button
+              disabled={!canEdit}
               hasIcon
               onClick={() => {
                 onUpdate(tag[TagMeta.PK]);
@@ -53,6 +56,7 @@ export const TagsDetailsHeader = ({
             </Button>
             <Button
               appearance="negative"
+              disabled={!canEdit}
               hasIcon
               onClick={() => {
                 onDelete(tag[TagMeta.PK], true);

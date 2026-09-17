@@ -25,7 +25,8 @@ vi.mock("react-router", async () => {
 });
 
 const mockServer = setupMockServer(
-  authResolvers.getCurrentUser.handler(factory.userInfo({ id: 1 })),
+  authResolvers.getCurrentUser.handler(factory.user({ id: 1 })),
+  authResolvers.getMeEntitlements.handler(),
   authResolvers.getMeStatistics.handler(
     factory.userStatistics({ id: 1, completed_intro: true })
   )
@@ -112,7 +113,7 @@ describe("GlobalSideNav", () => {
   it("hides nav links if not completed intro", async () => {
     mockServer.use(
       authResolvers.getCurrentUser.handler(
-        factory.userInfo({
+        factory.user({
           username: "koala",
         })
       ),
@@ -333,11 +334,7 @@ describe("GlobalSideNav", () => {
   });
 
   it("links from the logo to the machine list for non admins", async () => {
-    mockServer.use(
-      authResolvers.getCurrentUser.handler(
-        factory.userInfo({ entitlements: [] })
-      )
-    );
+    mockServer.use(authResolvers.getMeEntitlements.handler([]));
     renderWithProviders(<AppSideNavigation />, {
       initialEntries: ["/machine/abc123"],
       state,

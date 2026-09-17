@@ -9,7 +9,6 @@ import { Entitlement } from "@/app/settings/views/UserManagement/views/Groups/co
 import {
   entitlement as entitlementFactory,
   packageRepository as repoFactory,
-  userInfo as userInfoFactory,
 } from "@/testing/factories";
 import { authResolvers } from "@/testing/resolvers/auth";
 import { packageRepositoriesResolvers } from "@/testing/resolvers/packageRepositories";
@@ -26,7 +25,8 @@ import {
 
 const mockServer = setupMockServer(
   packageRepositoriesResolvers.listPackageRepositories.handler(),
-  authResolvers.getCurrentUser.handler()
+  authResolvers.getCurrentUser.handler(),
+  authResolvers.getMeEntitlements.handler()
 );
 const { mockOpen } = await mockSidePanel();
 
@@ -114,15 +114,11 @@ describe("RepositoriesTable", () => {
           total: 1,
           items: [repoFactory({ name: "not main", id: 1 })],
         }),
-        authResolvers.getCurrentUser.handler(
-          userInfoFactory({
-            entitlements: [
-              entitlementFactory({
-                entitlement: Entitlement.CAN_VIEW_GLOBAL_ENTITIES,
-              }),
-            ],
-          })
-        )
+        authResolvers.getMeEntitlements.handler([
+          entitlementFactory({
+            entitlement: Entitlement.CAN_VIEW_GLOBAL_ENTITIES,
+          }),
+        ])
       );
       renderWithProviders(<RepositoriesTable />);
 
