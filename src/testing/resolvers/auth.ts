@@ -23,8 +23,10 @@ import type {
   PreLoginResponse,
   UpdateOauthProviderError,
   UpdateUserError,
+  UpdateUserMeError,
   UserResponse,
   UserStatisticsResponse,
+  UserUpdateRequestSelf,
 } from "@/app/apiclient";
 import { user, userEntitlements, userStatistics } from "@/testing/factories";
 
@@ -107,6 +109,12 @@ const mockAuthenticateError: LoginError = {
 };
 
 const mockCompleteIntroError: CompleteIntroError = {
+  message: "Internal server error",
+  code: 500,
+  kind: "Error",
+};
+
+const mockUpdateMeError: UpdateUserMeError = {
   message: "Internal server error",
   code: 500,
   kind: "Error",
@@ -230,6 +238,22 @@ const authResolvers = {
     error: (error: GetUserInfoError = mockAuthenticateError) =>
       http.get(`${BASE_URL}MAAS/a/v3/users/me`, () => {
         authResolvers.getCurrentUser.resolved = true;
+        return HttpResponse.json(error, { status: error.code });
+      }),
+  },
+  updateMe: {
+    resolved: false,
+    body: null as UserUpdateRequestSelf | null,
+    handler: (data = mockAuth) =>
+      http.put(`${BASE_URL}MAAS/a/v3/users/me`, async ({ request }) => {
+        authResolvers.updateMe.resolved = true;
+        authResolvers.updateMe.body =
+          (await request.json()) as UserUpdateRequestSelf;
+        return HttpResponse.json(data);
+      }),
+    error: (error: UpdateUserMeError = mockUpdateMeError) =>
+      http.put(`${BASE_URL}MAAS/a/v3/users/me`, () => {
+        authResolvers.updateMe.resolved = true;
         return HttpResponse.json(error, { status: error.code });
       }),
   },
