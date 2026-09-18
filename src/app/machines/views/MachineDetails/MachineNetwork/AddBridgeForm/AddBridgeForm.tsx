@@ -89,7 +89,7 @@ const AddBridgeForm = ({
     )
   );
   const vlan = useSelector((state: RootState) =>
-    vlanSelectors.getById(state, bridgeVLAN || firstNic?.vlan_id)
+    vlanSelectors.getById(state, bridgeVLAN ?? firstNic?.vlan_id)
   );
   const vlansLoading = useSelector(vlanSelectors.loading);
   const { errors, saved, saving } = useMachineDetailsForm(
@@ -107,12 +107,12 @@ const AddBridgeForm = ({
     // When the form is first shown then store the VLAN for this bridge. This needs
     // to be done so that if all interfaces become deselected then the VLAN
     // information is not lost.
-    if (!bridgeVLAN && firstNic) {
+    if (bridgeVLAN === null && firstNic) {
       setBridgeVLAN(firstNic.vlan_id);
     }
   }, [bridgeVLAN, firstNic, setBridgeVLAN]);
 
-  if (vlansLoading || !bridgeVLAN || !isMachineDetails(machine)) {
+  if (vlansLoading || bridgeVLAN === null || !isMachineDetails(machine)) {
     return <SidePanel.Skeleton />;
   }
 
