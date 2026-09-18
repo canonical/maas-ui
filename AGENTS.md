@@ -22,6 +22,23 @@ login, licence keys); do not add new REST calls there.
 - MSW (Mock Service Worker) for API mocking in tests
 - Cypress + Cucumber (E2E) — Playwright is only used for documentation link checking; do not use it for new E2E tests
 
+## Coding Standards & Architecture
+
+For detailed guidance on specific practices and architectural patterns, refer to the standards documentation in [docs/standards/](docs/standards/):
+
+- [architecture.md](docs/standards/architecture.md) — Component structure, domain organization, and module conventions
+- [api-hooks.md](docs/standards/api-hooks.md) — TanStack Query patterns and REST API integration
+- [forms.md](docs/standards/forms.md) — Form implementation with Formik and Yup
+- [testing.md](docs/standards/testing.md) — Unit, integration, and E2E testing practices
+- [store-management.md](docs/standards/store-management.md) — Redux state management (legacy patterns)
+- [styling.md](docs/standards/styling.md) — SCSS organization and component styling
+- [routing.md](docs/standards/routing.md) — Application routing and navigation
+- [modals.md](docs/standards/modals.md) — Modal and side-panel patterns
+- [tables.md](docs/standards/tables.md) — Table component patterns and data display
+- [permissions.md](docs/standards/permissions.md) — Permission checking and authorization
+- [notifications.md](docs/standards/notifications.md) — User notifications and feedback
+- [constants.md](docs/standards/constants.md) — Constant definition and usage
+
 ## Dos
 
 - Use TanStack Query hooks in `src/app/api/query/` for any new REST endpoint —

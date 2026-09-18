@@ -7,6 +7,7 @@ import { getNodeActionTitle } from "@/app/store/utils";
 import * as factory from "@/testing/factories";
 import { authResolvers } from "@/testing/resolvers/auth";
 import {
+  mockModal,
   mockSidePanel,
   renderWithProviders,
   screen,
@@ -20,10 +21,26 @@ const mockServer = setupMockServer(
   authResolvers.getMeEntitlements.handler()
 );
 
+// Actions migrated from a side panel to a modal.
+const modalActions = [
+  NodeActions.ACQUIRE,
+  NodeActions.ABORT,
+  NodeActions.ON,
+  NodeActions.OFF,
+  NodeActions.SOFT_OFF,
+  NodeActions.RESCUE_MODE,
+  NodeActions.EXIT_RESCUE_MODE,
+  NodeActions.MARK_FIXED,
+  NodeActions.LOCK,
+  NodeActions.UNLOCK,
+  NodeActions.DELETE,
+];
+
 describe("MachineActionMenu", async () => {
   let state: RootState;
 
   const { mockOpen } = await mockSidePanel();
+  const { mockOpen: mockOpenModal } = await mockModal();
 
   const machineActions = Object.values(NodeActions).filter(
     (action) =>
@@ -178,9 +195,11 @@ describe("MachineActionMenu", async () => {
     machineActions
       .filter(
         (action) =>
-          ![NodeActions.CHECK_POWER, NodeActions.SOFT_OFF].some(
-            (filterAction) => action === filterAction
-          )
+          ![
+            NodeActions.CHECK_POWER,
+            NodeActions.SOFT_OFF,
+            ...modalActions,
+          ].some((filterAction) => action === filterAction)
       )
       .forEach((action) => {
         const actionTitle = getNodeActionTitle(action);
@@ -199,14 +218,45 @@ describe("MachineActionMenu", async () => {
         });
       });
 
-    it("opens the 'Power off' form with props for 'Soft power off' when 'Soft power off' is clicked", async () => {
+    modalActions
+      .filter(
+        (action) => ![NodeActions.OFF, NodeActions.SOFT_OFF].includes(action)
+      )
+      .forEach((action) => {
+        const actionTitle = getNodeActionTitle(action);
+        it(`opens the ${actionTitle} modal when the ${actionTitle} button is clicked`, async () => {
+          renderWithProviders(<MachineActionMenu />, { state });
+
+          await openMenu();
+
+          await userEvent.click(getActionButton(action));
+
+          expect(mockOpenModal).toHaveBeenCalledWith(
+            expect.objectContaining({ title: actionTitle })
+          );
+        });
+      });
+
+    it("opens the 'Power off' modal when 'Power off' is clicked", async () => {
+      renderWithProviders(<MachineActionMenu />, { state });
+
+      await openMenu();
+
+      await userEvent.click(getActionButton(NodeActions.OFF));
+
+      expect(mockOpenModal).toHaveBeenCalledWith(
+        expect.objectContaining({ title: "Power off" })
+      );
+    });
+
+    it("opens the 'Power off' modal with props for 'Soft power off' when 'Soft power off' is clicked", async () => {
       renderWithProviders(<MachineActionMenu />, { state });
 
       await openMenu();
 
       await userEvent.click(getActionButton(NodeActions.SOFT_OFF));
 
-      expect(mockOpen).toHaveBeenCalledWith(
+      expect(mockOpenModal).toHaveBeenCalledWith(
         expect.objectContaining({ title: "Soft power off" })
       );
     });

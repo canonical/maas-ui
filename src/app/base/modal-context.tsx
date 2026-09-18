@@ -1,7 +1,7 @@
 import { createContext, lazy, Suspense, useContext, useState } from "react";
 import type { ComponentType, PropsWithChildren, ReactElement } from "react";
 
-import { ContentSection, Placeholder } from "@canonical/maas-react-components";
+import Modal from "./components/Modal";
 
 type ModalState<TProps = Record<string, unknown>> = {
   isOpen: boolean;
@@ -178,33 +178,7 @@ export const lazyLoadModal = <
 ): ComponentType => {
   const LazyPanel = lazy(loader);
   const SidePanelContent = (props: P) => (
-    <Suspense
-      fallback={
-        <ContentSection>
-          <ContentSection aria-hidden="true">
-            <ContentSection.Content>
-              <div className="layout-skeleton__form-description">
-                <Placeholder height="1.5rem" variant="block" width="100%" />
-                <Placeholder height="1.5rem" variant="block" width="70%" />
-              </div>
-              {Array.from({ length: 2 }).map((_, index) => (
-                <div
-                  className="layout-skeleton__form-field"
-                  key={`aside-skeleton-field-${index}`}
-                >
-                  <Placeholder height="1.5rem" variant="block" width="14ch" />
-                  <Placeholder height="2.5rem" variant="block" width="100%" />
-                </div>
-              ))}
-            </ContentSection.Content>
-            <ContentSection.Footer>
-              <Placeholder height="2rem" variant="block" width="8ch" />
-              <Placeholder height="2rem" variant="block" width="10ch" />
-            </ContentSection.Footer>
-          </ContentSection>
-        </ContentSection>
-      }
-    >
+    <Suspense fallback={<Modal.Skeleton />}>
       <LazyPanel {...props} />
     </Suspense>
   );

@@ -9,7 +9,7 @@ import {
   screen,
   waitFor,
   renderWithProviders,
-  mockSidePanel,
+  mockModal,
   waitForLoading,
 } from "@/testing/utils";
 
@@ -21,7 +21,7 @@ vi.mock("@reduxjs/toolkit", async () => {
   };
 });
 
-const { mockClose } = await mockSidePanel();
+const { mockClose } = await mockModal();
 
 describe("DeleteMachine", () => {
   let state: RootState;
@@ -30,7 +30,7 @@ describe("DeleteMachine", () => {
     state = factory.rootState();
   });
 
-  it("calls closeSidePanel on cancel click", async () => {
+  it("calls closeModal on cancel click", async () => {
     renderWithProviders(<DeleteMachine isViewingDetails={false} />, { state });
     await waitForLoading();
     await userEvent.click(screen.getByRole("button", { name: "Cancel" }));
