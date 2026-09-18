@@ -17,6 +17,7 @@ import {
   userEvent,
   waitFor,
   waitForLoading,
+  within,
 } from "@/testing/utils";
 
 describe("NodeTestsTable", () => {
@@ -128,14 +129,14 @@ describe("NodeTestsTable", () => {
       const scriptResults = [
         factory.scriptResult({
           id: 1,
-          result_type: ScriptResultType.COMMISSIONING,
+          result_type: ScriptResultType.TESTING,
           status: ScriptResultStatus.FAILED,
           suppressed: false,
         }),
       ];
       state.scriptresult.items = scriptResults;
       renderWithProviders(
-        <NodeTestsTable node={machine} scriptResults={scriptResults} />,
+        <NodeTestsTable node={controller} scriptResults={scriptResults} />,
         {
           initialEntries: ["/controller/abc123"],
           state,
@@ -143,9 +144,42 @@ describe("NodeTestsTable", () => {
       );
 
       expect(
-        screen.queryByTestId("suppress-script-results")
+        screen.queryByRole("columnheader", { name: "Suppress" })
       ).not.toBeInTheDocument();
     });
+
+    it.each([
+      { hasMetrics: true, icon: "success" },
+      { hasMetrics: false, icon: "minus" },
+    ])(
+      "shows the $icon metrics indicator when hasMetrics is $hasMetrics",
+      ({ hasMetrics, icon }) => {
+        const scriptResult = factory.scriptResult({
+          name: "script-name",
+          results: hasMetrics ? [factory.scriptResultResult()] : [],
+        });
+        state.scriptresult.items = [scriptResult];
+
+        renderWithProviders(
+          <NodeTestsTable node={machine} scriptResults={[scriptResult]} />,
+          { state }
+        );
+
+        const table = within(
+          screen.getByRole("treegrid", { name: "Test results" })
+        );
+        const metricsIndex = table
+          .getAllByRole("columnheader")
+          .indexOf(table.getByRole("columnheader", { name: "Metrics" }));
+        const row = table.getByRole("row", { name: /script-name/ });
+        const metricsCell = within(row).getAllByRole("gridcell")[metricsIndex];
+
+        // Icons have no accessible name; inspect the indicator in the Metrics cell.
+        expect(
+          within(metricsCell).getByText("", { selector: `.p-icon--${icon}` })
+        ).toBeInTheDocument();
+      }
+    );
 
     it("displays a message when there is no script result", () => {
       renderWithProviders(
@@ -159,53 +193,218 @@ describe("NodeTestsTable", () => {
       expect(screen.getByText("No results available.")).toBeInTheDocument();
     });
 
-    it("displays a test history table if test has been run more than once", async () => {
-      const scriptResult = factory.scriptResult({ id: 1 });
-      state.scriptresult.items = [scriptResult];
-      state.scriptresult.history = {
-        1: [factory.partialScriptResult(), factory.partialScriptResult()],
-      };
+    it.each([
+      {
+        nodeType: "machine",
+        resultType: ScriptResultType.COMMISSIONING,
+        root: "scripts/commissioning",
+      },
+      {
+        nodeType: "machine",
+        resultType: ScriptResultType.DEPLOYMENT,
+        root: "scripts/deployment",
+      },
+      {
+        nodeType: "machine",
+        resultType: ScriptResultType.TESTING,
+        root: "scripts/tests",
+      },
+      {
+        nodeType: "controller",
+        resultType: ScriptResultType.COMMISSIONING,
+        root: "commissioning",
+      },
+    ])(
+      "links names and history logs to $nodeType/$root",
+      async ({ nodeType, resultType, root }) => {
+        const node = nodeType === "machine" ? machine : controller;
+        const scriptResult = factory.scriptResult({
+          id: 1,
+          name: "script-name",
+          result_type: resultType,
+        });
+        state.scriptresult.items = [scriptResult];
+        state.scriptresult.history = {
+          1: [
+            factory.partialScriptResult({ id: 1 }),
+            factory.partialScriptResult({ id: 2 }),
+          ],
+        };
 
-      renderWithProviders(
-        <NodeTestsTable node={machine} scriptResults={[scriptResult]} />,
-        {
-          initialEntries: ["/machine/abc123"],
-          state,
-        }
-      );
-      await waitForLoading();
+        renderWithProviders(
+          <NodeTestsTable node={node} scriptResults={[scriptResult]} />,
+          { state }
+        );
+        await waitForLoading();
 
-      const previousTestsButton = screen.getByTestId("view-history-link");
-      await userEvent.click(previousTestsButton);
+        expect(
+          screen.getByRole("link", { name: "script-name" })
+        ).toHaveAttribute(
+          "href",
+          `/${nodeType}/${node.system_id}/${root}/1/details`
+        );
 
-      expect(screen.queryByTestId("no-history")).not.toBeInTheDocument();
-      expect(screen.getByTestId("view-history-link")).toBeInTheDocument();
-    });
+        await userEvent.click(
+          screen.getByRole("link", { name: "View history" })
+        );
 
-    it("displays a message if the test has no history", async () => {
-      const scriptResult = factory.scriptResult({ id: 1 });
-      state.scriptresult.items = [scriptResult];
-      state.scriptresult.history = {
-        1: [],
-      };
+        expect(screen.getByRole("link", { name: "View log" })).toHaveAttribute(
+          "href",
+          `/${nodeType}/${node.system_id}/${root}/2/details`
+        );
 
-      renderWithProviders(
-        <NodeTestsTable node={machine} scriptResults={[scriptResult]} />,
-        {
-          initialEntries: ["/machine/abc123"],
-          state,
-        }
-      );
-      await waitForLoading();
+        const parentCells = within(
+          screen.getByRole("row", { name: /script-name/ })
+        ).getAllByRole("gridcell");
+        const historyColumnIndex = parentCells.findIndex((cell) =>
+          within(cell).queryByRole("link", { name: "Hide history" })
+        );
+        const historyCells = within(
+          screen.getByRole("row", { name: /View log/ })
+        ).getAllByRole("gridcell");
+        expect(
+          within(historyCells[historyColumnIndex]).getByRole("link", {
+            name: "View log",
+          })
+        ).toBeInTheDocument();
+      }
+    );
 
-      const previousTestsButton = screen.getByTestId("view-history-link");
-      await userEvent.click(previousTestsButton);
+    it.each([undefined, 0, 1])(
+      "hides the history toggle when the run count is %s",
+      (runCount) => {
+        const scriptResult = factory.scriptResult({ id: 1 });
+        state.scriptresult.items = [scriptResult];
+        state.scriptresult.history =
+          runCount === undefined
+            ? {}
+            : {
+                1:
+                  runCount === 0
+                    ? []
+                    : [factory.partialScriptResult({ id: 1 })],
+              };
 
-      expect(screen.getByTestId("no-history")).toBeInTheDocument();
-    });
+        renderWithProviders(
+          <NodeTestsTable node={machine} scriptResults={[scriptResult]} />,
+          { state }
+        );
+
+        expect(
+          screen.queryByRole("link", { name: /history/i })
+        ).not.toBeInTheDocument();
+      }
+    );
   });
 
   describe("actions", () => {
+    it("toggles historical rows using View history and Hide history", async () => {
+      const scriptResult = factory.scriptResult({ id: 1, name: "script-name" });
+      state.scriptresult.items = [scriptResult];
+      state.scriptresult.history = {
+        1: [
+          factory.partialScriptResult({ id: 1 }),
+          factory.partialScriptResult({ id: 2 }),
+          factory.partialScriptResult({ id: 3 }),
+        ],
+      };
+
+      renderWithProviders(
+        <NodeTestsTable node={machine} scriptResults={[scriptResult]} />,
+        { state }
+      );
+      await waitForLoading();
+
+      const table = within(
+        screen.getByRole("treegrid", { name: "Test results" })
+      );
+      expect(table.getAllByRole("row")).toHaveLength(2);
+      expect(
+        table.queryByRole("link", { name: "View log" })
+      ).not.toBeInTheDocument();
+      expect(table.getByRole("link", { name: "View history" })).toHaveAttribute(
+        "aria-expanded",
+        "false"
+      );
+
+      await userEvent.click(table.getByRole("link", { name: "View history" }));
+
+      expect(table.getAllByRole("row")).toHaveLength(4);
+      expect(table.getAllByRole("link", { name: "View log" })).toHaveLength(2);
+      expect(table.getByRole("link", { name: "Hide history" })).toHaveAttribute(
+        "aria-expanded",
+        "true"
+      );
+      expect(
+        table.queryByRole("link", { name: "View history" })
+      ).not.toBeInTheDocument();
+
+      await userEvent.click(table.getByRole("link", { name: "Hide history" }));
+
+      expect(table.getAllByRole("row")).toHaveLength(2);
+      expect(
+        table.queryByRole("link", { name: "View log" })
+      ).not.toBeInTheDocument();
+      expect(
+        table.getByRole("link", { name: "script-name" })
+      ).toBeInTheDocument();
+      expect(
+        table.queryByRole("link", { name: "Hide history" })
+      ).not.toBeInTheDocument();
+      expect(table.getByRole("link", { name: "View history" })).toHaveAttribute(
+        "aria-expanded",
+        "false"
+      );
+    });
+
+    it("collapses the previous history when another script is expanded", async () => {
+      const scriptResults = [
+        factory.scriptResult({ id: 1, name: "first-script" }),
+        factory.scriptResult({ id: 2, name: "second-script" }),
+      ];
+      state.scriptresult.items = scriptResults;
+      state.scriptresult.history = {
+        1: [
+          factory.partialScriptResult({ id: 1 }),
+          factory.partialScriptResult({ id: 3, status_name: "First history" }),
+        ],
+        2: [
+          factory.partialScriptResult({ id: 2 }),
+          factory.partialScriptResult({ id: 4, status_name: "Second history" }),
+        ],
+      };
+
+      renderWithProviders(
+        <NodeTestsTable node={machine} scriptResults={scriptResults} />,
+        { state }
+      );
+
+      const firstRow = within(
+        screen.getByRole("row", { name: /first-script/ })
+      );
+      const secondRow = within(
+        screen.getByRole("row", { name: /second-script/ })
+      );
+
+      await userEvent.click(
+        firstRow.getByRole("link", { name: "View history" })
+      );
+      expect(screen.getByText("First history")).toBeInTheDocument();
+
+      await userEvent.click(
+        secondRow.getByRole("link", { name: "View history" })
+      );
+
+      expect(screen.queryByText("First history")).not.toBeInTheDocument();
+      expect(screen.getByText("Second history")).toBeInTheDocument();
+      expect(
+        firstRow.getByRole("link", { name: "View history" })
+      ).toHaveAttribute("aria-expanded", "false");
+      expect(
+        secondRow.getByRole("link", { name: "Hide history" })
+      ).toHaveAttribute("aria-expanded", "true");
+    });
+
     it("disables suppress checkbox if test did not fail", async () => {
       state.nodescriptresult.items = { [machine.system_id]: [1] };
       const scriptResults = [
