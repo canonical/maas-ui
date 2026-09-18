@@ -13,14 +13,18 @@ import * as Yup from "yup";
 import { Labels } from "../../constants";
 import GroupMultiSelect from "../GroupMultiSelect";
 
-import {
-  useAuthenticate,
-  useGetCurrentUser,
-  useUpdateMe,
-} from "@/app/api/query/auth";
+import { useGetCurrentUser, useUpdateMe } from "@/app/api/query/auth";
 import { useGetUser, useUpdateUser } from "@/app/api/query/users";
-import type { UpdateUserError, UserUpdateRequest } from "@/app/apiclient";
-import { getUserQueryKey } from "@/app/apiclient/@tanstack/react-query.gen";
+import type {
+  UpdateUserError,
+  UpdateUserMeError,
+  UserUpdateRequestAdmin,
+  UserUpdateRequestSelf,
+} from "@/app/apiclient";
+import {
+  getUserInfoQueryKey,
+  getUserQueryKey,
+} from "@/app/apiclient/@tanstack/react-query.gen";
 import FormikField from "@/app/base/components/FormikField";
 import FormikForm from "@/app/base/components/FormikForm";
 
@@ -29,11 +33,21 @@ type EditUserProps = {
   isSelfEditing?: boolean;
 };
 
+type EditUserValues = {
+  username: string;
+  first_name: string;
+  last_name: string;
+  email: string;
+  groups: number[];
+  oldPassword: string;
+  password: string;
+  passwordConfirm: string;
+};
+
 const UserSchema = Yup.object().shape({
   email: Yup.string()
     .email("Must be a valid email address")
     .required("Email is required"),
-  fullName: Yup.string(),
   groups: Yup.array().of(Yup.number().required()),
   password: Yup.string(),
   passwordConfirm: Yup.string().oneOf(
@@ -49,10 +63,18 @@ const UserSchema = Yup.object().shape({
     .required("Username is required"),
 });
 
-const SelfEditUserSchema = UserSchema.shape({
-  oldPassword: Yup.string().required("Your current password is required"),
+const newPasswordFields = {
   password: Yup.string().required("A new password is required"),
-  passwordConfirm: Yup.string().required("Confirm your new password"),
+  passwordConfirm: Yup.string()
+    .required("Confirm your new password")
+    .oneOf([Yup.ref("password")], "Passwords must be the same"),
+};
+
+const EditUserSchema = UserSchema.shape(newPasswordFields);
+
+const SelfEditUserSchema = UserSchema.shape({
+  ...newPasswordFields,
+  oldPassword: Yup.string().required("Your current password is required"),
 });
 
 const EditUser = ({
@@ -62,9 +84,7 @@ const EditUser = ({
   const { closeSidePanel } = useSidePanel();
   const queryClient = useQueryClient();
   const [passwordVisible, setPasswordVisible] = useState(false);
-  const [authError, setAuthError] = useState<string | null>(null);
 
-  const authenticate = useAuthenticate();
   // Self-editing users fetch their own profile via `/users/me`, while admins
   // editing another user fetch it via `/users/{id}`.
   const currentUser = useGetCurrentUser();
@@ -77,12 +97,6 @@ const EditUser = ({
   const updateUser = useUpdateUser();
   const updateMe = useUpdateMe();
 
-  const updateError = isSelfEditing ? updateMe.error : updateUser.error;
-  const combinedErrors = {
-    ...(updateError || {}),
-    ...(authError ? { old_password: authError } : {}),
-  };
-
   return (
     <>
       {userLoading && <Spinner text="Loading..." />}
@@ -92,18 +106,9 @@ const EditUser = ({
         </NotificationBanner>
       )}
       {user.isSuccess && user.data && (
-        <FormikForm<
-          UserUpdateRequest & {
-            passwordConfirm: UserUpdateRequest["password"];
-            oldPassword: UserUpdateRequest["password"];
-            groups: number[];
-          },
-          UpdateUserError
-        >
+        <FormikForm<EditUserValues, UpdateUserError | UpdateUserMeError>
           aria-label={isSelfEditing ? "Edit your profile" : "Edit user"}
-          errors={
-            Object.keys(combinedErrors).length > 0 ? combinedErrors : null
-          }
+          errors={isSelfEditing ? updateMe.error : updateUser.error}
           initialValues={{
             username: user.data.username,
             password: "",
@@ -112,68 +117,66 @@ const EditUser = ({
             groups: user.data.groups.map((group) => group.id),
             first_name: user.data.first_name,
             last_name: user.data.last_name || "",
-            email: user.data.email,
+            email: user.data.email || "",
           }}
           onCancel={closeSidePanel}
-          onSubmit={async (values) => {
-            setAuthError(null);
-
-            if (isSelfEditing && values.password && values.oldPassword) {
-              try {
-                await authenticate.mutateAsync({
-                  body: {
-                    username: values.username,
-                    password: values.oldPassword,
-                  },
-                });
-              } catch (error) {
-                setAuthError(`Current password is incorrect: ${error}`);
-                return;
-              }
-            }
-
-            const updateData: UserUpdateRequest = {
-              username: values.username,
-              first_name: values.first_name,
-              last_name: values.last_name,
-              email: values.email,
-            };
-
-            // Only include password if it's being changed
-            if (values.password && values.passwordConfirm) {
-              updateData.password = values.password;
-            }
+          onSubmit={(values) => {
+            const isChangingPassword = passwordVisible && !!values.password;
 
             if (isSelfEditing) {
-              // Users can always edit their own profile
-              updateMe.mutate({ body: updateData });
+              // Users can always edit their own profile. The API verifies the
+              // current password when a new one is supplied.
+              const body: UserUpdateRequestSelf = {
+                username: values.username,
+                first_name: values.first_name,
+                last_name: values.last_name,
+                email: values.email,
+              };
+              if (isChangingPassword) {
+                body.current_password = values.oldPassword;
+                body.new_password = values.password;
+              }
+              updateMe.mutate({ body });
             } else {
               // Admins editing another user must supply the user's groups
+              const body: UserUpdateRequestAdmin = {
+                username: values.username,
+                first_name: values.first_name,
+                last_name: values.last_name,
+                email: values.email,
+                groups: values.groups,
+              };
+              if (isChangingPassword) {
+                body.password = values.password;
+              }
               updateUser.mutate({
                 headers: { ETag: eTag },
                 path: { user_id: id },
-                body: { ...updateData, groups: values.groups },
+                body,
               });
             }
           }}
           onSuccess={() => {
             return queryClient
               .invalidateQueries({
-                queryKey: getUserQueryKey({
-                  path: { user_id: id },
-                }),
+                queryKey: isSelfEditing
+                  ? getUserInfoQueryKey()
+                  : getUserQueryKey({
+                      path: { user_id: id },
+                    }),
               })
               .then(closeSidePanel);
           }}
           resetOnSave={true}
           saved={isSelfEditing ? updateMe.isSuccess : updateUser.isSuccess}
-          saving={
-            (isSelfEditing ? updateMe.isPending : updateUser.isPending) ||
-            authenticate.isPending
-          }
+          saving={isSelfEditing ? updateMe.isPending : updateUser.isPending}
           submitLabel={isSelfEditing ? "Save profile" : "Save user"}
           validationSchema={
-            isSelfEditing && passwordVisible ? SelfEditUserSchema : UserSchema
+            passwordVisible
+              ? isSelfEditing
+                ? SelfEditUserSchema
+                : EditUserSchema
+              : UserSchema
           }
         >
           {() => (
@@ -208,9 +211,8 @@ const EditUser = ({
                   <Button
                     appearance="link"
                     className="u-no-margin--bottom"
-                    data-testid="toggle-passwords"
                     onClick={() => {
-                      setPasswordVisible(!passwordVisible);
+                      setPasswordVisible(true);
                     }}
                     type="button"
                   >
@@ -255,7 +257,7 @@ const EditUser = ({
         </FormikForm>
       )}
     </>
-  ) as React.ReactElement;
+  );
 };
 
 export default EditUser;
