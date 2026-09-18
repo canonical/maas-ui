@@ -4,6 +4,7 @@ import { useSelector } from "react-redux";
 import EditableSection from "@/app/base/components/EditableSection";
 import TagLinks from "@/app/base/components/TagLinks";
 import { useFetchActions, useCanEdit } from "@/app/base/hooks";
+import { useCanEditMachine } from "@/app/base/hooks/permissions";
 import urls from "@/app/base/urls";
 import TagActionForm from "@/app/machines/components/MachineForms/MachineActionFormWrapper/TagForm";
 import machineSelectors from "@/app/store/machine/selectors";
@@ -25,6 +26,7 @@ const TagForm = ({ systemId }: Props): React.ReactElement | null => {
   const tagsLoading = useSelector(tagSelectors.loading);
 
   const canEdit = useCanEdit(machine, true);
+  const canEditMachine = useCanEditMachine(systemId);
 
   useFetchActions([tagActions.fetch]);
 
@@ -35,6 +37,7 @@ const TagForm = ({ systemId }: Props): React.ReactElement | null => {
   return (
     <EditableSection
       canEdit={canEdit}
+      editDisabled={!canEditMachine}
       hasSidebarTitle
       renderContent={(editing, setEditing) =>
         editing ? (

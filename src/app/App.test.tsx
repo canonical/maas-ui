@@ -83,7 +83,22 @@ describe("App", () => {
     state.status.connected = false;
     state.status.connecting = true;
     renderWithProviders(<App />, { initialEntries: ["/settings"], state });
-    expect(screen.getByText("Loading...")).toBeInTheDocument();
+    expect(
+      screen.getAllByRole("progressbar", { hidden: true })
+    ).not.toHaveLength(0);
+  });
+
+  it("waits for the first WebSocket connection after authentication", () => {
+    state.status.authenticated = true;
+    state.status.connected = false;
+    state.status.connecting = false;
+    state.status.connectedCount = 0;
+
+    renderWithProviders(<App />, { initialEntries: ["/settings"], state });
+
+    expect(
+      screen.getAllByRole("progressbar", { hidden: true })
+    ).not.toHaveLength(0);
   });
 
   it("does not display a loading message if reconnecting", async () => {
@@ -98,7 +113,9 @@ describe("App", () => {
   it("displays a loading message when authenticating", () => {
     state.status.authenticating = true;
     renderWithProviders(<App />, { initialEntries: ["/settings"], state });
-    expect(screen.getByText("Loading...")).toBeInTheDocument();
+    expect(
+      screen.getAllByRole("progressbar", { hidden: true })
+    ).not.toHaveLength(0);
   });
 
   it("connects to the WebSocket", async () => {

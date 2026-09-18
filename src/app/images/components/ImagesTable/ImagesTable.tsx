@@ -90,7 +90,6 @@ const ImagesTable = ({
         setRowSelection: setSelectedRows,
         rowSelectionLabelKey: "title",
         filterSelectable: (row) =>
-          row.original.release !== commissioningRelease &&
           !(
             downloadingStatuses.includes(
               row.original.status as OptimisticImageStatusResponse["status"]
@@ -100,10 +99,8 @@ const ImagesTable = ({
                 .update_status as OptimisticImageStatusResponse["update_status"]
             )
           ),
-        disabledSelectionTooltip: (row) =>
-          row.original.release === commissioningRelease
-            ? "Cannot modify images of the default commissioning release."
-            : "Cannot modify images that are currently being downloaded.",
+        disabledSelectionTooltip: () =>
+          "Cannot modify images that are currently being downloaded.",
       }}
       showChevron
       sorting={[{ id: "title", desc: true }]}

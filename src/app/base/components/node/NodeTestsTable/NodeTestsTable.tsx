@@ -85,7 +85,7 @@ const NodeTestsTable = ({ isLoading, node, scriptResults }: Props) => {
     setExpandedId,
   });
   const [sorting, setSorting] = useState<SortingState>([
-    { id: "name", desc: true },
+    { id: "name", desc: false },
   ]);
   const history = useScriptResultHistory(scriptResults);
   const data = useMemo(() => {

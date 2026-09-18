@@ -82,9 +82,9 @@ describe("AddAliasOrVlan", () => {
     });
   });
 
-  it("displays a spinner when data is loading", () => {
+  it("displays a skeleton when data is loading", () => {
     state.machine.items = [];
-    renderWithProviders(
+    const { result } = renderWithProviders(
       <AddAliasOrVlan
         interfaceType={NetworkInterfaceTypes.VLAN}
         nic={nic}
@@ -92,7 +92,9 @@ describe("AddAliasOrVlan", () => {
       />,
       { state }
     );
-    expect(screen.getByText("Loading...")).toBeInTheDocument();
+    expect(
+      result.container.querySelector(".aside-skeleton")
+    ).toBeInTheDocument();
   });
 
   it("displays a save-another button for aliases", () => {

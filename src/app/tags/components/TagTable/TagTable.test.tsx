@@ -5,12 +5,20 @@ import type { RootState } from "@/app/store/root/types";
 import { TagSearchFilter } from "@/app/store/tag/selectors";
 import type { Tag } from "@/app/store/tag/types";
 import * as factory from "@/testing/factories";
+import { authResolvers } from "@/testing/resolvers/auth";
 import {
   renderWithProviders,
   screen,
+  setupMockServer,
   userEvent,
+  waitFor,
   within,
 } from "@/testing/utils";
+
+const mockServer = setupMockServer(
+  authResolvers.getCurrentUser.handler(),
+  authResolvers.getMeEntitlements.handler()
+);
 
 vi.mock("../constants", () => ({
   __esModule: true,
@@ -329,6 +337,40 @@ it("can trigger the tag edit sidepanel", async () => {
     />,
     { state, initialEntries: [urls.tags.index] }
   );
+  await waitFor(() => {
+    expect(
+      screen.getAllByRole("button", { name: "Edit" })[0]
+    ).not.toBeAriaDisabled();
+  });
   await userEvent.click(screen.getAllByRole("button", { name: "Edit" })[0]);
   expect(onUpdate).toHaveBeenCalled();
+});
+
+it("disables the edit and delete actions when the user lacks edit entitlements", async () => {
+  mockServer.use(authResolvers.getMeEntitlements.handler([]));
+  const onUpdate = vi.fn();
+  const onDelete = vi.fn();
+  renderWithProviders(
+    <TagTable
+      filter={TagSearchFilter.All}
+      onDelete={onDelete}
+      onUpdate={onUpdate}
+      searchText=""
+      tags={tags}
+    />,
+    { state, initialEntries: [urls.tags.index] }
+  );
+  await waitFor(() => {
+    expect(
+      screen.getAllByRole("button", { name: "Edit" })[0]
+    ).toBeAriaDisabled();
+  });
+  expect(
+    screen.getAllByRole("button", { name: "Delete" })[0]
+  ).toBeAriaDisabled();
+
+  await userEvent.click(screen.getAllByRole("button", { name: "Edit" })[0]);
+  await userEvent.click(screen.getAllByRole("button", { name: "Delete" })[0]);
+  expect(onUpdate).not.toHaveBeenCalled();
+  expect(onDelete).not.toHaveBeenCalled();
 });

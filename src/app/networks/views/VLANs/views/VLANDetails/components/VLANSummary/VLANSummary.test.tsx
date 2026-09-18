@@ -14,7 +14,10 @@ import {
   within,
 } from "@/testing/utils";
 
-setupMockServer(authResolvers.getCurrentUser.handler());
+setupMockServer(
+  authResolvers.getCurrentUser.handler(),
+  authResolvers.getMeEntitlements.handler()
+);
 const { mockOpen } = await mockSidePanel();
 
 describe("VLANSummary", () => {

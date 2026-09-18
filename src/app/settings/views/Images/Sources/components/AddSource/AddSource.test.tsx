@@ -75,27 +75,29 @@ describe("AddSource", () => {
     expect(screen.getByRole("textbox", { name: Labels.Url })).toHaveValue("");
   });
 
-  it("pre-populates custom source with correct default keyring based on install type", async () => {
-    const state = factory.rootState({
-      general: factory.generalState({
-        installType: factory.installTypeState({ data: "deb" }),
+  it("pre-populates custom source with the deb default keyring", async () => {
+    renderWithProviders(<AddSource />, {
+      state: factory.rootState({
+        general: factory.generalState({
+          installType: factory.installTypeState({ data: "deb" }),
+        }),
       }),
     });
-    // Test with deb install type
-    const { rerender } = renderWithProviders(<AddSource />, {
-      state,
-    });
 
-    // Verify deb default keyring is shown
     expect(
       screen.getByRole("textbox", { name: Labels.KeyringFilename })
     ).toHaveValue(MAAS_IO_DEFAULT_KEYRING_FILE_PATHS.deb);
+  });
 
-    // Test with snap install type
-    state.general.installType = factory.installTypeState({ data: "snap" });
-    rerender(<AddSource />, { state });
+  it("pre-populates custom source with the snap default keyring", async () => {
+    renderWithProviders(<AddSource />, {
+      state: factory.rootState({
+        general: factory.generalState({
+          installType: factory.installTypeState({ data: "snap" }),
+        }),
+      }),
+    });
 
-    // Verify snap default keyring is shown
     expect(
       screen.getByRole("textbox", { name: Labels.KeyringFilename })
     ).toHaveValue(MAAS_IO_DEFAULT_KEYRING_FILE_PATHS.snap);

@@ -36,6 +36,7 @@ const DeviceDetailsHeader = ({ systemId }: Props): React.ReactElement => {
     <SectionHeader
       buttons={[
         <NodeActionMenu
+          disabled={device.actions.length === 0}
           filterActions
           hasSelection={true}
           nodeDisplay="device"

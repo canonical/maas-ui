@@ -17,6 +17,7 @@ const mockServer = setupMockServer(
   usersResolvers.getUser.handler(),
   usersResolvers.listUsersStatistics.handler(),
   authResolvers.getCurrentUser.handler(),
+  authResolvers.getMeEntitlements.handler(),
   authResolvers.getMeStatistics.handler()
 );
 
@@ -27,16 +28,12 @@ describe("UsersList", () => {
 
   it("renders AddUser", async () => {
     mockServer.use(
-      authResolvers.getCurrentUser.handler(
-        factory.userInfo({
-          id: 1,
-          entitlements: [
-            factory.entitlement({
-              entitlement: Entitlement.CAN_EDIT_IDENTITIES,
-            }),
-          ],
-        })
-      )
+      authResolvers.getCurrentUser.handler(factory.user({ id: 1 })),
+      authResolvers.getMeEntitlements.handler([
+        factory.entitlement({
+          entitlement: Entitlement.CAN_EDIT_IDENTITIES,
+        }),
+      ])
     );
     renderWithProviders(<UsersList />, { state });
     await waitFor(() => {
@@ -52,16 +49,12 @@ describe("UsersList", () => {
 
   it("renders EditUser when a valid userId is provided", async () => {
     mockServer.use(
-      authResolvers.getCurrentUser.handler(
-        factory.userInfo({
-          id: 99,
-          entitlements: [
-            factory.entitlement({
-              entitlement: Entitlement.CAN_EDIT_IDENTITIES,
-            }),
-          ],
-        })
-      )
+      authResolvers.getCurrentUser.handler(factory.user({ id: 99 })),
+      authResolvers.getMeEntitlements.handler([
+        factory.entitlement({
+          entitlement: Entitlement.CAN_EDIT_IDENTITIES,
+        }),
+      ])
     );
     renderWithProviders(<UsersList />, { state });
     await waitFor(() => {
@@ -77,16 +70,12 @@ describe("UsersList", () => {
 
   it("renders DeleteUser when a valid userId is provided", async () => {
     mockServer.use(
-      authResolvers.getCurrentUser.handler(
-        factory.userInfo({
-          id: 99,
-          entitlements: [
-            factory.entitlement({
-              entitlement: Entitlement.CAN_EDIT_IDENTITIES,
-            }),
-          ],
-        })
-      )
+      authResolvers.getCurrentUser.handler(factory.user({ id: 99 })),
+      authResolvers.getMeEntitlements.handler([
+        factory.entitlement({
+          entitlement: Entitlement.CAN_EDIT_IDENTITIES,
+        }),
+      ])
     );
     renderWithProviders(<UsersList />, { state });
     await waitFor(() => {
@@ -102,16 +91,12 @@ describe("UsersList", () => {
 
   it("closes side panel form when canceled", async () => {
     mockServer.use(
-      authResolvers.getCurrentUser.handler(
-        factory.userInfo({
-          id: 1,
-          entitlements: [
-            factory.entitlement({
-              entitlement: Entitlement.CAN_EDIT_IDENTITIES,
-            }),
-          ],
-        })
-      )
+      authResolvers.getCurrentUser.handler(factory.user({ id: 1 })),
+      authResolvers.getMeEntitlements.handler([
+        factory.entitlement({
+          entitlement: Entitlement.CAN_EDIT_IDENTITIES,
+        }),
+      ])
     );
     renderWithProviders(<UsersList />, { state });
     await waitFor(() => {

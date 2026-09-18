@@ -235,5 +235,15 @@ describe("DeviceNetworkTable", () => {
         });
       });
     });
+
+    it("disables the table actions when the user cannot edit the device", () => {
+      state.device.items = [{ ...device, permissions: [] }];
+      renderWithProviders(<DeviceNetworkTable systemId="abc123" />, {
+        state,
+      });
+
+      expect(screen.getByRole("button", { name: "Edit" })).toBeAriaDisabled();
+      expect(screen.getByRole("button", { name: "Delete" })).toBeAriaDisabled();
+    });
   });
 });

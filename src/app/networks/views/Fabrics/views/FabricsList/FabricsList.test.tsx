@@ -1,5 +1,6 @@
 import FabricsList from "./FabricsList";
 
+import { authResolvers } from "@/testing/resolvers/auth";
 import { fabricsResolvers, mockFabrics } from "@/testing/resolvers/fabrics";
 import {
   renderWithProviders,
@@ -9,7 +10,11 @@ import {
   waitFor,
 } from "@/testing/utils";
 
-setupMockServer(fabricsResolvers.listFabrics.handler());
+setupMockServer(
+  fabricsResolvers.listFabrics.handler(),
+  authResolvers.getCurrentUser.handler(),
+  authResolvers.getMeEntitlements.handler()
+);
 
 describe("FabricsList", () => {
   it("uses the correct window title", async () => {
@@ -35,6 +40,11 @@ describe("FabricsList", () => {
       ).toBeInTheDocument();
     });
 
+    await waitFor(() => {
+      expect(
+        screen.getAllByRole("button", { name: "Delete" })[0]
+      ).not.toBeAriaDisabled();
+    });
     await userEvent.click(screen.getAllByRole("button", { name: "Delete" })[0]);
 
     expect(

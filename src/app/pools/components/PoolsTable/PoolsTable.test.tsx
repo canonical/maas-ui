@@ -5,6 +5,7 @@ import PoolsTable from "./PoolsTable";
 
 import { DeletePool, EditPool } from "@/app/pools/components";
 import * as factory from "@/testing/factories";
+import { authResolvers } from "@/testing/resolvers/auth";
 import { poolsResolvers } from "@/testing/resolvers/pools";
 import {
   renderWithProviders,
@@ -18,7 +19,9 @@ import {
 
 const mockServer = setupMockServer(
   poolsResolvers.listPools.handler(),
-  poolsResolvers.getPool.handler()
+  poolsResolvers.getPool.handler(),
+  authResolvers.getCurrentUser.handler(),
+  authResolvers.getMeEntitlements.handler()
 );
 const { mockOpen } = await mockSidePanel();
 
@@ -154,6 +157,32 @@ describe("PoolsTable", () => {
           "is-disabled"
         );
       });
+    });
+
+    it("disables the action buttons without the edit entitlement", async () => {
+      mockServer.use(
+        authResolvers.getMeEntitlements.handler([]),
+        poolsResolvers.listPools.handler({
+          items: [
+            factory.resourcePool({
+              machine_ready_count: 0,
+              machine_total_count: 0,
+              permissions: ["edit", "delete"],
+            }),
+          ],
+          total: 1,
+        })
+      );
+      renderWithProviders(<PoolsTable />);
+
+      await waitFor(() => {
+        expect(screen.getByRole("button", { name: "Edit" })).toBeAriaDisabled();
+      });
+      expect(screen.getByRole("button", { name: "Delete" })).toBeAriaDisabled();
+
+      await userEvent.click(screen.getByRole("button", { name: "Edit" }));
+      await userEvent.click(screen.getByRole("button", { name: "Delete" }));
+      expect(mockOpen).not.toHaveBeenCalled();
     });
 
     it("disables the delete button for default pools", async () => {

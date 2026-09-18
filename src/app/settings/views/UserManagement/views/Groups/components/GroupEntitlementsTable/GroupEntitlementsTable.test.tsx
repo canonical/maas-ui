@@ -21,6 +21,7 @@ const { mockOpen } = await mockSidePanel();
 
 const mockServer = setupMockServer(
   authResolvers.getCurrentUser.handler(),
+  authResolvers.getMeEntitlements.handler(),
   groupsResolvers.listGroupEntitlements.handler(),
   poolsResolvers.getPool.handler()
 );

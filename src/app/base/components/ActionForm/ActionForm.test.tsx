@@ -1,12 +1,12 @@
 import type { ActionFormProps } from "./ActionForm";
-import ActionForm, { Labels } from "./ActionForm";
+import ActionForm from "./ActionForm";
 
 import { TestIds } from "@/app/base/components/FormikFormButtons";
-import { userEvent, screen, renderWithProviders } from "@/testing/utils";
+import { renderWithProviders, screen, userEvent } from "@/testing/utils";
 
 describe("ActionForm", () => {
   it("shows a spinner if form has not fully loaded", () => {
-    renderWithProviders(
+    const { result } = renderWithProviders(
       <ActionForm
         actionName="action"
         initialValues={{}}
@@ -19,7 +19,7 @@ describe("ActionForm", () => {
     );
 
     expect(
-      screen.getByRole("alert", { name: Labels.LoadingForm })
+      result.container.querySelector(".aside-skeleton")
     ).toBeInTheDocument();
   });
 

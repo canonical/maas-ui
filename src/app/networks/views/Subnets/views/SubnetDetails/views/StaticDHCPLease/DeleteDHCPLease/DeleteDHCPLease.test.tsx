@@ -1,29 +1,27 @@
 import DeleteDHCPLease from "./DeleteDHCPLease";
 
-import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
-import {
-  getTestState,
-  renderWithProviders,
-  screen,
-  userEvent,
-} from "@/testing/utils";
+import { renderWithProviders, screen, userEvent } from "@/testing/utils";
 
-let state: RootState;
+let state: {
+  reservedip: ReturnType<typeof factory.reservedIpState>;
+  subnet: ReturnType<typeof factory.subnetState>;
+};
 
 describe("DeleteDHCPLease", () => {
   beforeEach(() => {
-    state = getTestState();
-    state.subnet = factory.subnetState({
-      loading: false,
-      loaded: true,
-      items: [factory.subnet({ id: 1, cidr: "10.0.0.0/24" })],
-    });
-    state.reservedip = factory.reservedIpState({
-      loading: false,
-      loaded: true,
-      items: [factory.reservedIp({ id: 1, ip: "10.0.0.2" })],
-    });
+    state = {
+      subnet: factory.subnetState({
+        loading: false,
+        loaded: true,
+        items: [factory.subnet({ id: 1, cidr: "10.0.0.0/24" })],
+      }),
+      reservedip: factory.reservedIpState({
+        loading: false,
+        loaded: true,
+        items: [factory.reservedIp({ id: 1, ip: "10.0.0.2" })],
+      }),
+    };
   });
 
   it("renders a delete confirmation form", () => {

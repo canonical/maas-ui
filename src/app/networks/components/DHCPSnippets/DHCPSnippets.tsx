@@ -2,7 +2,8 @@ import classNames from "classnames";
 import { useSelector } from "react-redux";
 
 import DHCPTable from "@/app/base/components/DHCPTable";
-import { useFetchActions } from "@/app/base/hooks";
+import { useFetchActions, useHasEntitlements } from "@/app/base/hooks";
+import { Entitlement } from "@/app/settings/views/UserManagement/views/Groups/constants";
 import { ipRangeActions } from "@/app/store/iprange";
 import ipRangeSelectors from "@/app/store/iprange/selectors";
 import type { RootState } from "@/app/store/root/types";
@@ -20,12 +21,14 @@ const DHCPSnippets = ({ modelName, subnetIds }: Props): React.ReactElement => {
     subnetSelectors.getByIds(state, subnetIds)
   );
   const ipranges = useSelector(ipRangeSelectors.all);
+  const canEdit = useHasEntitlements([Entitlement.CAN_EDIT_GLOBAL_ENTITIES]);
 
   useFetchActions([subnetActions.fetch, ipRangeActions.fetch]);
 
   return (
     <DHCPTable
       className={classNames({ "u-no-padding--top": modelName === "subnet" })}
+      editDisabled={!canEdit}
       ipRanges={ipranges}
       modelName={modelName}
       subnets={subnets}

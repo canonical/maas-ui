@@ -1,5 +1,11 @@
 name: Test coverage and TiCS Report
 on:
+  workflow_dispatch:
+    inputs:
+      nosanity:
+        description: "Skip TiCS sanity check (-nosanity)"
+        type: boolean
+        default: false
   schedule:
     - cron: "30 0 * * 6" # Weekly full analysis
   push:
@@ -53,6 +59,7 @@ jobs:
           ticsAuthToken: ${{ secrets.TICSAUTHTOKEN }}
           installTics: true
           tmpdir: /tmp/tics
+          additionalFlags: ${{ inputs.nosanity && '-nosanity' || '' }}
 
       - name: Upload TICS Report
         uses: actions/upload-artifact@v4

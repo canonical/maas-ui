@@ -2,13 +2,20 @@ import SubnetsList from "./SubnetsList";
 
 import urls from "@/app/networks/urls";
 import * as factory from "@/testing/factories";
+import { authResolvers } from "@/testing/resolvers/auth";
 import {
   renderWithProviders,
   screen,
+  setupMockServer,
   userEvent,
   waitFor,
   within,
 } from "@/testing/utils";
+
+setupMockServer(
+  authResolvers.getCurrentUser.handler(),
+  authResolvers.getMeEntitlements.handler()
+);
 
 describe("SubnetsList", () => {
   const state = factory.rootState({

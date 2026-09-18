@@ -15,6 +15,7 @@ import {
 
 const mockServer = setupMockServer(
   authResolvers.getCurrentUser.handler(),
+  authResolvers.getMeEntitlements.handler(),
   authResolvers.getMeStatistics.handler()
 );
 
@@ -64,11 +65,7 @@ describe("DomainSummary", () => {
         items: [factory.domain({ id: 1, name: "test" })],
       }),
     });
-    mockServer.use(
-      authResolvers.getCurrentUser.handler(
-        factory.userInfo({ entitlements: [] })
-      )
-    );
+    mockServer.use(authResolvers.getMeEntitlements.handler([]));
 
     renderWithProviders(<DomainSummary id={1} />, {
       state,

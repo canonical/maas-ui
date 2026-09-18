@@ -6,6 +6,7 @@ import { Link } from "react-router";
 import type { DiscoveryAddValues } from "../types";
 import { DeviceType } from "../types";
 
+import { useSelections } from "@/app/api/query/images";
 import type { DiscoveryResponse } from "@/app/apiclient";
 import MachineSelect from "@/app/base/components/DhcpFormFields/MachineSelect";
 import FormikField from "@/app/base/components/FormikField";
@@ -13,6 +14,7 @@ import { FormikFieldChangeError } from "@/app/base/components/FormikField/Formik
 import IpAssignmentSelect from "@/app/base/components/IpAssignmentSelect";
 import TooltipButton from "@/app/base/components/TooltipButton";
 import urls from "@/app/base/urls";
+import { getOsDisplayName } from "@/app/images/utils";
 import deviceSelectors from "@/app/store/device/selectors";
 import type { Device } from "@/app/store/device/types";
 import { DeviceMeta } from "@/app/store/device/types";
@@ -37,6 +39,7 @@ export enum Labels {
   Device = "Device",
   DeviceName = "Device Name",
   Interface = "Interface",
+  Switch = "Switch",
   Parent = "Parent",
   Hostname = "Hostname (optional)",
   InterfaceName = "Interface name (optional)",
@@ -46,6 +49,10 @@ export enum Labels {
   Fabric = "Fabric",
   Vlan = "VLAN",
   Subnet = "Subnet",
+  Name = "Name",
+  MacAddress = "MAC address",
+  Image = "Image",
+  SelectImage = "Select an image",
 }
 
 const DiscoveryAddFormFields = ({
@@ -64,10 +71,23 @@ const DiscoveryAddFormFields = ({
   const { setFieldValue, values } = useFormikContext<DiscoveryAddValues>();
   const isDevice = values.type === DeviceType.DEVICE;
   const isInterface = values.type === DeviceType.INTERFACE;
+  const isSwitch = values.type === DeviceType.SWITCH;
   // Only include static when the discovery has a subnet.
   const includeStatic = !!discovery.subnet_id || discovery.subnet_id === 0;
   const subnetDisplay = getSubnetDisplay(subnet);
   const vlanDisplay = getVLANDisplay(vlan);
+
+  // TODO: Replace with an endpoint that only returns switch-compatible images
+  // when API is ready.
+  const availableImages = useSelections();
+  const imageOptions = [
+    { label: Labels.SelectImage, value: "", disabled: true },
+    ...(availableImages.data?.items ?? []).map((image, index) => ({
+      key: `${image.title}-${index}`,
+      label: `${getOsDisplayName(image.os)}/${image.release} - ${image.title} (${image.architecture})`,
+      value: `${image.os}/${image.release}/${image.architecture}`,
+    })),
+  ];
 
   return (
     <>
@@ -95,14 +115,33 @@ const DiscoveryAddFormFields = ({
               { label: Labels.ChooseType, value: "", disabled: true },
               { label: Labels.Device, value: DeviceType.DEVICE },
               { label: Labels.Interface, value: DeviceType.INTERFACE },
+              { label: Labels.Switch, value: DeviceType.SWITCH },
             ]}
             required
           />
-          <FormikField
-            label={isDevice ? Labels.Hostname : Labels.InterfaceName}
-            name="hostname"
-            type="text"
-          />
+          {isSwitch ? (
+            <>
+              <FormikField label={Labels.Name} name="name" type="text" />
+              <FormikField
+                label={Labels.MacAddress}
+                name="mac_address"
+                required
+                type="text"
+              />
+              <FormikField
+                component={Select}
+                label={Labels.Image}
+                name="image"
+                options={imageOptions}
+              />
+            </>
+          ) : (
+            <FormikField
+              label={isDevice ? Labels.Hostname : Labels.InterfaceName}
+              name="hostname"
+              type="text"
+            />
+          )}
           {isDevice ? (
             <FormikField
               component={Select}
@@ -150,7 +189,7 @@ const DiscoveryAddFormFields = ({
               ]}
               required
             />
-          ) : (
+          ) : isDevice ? (
             <FormikField
               component={MachineSelect}
               defaultOption={Labels.SelectParent}
@@ -163,7 +202,7 @@ const DiscoveryAddFormFields = ({
               }
               name="parent"
             />
-          )}
+          ) : null}
         </Col>
         <Col size={12}>
           <IpAssignmentSelect
@@ -175,7 +214,9 @@ const DiscoveryAddFormFields = ({
             <p>{Labels.Fabric}</p>
             <p>
               <Link
-                to={urls.networks.fabric.index({ id: discovery.fabric_id! })}
+                to={urls.networks.fabric.index({
+                  id: discovery.fabric_id!,
+                })}
               >
                 {discovery.fabric_name}
               </Link>
@@ -196,7 +237,9 @@ const DiscoveryAddFormFields = ({
             {discovery.subnet_id && subnetDisplay ? (
               <p>
                 <Link
-                  to={urls.networks.subnet.index({ id: discovery.subnet_id })}
+                  to={urls.networks.subnet.index({
+                    id: discovery.subnet_id,
+                  })}
                 >
                   {subnetDisplay}
                 </Link>

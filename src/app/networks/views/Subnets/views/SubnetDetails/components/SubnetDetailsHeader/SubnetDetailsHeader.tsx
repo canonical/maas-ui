@@ -9,6 +9,8 @@ import EditBootArchitectures from "../EditBootArchitectures";
 import MapSubnet from "../MapSubnet";
 
 import SectionHeader from "@/app/base/components/SectionHeader";
+import { useHasEntitlements } from "@/app/base/hooks";
+import { Entitlement } from "@/app/settings/views/UserManagement/views/Groups/constants";
 import type { Subnet } from "@/app/store/subnet/types";
 import { isSubnetDetails } from "@/app/store/subnet/utils";
 
@@ -19,6 +21,7 @@ type Props = {
 const SubnetDetailsHeader = ({ subnet }: Props): ReactElement => {
   const { openSidePanel } = useSidePanel();
   const { pathname } = useLocation();
+  const canEdit = useHasEntitlements([Entitlement.CAN_EDIT_GLOBAL_ENTITIES]);
   const urlBase = `/subnet/${subnet?.id}`;
   return (
     <SectionHeader
@@ -66,6 +69,7 @@ const SubnetDetailsHeader = ({ subnet }: Props): ReactElement => {
           ]}
           position="right"
           toggleAppearance="positive"
+          toggleDisabled={!canEdit}
           toggleLabel="Take action"
         />,
       ]}

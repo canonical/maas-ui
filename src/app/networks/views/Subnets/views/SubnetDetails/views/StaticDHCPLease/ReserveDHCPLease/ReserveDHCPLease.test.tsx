@@ -1,9 +1,7 @@
 import ReserveDHCPLease from "./ReserveDHCPLease";
 
-import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
 import {
-  getTestState,
   renderWithProviders,
   userEvent,
   screen,
@@ -13,7 +11,10 @@ import {
 const { mockClose } = await mockSidePanel();
 
 const { getComputedStyle } = window;
-let state: RootState;
+let state: {
+  reservedip?: ReturnType<typeof factory.reservedIpState>;
+  subnet: ReturnType<typeof factory.subnetState>;
+};
 
 describe("ReserveDHCPLease", () => {
   beforeAll(() => {
@@ -22,12 +23,13 @@ describe("ReserveDHCPLease", () => {
   });
 
   beforeEach(() => {
-    state = getTestState();
-    state.subnet = factory.subnetState({
-      loading: false,
-      loaded: true,
-      items: [factory.subnet({ id: 1, cidr: "10.0.0.0/24" })],
-    });
+    state = {
+      subnet: factory.subnetState({
+        loading: false,
+        loaded: true,
+        items: [factory.subnet({ id: 1, cidr: "10.0.0.0/24" })],
+      }),
+    };
   });
 
   afterAll(() => {

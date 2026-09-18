@@ -9,6 +9,7 @@ import { Link } from "react-router";
 
 import DebounceSearchBox from "@/app/base/components/DebounceSearchBox";
 import GroupSelect from "@/app/base/components/GroupSelect";
+import { useHasEntitlements } from "@/app/base/hooks";
 import urls from "@/app/base/urls";
 import MachineActions from "@/app/machines/components/MachineActions";
 import { groupOptions } from "@/app/machines/constants";
@@ -16,6 +17,7 @@ import HiddenColumnsSelect from "@/app/machines/views/MachineList/MachineListCon
 import MachinesFilterAccordion from "@/app/machines/views/MachineList/MachineListControls/MachinesFilterAccordion";
 import AddHardwareMenu from "@/app/machines/views/MachineList/MachineListHeader/AddHardwareMenu";
 import type { useResponsiveColumns } from "@/app/machines/views/MachineList/hooks";
+import { Entitlement } from "@/app/settings/views/UserManagement/views/Groups/constants";
 import { machineActions } from "@/app/store/machine";
 import type { FetchGroupKey } from "@/app/store/machine/types";
 import { useHasSelection } from "@/app/store/machine/utils/hooks";
@@ -45,6 +47,7 @@ const MachineListControls = ({
 }: MachineListControlsProps): ReactElement => {
   const [searchText, setSearchText] = useState(filter);
   const hasSelection = useHasSelection();
+  const canEditMachines = useHasEntitlements([Entitlement.CAN_EDIT_MACHINES]);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -98,7 +101,7 @@ const MachineListControls = ({
         )}
         {!hasSelection ? (
           <span className="u-hide--small u-hide--medium">
-            <AddHardwareMenu key="add-hardware" />
+            <AddHardwareMenu disabled={!canEditMachines} key="add-hardware" />
           </span>
         ) : null}
         <HiddenColumnsSelect

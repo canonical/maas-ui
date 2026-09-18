@@ -52,41 +52,42 @@ const DHCPReservedRanges = ({ id }: Props): React.ReactElement | null => {
   // based on the subnet's suggested dynamic range, or clear the fields.
   useEffect(() => {
     const subnet = subnets.find((s) => s.id === Number(values.subnet));
-    setFieldValue(
-      "endIP",
-      subnet?.statistics.suggested_dynamic_range?.end || ""
-    ).catch((reason: unknown) => {
-      throw new FormikFieldChangeError(
-        "endIP",
-        "setFieldValue",
-        reason as string
-      );
-    });
-    setFieldValue(
-      "gatewayIP",
-      subnet?.gateway_ip || subnet?.statistics.suggested_gateway || ""
-    ).catch((reason: unknown) => {
-      throw new FormikFieldChangeError(
+
+    const setField = (field: string, value: string) =>
+      setFieldValue(field, value).catch((reason: unknown) => {
+        throw new FormikFieldChangeError(
+          field,
+          "setFieldValue",
+          reason as string
+        );
+      });
+
+    // Wait for all form values to be populated before validation.
+    Promise.all([
+      setField("endIP", subnet?.statistics.suggested_dynamic_range?.end || ""),
+      setField(
         "gatewayIP",
-        "setFieldValue",
-        reason as string
-      );
-    });
-    setFieldValue(
-      "startIP",
-      subnet?.statistics.suggested_dynamic_range?.start || ""
-    ).catch((reason: unknown) => {
-      throw new FormikFieldChangeError(
+        subnet?.gateway_ip || subnet?.statistics.suggested_gateway || ""
+      ),
+      setField(
         "startIP",
-        "setFieldValue",
-        reason as string
-      );
-    });
-    if (isId(values.subnet)) {
-      setFieldTouched("subnet", true, false);
-    }
-    // need to manually call this as Yup does not automatically re-trigger the validation schema
-    validateForm();
+        subnet?.statistics.suggested_dynamic_range?.start || ""
+      ),
+    ])
+      .then(() => {
+        if (isId(values.subnet)) {
+          setFieldTouched("subnet", true, false);
+        }
+        // need to manually call this as Yup does not automatically re-trigger the validation schema
+        return validateForm();
+      })
+      .catch((reason: unknown) => {
+        throw new FormikFieldChangeError(
+          "subnet",
+          "validateForm",
+          reason as string
+        );
+      });
   }, [setFieldTouched, setFieldValue, subnets, validateForm, values.subnet]);
 
   const columns = useDHCPReservedRangesColumns({

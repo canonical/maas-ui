@@ -13,7 +13,8 @@ import { renderHookWithProviders, setupMockServer } from "@/testing/utils";
 
 const mockStore = configureStore();
 setupMockServer(
-  authResolvers.getCurrentUser.handler(factory.userInfo({ id: 1 })),
+  authResolvers.getCurrentUser.handler(factory.user({ id: 1 })),
+  authResolvers.getMeEntitlements.handler(),
   authResolvers.getMeStatistics.handler(
     factory.userStatistics({ id: 1, completed_intro: true })
   )

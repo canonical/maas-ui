@@ -1,10 +1,19 @@
 import type { ReactElement } from "react";
 
-import { useSidePanel } from "@canonical/maas-react-components";
+import {
+  lazyLoadSidePanel,
+  useSidePanel,
+} from "@canonical/maas-react-components";
 import { ContextualMenu } from "@canonical/react-components";
 
-import AddChassisForm from "@/app/machines/components/MachineForms/AddChassis/AddChassisForm";
-import AddMachineForm from "@/app/machines/components/MachineForms/AddMachine/AddMachineForm";
+const AddChassisForm = lazyLoadSidePanel(
+  () =>
+    import("@/app/machines/components/MachineForms/AddChassis/AddChassisForm")
+);
+const AddMachineForm = lazyLoadSidePanel(
+  () =>
+    import("@/app/machines/components/MachineForms/AddMachine/AddMachineForm")
+);
 
 type AddHardwareMenuProps = {
   disabled?: boolean;

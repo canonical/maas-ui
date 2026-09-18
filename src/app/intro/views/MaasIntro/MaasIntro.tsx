@@ -69,7 +69,7 @@ const MaasIntro = (): React.ReactElement => {
     ...(configErrors && typeof configErrors === "object" ? configErrors : {}),
     ...(reposErrors && typeof reposErrors === "object" ? reposErrors : {}),
   };
-  const loading = user.isPending || configLoading || reposLoading;
+  const loading = user.isLoading || configLoading || reposLoading;
   const saving = configSaving || reposSaving;
   return (
     <IntroSection loading={loading}>
