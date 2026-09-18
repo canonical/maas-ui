@@ -7,6 +7,7 @@ import KVMConfigurationCardFields from "./KVMConfigurationCardFields";
 
 import FormCard from "@/app/base/components/FormCard";
 import FormikForm from "@/app/base/components/FormikForm";
+import { useCanEditVMHost } from "@/app/base/hooks/permissions";
 import { podActions } from "@/app/store/pod";
 import { PodType } from "@/app/store/pod/constants";
 import podSelectors from "@/app/store/pod/selectors";
@@ -59,6 +60,7 @@ const KVMConfigurationCard = ({
   const podErrors = useSelector(podSelectors.errors);
   const podSaved = useSelector(podSelectors.saved);
   const podSaving = useSelector(podSelectors.saving);
+  const canEdit = useCanEditVMHost(pod.id);
   const cleanup = useCallback(() => podActions.cleanup(), []);
 
   return (
@@ -101,6 +103,7 @@ const KVMConfigurationCard = ({
         }}
         saved={podSaved}
         saving={podSaving}
+        submitDisabled={!canEdit}
         submitLabel="Save changes"
         validationSchema={KVMConfigurationSchema}
       >

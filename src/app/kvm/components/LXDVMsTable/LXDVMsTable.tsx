@@ -24,6 +24,7 @@ import type { Pod } from "@/app/store/pod/types";
 import tagSelectors from "@/app/store/tag/selectors";
 
 type Props = {
+  canEdit?: boolean;
   displayForCluster?: boolean;
   getHostColumn?: GetHostColumn;
   getResources: GetResources;
@@ -36,6 +37,7 @@ type Props = {
 export const VMS_PER_PAGE = 10;
 
 const LXDVMsTable = ({
+  canEdit,
   displayForCluster,
   getHostColumn,
   getResources,
@@ -133,6 +135,7 @@ const LXDVMsTable = ({
   return (
     <>
       <VMsActionBar
+        canEdit={canEdit}
         currentPage={currentPage}
         onAddVMClick={onAddVMClick}
         searchFilter={searchFilter}

@@ -7,6 +7,7 @@ import UpdateCertificateFields from "./UpdateCertificateFields";
 
 import type { FormikFormProps } from "@/app/base/components/FormikForm";
 import FormikForm from "@/app/base/components/FormikForm";
+import { useCanEditVMHost } from "@/app/base/hooks/permissions";
 import { generalActions } from "@/app/store/general";
 import { generatedCertificate as generatedCertificateSelectors } from "@/app/store/general/selectors";
 import { podActions } from "@/app/store/pod";
@@ -40,6 +41,7 @@ const UpdateCertificate = ({
   const podErrors = useSelector(podSelectors.errors);
   const podSaved = useSelector(podSelectors.saved);
   const podSaving = useSelector(podSelectors.saving);
+  const canEdit = useCanEditVMHost(pod.id);
   const [shouldGenerateCert, setShouldGenerateCert] = useState(true);
 
   useEffect(() => {
@@ -115,6 +117,7 @@ const UpdateCertificate = ({
       onSuccess={closeForm}
       saved={podSaved}
       saving={generatingCertificate || podSaving}
+      submitDisabled={!canEdit}
       submitLabel={
         shouldGenerateCert && !generatedCertificate ? "Next" : "Save"
       }

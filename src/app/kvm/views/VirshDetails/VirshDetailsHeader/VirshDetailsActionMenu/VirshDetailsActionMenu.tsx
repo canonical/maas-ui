@@ -3,6 +3,7 @@ import type { ReactElement } from "react";
 import { useSidePanel } from "@canonical/maas-react-components";
 import { ContextualMenu } from "@canonical/react-components";
 
+import { useCanEditVMHost } from "@/app/base/hooks/permissions";
 import ComposeForm from "@/app/kvm/components/ComposeForm";
 import DeleteForm from "@/app/kvm/components/DeleteForm";
 import RefreshForm from "@/app/kvm/components/RefreshForm";
@@ -14,6 +15,7 @@ type Props = {
 
 const PodDetailsActionMenu = ({ hostId }: Props): ReactElement => {
   const { openSidePanel } = useSidePanel();
+  const canEdit = useCanEditVMHost(hostId);
 
   return (
     <ContextualMenu
@@ -53,6 +55,7 @@ const PodDetailsActionMenu = ({ hostId }: Props): ReactElement => {
       ]}
       position="right"
       toggleAppearance="positive"
+      toggleDisabled={!canEdit}
       toggleLabel="Take action"
     />
   );

@@ -9,6 +9,7 @@ import LXDHostToolbar from "../LXDHostToolbar";
 
 import NumaResources from "./NumaResources";
 
+import { useCanEditVMHost } from "@/app/base/hooks/permissions";
 import type { SetSearchFilter } from "@/app/base/types";
 import ComposeForm from "@/app/kvm/components/ComposeForm";
 import LXDVMsSummaryCard from "@/app/kvm/components/LXDVMsSummaryCard";
@@ -36,6 +37,7 @@ const LXDHostVMs = ({
   const pod = useSelector((state: RootState) =>
     podSelectors.getById(state, hostId)
   );
+  const canEdit = useCanEditVMHost(hostId);
   const [viewByNuma, setViewByNuma] = useStorageState(
     localStorage,
     `viewPod${hostId}ByNuma`,
@@ -60,6 +62,7 @@ const LXDHostVMs = ({
         )}
         <Strip shallow>
           <LXDVMsTable
+            canEdit={canEdit}
             getResources={(vm) => {
               const resources =
                 pod.resources.vms.find(

@@ -5,9 +5,11 @@ import { Link } from "react-router";
 import LXDClusterSummaryCard from "../LXDClusterSummaryCard";
 
 import { useWindowTitle } from "@/app/base/hooks";
+import { useHasEntitlements } from "@/app/base/hooks/permissions";
 import type { SetSearchFilter } from "@/app/base/types";
 import urls from "@/app/base/urls";
 import LXDVMsTable from "@/app/kvm/components/LXDVMsTable";
+import { Entitlement } from "@/app/settings/views/UserManagement/views/Groups/constants";
 import type { RootState } from "@/app/store/root/types";
 import vmClusterSelectors from "@/app/store/vmcluster/selectors";
 import type { VMCluster } from "@/app/store/vmcluster/types";
@@ -30,6 +32,7 @@ const LXDClusterVMs = ({
   const cluster = useSelector((state: RootState) =>
     vmClusterSelectors.getById(state, clusterId)
   );
+  const canEdit = useHasEntitlements([Entitlement.CAN_EDIT_MACHINES]);
   useWindowTitle(`${cluster?.name || "Cluster"} virtual machines`);
 
   if (!cluster) {
@@ -41,6 +44,7 @@ const LXDClusterVMs = ({
         <LXDClusterSummaryCard clusterId={clusterId} />
       </Strip>
       <LXDVMsTable
+        canEdit={canEdit}
         displayForCluster
         getHostColumn={(machine) => {
           if (machine.pod) {

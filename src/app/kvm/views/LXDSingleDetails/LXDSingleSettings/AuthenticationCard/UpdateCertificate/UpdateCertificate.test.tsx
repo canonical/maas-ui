@@ -5,7 +5,19 @@ import { podActions } from "@/app/store/pod";
 import type { PodDetails } from "@/app/store/pod/types";
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
-import { renderWithProviders, screen, userEvent } from "@/testing/utils";
+import { authResolvers } from "@/testing/resolvers/auth";
+import {
+  renderWithProviders,
+  screen,
+  setupMockServer,
+  userEvent,
+  waitFor,
+} from "@/testing/utils";
+
+const mockServer = setupMockServer(
+  authResolvers.getCurrentUser.handler(),
+  authResolvers.getMeEntitlements.handler()
+);
 
 describe("UpdateCertificate", () => {
   let state: RootState;
@@ -33,6 +45,11 @@ describe("UpdateCertificate", () => {
     );
 
     // Radio should be set to generate certificate by default.
+    await waitFor(() => {
+      expect(
+        screen.getByRole("button", { name: "Next" })
+      ).not.toBeAriaDisabled();
+    });
     await userEvent.click(screen.getByRole("button", { name: "Next" }));
 
     const expectedAction = generalActions.generateCertificate({
@@ -57,6 +74,11 @@ describe("UpdateCertificate", () => {
       }
     );
     // Radio should be set to generate certificate by default.
+    await waitFor(() => {
+      expect(
+        screen.getByRole("button", { name: "Next" })
+      ).not.toBeAriaDisabled();
+    });
     await userEvent.click(screen.getByRole("button", { name: "Next" }));
 
     const expectedAction = generalActions.generateCertificate({
@@ -82,6 +104,11 @@ describe("UpdateCertificate", () => {
       }
     );
 
+    await waitFor(() => {
+      expect(
+        screen.getByRole("button", { name: "Save" })
+      ).not.toBeAriaDisabled();
+    });
     await userEvent.click(screen.getByRole("button", { name: "Save" }));
 
     const expectedAction = podActions.update({
@@ -118,6 +145,11 @@ describe("UpdateCertificate", () => {
       screen.getByRole("textbox", { name: "Upload private key" }),
       "key"
     );
+    await waitFor(() => {
+      expect(
+        screen.getByRole("button", { name: "Save" })
+      ).not.toBeAriaDisabled();
+    });
     await userEvent.click(screen.getByRole("button", { name: "Save" }));
 
     const expectedAction = podActions.update({
@@ -186,5 +218,17 @@ describe("UpdateCertificate", () => {
     expect(
       screen.queryByRole("button", { name: "Cancel" })
     ).not.toBeInTheDocument();
+  });
+
+  it("disables the submit button without the edit machines entitlement", async () => {
+    mockServer.use(authResolvers.getMeEntitlements.handler([]));
+    renderWithProviders(
+      <UpdateCertificate closeForm={vi.fn()} hasCertificateData pod={pod} />,
+      { state }
+    );
+
+    await waitFor(() => {
+      expect(screen.getByRole("button", { name: "Next" })).toBeAriaDisabled();
+    });
   });
 });

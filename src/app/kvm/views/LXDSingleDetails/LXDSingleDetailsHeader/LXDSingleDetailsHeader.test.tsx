@@ -4,6 +4,7 @@ import RefreshForm from "@/app/kvm/components/RefreshForm";
 import { PodType } from "@/app/store/pod/constants";
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
+import { authResolvers } from "@/testing/resolvers/auth";
 import { zoneResolvers } from "@/testing/resolvers/zones";
 import {
   userEvent,
@@ -15,7 +16,11 @@ import {
 } from "@/testing/utils";
 
 const { mockOpen } = await mockSidePanel();
-setupMockServer(zoneResolvers.getZone.handler());
+const mockServer = setupMockServer(
+  zoneResolvers.getZone.handler(),
+  authResolvers.getCurrentUser.handler(),
+  authResolvers.getMeEntitlements.handler()
+);
 
 describe("LXDSingleDetailsHeader", () => {
   let state: RootState;
@@ -96,6 +101,11 @@ describe("LXDSingleDetailsHeader", () => {
     renderWithProviders(<LXDSingleDetailsHeader id={1} />, {
       state,
     });
+    await waitFor(() => {
+      expect(
+        screen.getByRole("button", { name: "Refresh host" })
+      ).not.toBeAriaDisabled();
+    });
     await userEvent.click(screen.getByRole("button", { name: "Refresh host" }));
 
     expect(mockOpen).toHaveBeenCalledWith({
@@ -103,5 +113,21 @@ describe("LXDSingleDetailsHeader", () => {
       title: "Refresh",
       props: { hostIds: [1] },
     });
+  });
+
+  it("disables the refresh host button without the edit machines entitlement", async () => {
+    mockServer.use(authResolvers.getMeEntitlements.handler([]));
+    state.pod.items[0].zone = 1;
+    renderWithProviders(<LXDSingleDetailsHeader id={1} />, {
+      state,
+    });
+    await waitFor(() => {
+      expect(
+        screen.getByRole("button", { name: "Refresh host" })
+      ).toBeAriaDisabled();
+    });
+    await userEvent.click(screen.getByRole("button", { name: "Refresh host" }));
+
+    expect(mockOpen).not.toHaveBeenCalled();
   });
 });

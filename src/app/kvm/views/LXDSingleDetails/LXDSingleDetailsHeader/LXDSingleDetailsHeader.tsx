@@ -7,6 +7,7 @@ import { Link, useLocation } from "react-router";
 
 import { useGetZone } from "@/app/api/query/zones";
 import { useFetchActions } from "@/app/base/hooks";
+import { useCanEditVMHost } from "@/app/base/hooks/permissions";
 import urls from "@/app/base/urls";
 import KVMDetailsHeader from "@/app/kvm/components/KVMDetailsHeader";
 import RefreshForm from "@/app/kvm/components/RefreshForm";
@@ -26,6 +27,7 @@ const LXDSingleDetailsHeader = ({ id }: Props): ReactElement => {
   const pod = useSelector((state: RootState) =>
     podSelectors.getById(state, id)
   );
+  const canEdit = useCanEditVMHost(id);
   // id will be of a known pod, so we can safely assume that pod will be defined
   // eslint-disable-next-line @typescript-eslint/no-non-null-asserted-optional-chain
   const zone = useGetZone({ path: { zone_id: pod?.zone! } });
@@ -42,7 +44,7 @@ const LXDSingleDetailsHeader = ({ id }: Props): ReactElement => {
       buttons={[
         <Button
           appearance="positive"
-          disabled={!pod}
+          disabled={!pod || !canEdit}
           hasIcon
           onClick={() => {
             openSidePanel({
