@@ -2,12 +2,11 @@ import type { HTMLProps, ReactElement, ReactNode } from "react";
 import { lazy, Suspense } from "react";
 
 import { Layout } from "@canonical/maas-react-components";
-import { AppStatus, Modal } from "@canonical/react-components";
+import { AppStatus } from "@canonical/react-components";
 import classNames from "classnames";
 import { useSelector } from "react-redux";
 import { matchPath, useLocation } from "react-router";
 
-import { useModal } from "../../modal-context";
 import SecondaryNavigation from "../SecondaryNavigation";
 
 import { useThemeContext } from "@/app/base/theme-context";
@@ -18,6 +17,7 @@ import status from "@/app/store/status/selectors";
 
 const AppSideNavigation = lazy(() => import("../AppSideNavigation"));
 const StatusBar = lazy(() => import("../StatusBar"));
+const Modal = lazy(() => import("@/app/base/components/Modal"));
 
 export type AppLayoutProps = HTMLProps<HTMLDivElement> & {
   children?: ReactNode;
@@ -33,7 +33,6 @@ const AppLayout = ({ children }: AppLayoutProps): ReactElement => {
     (isSettingsPage || isPreferencesPage) && authenticated && connected;
   const settingsNavItems = useSettingsNavItems();
   const { theme } = useThemeContext();
-  const modal = useModal();
 
   return (
     <Layout
@@ -70,11 +69,9 @@ const AppLayout = ({ children }: AppLayoutProps): ReactElement => {
       }
       view={isSettingsPage || isPreferencesPage ? "settings" : "table"}
     >
-      {modal.isOpen && modal.component ? (
-        <Modal close={modal.closeModal} closeOnOutsideClick title={modal.title}>
-          <modal.component {...modal.props}></modal.component>
-        </Modal>
-      ) : null}
+      <Suspense fallback={null}>
+        <Modal />
+      </Suspense>
       {children}
     </Layout>
   );
