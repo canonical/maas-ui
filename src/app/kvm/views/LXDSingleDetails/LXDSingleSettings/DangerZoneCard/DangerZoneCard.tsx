@@ -4,6 +4,7 @@ import { useSidePanel } from "@canonical/maas-react-components";
 import { Button, Col, Row } from "@canonical/react-components";
 
 import FormCard from "@/app/base/components/FormCard";
+import { useCanEditVMHost } from "@/app/base/hooks/permissions";
 import DeleteForm from "@/app/kvm/components/DeleteForm";
 import type { Pod, PodMeta } from "@/app/store/pod/types";
 import type { VMCluster, VMClusterMeta } from "@/app/store/vmcluster/types";
@@ -20,6 +21,7 @@ const DangerZoneCard = ({
   message,
 }: Props): ReactElement => {
   const { openSidePanel } = useSidePanel();
+  const canEdit = useCanEditVMHost(hostId);
 
   return (
     <FormCard highlighted={false} sidebar={false} title="Danger zone">
@@ -29,6 +31,7 @@ const DangerZoneCard = ({
           <Button
             className="u-no-margin--bottom"
             data-testid="remove-kvm"
+            disabled={!canEdit}
             onClick={() => {
               openSidePanel({
                 component: DeleteForm,

@@ -569,17 +569,25 @@ export const router = createBrowserRouter(
                 {
                   path: getRelativeRoute(urls.kvm.lxd.index, urls.kvm.index),
                   element: (
-                    <ErrorBoundary>
-                      <KVMList />
-                    </ErrorBoundary>
+                    <RequireEntitlements
+                      entitlements={[Entitlement.CAN_VIEW_MACHINES]}
+                    >
+                      <ErrorBoundary>
+                        <KVMList />
+                      </ErrorBoundary>
+                    </RequireEntitlements>
                   ),
                 },
                 {
                   path: getRelativeRoute(urls.kvm.virsh.index, urls.kvm.index),
                   element: (
-                    <ErrorBoundary>
-                      <KVMList />
-                    </ErrorBoundary>
+                    <RequireEntitlements
+                      entitlements={[Entitlement.CAN_VIEW_MACHINES]}
+                    >
+                      <ErrorBoundary>
+                        <KVMList />
+                      </ErrorBoundary>
+                    </RequireEntitlements>
                   ),
                 },
                 {
@@ -588,9 +596,13 @@ export const router = createBrowserRouter(
                     urls.kvm.index
                   )}/*`,
                   element: (
-                    <ErrorBoundary>
-                      <LXDClusterDetails />
-                    </ErrorBoundary>
+                    <RequireEntitlements
+                      entitlements={[Entitlement.CAN_VIEW_MACHINES]}
+                    >
+                      <ErrorBoundary>
+                        <LXDClusterDetails />
+                      </ErrorBoundary>
+                    </RequireEntitlements>
                   ),
                 },
                 {
@@ -599,9 +611,13 @@ export const router = createBrowserRouter(
                     urls.kvm.index
                   )}/*`,
                   element: (
-                    <ErrorBoundary>
-                      <LXDSingleDetails />
-                    </ErrorBoundary>
+                    <RequireEntitlements
+                      entitlements={[Entitlement.CAN_VIEW_MACHINES]}
+                    >
+                      <ErrorBoundary>
+                        <LXDSingleDetails />
+                      </ErrorBoundary>
+                    </RequireEntitlements>
                   ),
                 },
                 {
@@ -610,9 +626,13 @@ export const router = createBrowserRouter(
                     urls.kvm.index
                   )}/*`,
                   element: (
-                    <ErrorBoundary>
-                      <VirshDetails />
-                    </ErrorBoundary>
+                    <RequireEntitlements
+                      entitlements={[Entitlement.CAN_VIEW_MACHINES]}
+                    >
+                      <ErrorBoundary>
+                        <VirshDetails />
+                      </ErrorBoundary>
+                    </RequireEntitlements>
                   ),
                 },
               ],

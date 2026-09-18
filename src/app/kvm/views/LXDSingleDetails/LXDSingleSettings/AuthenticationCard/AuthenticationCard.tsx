@@ -8,6 +8,7 @@ import UpdateCertificate from "./UpdateCertificate";
 
 import CertificateDetails from "@/app/base/components/CertificateDetails";
 import FormCard from "@/app/base/components/FormCard";
+import { useCanEditVMHost } from "@/app/base/hooks/permissions";
 import podSelectors from "@/app/store/pod/selectors";
 import type { Pod } from "@/app/store/pod/types";
 import { isPodDetails } from "@/app/store/pod/utils";
@@ -25,6 +26,7 @@ const AuthenticationCard = ({
   const pod = useSelector((state: RootState) =>
     podSelectors.getById(state, hostId)
   );
+  const canEdit = useCanEditVMHost(hostId);
   const [showUpdateCertificate, setShowUpdateCertificate] = useState(false);
 
   let content: ReactNode = (
@@ -65,6 +67,7 @@ const AuthenticationCard = ({
             <Button
               className="u-no-margin--bottom"
               data-testid="show-update-certificate"
+              disabled={!canEdit}
               onClick={() => {
                 setShowUpdateCertificate(true);
               }}

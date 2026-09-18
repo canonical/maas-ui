@@ -8,8 +8,18 @@ import AddLxd from "@/app/kvm/components/AddLxd";
 import AddVirsh from "@/app/kvm/components/AddVirsh";
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
-import { mockSidePanel, renderWithProviders } from "@/testing/utils";
+import { authResolvers } from "@/testing/resolvers/auth";
+import {
+  mockSidePanel,
+  renderWithProviders,
+  setupMockServer,
+  waitFor,
+} from "@/testing/utils";
 
+const mockServer = setupMockServer(
+  authResolvers.getCurrentUser.handler(),
+  authResolvers.getMeEntitlements.handler()
+);
 const { mockOpen } = await mockSidePanel();
 
 describe("KVMListHeader", () => {
@@ -53,6 +63,11 @@ describe("KVMListHeader", () => {
     expect(
       screen.queryByRole("button", { name: "Add Virsh host" })
     ).not.toBeInTheDocument();
+    await waitFor(() => {
+      expect(
+        screen.getByRole("button", { name: "Add LXD host" })
+      ).not.toBeAriaDisabled();
+    });
     await userEvent.click(screen.getByRole("button", { name: "Add LXD host" }));
     expect(mockOpen).toHaveBeenCalledWith({
       component: AddLxd,
@@ -71,6 +86,11 @@ describe("KVMListHeader", () => {
     expect(
       screen.queryByRole("button", { name: "Add LXD host" })
     ).not.toBeInTheDocument();
+    await waitFor(() => {
+      expect(
+        screen.getByRole("button", { name: "Add Virsh host" })
+      ).not.toBeAriaDisabled();
+    });
     await userEvent.click(
       screen.getByRole("button", { name: "Add Virsh host" })
     );
@@ -78,5 +98,20 @@ describe("KVMListHeader", () => {
       component: AddVirsh,
       title: "Add Virsh host",
     });
+  });
+
+  it("disables the add KVM host button without the edit machines entitlement", async () => {
+    mockServer.use(authResolvers.getMeEntitlements.handler([]));
+    renderWithProviders(<KVMListHeader title="LXD" />, {
+      initialEntries: [{ pathname: urls.kvm.lxd.index, key: "testKey" }],
+      state,
+    });
+    await waitFor(() => {
+      expect(
+        screen.getByRole("button", { name: "Add LXD host" })
+      ).toBeAriaDisabled();
+    });
+    await userEvent.click(screen.getByRole("button", { name: "Add LXD host" }));
+    expect(mockOpen).not.toHaveBeenCalled();
   });
 });

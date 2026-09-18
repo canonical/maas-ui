@@ -4,7 +4,19 @@ import { PodType } from "@/app/store/pod/constants";
 import type { PodDetails, PodPowerParameters } from "@/app/store/pod/types";
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
-import { renderWithProviders, screen, userEvent } from "@/testing/utils";
+import { authResolvers } from "@/testing/resolvers/auth";
+import {
+  renderWithProviders,
+  screen,
+  setupMockServer,
+  userEvent,
+  waitFor,
+} from "@/testing/utils";
+
+const mockServer = setupMockServer(
+  authResolvers.getCurrentUser.handler(),
+  authResolvers.getMeEntitlements.handler()
+);
 
 describe("AuthenticationCard", () => {
   let state: RootState;
@@ -41,11 +53,26 @@ describe("AuthenticationCard", () => {
     expect(
       screen.queryByRole("form", { name: "Update certificate" })
     ).not.toBeInTheDocument();
+    await waitFor(() => {
+      expect(
+        screen.getByTestId("show-update-certificate")
+      ).not.toBeAriaDisabled();
+    });
     await userEvent.click(screen.getByTestId("show-update-certificate"));
 
     expect(
       screen.getByRole("form", { name: "Update certificate" })
     ).toBeInTheDocument();
+  });
+
+  it("disables the update certificate button without the edit machines entitlement", async () => {
+    mockServer.use(authResolvers.getMeEntitlements.handler([]));
+    renderWithProviders(<AuthenticationCard hostId={pod.id} />, {
+      state,
+    });
+    await waitFor(() => {
+      expect(screen.getByTestId("show-update-certificate")).toBeAriaDisabled();
+    });
   });
 
   it("opens the update certificate form automatically if pod has no certificate", () => {

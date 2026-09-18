@@ -3,14 +3,21 @@ import LXDHostVMs from "./LXDHostVMs";
 import ComposeForm from "@/app/kvm/components/ComposeForm";
 import { machineActions } from "@/app/store/machine";
 import * as factory from "@/testing/factories";
+import { authResolvers } from "@/testing/resolvers/auth";
 import {
   mockSidePanel,
   renderWithProviders,
   screen,
+  setupMockServer,
   userEvent,
+  waitFor,
 } from "@/testing/utils";
 
 const { mockOpen } = await mockSidePanel();
+const mockServer = setupMockServer(
+  authResolvers.getCurrentUser.handler(),
+  authResolvers.getMeEntitlements.handler()
+);
 
 describe("LXDHostVMs", () => {
   it("shows a spinner if pod has not loaded yet", () => {
@@ -103,6 +110,11 @@ describe("LXDHostVMs", () => {
       { state }
     );
 
+    await waitFor(() => {
+      expect(
+        screen.getByRole("button", { name: "Add VM" })
+      ).not.toBeAriaDisabled();
+    });
     await userEvent.click(screen.getByRole("button", { name: "Add VM" }));
 
     expect(mockOpen).toHaveBeenCalledWith({
@@ -112,6 +124,28 @@ describe("LXDHostVMs", () => {
         hostId: 1,
       },
     });
+  });
+
+  it("disables the Add VM button without the edit machines entitlement", async () => {
+    mockServer.use(authResolvers.getMeEntitlements.handler([]));
+    const pod = factory.pod({ id: 1 });
+    const state = factory.rootState({
+      pod: factory.podState({
+        items: [pod],
+      }),
+    });
+
+    renderWithProviders(
+      <LXDHostVMs hostId={1} searchFilter="" setSearchFilter={vi.fn()} />,
+      { state }
+    );
+
+    await waitFor(() => {
+      expect(screen.getByRole("button", { name: "Add VM" })).toBeAriaDisabled();
+    });
+    await userEvent.click(screen.getByRole("button", { name: "Add VM" }));
+
+    expect(mockOpen).not.toHaveBeenCalled();
   });
 
   it("fetches VMs for the host", async () => {

@@ -4,6 +4,7 @@ import { useGetUserEntitlements } from "@/app/api/query/auth";
 import { Entitlement } from "@/app/settings/views/UserManagement/views/Groups/constants";
 import machineSelectors from "@/app/store/machine/selectors";
 import type { Machine } from "@/app/store/machine/types";
+import type { Pod } from "@/app/store/pod/types";
 import type { RootState } from "@/app/store/root/types";
 import { hasEntitlementForPool, hasPermissions } from "@/app/utils/permissions";
 
@@ -28,6 +29,25 @@ export const useCanEditMachine = (
     userEntitlements,
     Entitlement.CAN_EDIT_MACHINES,
     machine.pool.id
+  );
+};
+
+export const useCanEditVMHost = (hostId?: Pod["id"] | null): boolean => {
+  const { data: userEntitlements } = useGetUserEntitlements();
+  const pod = useSelector((state: RootState) =>
+    hostId || hostId === 0
+      ? (state.pod.items.find((item) => item.id === hostId) ?? null)
+      : null
+  );
+  if (!pod) {
+    return hasPermissions(userEntitlements || [], [
+      Entitlement.CAN_EDIT_MACHINES,
+    ]);
+  }
+  return hasEntitlementForPool(
+    userEntitlements,
+    Entitlement.CAN_EDIT_MACHINES,
+    pod.pool
   );
 };
 
