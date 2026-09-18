@@ -8,7 +8,7 @@ import {
   screen,
   waitFor,
   renderWithProviders,
-  mockSidePanel,
+  mockModal,
   waitForLoading,
 } from "@/testing/utils";
 
@@ -20,7 +20,7 @@ vi.mock("@reduxjs/toolkit", async () => {
   };
 });
 
-const { mockClose } = await mockSidePanel();
+const { mockClose } = await mockModal();
 
 describe("DeleteController", () => {
   let state: RootState;
@@ -45,7 +45,7 @@ describe("DeleteController", () => {
     });
   });
 
-  it("calls closeSidePanel on cancel click", async () => {
+  it("calls closeModal on cancel click", async () => {
     renderWithProviders(
       <DeleteController
         controllers={state.controller.items}

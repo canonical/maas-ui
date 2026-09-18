@@ -1,11 +1,11 @@
 import type { ReactElement } from "react";
 
-import { useSidePanel } from "@canonical/maas-react-components";
 import { Button } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 
 import SectionHeader from "@/app/base/components/SectionHeader";
 import { useFetchActions, useHasEntitlements } from "@/app/base/hooks";
+import { useModal } from "@/app/base/modal-context";
 import { DeleteVLAN } from "@/app/networks/views/VLANs/components";
 import { Entitlement } from "@/app/settings/views/UserManagement/views/Groups/constants";
 import { fabricActions } from "@/app/store/fabric";
@@ -39,7 +39,7 @@ const generateTitle = (
 };
 
 const VLANDetailsHeader = ({ vlan }: Props): ReactElement => {
-  const { openSidePanel } = useSidePanel();
+  const { openModal } = useModal();
 
   const fabricId = vlan?.fabric;
   const fabric = useSelector((state: RootState) =>
@@ -56,7 +56,7 @@ const VLANDetailsHeader = ({ vlan }: Props): ReactElement => {
         data-testid="delete-vlan"
         key="delete-vlan"
         onClick={() => {
-          openSidePanel({
+          openModal({
             component: DeleteVLAN,
             title: "Delete VLAN",
             props: {

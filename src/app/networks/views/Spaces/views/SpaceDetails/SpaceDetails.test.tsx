@@ -3,15 +3,18 @@ import { Route, Routes } from "react-router";
 import SpaceDetails from "./SpaceDetails";
 
 import urls from "@/app/base/urls";
+import { DeleteSpace } from "@/app/networks/views/Spaces/components";
 import { spaceActions } from "@/app/store/space";
 import * as factory from "@/testing/factories";
 import {
+  mockModal,
   renderWithProviders,
   screen,
   userEvent,
-  waitFor,
   within,
 } from "@/testing/utils";
+
+const { mockOpen } = await mockModal();
 
 describe("SpaceDetails", () => {
   it("dispatches actions to get and set space as active on mount", () => {
@@ -109,58 +112,11 @@ describe("SpaceDetails", () => {
     ).toBeInTheDocument();
   });
 
-  it("displays a delete confirmation before delete", async () => {
+  it("opens a modal to delete the space", async () => {
     const space = factory.space({
       id: 1,
       name: "space1",
       description: "space 1 description",
-    });
-    const state = factory.rootState({
-      space: factory.spaceState({
-        items: [space],
-        loading: false,
-      }),
-    });
-    const { store } = renderWithProviders(
-      <Routes>
-        <Route
-          element={<SpaceDetails />}
-          path={urls.networks.space.index(null)}
-        />
-      </Routes>,
-      { initialEntries: [urls.networks.space.index({ id: 1 })], state }
-    );
-    await userEvent.click(screen.getByRole("button", { name: "Delete space" }));
-    expect(
-      screen.getByText("Are you sure you want to delete this space?")
-    ).toBeInTheDocument();
-
-    await userEvent.click(
-      within(screen.getByRole("complementary")).getByRole("button", {
-        name: "Delete space",
-      })
-    );
-
-    const expectedActions = [spaceActions.cleanup(), spaceActions.delete(1)];
-
-    await waitFor(() => {
-      const actualActions = store.getActions();
-      expectedActions.forEach((expectedAction) => {
-        expect(
-          actualActions.find(
-            (actualAction) => actualAction.type === expectedAction.type
-          )
-        ).toStrictEqual(expectedAction);
-      });
-    });
-  });
-
-  it("displays an error if there are any subnets on the space.", async () => {
-    const space = factory.space({
-      id: 1,
-      name: "space1",
-      description: "space 1 description",
-      subnet_ids: [1],
     });
     const state = factory.rootState({
       space: factory.spaceState({
@@ -178,11 +134,11 @@ describe("SpaceDetails", () => {
       { initialEntries: [urls.networks.space.index({ id: 1 })], state }
     );
     await userEvent.click(screen.getByRole("button", { name: "Delete space" }));
-    expect(screen.getByText(/Space cannot be deleted/)).toBeInTheDocument();
-    await userEvent.click(screen.getByRole("button", { name: "Cancel" }));
 
-    expect(
-      screen.queryByText(/Space cannot be deleted/)
-    ).not.toBeInTheDocument();
+    expect(mockOpen).toHaveBeenCalledWith({
+      component: DeleteSpace,
+      title: "Delete space",
+      props: { id: space.id },
+    });
   });
 });

@@ -1,4 +1,5 @@
 import { useSidePanel } from "@canonical/maas-react-components";
+import pluralize from "pluralize";
 import { useDispatch, useSelector } from "react-redux";
 
 import SetControllerZoneForm from "../SetControllerZoneForm";
@@ -92,10 +93,34 @@ export const ControllerActionFormWrapper = ({
             isViewingDetails={viewingDetails}
           />
         );
-      case NodeActions.IMPORT_IMAGES:
       case NodeActions.OFF:
+        return (
+          <FieldlessForm
+            action={action}
+            actions={controllerActions}
+            description={`The ${pluralize("controller", controllers.length)} will be powered off.`}
+            {...commonNodeFormProps}
+          />
+        );
       case NodeActions.ON:
+        return (
+          <FieldlessForm
+            action={action}
+            actions={controllerActions}
+            description={`The ${pluralize("controller", controllers.length)} will be powered on.`}
+            {...commonNodeFormProps}
+          />
+        );
       case NodeActions.OVERRIDE_FAILED_TESTING:
+        return (
+          <FieldlessForm
+            action={action}
+            actions={controllerActions}
+            description={`The failed tests for the ${pluralize("controller", controllers.length)} will be marked as overridden, allowing ${controllers.length > 1 ? "them" : "it"} to be used normally.`}
+            {...commonNodeFormProps}
+          />
+        );
+      case NodeActions.IMPORT_IMAGES:
         return (
           <FieldlessForm
             action={action}

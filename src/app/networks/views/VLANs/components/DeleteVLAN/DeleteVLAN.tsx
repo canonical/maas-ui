@@ -1,12 +1,12 @@
 import type { ReactElement } from "react";
 import { useCallback } from "react";
 
-import { useSidePanel } from "@canonical/maas-react-components";
 import { Notification as NotificationBanner } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 
 import FabricLink from "@/app/base/components/FabricLink";
 import FormikForm from "@/app/base/components/FormikForm";
+import { useModal } from "@/app/base/modal-context";
 import type { EmptyObject } from "@/app/base/types";
 import urls from "@/app/networks/urls";
 import fabricSelectors from "@/app/store/fabric/selectors";
@@ -20,7 +20,7 @@ type DeleteVLANProps = {
 };
 
 const DeleteVLAN = ({ id }: DeleteVLANProps): ReactElement | null => {
-  const { closeSidePanel } = useSidePanel();
+  const { closeModal } = useModal();
   const dispatch = useDispatch();
   const vlan = useSelector((state: RootState) =>
     vlanSelectors.getById(state, id)
@@ -43,12 +43,12 @@ const DeleteVLAN = ({ id }: DeleteVLANProps): ReactElement | null => {
       cleanup={cleanup}
       errors={errors}
       initialValues={{}}
-      onCancel={closeSidePanel}
+      onCancel={closeModal}
       onSubmit={() => {
         dispatch(cleanup());
         dispatch(vlanActions.delete(id));
       }}
-      onSuccess={closeSidePanel}
+      onSuccess={closeModal}
       saved={saved}
       savedRedirect={urls.vlans.index}
       saving={saving}

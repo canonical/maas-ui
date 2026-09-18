@@ -1,8 +1,10 @@
 import SpacesList from "./SpacesList";
 
+import { DeleteSpace } from "@/app/networks/views/Spaces/components";
 import { authResolvers } from "@/testing/resolvers/auth";
 import { mockSpaces, spacesResolvers } from "@/testing/resolvers/spaces";
 import {
+  mockModal,
   renderWithProviders,
   screen,
   setupMockServer,
@@ -15,6 +17,7 @@ setupMockServer(
   authResolvers.getCurrentUser.handler(),
   authResolvers.getMeEntitlements.handler()
 );
+const { mockOpen } = await mockModal();
 
 describe("SpacesList", () => {
   it("uses the correct window title", async () => {
@@ -42,8 +45,12 @@ describe("SpacesList", () => {
 
     await userEvent.click(screen.getAllByRole("button", { name: "Delete" })[0]);
 
-    expect(
-      screen.getByRole("complementary", { name: "Delete space" })
-    ).toBeInTheDocument();
+    expect(mockOpen).toHaveBeenCalledWith({
+      component: DeleteSpace,
+      title: "Delete space",
+      props: {
+        id: mockSpaces.items[0].id,
+      },
+    });
   });
 });

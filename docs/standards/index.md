@@ -13,9 +13,10 @@ Developer reference for the maas-ui codebase. Each document covers one area of t
 | [Styling](styling.md) | Global SCSS entry point, per-component `_index.scss` mixins, Vanilla Framework usage, and encapsulation rules |
 | [Store Management](store-management.md) | Redux scope (legacy only), reading from the store, `useFetchActions`, testing with `renderWithProviders`, and migration path to TanStack Query |
 | [API Hooks](api-hooks.md) | TanStack Query hook authoring, naming conventions, `useWebsocketAwareQuery`, mutations, MSW resolvers, and common pitfalls |
-| [Forms](forms.md) | `FormikForm`, `ModelActionForm`, Yup validation, `onSuccess`/`closeSidePanel`, API error display, and form testing patterns |
+| [Forms](forms.md) | `FormikForm`, `ModelActionForm`, Yup validation, `onSuccess`/`closeSidePanel`/`closeModal`, choosing a side panel vs a modal, API error display, and form testing patterns |
 | [Tables](tables.md) | `GenericTable`, column definition hooks, pagination, `TableActions`, row click vs action columns, and table testing patterns |
 | [Side Panels](side-panels.md) | `useSidePanel`, opening with typed props, closing, size options, auto-close behaviour, and `mockSidePanel` testing |
+| [Modals](modals.md) | `useModal`, opening with typed props, closing, when to use a modal instead of a side panel, and `mockModal` testing |
 | [Notifications](notifications.md) | Backend-driven notification flow, category-to-toast mapping, `useDismissNotification`, and what feature code should not do |
 | [Permissions](permissions.md) | Two-layer permissions (`is_superuser` and `permissions[]`), `useCanEdit` for node resources, and testing both layers |
 | [Constants](constants.md) | Three-level hierarchy (app / domain / view), `as const` arrays, enums, `Record` label maps, and navigation constants |
@@ -29,6 +30,6 @@ Developer reference for the maas-ui codebase. Each document covers one area of t
 
 **Adding an API endpoint?** See [API Hooks](api-hooks.md) for the full authoring guide. If the data needs to drive a form, see [Forms](forms.md). If it needs real-time updates, the WebSocket-aware query pattern is in [API Hooks](api-hooks.md#websocket-aware-queries).
 
-**Writing tests?** [Testing](testing.md) covers factories, resolvers, and E2E. Side panel open/close assertions are in [Side Panels](side-panels.md#testing-side-panels).
+**Writing tests?** [Testing](testing.md) covers factories, resolvers, and E2E. Side panel open/close assertions are in [Side Panels](side-panels.md#testing-side-panels); modal open/close assertions are in [Modals](modals.md#testing-modals).
 
 **Unsure whether to use Redux or TanStack Query?** See [Store Management](store-management.md).

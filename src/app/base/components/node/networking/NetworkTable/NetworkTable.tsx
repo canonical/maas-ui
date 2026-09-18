@@ -79,7 +79,7 @@ type WithoutActionProps = BaseProps & {
 type Props = ActionProps | WithoutActionProps;
 
 export const generateUniqueId = ({ linkId, nicId }: Selected): string =>
-  `${nicId || ""}-${linkId || ""}`;
+  `${nicId ?? ""}-${linkId ?? ""}`;
 
 const getNetworkTableData = (
   fabrics: Fabric[],

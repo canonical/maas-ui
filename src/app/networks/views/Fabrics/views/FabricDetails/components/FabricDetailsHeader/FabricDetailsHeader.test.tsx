@@ -8,7 +8,7 @@ import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
 import { authResolvers } from "@/testing/resolvers/auth";
 import {
-  mockSidePanel,
+  mockModal,
   renderWithProviders,
   screen,
   setupMockServer,
@@ -22,7 +22,7 @@ const mockServer = setupMockServer(
   authResolvers.getCurrentUser.handler(),
   authResolvers.getMeEntitlements.handler()
 );
-const { mockOpen } = await mockSidePanel();
+const { mockOpen } = await mockModal();
 
 describe("FabricDetailsHeader", () => {
   beforeEach(() => {

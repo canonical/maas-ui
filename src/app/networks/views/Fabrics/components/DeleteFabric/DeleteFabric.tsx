@@ -1,12 +1,12 @@
 import type { ReactElement, ReactNode } from "react";
 import { useCallback } from "react";
 
-import { useSidePanel } from "@canonical/maas-react-components";
 import { Notification as NotificationBanner } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 
 import FormikForm from "@/app/base/components/FormikForm";
 import { useFetchActions } from "@/app/base/hooks";
+import { useModal } from "@/app/base/modal-context";
 import type { EmptyObject } from "@/app/base/types";
 import urls from "@/app/networks/urls";
 import { fabricActions } from "@/app/store/fabric";
@@ -21,7 +21,7 @@ type DeleteFabricProps = {
 };
 
 const DeleteFabric = ({ id }: DeleteFabricProps): ReactElement | null => {
-  const { closeSidePanel } = useSidePanel();
+  const { closeModal } = useModal();
   const dispatch = useDispatch();
   const fabric = useSelector((state: RootState) =>
     fabricSelectors.getById(state, id)
@@ -70,12 +70,12 @@ const DeleteFabric = ({ id }: DeleteFabricProps): ReactElement | null => {
       cleanup={cleanup}
       errors={errors}
       initialValues={{}}
-      onCancel={closeSidePanel}
+      onCancel={closeModal}
       onSubmit={() => {
         dispatch(cleanup());
         dispatch(fabricActions.delete(id));
       }}
-      onSuccess={closeSidePanel}
+      onSuccess={closeModal}
       saved={saved}
       savedRedirect={urls.fabrics.index}
       saving={saving}

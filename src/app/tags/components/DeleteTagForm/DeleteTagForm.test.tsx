@@ -9,6 +9,7 @@ import { tagActions } from "@/app/store/tag";
 import { NodeStatus } from "@/app/store/types/node";
 import * as factory from "@/testing/factories";
 import {
+  mockModal,
   renderWithProviders,
   screen,
   userEvent,
@@ -23,6 +24,8 @@ vi.mock("@reduxjs/toolkit", async () => {
     nanoid: vi.fn(),
   };
 });
+
+const { mockClose } = await mockModal();
 
 let state: RootState;
 let scrollToSpy: Mock;
@@ -48,10 +51,6 @@ beforeEach(() => {
   global.scrollTo = scrollToSpy;
 });
 
-afterEach(() => {
-  vi.restoreAllMocks();
-});
-
 it("dispatches an action to delete a tag", async () => {
   const { store } = renderWithProviders(<DeleteTagForm id={1} />, { state });
   await userEvent.click(screen.getByRole("button", { name: "Delete" }));
@@ -61,6 +60,12 @@ it("dispatches an action to delete a tag", async () => {
       store.getActions().find((action) => action.type === expected.type)
     ).toStrictEqual(expected);
   });
+});
+
+it("calls closeModal on cancel click", async () => {
+  renderWithProviders(<DeleteTagForm id={1} />, { state });
+  await userEvent.click(screen.getByRole("button", { name: "Cancel" }));
+  expect(mockClose).toHaveBeenCalled();
 });
 
 it("displays a message when deleting a tag on a machine", async () => {
