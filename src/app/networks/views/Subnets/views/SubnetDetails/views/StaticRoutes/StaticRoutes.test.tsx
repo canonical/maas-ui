@@ -10,7 +10,10 @@ import {
   waitFor,
 } from "@/testing/utils";
 
-setupMockServer(authResolvers.getCurrentUser.handler());
+setupMockServer(
+  authResolvers.getCurrentUser.handler(),
+  authResolvers.getMeEntitlements.handler()
+);
 
 it("renders for a subnet", () => {
   const subnet = factory.subnet({ id: 1 });
@@ -52,7 +55,7 @@ it("has a button to open the static route form", async () => {
   renderWithProviders(<StaticRoutes subnetId={subnet.id} />, { state });
 
   await waitFor(() => {
-    expect(authResolvers.getCurrentUser.resolved).toBe(true);
+    expect(authResolvers.getMeEntitlements.resolved).toBe(true);
   });
   await waitFor(() => {
     expect(

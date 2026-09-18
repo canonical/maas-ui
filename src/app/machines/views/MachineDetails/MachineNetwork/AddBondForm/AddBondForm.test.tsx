@@ -265,26 +265,30 @@ describe("AddBondForm", () => {
     expect(store.getActions().some((action) => action.type === "vlan/fetch"));
   });
 
-  it("displays a spinner when data is loading", async () => {
+  it("displays a skeleton when data is loading", async () => {
     state.fabric.loaded = false;
     state.subnet.loaded = false;
     state.vlan.loaded = false;
-    renderWithProviders(
+    const { result } = renderWithProviders(
       <AddBondForm selected={[]} setSelected={vi.fn()} systemId="abc123" />,
       { state }
     );
-    expect(screen.getByText("Loading")).toBeInTheDocument();
+    expect(
+      result.container.querySelector(".aside-skeleton")
+    ).toBeInTheDocument();
   });
 
-  it("displays a spinner if the VLAN hasn't been set", async () => {
+  it("displays a skeleton if the VLAN hasn't been set", async () => {
     state.fabric.loaded = true;
     state.subnet.loaded = true;
     state.vlan.loaded = true;
-    renderWithProviders(
+    const { result } = renderWithProviders(
       <AddBondForm selected={[]} setSelected={vi.fn()} systemId="abc123" />,
       { state }
     );
-    expect(screen.getByTestId("data-loading")).toBeInTheDocument();
+    expect(
+      result.container.querySelector(".aside-skeleton")
+    ).toBeInTheDocument();
   });
 
   it("can dispatch an action to add a bond", async () => {

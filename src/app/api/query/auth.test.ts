@@ -1,3 +1,4 @@
+import { http } from "msw";
 import { describe, it, expect, vi, beforeEach } from "vitest";
 
 import {
@@ -22,6 +23,7 @@ import {
   authResolvers,
   mockAuth,
   mockOauthProvider,
+  mockUserEntitlements,
 } from "@/testing/resolvers/auth";
 import {
   renderHookWithProviders,
@@ -40,11 +42,13 @@ vi.mock("@/app/utils", async () => {
 const mockServer = setupMockServer(
   authResolvers.authenticate.handler(),
   authResolvers.preLogin.handler(),
+  authResolvers.getMeEntitlements.handler(),
   authResolvers.createSession.handler(),
   authResolvers.isOidcUser.handler(),
   authResolvers.getCallback.handler(),
   authResolvers.extendSession.handler(),
   authResolvers.getCurrentUser.handler(),
+  authResolvers.getMeStatistics.handler(),
   authResolvers.completeIntro.handler(),
   authResolvers.getActiveOauthProvider.handler(),
   authResolvers.createOauthProvider.handler(),
@@ -297,16 +301,33 @@ describe("useGetCurrentUser", () => {
     });
     expect(result.current.data).toMatchObject(expectedUser);
   });
+
+  it("remains loading until the user statistics have loaded", async () => {
+    mockServer.use(
+      http.get(
+        /\/MAAS\/a\/v3\/users\/me:statistics$/,
+        () => new Promise<Response>(() => {})
+      )
+    );
+
+    const { result } = renderHookWithProviders(() => useGetCurrentUser());
+
+    await waitFor(() => {
+      expect(authResolvers.getCurrentUser.resolved).toBe(true);
+    });
+    expect(result.current.isLoading).toBe(true);
+    expect(result.current.isSuccess).toBe(false);
+  });
 });
 
 describe("useGetUserEntitlements", () => {
   it("should return the user's entitlements", async () => {
-    const expectedUser = mockAuth;
+    const expectedUserEntitlements = mockUserEntitlements;
     const { result } = renderHookWithProviders(() => useGetUserEntitlements());
     await waitFor(() => {
       expect(result.current.isSuccess).toBe(true);
     });
-    expect(result.current.data).toEqual(expectedUser.entitlements);
+    expect(result.current.data).toEqual(expectedUserEntitlements);
   });
 });
 

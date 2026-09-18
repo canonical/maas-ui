@@ -20,12 +20,14 @@ type Props = {
   originalNode?: Node;
   subnets?: Subnet[];
   ipranges?: IPRange[];
+  editDisabled?: boolean;
 };
 
 const useDHCPTableColumns = ({
   originalNode,
   subnets,
   ipranges,
+  editDisabled = false,
 }: Props): DHCPTableColumnDef[] => {
   const { openSidePanel } = useSidePanel();
   return useMemo(
@@ -93,6 +95,7 @@ const useDHCPTableColumns = ({
           },
         }) => (
           <TableActions
+            editDisabled={editDisabled}
             onEdit={() => {
               openSidePanel({
                 component: DhcpEdit,
@@ -104,7 +107,7 @@ const useDHCPTableColumns = ({
         ),
       },
     ],
-    [ipranges, openSidePanel, subnets, originalNode]
+    [editDisabled, ipranges, openSidePanel, subnets, originalNode]
   );
 };
 

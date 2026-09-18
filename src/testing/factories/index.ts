@@ -82,7 +82,6 @@ export {
   podVmCount,
   testStatus,
 } from "./nodes";
-export { notification } from "./notification";
 export { packageRepository } from "./packagerepository";
 export { reservedIp, reservedIpNodeSummary } from "./reservedip";
 export { resourcePool } from "./resourcepool";
@@ -146,7 +145,6 @@ export {
   msmStatus,
   nodeDeviceState,
   nodeScriptResultState,
-  notificationState,
   osInfoState,
   packageRepositoryState,
   pocketsToDisableState,
@@ -195,7 +193,7 @@ export {
 } from "./subnet";
 export { tag } from "./tag";
 export { token } from "./token";
-export { entitlement, user, userInfo, userStatistics } from "./user";
+export { entitlement, user, userEntitlements, userStatistics } from "./user";
 export { vlan, vlanDetails } from "./vlan";
 export {
   virtualMachine,

@@ -4,7 +4,19 @@ import type { ControllerActions } from "@/app/store/controller/types";
 import { NodeActions } from "@/app/store/types/node";
 import { getNodeActionTitle } from "@/app/store/utils";
 import * as factory from "@/testing/factories";
-import { renderWithProviders, screen, userEvent } from "@/testing/utils";
+import { authResolvers } from "@/testing/resolvers/auth";
+import {
+  renderWithProviders,
+  screen,
+  setupMockServer,
+  userEvent,
+  waitFor,
+} from "@/testing/utils";
+
+const mockServer = setupMockServer(
+  authResolvers.getCurrentUser.handler(),
+  authResolvers.getMeEntitlements.handler()
+);
 
 it("displays a spinner as the title if controller has not loaded yet", () => {
   const state = factory.rootState({
@@ -84,11 +96,37 @@ it("displays actions in take action menu", async () => {
     ).not.toBeInTheDocument();
   });
 
+  await waitFor(() => {
+    expect(
+      screen.getByRole("button", { name: "Take action" })
+    ).not.toBeAriaDisabled();
+  });
   await userEvent.click(screen.getByRole("button", { name: "Take action" }));
 
   actionLabels.forEach((name) => {
     expect(
       screen.getByRole("menuitem", { name: new RegExp(name) })
     ).toBeInTheDocument();
+  });
+});
+
+it("disables the take action dropdown without the edit entitlement", async () => {
+  mockServer.use(authResolvers.getMeEntitlements.handler([]));
+  const controllerDetails = factory.controllerDetails();
+  const state = factory.rootState({
+    controller: factory.controllerState({
+      items: [controllerDetails],
+    }),
+  });
+
+  renderWithProviders(
+    <ControllerDetailsHeader systemId={controllerDetails.system_id} />,
+    { state }
+  );
+
+  await waitFor(() => {
+    expect(
+      screen.getByRole("button", { name: "Take action" })
+    ).toBeAriaDisabled();
   });
 });

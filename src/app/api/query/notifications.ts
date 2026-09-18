@@ -47,6 +47,9 @@ export const convertToastNotificationIdToBackendId = (id: string): number => {
   throw new Error(`Invalid notification ID format: ${id}`);
 };
 
+export const isBackendNotificationId = (id: string): boolean =>
+  /^notification-\d+$/.test(id);
+
 export const useNotifications = () => {
   const backendNotifications = useListNotifications({
     query: { only_active: true },
@@ -124,6 +127,12 @@ export const useDismissNotifications = (dismissMutation: DismissMutateFn) => {
   return (notifications: ToastNotificationType[] | undefined) => {
     if (notifications) {
       notifications.forEach((notification) => {
+        // Temporary/local toasts (e.g. those created via `failure`) don't have
+        // a backend notification ID, so there's nothing to dismiss on the
+        // server. They're removed from the stack by the provider directly.
+        if (!isBackendNotificationId(notification.id)) {
+          return;
+        }
         dismissMutation({
           path: {
             notification_id: convertToastNotificationIdToBackendId(

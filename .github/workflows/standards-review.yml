@@ -58,5 +58,5 @@ jobs:
           commit-message: "review: automated standards compliance check"
           title: "review: weekly standards compliance check"
           labels: review,automated
-          body-path: /tmp/pr-body.md
+          body-path: .github/standards-review-findings.md
           delete-branch: false

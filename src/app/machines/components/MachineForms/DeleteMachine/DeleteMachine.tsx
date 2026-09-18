@@ -1,7 +1,6 @@
 import type { ReactElement } from "react";
 
-import { useSidePanel } from "@canonical/maas-react-components";
-import { Spinner } from "@canonical/react-components";
+import { SidePanel, useSidePanel } from "@canonical/maas-react-components";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation } from "react-router";
 import type { Action, Dispatch } from "redux";
@@ -57,7 +56,7 @@ export const DeleteMachine = ({
   };
 
   if (selectedCountLoading) {
-    return <Spinner text={"Loading..."} />;
+    return <SidePanel.Skeleton />;
   }
 
   return (

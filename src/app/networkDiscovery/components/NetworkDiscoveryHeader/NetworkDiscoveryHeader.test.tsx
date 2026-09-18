@@ -3,6 +3,7 @@ import NetworkDiscoveryHeader, {
 } from "./NetworkDiscoveryHeader";
 
 import { ClearAllForm } from "@/app/networkDiscovery/components";
+import { authResolvers } from "@/testing/resolvers/auth";
 import { networkDiscoveryResolvers } from "@/testing/resolvers/networkDiscovery";
 import {
   screen,
@@ -10,9 +11,14 @@ import {
   userEvent,
   setupMockServer,
   mockSidePanel,
+  waitFor,
 } from "@/testing/utils";
 
-setupMockServer(networkDiscoveryResolvers.listNetworkDiscoveries.handler());
+const mockServer = setupMockServer(
+  networkDiscoveryResolvers.listNetworkDiscoveries.handler(),
+  authResolvers.getCurrentUser.handler(),
+  authResolvers.getMeEntitlements.handler()
+);
 const { mockOpen } = await mockSidePanel();
 
 describe("NetworkDiscoveryHeader", () => {
@@ -28,6 +34,14 @@ describe("NetworkDiscoveryHeader", () => {
   it("opens the side panel when the 'Clear all discoveries' button is clicked", async () => {
     renderWithProviders(<NetworkDiscoveryHeader />);
 
+    await waitFor(() => {
+      expect(
+        screen.getByRole("button", {
+          name: NetworkDiscoveryHeaderLabels.ClearAll,
+        })
+      ).not.toBeAriaDisabled();
+    });
+
     await userEvent.click(
       screen.getByRole("button", {
         name: NetworkDiscoveryHeaderLabels.ClearAll,
@@ -37,5 +51,25 @@ describe("NetworkDiscoveryHeader", () => {
       component: ClearAllForm,
       title: "Clear all discoveries",
     });
+  });
+
+  it("disables the clear all button without the edit entitlement", async () => {
+    mockServer.use(authResolvers.getMeEntitlements.handler([]));
+    renderWithProviders(<NetworkDiscoveryHeader />);
+
+    await waitFor(() => {
+      expect(
+        screen.getByRole("button", {
+          name: NetworkDiscoveryHeaderLabels.ClearAll,
+        })
+      ).toBeAriaDisabled();
+    });
+
+    await userEvent.click(
+      screen.getByRole("button", {
+        name: NetworkDiscoveryHeaderLabels.ClearAll,
+      })
+    );
+    expect(mockOpen).not.toHaveBeenCalled();
   });
 });

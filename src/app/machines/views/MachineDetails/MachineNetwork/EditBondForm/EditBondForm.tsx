@@ -1,8 +1,7 @@
 import type { ReactElement } from "react";
 import { useCallback, useState } from "react";
 
-import { useSidePanel } from "@canonical/maas-react-components";
-import { Spinner } from "@canonical/react-components";
+import { SidePanel, useSidePanel } from "@canonical/maas-react-components";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 
@@ -141,7 +140,7 @@ const EditBondForm = ({
     !fabricsLoaded ||
     !subnetsLoaded
   ) {
-    return <Spinner />;
+    return <SidePanel.Skeleton />;
   }
   const subnet = getInterfaceSubnet(
     machine,

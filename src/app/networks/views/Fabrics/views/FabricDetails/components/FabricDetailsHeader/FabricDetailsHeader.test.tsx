@@ -18,7 +18,10 @@ import {
 let state: RootState;
 let fabric: Fabric;
 
-const mockServer = setupMockServer(authResolvers.getCurrentUser.handler());
+const mockServer = setupMockServer(
+  authResolvers.getCurrentUser.handler(),
+  authResolvers.getMeEntitlements.handler()
+);
 const { mockOpen } = await mockSidePanel();
 
 describe("FabricDetailsHeader", () => {
@@ -44,11 +47,7 @@ describe("FabricDetailsHeader", () => {
   });
 
   it("does not show the delete button if the user is not an admin", () => {
-    mockServer.use(
-      authResolvers.getCurrentUser.handler(
-        factory.userInfo({ entitlements: [] })
-      )
-    );
+    mockServer.use(authResolvers.getMeEntitlements.handler([]));
     renderWithProviders(<FabricDetailsHeader fabric={fabric} />, {
       state,
     });

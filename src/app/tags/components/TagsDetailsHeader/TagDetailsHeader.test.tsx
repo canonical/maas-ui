@@ -5,7 +5,19 @@ import TagsHeader, { Label } from "./TagDetailsHeader";
 
 import urls from "@/app/base/urls";
 import * as factory from "@/testing/factories";
-import { renderWithProviders, screen, userEvent } from "@/testing/utils";
+import { authResolvers } from "@/testing/resolvers/auth";
+import {
+  renderWithProviders,
+  screen,
+  setupMockServer,
+  userEvent,
+  waitFor,
+} from "@/testing/utils";
+
+const mockServer = setupMockServer(
+  authResolvers.getCurrentUser.handler(),
+  authResolvers.getMeEntitlements.handler()
+);
 
 let scrollToSpy: Mock;
 
@@ -71,6 +83,77 @@ it("triggers onUpdate with the correct tag ID", async () => {
     </Routes>,
     { initialEntries: [urls.tags.tag.index({ id: 1 })], state }
   );
+  await waitFor(() => {
+    expect(screen.getByRole("button", { name: "Edit" })).not.toBeAriaDisabled();
+  });
   await userEvent.click(screen.getByRole("button", { name: "Edit" }));
   expect(onUpdate).toHaveBeenCalledWith(1);
+});
+
+it("enables the edit and delete buttons when the user has edit entitlements", async () => {
+  const tag = factory.tag({ id: 1 });
+  const state = factory.rootState({
+    tag: factory.tagState({
+      loaded: true,
+      loading: false,
+      items: [tag],
+    }),
+  });
+  renderWithProviders(
+    <Routes>
+      <Route
+        element={<TagsHeader onDelete={vi.fn()} onUpdate={vi.fn()} />}
+        path={urls.tags.tag.index(null)}
+      />
+    </Routes>,
+    { initialEntries: [urls.tags.tag.index({ id: 1 })], state }
+  );
+
+  await waitFor(() => {
+    expect(
+      screen.getByRole("button", { name: Label.EditButton })
+    ).not.toBeAriaDisabled();
+  });
+  expect(
+    screen.getByRole("button", { name: Label.DeleteButton })
+  ).not.toBeAriaDisabled();
+});
+
+it("disables the edit and delete buttons when the user lacks edit entitlements", async () => {
+  mockServer.use(authResolvers.getMeEntitlements.handler([]));
+  const onUpdate = vi.fn();
+  const onDelete = vi.fn();
+  const tag = factory.tag({ id: 1 });
+  const state = factory.rootState({
+    tag: factory.tagState({
+      loaded: true,
+      loading: false,
+      items: [tag],
+    }),
+  });
+  renderWithProviders(
+    <Routes>
+      <Route
+        element={<TagsHeader onDelete={onDelete} onUpdate={onUpdate} />}
+        path={urls.tags.tag.index(null)}
+      />
+    </Routes>,
+    { initialEntries: [urls.tags.tag.index({ id: 1 })], state }
+  );
+
+  await waitFor(() => {
+    expect(
+      screen.getByRole("button", { name: Label.EditButton })
+    ).toBeAriaDisabled();
+  });
+  expect(
+    screen.getByRole("button", { name: Label.DeleteButton })
+  ).toBeAriaDisabled();
+
+  await userEvent.click(screen.getByRole("button", { name: Label.EditButton }));
+  await userEvent.click(
+    screen.getByRole("button", { name: Label.DeleteButton })
+  );
+  expect(onUpdate).not.toHaveBeenCalled();
+  expect(onDelete).not.toHaveBeenCalled();
 });

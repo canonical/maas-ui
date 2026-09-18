@@ -107,7 +107,7 @@ describe("DeployForm", () => {
     });
   });
 
-  it("shows a spinner if data has not loaded yet", () => {
+  it("shows a skeleton if data has not loaded yet", () => {
     const state = factory.rootState({
       general: factory.generalState({
         osInfo: factory.osInfoState({
@@ -118,9 +118,14 @@ describe("DeployForm", () => {
         loaded: false,
       }),
     });
-    renderWithProviders(<DeployForm isViewingDetails={false} />, { state });
+    const { result } = renderWithProviders(
+      <DeployForm isViewingDetails={false} />,
+      { state }
+    );
 
-    expect(screen.getByText("Loading...")).toBeInTheDocument();
+    expect(
+      result.container.querySelector(".aside-skeleton")
+    ).toBeInTheDocument();
     expect(screen.queryByRole("form")).not.toBeInTheDocument();
   });
 

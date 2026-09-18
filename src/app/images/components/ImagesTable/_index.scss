@@ -2,6 +2,14 @@
   .p-generic-table {
     margin-bottom: 0;
 
+    .title {
+      .release-title {
+        display: flex;
+        gap: $spv--x-small;
+        align-items: center;
+      }
+    }
+
     .version, .status {
       width: 20%;
 

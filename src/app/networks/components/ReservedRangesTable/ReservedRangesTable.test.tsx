@@ -6,13 +6,20 @@ import type { RootState } from "@/app/store/root/types";
 import type { Subnet } from "@/app/store/subnet/types";
 import type { VLAN } from "@/app/store/vlan/types";
 import * as factory from "@/testing/factories";
+import { authResolvers } from "@/testing/resolvers/auth";
 import {
   renderWithProviders,
   screen,
+  setupMockServer,
   userEvent,
   waitFor,
   within,
 } from "@/testing/utils";
+
+const mockServer = setupMockServer(
+  authResolvers.getCurrentUser.handler(),
+  authResolvers.getMeEntitlements.handler()
+);
 
 let ipRange: IPRange;
 let state: RootState;
@@ -229,6 +236,11 @@ describe("ReservedRangesTable", () => {
     renderWithProviders(<ReservedRangesTable subnetId={subnet.id} />, {
       state,
     });
+    await waitFor(() => {
+      expect(
+        screen.queryAllByRole("button", { name: Labels.ReserveRange })[0]
+      ).not.toBeAriaDisabled();
+    });
     await userEvent.click(
       screen.queryAllByRole("button", {
         name: Labels.ReserveRange,
@@ -256,5 +268,22 @@ describe("ReservedRangesTable", () => {
     expect(
       screen.getByRole("button", { name: Labels.ReserveRange })
     ).toBeAriaDisabled();
+  });
+
+  it("disables the Reserve range dropdown and table actions without the edit entitlement", async () => {
+    mockServer.use(authResolvers.getMeEntitlements.handler([]));
+    ipRange.type = IPRangeType.Reserved;
+    state.iprange.items = [ipRange];
+    renderWithProviders(<ReservedRangesTable subnetId={subnet.id} />, {
+      state,
+    });
+
+    await waitFor(() => {
+      expect(
+        screen.getByRole("button", { name: Labels.ReserveRange })
+      ).toBeAriaDisabled();
+    });
+    expect(screen.getByRole("button", { name: "Edit" })).toBeAriaDisabled();
+    expect(screen.getByRole("button", { name: "Delete" })).toBeAriaDisabled();
   });
 });

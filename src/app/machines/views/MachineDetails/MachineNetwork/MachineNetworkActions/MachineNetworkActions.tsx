@@ -1,6 +1,9 @@
 import type { Dispatch, ReactElement, SetStateAction } from "react";
 
-import { useSidePanel } from "@canonical/maas-react-components";
+import {
+  lazyLoadSidePanel,
+  useSidePanel,
+} from "@canonical/maas-react-components";
 import { Button } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 
@@ -10,7 +13,7 @@ import type { Expanded } from "@/app/base/components/NodeNetworkTab/NodeNetworkT
 import { ExpandedState } from "@/app/base/components/NodeNetworkTab/NodeNetworkTab";
 import type { Selected } from "@/app/base/components/node/networking/types";
 import { useIsAllNetworkingDisabled, useSendAnalytics } from "@/app/base/hooks";
-import TestMachineForm from "@/app/machines/components/MachineForms/MachineActionFormWrapper/TestMachineForm";
+import { useCanEditMachine } from "@/app/base/hooks/permissions";
 import machineSelectors from "@/app/store/machine/selectors";
 import type { Machine, MachineDetails } from "@/app/store/machine/types";
 import { isMachineDetails } from "@/app/store/machine/utils";
@@ -21,6 +24,11 @@ import {
   getInterfaceType,
   getLinkFromNic,
 } from "@/app/store/utils";
+
+const TestMachineForm = lazyLoadSidePanel(
+  () =>
+    import("@/app/machines/components/MachineForms/MachineActionFormWrapper/TestMachineForm")
+);
 
 type Action = {
   disabled: [boolean, string?][];
@@ -86,6 +94,7 @@ const MachineNetworkActions = ({
     machineSelectors.getById(state, systemId)
   );
   const isAllNetworkingDisabled = useIsAllNetworkingDisabled(machine);
+  const canEditMachine = useCanEditMachine(systemId);
   const sendAnalytics = useSendAnalytics();
 
   if (!isMachineDetails(machine)) {
@@ -106,6 +115,7 @@ const MachineNetworkActions = ({
           selectedDifferentVLANs(machine, selected),
           "All selected interfaces must be on the same VLAN",
         ],
+        [!canEditMachine],
       ],
       label: "Create bond",
       state: ExpandedState.ADD_BOND,
@@ -122,6 +132,7 @@ const MachineNetworkActions = ({
           selectedIncludesType(machine, selected, NetworkInterfaceTypes.BRIDGE),
           "A bridge can not be created from another bridge",
         ],
+        [!canEditMachine],
       ],
       label: "Create bridge",
       state: ExpandedState.ADD_BRIDGE,
@@ -130,6 +141,7 @@ const MachineNetworkActions = ({
 
   return (
     <NetworkActionRow
+      addInterfaceDisabled={!canEditMachine}
       extraActions={actions}
       node={machine}
       rightContent={

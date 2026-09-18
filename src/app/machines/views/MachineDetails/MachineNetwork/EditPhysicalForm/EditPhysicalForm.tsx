@@ -1,8 +1,7 @@
 import type { ReactElement } from "react";
 import { useCallback } from "react";
 
-import { useSidePanel } from "@canonical/maas-react-components";
-import { Spinner } from "@canonical/react-components";
+import { SidePanel, useSidePanel } from "@canonical/maas-react-components";
 import * as ipaddr from "ipaddr.js";
 import { isIP, isIPv4 } from "is-ip";
 import { useDispatch, useSelector } from "react-redux";
@@ -150,7 +149,7 @@ const EditPhysicalForm = ({
   ]);
 
   if (!isMachineDetails(machine) || !nic) {
-    return <Spinner />;
+    return <SidePanel.Skeleton />;
   }
 
   const subnet = getInterfaceSubnet(

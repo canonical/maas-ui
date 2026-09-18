@@ -140,13 +140,15 @@ describe("AddChassisForm", () => {
     });
   });
 
-  it("displays a spinner if data has not loaded", () => {
+  it("displays a skeleton if data has not loaded", () => {
     state.domain.loaded = false;
     state.general.powerTypes.loaded = false;
-    renderWithProviders(<AddChassisForm />, {
+    const { result } = renderWithProviders(<AddChassisForm />, {
       state,
     });
-    expect(screen.getByText(/Loading/i)).toBeInTheDocument();
+    expect(
+      result.container.querySelector(".aside-skeleton")
+    ).toBeInTheDocument();
   });
 
   it("correctly dispatches action to add chassis", async () => {

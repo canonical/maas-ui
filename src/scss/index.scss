@@ -1,5 +1,9 @@
 @use "sass:math";
 
+@import "@canonical/styles";
+@import "@canonical/styles/fonts";
+@import "@canonical/react-ds-global-form/dist/esm/index.css";
+
 // Import settings
 @import "./settings";
 
@@ -103,7 +107,6 @@
 @import "@/app/base/components/NodeName";
 @import "@/app/base/components/NodeSummaryNetworkCard";
 @import "@/app/base/components/NodeSummaryNetworkCard/NetworkCardTable";
-@import "@/app/base/components/NotificationGroup";
 @import "@/app/base/components/Placeholder";
 @import "@/app/base/components/Popover";
 @import "@/app/base/components/PrefixedInput";
@@ -134,7 +137,6 @@
 @include NodeName;
 @include NodeSummaryNetworkCard;
 @include NodeTestsTable;
-@include NotificationGroup;
 @include OverviewCard;
 @include Placeholder;
 @include Popover;
@@ -160,7 +162,7 @@
 
 // images
 @import "@/app/images/components/ImagesTable";
-@import "@/app/images/components/SelectUpstreamImagesForm";
+@import "@/app/images/components/SelectUpstreamImages/components/SelectUpstreamImagesForm";
 @include ImagesTable;
 @include DownloadImages;
 

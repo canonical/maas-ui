@@ -17,7 +17,8 @@ import {
 
 const mockServer = setupMockServer(
   authResolvers.getActiveOauthProvider.handler(),
-  authResolvers.getCurrentUser.handler()
+  authResolvers.getCurrentUser.handler(),
+  authResolvers.getMeEntitlements.handler()
 );
 
 const { mockOpen } = await mockSidePanel();
@@ -173,15 +174,11 @@ describe("Single sign-on", () => {
 
   it("disables the form fields and 'Reset' button without edit permissions", async () => {
     mockServer.use(
-      authResolvers.getCurrentUser.handler(
-        factory.userInfo({
-          entitlements: [
-            factory.entitlement({
-              entitlement: Entitlement.CAN_VIEW_IDENTITIES,
-            }),
-          ],
-        })
-      )
+      authResolvers.getMeEntitlements.handler([
+        factory.entitlement({
+          entitlement: Entitlement.CAN_VIEW_IDENTITIES,
+        }),
+      ])
     );
 
     renderWithProviders(<SingleSignOn />, { state });
@@ -198,15 +195,11 @@ describe("Single sign-on", () => {
 
   it("enables the form fields with edit permissions", async () => {
     mockServer.use(
-      authResolvers.getCurrentUser.handler(
-        factory.userInfo({
-          entitlements: [
-            factory.entitlement({
-              entitlement: Entitlement.CAN_EDIT_IDENTITIES,
-            }),
-          ],
-        })
-      )
+      authResolvers.getMeEntitlements.handler([
+        factory.entitlement({
+          entitlement: Entitlement.CAN_EDIT_IDENTITIES,
+        }),
+      ])
     );
 
     renderWithProviders(<SingleSignOn />, { state });

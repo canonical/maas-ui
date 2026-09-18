@@ -1,6 +1,7 @@
 import DeviceDetailsHeader from "./DeviceDetailsHeader";
 
 import type { RootState } from "@/app/store/root/types";
+import { NodeActions } from "@/app/store/types/node";
 import * as factory from "@/testing/factories";
 import { screen, renderWithProviders } from "@/testing/utils";
 
@@ -59,5 +60,32 @@ describe("DeviceDetailsHeader", () => {
     expect(screen.getByTestId("section-header-title")).toHaveTextContent(
       "plot-device"
     );
+  });
+
+  it("disables the Take action menu when no actions are available", () => {
+    state.device.items = [
+      factory.deviceDetails({ actions: [], system_id: "abc123" }),
+    ];
+
+    renderWithProviders(<DeviceDetailsHeader systemId="abc123" />, { state });
+
+    expect(
+      screen.getByRole("button", { name: "Take action" })
+    ).toBeAriaDisabled();
+  });
+
+  it("enables the Take action menu when actions are available", () => {
+    state.device.items = [
+      factory.deviceDetails({
+        actions: [NodeActions.SET_ZONE],
+        system_id: "abc123",
+      }),
+    ];
+
+    renderWithProviders(<DeviceDetailsHeader systemId="abc123" />, { state });
+
+    expect(
+      screen.getByRole("button", { name: "Take action" })
+    ).not.toBeAriaDisabled();
   });
 });
