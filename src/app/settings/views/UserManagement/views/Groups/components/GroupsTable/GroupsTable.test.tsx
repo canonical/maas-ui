@@ -15,11 +15,13 @@ import {
   screen,
   mockIsPending,
   waitFor,
+  mockModal,
   mockSidePanel,
   waitForLoading,
 } from "@/testing/utils";
 
 const { mockOpen } = await mockSidePanel();
+const { mockOpen: mockOpenModal } = await mockModal();
 
 const mockServer = setupMockServer(
   groupsResolvers.listGroups.handler(),
@@ -94,7 +96,7 @@ describe("GroupsTable", () => {
         })
       );
     });
-    it("opens the DeleteGroup side panel when clicking delete action", async () => {
+    it("opens the DeleteGroup modal when clicking delete action", async () => {
       renderWithProviders(<GroupsTable />);
       await waitFor(() => {
         expect(
@@ -104,7 +106,7 @@ describe("GroupsTable", () => {
       await userEvent.click(
         screen.getAllByRole("button", { name: "Delete" })[0]
       );
-      expect(mockOpen).toHaveBeenCalledWith(
+      expect(mockOpenModal).toHaveBeenCalledWith(
         expect.objectContaining({
           component: DeleteGroup,
           props: { id: 1, user_count: 5 },

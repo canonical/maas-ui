@@ -7,6 +7,7 @@ import EditGroup from "../../EditGroup";
 
 import type { UserGroupResponse } from "@/app/apiclient";
 import TableActions from "@/app/base/components/TableActions";
+import { useModal } from "@/app/base/modal-context";
 import urls from "@/app/settings/urls";
 
 type GroupsListColumnData = UserGroupResponse & {
@@ -26,6 +27,7 @@ const useGroupsTableColumns = ({
   canEdit: boolean;
 }): GroupsListColumnDef[] => {
   const { openSidePanel } = useSidePanel();
+  const { openModal } = useModal();
   return [
     {
       id: "name",
@@ -66,7 +68,7 @@ const useGroupsTableColumns = ({
           deleteDisabled={!canEdit}
           editDisabled={!canEdit}
           onDelete={() => {
-            openSidePanel({
+            openModal({
               component: DeleteGroup,
               props: { id, user_count: statistics?.user_count ?? 0 },
               title: "Delete group",

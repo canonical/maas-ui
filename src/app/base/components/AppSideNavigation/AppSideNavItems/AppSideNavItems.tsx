@@ -6,6 +6,7 @@ import { useSelector } from "react-redux";
 
 import AppSideNavItem from "../AppSideNavItem";
 import type { SideNavigationProps } from "../AppSideNavigation";
+import LogoutConfirm from "../LogoutConfirm";
 import type { NavGroup } from "../types";
 import { isSelected } from "../utils";
 
@@ -16,6 +17,7 @@ import {
 import type { EntitlementResponse } from "@/app/apiclient";
 import { useHasEntitlements } from "@/app/base/hooks";
 import { useId } from "@/app/base/hooks/base";
+import { useModal } from "@/app/base/modal-context";
 import urls from "@/app/base/urls";
 import { Entitlement } from "@/app/settings/views/UserManagement/views/Groups/constants";
 import configSelectors from "@/app/store/config/selectors";
@@ -121,6 +123,7 @@ export const AppSideNavItems = ({
   const canViewSettingsLink = useHasEntitlements([
     Entitlement.CAN_VIEW_CONFIGURATIONS,
   ]);
+  const { openModal } = useModal();
   return (
     <>
       {showLinks ? (
@@ -171,7 +174,11 @@ export const AppSideNavItems = ({
                   appearance="link"
                   className="p-side-navigation__button p-side-navigation__link"
                   onClick={() => {
-                    logout();
+                    openModal({
+                      component: LogoutConfirm,
+                      title: "Log out",
+                      props: { logout },
+                    });
                   }}
                 >
                   <span className="p-side-navigation__label">Log out</span>

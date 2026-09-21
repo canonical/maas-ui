@@ -21,6 +21,7 @@ import {
   setupMockServer,
   userEvent,
   waitFor,
+  mockModal,
   mockSidePanel,
   waitForLoading,
 } from "@/testing/utils";
@@ -28,6 +29,7 @@ import {
 setupMockServer(groupsResolvers.listGroupsStatistics.handler());
 
 const { mockOpen } = await mockSidePanel();
+const { mockOpen: mockOpenModal } = await mockModal();
 
 const mockGroup = groupFactory({ id: 1, name: "test-group" });
 
@@ -371,7 +373,7 @@ describe("GroupDetailsHeader", () => {
       );
     });
 
-    it("opens Delete group side panel on click with user count from statistics", async () => {
+    it("opens Delete group modal on click with user count from statistics", async () => {
       renderWithProviders(
         <GroupDetailsHeader
           canEdit={true}
@@ -400,7 +402,7 @@ describe("GroupDetailsHeader", () => {
         screen.getByRole("menuitem", { name: "Delete group..." })
       );
 
-      expect(mockOpen).toHaveBeenCalledWith(
+      expect(mockOpenModal).toHaveBeenCalledWith(
         expect.objectContaining({
           component: DeleteGroup,
           title: "Delete group",
