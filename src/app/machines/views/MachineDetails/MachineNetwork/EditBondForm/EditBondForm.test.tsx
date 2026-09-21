@@ -15,6 +15,7 @@ import {
   renderWithBrowserRouter,
   screen,
   userEvent,
+  waitFor,
   within,
 } from "@/testing/utils";
 
@@ -78,12 +79,12 @@ describe("EditBondForm", () => {
         interfaces,
       }),
     ];
-    const selected = [{ nicId: interfaces[0].id }, { nicId: interfaces[1].id }];
+    nic.parents = [interfaces[0].id, interfaces[1].id];
     renderWithBrowserRouter(
       <EditBondForm
         close={vi.fn()}
         nic={nic}
-        selected={selected}
+        selected={[]}
         setSelected={vi.fn()}
         systemId="abc123"
       />,
@@ -111,12 +112,12 @@ describe("EditBondForm", () => {
         interfaces,
       }),
     ];
-    const selected = [{ nicId: interfaces[0].id }, { nicId: interfaces[1].id }];
+    nic.parents = [interfaces[0].id, interfaces[1].id];
     renderWithBrowserRouter(
       <EditBondForm
         close={vi.fn()}
         nic={nic}
-        selected={selected}
+        selected={[]}
         setSelected={vi.fn()}
         systemId="abc123"
       />,
@@ -176,11 +177,12 @@ describe("EditBondForm", () => {
         interfaces,
       }),
     ];
+    nic.parents = [interfaces[0].id, interfaces[1].id];
     renderWithBrowserRouter(
       <EditBondForm
         close={vi.fn()}
         nic={nic}
-        selected={[{ nicId: interfaces[0].id }, { nicId: interfaces[1].id }]}
+        selected={[]}
         setSelected={vi.fn()}
         systemId="abc123"
       />,
@@ -199,17 +201,20 @@ describe("EditBondForm", () => {
     expect(screen.queryByText("notvalid3")).not.toBeInTheDocument();
   });
 
-  it("disables the submit button if two interfaces aren't selected", async () => {
+  it("disables the submit button if fewer than two members are selected", async () => {
     const interfaces = [
       factory.machineInterface({
+        name: "eth0",
         type: NetworkInterfaceTypes.PHYSICAL,
         vlan_id: 1,
       }),
       factory.machineInterface({
+        name: "eth1",
         type: NetworkInterfaceTypes.PHYSICAL,
         vlan_id: 1,
       }),
       factory.machineInterface({
+        name: "eth2",
         type: NetworkInterfaceTypes.PHYSICAL,
         vlan_id: 1,
       }),
@@ -220,32 +225,40 @@ describe("EditBondForm", () => {
         interfaces,
       }),
     ];
-    const { rerender } = renderWithBrowserRouter(
-      <EditBondForm
-        close={vi.fn()}
-        nic={nic}
-        selected={[{ nicId: interfaces[0].id }, { nicId: interfaces[1].id }]}
-        setSelected={vi.fn()}
-        systemId="abc123"
-      />,
-      { route: "/machines", state }
-    );
-    expect(
-      screen.getByRole("button", { name: "Save interface" })
-    ).not.toBeDisabled();
-    await userEvent.click(screen.getByTestId("edit-members"));
-    rerender(
+    nic.parents = [interfaces[0].id, interfaces[1].id];
+    const setSelected = vi.fn();
+    renderWithBrowserRouter(
       <EditBondForm
         close={vi.fn()}
         nic={nic}
         selected={[]}
-        setSelected={vi.fn()}
+        setSelected={setSelected}
         systemId="abc123"
-      />
+      />,
+      { route: "/machines", state }
     );
-    expect(
-      screen.getByRole("button", { name: "Save interface" })
-    ).toBeDisabled();
+    const saveButton = screen.getByRole("button", { name: "Save interface" });
+    await userEvent.click(
+      screen.getByRole("button", { name: "Edit bond members" })
+    );
+    expect(screen.getByRole("checkbox", { name: "eth0" })).toBeChecked();
+    expect(screen.getByRole("checkbox", { name: "eth1" })).toBeChecked();
+    await userEvent.click(screen.getByRole("checkbox", { name: "eth2" }));
+    await waitFor(() => {
+      expect(saveButton).not.toBeAriaDisabled();
+    });
+
+    await userEvent.click(screen.getByRole("checkbox", { name: "eth0" }));
+    await waitFor(() => {
+      expect(saveButton).not.toBeAriaDisabled();
+    });
+    await userEvent.click(screen.getByRole("checkbox", { name: "eth1" }));
+    await waitFor(() => {
+      expect(saveButton).toBeAriaDisabled();
+    });
+    expect(setSelected).toHaveBeenLastCalledWith([
+      expect.objectContaining({ nicId: interfaces[2].id }),
+    ]);
   });
 
   it("enables the submit button if only the members have changed", async () => {
@@ -259,6 +272,7 @@ describe("EditBondForm", () => {
         vlan_id: 1,
       }),
       factory.machineInterface({
+        name: "eth2",
         type: NetworkInterfaceTypes.PHYSICAL,
         vlan_id: 1,
       }),
@@ -270,37 +284,37 @@ describe("EditBondForm", () => {
       }),
     ];
     nic.parents = [interfaces[0].id, interfaces[1].id];
-    const { rerender } = renderWithBrowserRouter(
+    const setSelected = vi.fn();
+    renderWithBrowserRouter(
       <EditBondForm
         close={vi.fn()}
         nic={nic}
-        selected={[{ nicId: interfaces[0].id }, { nicId: interfaces[1].id }]}
-        setSelected={vi.fn()}
+        selected={[]}
+        setSelected={setSelected}
         systemId="abc123"
       />,
       { route: "/machines", state }
     );
-    expect(
-      screen.getByRole("button", { name: "Save interface" })
-    ).toBeDisabled();
-    await userEvent.click(screen.getByTestId("edit-members"));
-    // Select an extra interface.
-    rerender(
-      <EditBondForm
-        close={vi.fn()}
-        nic={nic}
-        selected={[
-          { nicId: interfaces[0].id },
-          { nicId: interfaces[1].id },
-          { nicId: interfaces[2].id },
-        ]}
-        setSelected={vi.fn()}
-        systemId="abc123"
-      />
+    const saveButton = screen.getByRole("button", { name: "Save interface" });
+    expect(saveButton).toBeAriaDisabled();
+    await userEvent.click(
+      screen.getByRole("button", { name: "Edit bond members" })
     );
-    expect(
-      screen.getByRole("button", { name: "Save interface" })
-    ).not.toBeDisabled();
+    // Change local membership while the incoming selection remains empty.
+    await userEvent.click(screen.getByRole("checkbox", { name: "eth2" }));
+    await waitFor(() => {
+      expect(saveButton).not.toBeAriaDisabled();
+    });
+    expect(setSelected).toHaveBeenLastCalledWith([
+      { nicId: interfaces[0].id },
+      { nicId: interfaces[1].id },
+      expect.objectContaining({ nicId: interfaces[2].id }),
+    ]);
+    // Restoring the original members makes the form unchanged again.
+    await userEvent.click(screen.getByRole("checkbox", { name: "eth2" }));
+    await waitFor(() => {
+      expect(saveButton).toBeAriaDisabled();
+    });
   });
 
   it("fetches the necessary data on load", async () => {
@@ -315,9 +329,15 @@ describe("EditBondForm", () => {
       />,
       { route: "/machines", store }
     );
-    expect(store.getActions().some((action) => action.type === "fabric/fetch"));
-    expect(store.getActions().some((action) => action.type === "subnet/fetch"));
-    expect(store.getActions().some((action) => action.type === "vlan/fetch"));
+    expect(
+      store.getActions().some((action) => action.type === "fabric/fetch")
+    ).toBe(true);
+    expect(
+      store.getActions().some((action) => action.type === "subnet/fetch")
+    ).toBe(true);
+    expect(
+      store.getActions().some((action) => action.type === "vlan/fetch")
+    ).toBe(true);
   });
 
   it("displays a spinner when data is loading", async () => {
@@ -341,6 +361,8 @@ describe("EditBondForm", () => {
     const bond = factory.machineInterface({
       id: 3,
       name: "bond1",
+      mac_address: "00:00:00:00:00:26",
+      parents: [9, 10],
       type: NetworkInterfaceTypes.BOND,
       vlan_id: 1,
       params: {
@@ -389,7 +411,7 @@ describe("EditBondForm", () => {
         close={vi.fn()}
         link={link}
         nic={bond}
-        selected={[{ nicId: 9 }, { nicId: 10 }]}
+        selected={[]}
         setSelected={vi.fn()}
         systemId="abc123"
       />,
@@ -401,6 +423,11 @@ describe("EditBondForm", () => {
       screen.getByRole("option", { name: /test-subnet-1/ })
     );
 
+    await waitFor(() => {
+      expect(
+        screen.getByRole("button", { name: "Save interface" })
+      ).not.toBeAriaDisabled();
+    });
     await userEvent.click(
       screen.getByRole("button", { name: "Save interface" })
     );

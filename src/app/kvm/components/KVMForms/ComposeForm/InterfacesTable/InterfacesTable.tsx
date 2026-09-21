@@ -42,7 +42,7 @@ const generateNewInterface = (
     ipAddress: "",
     name: `eth${id}`,
     space: "",
-    subnet: `${subnetId || ""}`,
+    subnet: `${subnetId ?? ""}`,
   };
 };
 
@@ -195,7 +195,7 @@ export const InterfacesTable = ({ hostId }: Props): JSX.Element => {
                 iface={iface}
                 index={i}
                 selectSubnet={(subnetID?: number) => {
-                  setFieldValue(`interfaces[${i}].subnet`, subnetID);
+                  setFieldValue(`interfaces[${i}].subnet`, `${subnetID ?? ""}`);
                 }}
               />
               <Row>

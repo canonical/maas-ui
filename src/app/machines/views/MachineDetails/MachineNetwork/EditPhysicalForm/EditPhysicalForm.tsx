@@ -191,19 +191,19 @@ const EditPhysicalForm = ({
       cleanup={cleanup}
       errors={errors}
       initialValues={{
-        fabric: vlan?.fabric || "",
+        fabric: vlan?.fabric,
         // Convert the speeds to GB.
         interface_speed: isNaN(Number(nic.interface_speed))
           ? 0
           : nic.interface_speed / 1000,
         ip_address: getInitialIpAddressValue(),
         // The current link is required to update the subnet and ip address.
-        link_id: linkId || "",
+        link_id: linkId ?? "",
         link_speed: isNaN(Number(nic.link_speed)) ? 0 : nic.link_speed / 1000,
         mac_address: nic.mac_address,
         mode: getLinkMode(link),
         name: nic.name,
-        subnet: subnet?.id || "",
+        subnet: subnet?.id ?? "",
         subnet_cidr: subnet?.cidr || "",
         tags: nic.tags,
         vlan: nic.vlan_id,
