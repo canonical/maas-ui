@@ -7,4 +7,10 @@
       content: none;
     }
   }
+
+  .p-tabs__link[aria-disabled="true"] {
+    opacity: 0.4;
+    cursor: not-allowed;
+    pointer-events: none;
+  }
 }

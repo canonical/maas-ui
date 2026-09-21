@@ -1,6 +1,7 @@
 import LXDSingleDetailsHeader from "./LXDSingleDetailsHeader";
 
 import RefreshForm from "@/app/kvm/components/RefreshForm";
+import { Entitlement } from "@/app/settings/views/UserManagement/views/Groups/constants";
 import { PodType } from "@/app/store/pod/constants";
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
@@ -129,5 +130,31 @@ describe("LXDSingleDetailsHeader", () => {
     await userEvent.click(screen.getByRole("button", { name: "Refresh host" }));
 
     expect(mockOpen).not.toHaveBeenCalled();
+  });
+
+  it("links to the KVM host settings tab with the view global entities entitlement", async () => {
+    renderWithProviders(<LXDSingleDetailsHeader id={1} />, { state });
+
+    await waitFor(() => {
+      expect(
+        screen.getByRole("link", { name: "KVM host settings" })
+      ).toHaveAttribute("href", "/kvm/lxd/1/edit");
+    });
+  });
+
+  it("disables the KVM host settings tab without the view global entities entitlement", async () => {
+    mockServer.use(
+      authResolvers.getMeEntitlements.handler([
+        factory.entitlement({ entitlement: Entitlement.CAN_EDIT_MACHINES }),
+      ])
+    );
+    renderWithProviders(<LXDSingleDetailsHeader id={1} />, { state });
+
+    await waitFor(() => {
+      expect(screen.getByText("KVM host settings")).toBeAriaDisabled();
+    });
+    expect(
+      screen.queryByRole("link", { name: "KVM host settings" })
+    ).not.toBeInTheDocument();
   });
 });
