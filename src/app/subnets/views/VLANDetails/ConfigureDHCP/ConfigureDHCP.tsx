@@ -179,7 +179,7 @@ const ConfigureDHCP = ({ closeForm, id }: Props): React.ReactElement | null => {
             endIP: "",
             gatewayIP: "",
             primaryRack: vlan.primary_rack || "",
-            relayVLAN: vlan.relay_vlan || "",
+            relayVLAN: vlan.relay_vlan ?? "",
             secondaryRack: vlan.secondary_rack || "",
             startIP: "",
             subnet: "",

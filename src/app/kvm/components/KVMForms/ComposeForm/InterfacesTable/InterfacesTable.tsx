@@ -43,7 +43,7 @@ const generateNewInterface = (
     ipAddress: "",
     name: `eth${id}`,
     space: "",
-    subnet: `${subnetId || ""}`,
+    subnet: `${subnetId ?? ""}`,
   };
 };
 
@@ -208,15 +208,16 @@ export const InterfacesTable = ({ hostId }: Props): React.ReactElement => {
                 iface={iface}
                 index={i}
                 selectSubnet={(subnetID?: number) => {
-                  setFieldValue(`interfaces[${i}].subnet`, subnetID).catch(
-                    (reason) => {
-                      throw new FormikFieldChangeError(
-                        `interfaces[${i}].subnet`,
-                        "setFieldValue",
-                        reason
-                      );
-                    }
-                  );
+                  setFieldValue(
+                    `interfaces[${i}].subnet`,
+                    `${subnetID ?? ""}`
+                  ).catch((reason) => {
+                    throw new FormikFieldChangeError(
+                      `interfaces[${i}].subnet`,
+                      "setFieldValue",
+                      reason
+                    );
+                  });
                 }}
               />
               <Row>
