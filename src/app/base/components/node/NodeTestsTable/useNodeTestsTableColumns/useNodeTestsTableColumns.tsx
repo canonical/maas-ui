@@ -1,4 +1,4 @@
-import type { Dispatch } from "react";
+import type { Dispatch, SetStateAction } from "react";
 import { useMemo } from "react";
 
 import { Icon, Input, Tooltip } from "@canonical/react-components";
@@ -6,8 +6,8 @@ import type { ColumnDef, Row } from "@tanstack/react-table";
 import { useDispatch } from "react-redux";
 import { Link } from "react-router";
 
-import ScriptRunTime from "../../ScriptRunTime";
-import type { NodeTestRow } from "../NodeTestsTable/NodeTestsTable";
+import type { NodeTestRow } from "../NodeTestsTable";
+import ScriptRunTime from "../components/ScriptRunTime";
 
 import ScriptStatus from "@/app/base/components/ScriptStatus";
 import { useSendAnalytics } from "@/app/base/hooks";
@@ -21,32 +21,43 @@ import { canBeSuppressed } from "@/app/store/scriptresult/utils";
 import { nodeIsMachine } from "@/app/store/utils";
 import { formatUtcDatetime } from "@/app/utils/time";
 
-type Props = {
-  node: ControllerDetails | MachineDetails;
-  scriptResults: ScriptResult[];
-  expanded: Expanded | null;
-  setExpanded: Dispatch<React.SetStateAction<Expanded | null>>;
-};
-export enum ScriptResultAction {
-  VIEW_METRICS = "viewMetrics",
-  VIEW_PREVIOUS_TESTS = "viewPreviousTests",
-}
-
-export type Expanded = {
-  id: ScriptResult["id"];
-  content: ScriptResultAction;
-};
-
-export type SetExpanded = (expanded: Expanded) => void;
-
 type NodeTestsTableColumnDef = ColumnDef<NodeTestRow, Partial<NodeTestRow>>;
+
+const getScriptResultUrl = (
+  node: ControllerDetails | MachineDetails,
+  isMachine: boolean,
+  scriptResult: ScriptResult
+) => {
+  const params = {
+    id: node.system_id,
+    scriptResultId: scriptResult.id,
+  };
+  if (!isMachine) {
+    return urls.controllers.controller.commissioning.scriptResult(params);
+  }
+  const { commissioning, deployment, testing } =
+    urls.machines.machine.scriptsResults;
+  switch (scriptResult.result_type) {
+    case ScriptResultType.COMMISSIONING:
+      return commissioning.scriptResult(params);
+    case ScriptResultType.DEPLOYMENT:
+      return deployment.scriptResult(params);
+    default:
+      return testing.scriptResult(params);
+  }
+};
 
 const useNodeTestsTableColumns = ({
   node,
   scriptResults,
-  expanded,
-  setExpanded,
-}: Props): NodeTestsTableColumnDef[] => {
+  expandedId,
+  setExpandedId,
+}: {
+  node: ControllerDetails | MachineDetails;
+  scriptResults: ScriptResult[];
+  expandedId: ScriptResult["id"] | null;
+  setExpandedId: Dispatch<SetStateAction<ScriptResult["id"] | null>>;
+}): NodeTestsTableColumnDef[] => {
   const dispatch = useDispatch();
   const sendAnalytics = useSendAnalytics();
 
@@ -133,34 +144,7 @@ const useNodeTestsTableColumns = ({
           !row.original.isHistory ? (
             <Link
               data-testid="details-link"
-              to={
-                isMachine
-                  ? row.original.result_type === ScriptResultType.COMMISSIONING
-                    ? urls.machines.machine.scriptsResults.commissioning.scriptResult(
-                        {
-                          id: node.system_id,
-
-                          scriptResultId: row.original.id,
-                        }
-                      )
-                    : row.original.result_type === ScriptResultType.DEPLOYMENT
-                      ? urls.machines.machine.scriptsResults.deployment.scriptResult(
-                          {
-                            id: node.system_id,
-                            scriptResultId: row.original.id,
-                          }
-                        )
-                      : urls.machines.machine.scriptsResults.testing.scriptResult(
-                          {
-                            id: node.system_id,
-                            scriptResultId: row.original.id,
-                          }
-                        )
-                  : urls.controllers.controller.commissioning.scriptResult({
-                      id: node.system_id,
-                      scriptResultId: row.original.id,
-                    })
-              }
+              to={getScriptResultUrl(node, isMachine, row.original)}
             >
               {row.original.name}
             </Link>
@@ -180,38 +164,9 @@ const useNodeTestsTableColumns = ({
         accessorKey: "result",
         enableSorting: false,
         cell: ({ row }) => (
-          <>
-            {expanded?.content === ScriptResultAction.VIEW_PREVIOUS_TESTS &&
-            row.original.isHistory ? (
-              <>
-                <ScriptStatus status={row.original.status}>
-                  {row.original.status_name}{" "}
-                  <Link
-                    data-testid="details-link"
-                    to={
-                      isMachine
-                        ? urls.machines.machine.testing.scriptResult({
-                            id: node.system_id,
-                            scriptResultId: row.original.id,
-                          })
-                        : urls.controllers.controller.commissioning.scriptResult(
-                            {
-                              id: node.system_id,
-                              scriptResultId: row.original.id,
-                            }
-                          )
-                    }
-                  >
-                    View log
-                  </Link>
-                </ScriptStatus>
-              </>
-            ) : (
-              <ScriptStatus status={row.original.status}>
-                {row.original.status_name}
-              </ScriptStatus>
-            )}
-          </>
+          <ScriptStatus status={row.original.status}>
+            {row.original.status_name}
+          </ScriptStatus>
         ),
       },
       {
@@ -246,30 +201,34 @@ const useNodeTestsTableColumns = ({
         accessorKey: "history",
         enableSorting: false,
         cell: ({ row }) =>
-          !row.original.isHistory ? (
+          row.original.isHistory ? (
+            <Link to={getScriptResultUrl(node, isMachine, row.original)}>
+              View log
+            </Link>
+          ) : row.original.hasHistory ? (
             <Link
+              aria-expanded={expandedId === row.original.id}
               data-testid="view-history-link"
               onClick={(e) => {
                 e.preventDefault();
-                setExpanded({
-                  id: row.original.id,
-                  content: ScriptResultAction.VIEW_PREVIOUS_TESTS,
-                });
+                setExpandedId((currentId) =>
+                  currentId === row.original.id ? null : row.original.id
+                );
               }}
               to="#"
             >
-              View previous tests
+              {expandedId === row.original.id ? "Hide history" : "View history"}
             </Link>
           ) : null,
       },
     ],
     [
       dispatch,
-      expanded?.content,
+      expandedId,
       isMachine,
       node,
       sendAnalytics,
-      setExpanded,
+      setExpandedId,
       showSuppressCol,
     ]
   );
