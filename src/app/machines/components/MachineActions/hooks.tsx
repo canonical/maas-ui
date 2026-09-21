@@ -8,12 +8,16 @@ import { useDispatch, useSelector } from "react-redux";
 import type { MachineActionGroup } from "./types";
 
 import { useGetUserEntitlements } from "@/app/api/query/auth";
+import { lazyLoadModal, useModal } from "@/app/base/modal-context";
 import { Entitlement } from "@/app/settings/views/UserManagement/views/Groups/constants";
 import { machineActions } from "@/app/store/machine";
 import machineSelectors from "@/app/store/machine/selectors";
 import type { Machine } from "@/app/store/machine/types";
 import { FilterMachines } from "@/app/store/machine/utils";
-import { useSelectedMachinesActionsDispatch } from "@/app/store/machine/utils/hooks";
+import {
+  useMachineSelectedCount,
+  useSelectedMachinesActionsDispatch,
+} from "@/app/store/machine/utils/hooks";
 import type { RootState } from "@/app/store/root/types";
 import { NodeActions } from "@/app/store/types/node";
 import { canOpenActionForm } from "@/app/store/utils";
@@ -49,13 +53,16 @@ const SetPoolForm = lazyLoadSidePanel(
 const TestMachineForm = lazyLoadSidePanel(
   () => import("../MachineForms/MachineActionFormWrapper/TestMachineForm")
 );
-const DeleteMachine = lazyLoadSidePanel(
+const DeleteMachine = lazyLoadModal(
   () => import("../MachineForms/DeleteMachine/DeleteMachine")
 );
 const FieldlessForm = lazyLoadSidePanel(
   () => import("@/app/base/components/node/FieldlessForm")
 );
-const PowerOffForm = lazyLoadSidePanel(
+const FieldlessFormModal = lazyLoadModal(
+  () => import("@/app/base/components/node/FieldlessForm")
+);
+const PowerOffForm = lazyLoadModal(
   () => import("@/app/base/components/node/PowerOffForm")
 );
 
@@ -64,6 +71,7 @@ export const useMachineActionMenus = (
   systemId?: Machine["system_id"]
 ) => {
   const { openSidePanel } = useSidePanel();
+  const { openModal } = useModal();
   const dispatch = useDispatch();
 
   const selectedMachines = useSelector(machineSelectors.selected);
@@ -79,6 +87,19 @@ export const useMachineActionMenus = (
     selectedMachines,
     searchFilter,
   });
+
+  const { selectedCount } = useMachineSelectedCount(
+    FilterMachines.parseFetchFilters(searchFilter),
+    { isEnabled: !isViewingDetails }
+  );
+  // Descriptions read naturally for both a single machine (details view or a
+  // single selection) and a pluralised bulk selection.
+  const isSingleMachine = isViewingDetails || selectedCount === 1;
+  const machinesPluralized = isSingleMachine
+    ? "this machine"
+    : `these ${selectedCount} machines`;
+  const machinePronoun = isSingleMachine ? "it" : "them";
+  const machinePossessive = isSingleMachine ? "its" : "their";
 
   const actionMenus: MachineActionGroup[] = [
     {
@@ -101,13 +122,14 @@ export const useMachineActionMenus = (
           action: NodeActions.ACQUIRE,
           label: "Allocate",
           onClick: () => {
-            openSidePanel({
-              component: FieldlessForm,
+            openModal({
+              component: FieldlessFormModal,
               title: "Allocate",
               props: {
                 action: NodeActions.ACQUIRE,
                 actions: machineActions,
                 cleanup: machineActions.cleanup,
+                description: `This will allocate ${machinesPluralized} to your account so you can deploy ${machinePronoun} later.`,
                 errors: actionErrors,
                 modelName: "machine",
                 viewingDetails: isViewingDetails,
@@ -145,13 +167,14 @@ export const useMachineActionMenus = (
           action: NodeActions.ABORT,
           label: "Abort",
           onClick: () => {
-            openSidePanel({
-              component: FieldlessForm,
+            openModal({
+              component: FieldlessFormModal,
               title: "Abort",
               props: {
                 action: NodeActions.ABORT,
                 actions: machineActions,
                 cleanup: machineActions.cleanup,
+                description: `This will abort the action currently in progress on ${machinesPluralized}.`,
                 errors: actionErrors,
                 modelName: "machine",
                 viewingDetails: isViewingDetails,
@@ -182,13 +205,14 @@ export const useMachineActionMenus = (
           action: NodeActions.ON,
           label: "Power on",
           onClick: () => {
-            openSidePanel({
-              component: FieldlessForm,
+            openModal({
+              component: FieldlessFormModal,
               title: "Power on",
               props: {
                 action: NodeActions.ON,
                 actions: machineActions,
                 cleanup: machineActions.cleanup,
+                description: `This will power on ${machinesPluralized}.`,
                 errors: actionErrors,
                 modelName: "machine",
                 viewingDetails: isViewingDetails,
@@ -200,7 +224,7 @@ export const useMachineActionMenus = (
           action: NodeActions.OFF,
           label: "Power off",
           onClick: () => {
-            openSidePanel({
+            openModal({
               component: PowerOffForm,
               title: "Power off",
               props: {
@@ -240,7 +264,7 @@ export const useMachineActionMenus = (
           action: NodeActions.SOFT_OFF,
           label: "Soft power off",
           onClick: () => {
-            openSidePanel({
+            openModal({
               component: PowerOffForm,
               title: "Soft power off",
               props: {
@@ -286,12 +310,13 @@ export const useMachineActionMenus = (
           action: NodeActions.RESCUE_MODE,
           label: "Enter rescue mode",
           onClick: () => {
-            openSidePanel({
-              component: FieldlessForm,
+            openModal({
+              component: FieldlessFormModal,
               props: {
                 action: NodeActions.RESCUE_MODE,
                 actions: machineActions,
                 cleanup: machineActions.cleanup,
+                description: `This will boot ${machinesPluralized} into rescue mode, an ephemeral environment for troubleshooting.`,
                 errors: actionErrors,
                 modelName: "machine",
                 viewingDetails: isViewingDetails,
@@ -304,12 +329,13 @@ export const useMachineActionMenus = (
           action: NodeActions.EXIT_RESCUE_MODE,
           label: "Exit rescue mode",
           onClick: () => {
-            openSidePanel({
-              component: FieldlessForm,
+            openModal({
+              component: FieldlessFormModal,
               props: {
                 action: NodeActions.EXIT_RESCUE_MODE,
                 actions: machineActions,
                 cleanup: machineActions.cleanup,
+                description: `This will exit rescue mode and return ${machinesPluralized} to ${machinePossessive} previous state.`,
                 errors: actionErrors,
                 modelName: "machine",
                 viewingDetails: isViewingDetails,
@@ -322,12 +348,13 @@ export const useMachineActionMenus = (
           action: NodeActions.MARK_FIXED,
           label: "Mark fixed",
           onClick: () => {
-            openSidePanel({
-              component: FieldlessForm,
+            openModal({
+              component: FieldlessFormModal,
               props: {
                 action: NodeActions.MARK_FIXED,
                 actions: machineActions,
                 cleanup: machineActions.cleanup,
+                description: `This will mark ${machinesPluralized} as fixed, allowing ${machinePronoun} to be used again.`,
                 errors: actionErrors,
                 modelName: "machine",
                 viewingDetails: isViewingDetails,
@@ -417,12 +444,13 @@ export const useMachineActionMenus = (
           action: NodeActions.LOCK,
           label: "Lock",
           onClick: () => {
-            openSidePanel({
-              component: FieldlessForm,
+            openModal({
+              component: FieldlessFormModal,
               props: {
                 action: NodeActions.LOCK,
                 actions: machineActions,
                 cleanup: machineActions.cleanup,
+                description: `This will lock ${machinesPluralized}, preventing ${machinePronoun} from being released or deleted.`,
                 errors: actionErrors,
                 modelName: "machine",
                 viewingDetails: isViewingDetails,
@@ -435,12 +463,13 @@ export const useMachineActionMenus = (
           action: NodeActions.UNLOCK,
           label: "Unlock",
           onClick: () => {
-            openSidePanel({
-              component: FieldlessForm,
+            openModal({
+              component: FieldlessFormModal,
               props: {
                 action: NodeActions.UNLOCK,
                 actions: machineActions,
                 cleanup: machineActions.cleanup,
+                description: `This will unlock ${machinesPluralized}, allowing ${machinePronoun} to be released or deleted.`,
                 errors: actionErrors,
                 modelName: "machine",
                 viewingDetails: isViewingDetails,
@@ -488,7 +517,7 @@ export const useMachineActionMenus = (
           action: NodeActions.DELETE,
           label: "Delete",
           onClick: () => {
-            openSidePanel({
+            openModal({
               component: DeleteMachine,
               props: {
                 isViewingDetails,
@@ -502,7 +531,7 @@ export const useMachineActionMenus = (
         <Button
           disabled={disabled}
           onClick={() => {
-            openSidePanel({
+            openModal({
               component: DeleteMachine,
               props: {
                 isViewingDetails,

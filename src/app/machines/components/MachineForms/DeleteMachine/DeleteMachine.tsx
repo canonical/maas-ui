@@ -1,13 +1,14 @@
 import type { ReactElement } from "react";
 
-import { SidePanel, useSidePanel } from "@canonical/maas-react-components";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation } from "react-router";
 import type { Action, Dispatch } from "redux";
 
 import ActionForm from "@/app/base/components/ActionForm";
+import Modal from "@/app/base/components/Modal";
 import NodeActionConfirmationText from "@/app/base/components/NodeActionConfirmationText";
 import NodeActionWarning from "@/app/base/components/node/NodeActionWarning";
+import { useModal } from "@/app/base/modal-context";
 import type { EmptyObject } from "@/app/base/types";
 import urls from "@/app/base/urls";
 import { machineActions } from "@/app/store/machine";
@@ -29,7 +30,7 @@ export const DeleteMachine = ({
 }: DeleteMachineProps): ReactElement => {
   const dispatch = useDispatch<Dispatch<Action>>();
   const location = useLocation();
-  const { closeSidePanel } = useSidePanel();
+  const { closeModal } = useModal();
 
   const searchFilter = FilterMachines.filtersToString(
     FilterMachines.queryStringToFilters(location.search)
@@ -56,7 +57,7 @@ export const DeleteMachine = ({
   };
 
   if (selectedCountLoading) {
-    return <SidePanel.Skeleton />;
+    return <Modal.Skeleton />;
   }
 
   return (
@@ -76,7 +77,7 @@ export const DeleteMachine = ({
         errors={actionErrors}
         initialValues={{}}
         modelName="machine"
-        onCancel={closeSidePanel}
+        onCancel={closeModal}
         onSaveAnalytics={{
           action: "Submit",
           category: `${capitaliseFirst("machine")} ${
@@ -86,7 +87,7 @@ export const DeleteMachine = ({
         }}
         onSubmit={handleSubmit}
         onSuccess={() => {
-          closeSidePanel();
+          closeModal();
           clearSelectedMachines();
         }}
         processingCount={actionStatus === "loading" ? selectedCount : 0}

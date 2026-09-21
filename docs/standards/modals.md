@@ -7,6 +7,7 @@
 - Use a modal (not a side panel) for forms with **no fields** (simple confirmations) and forms whose action is **destructive** (e.g. delete).
 - `title` is rendered by the `<Modal />` header.
 - `props` are typed via the `TProps` generic on `openModal`.
+- Every modal needs a brief description of what the action will do, no longer than two sentences.
 - The modal closes on Escape and on outside click — it does **not** auto-close on route change, so call `closeModal` explicitly on cancel and after success.
 - There are no size variants — a modal is always a single fixed-width dialog.
 - One modal per app — only one can be open at a time.
@@ -19,11 +20,11 @@
 
 Both use the same open/close-by-context pattern, but they exist for different kinds of content. Use this to decide which one a new form needs — see [Forms](forms.md#choosing-a-side-panel-or-a-modal) for the same guidance from the form-authoring side.
 
-| Use a **modal** when...                                   | Use a **side panel** when...                        |
-| ----------------------------------------------------------- | ------------------------------------------------------ |
-| The form has no fields — it's a plain confirmation           | The form collects input (add/edit forms)                |
-| The action is destructive (delete, remove, release, etc.)   | The action is not destructive                            |
-| A short, focused interruption is appropriate                | The user may want to reference the page while filling it in |
+| Use a **modal** when...                                   | Use a **side panel** when...                                |
+| --------------------------------------------------------- | ----------------------------------------------------------- |
+| The form has no fields — it's a plain confirmation        | The form collects input (add/edit forms)                    |
+| The action is destructive (delete, remove, release, etc.) | The action is not destructive                               |
+| A short, focused interruption is appropriate              | The user may want to reference the page while filling it in |
 
 Concretely: `ModelActionForm` and other confirmation-only/destructive forms open in a modal via `openModal`. Everything else — forms with fields that aren't destructive — opens in a side panel via `openSidePanel`. See [`FieldlessForm`](/src/app/base/components/node/FieldlessForm/FieldlessForm.tsx) for a component that is opened as either, depending on which context it's rendered from, and [`DeleteController`](/src/app/controllers/components/ControllerForms/DeleteController/DeleteController.tsx) for a destructive form that always opens as a modal.
 
@@ -73,6 +74,23 @@ openModal({
 - `component` — the component class, not `<DeleteController />`.
 - `title` — rendered by the `<Modal />` header.
 - `props` — typed through the `TProps` generic; defaults to `{}`.
+
+---
+
+## Descriptions
+
+Every modal needs a brief description of what the action will do, no longer than two sentences. It gives the user enough context to confirm or cancel with confidence, without turning the modal into a wall of text.
+
+```tsx
+<FieldlessForm
+  action={action}
+  actions={machineActions}
+  description="This will lock the selected machine(s), preventing them from being released or deleted."
+  {...commonNodeFormProps}
+/>
+```
+
+See [`ControllerActionFormWrapper`](/src/app/controllers/components/ControllerForms/ControllerActionFormWrapper/ControllerActionFormWrapper.tsx) and [`NodeActionConfirmationText`](/src/app/base/components/NodeActionConfirmationText/NodeActionConfirmationText.tsx) (used by delete confirmations) for existing examples.
 
 Real-world example from `ControllerListHeader`, choosing between a modal and a side panel depending on whether the action needs confirmation:
 
@@ -205,6 +223,12 @@ openModal({ component: <DeleteController />, title: "Delete controller" });
 **Do** use a modal for fieldless (confirmation-only) and destructive forms.
 
 **Don't** put a destructive action or a fieldless confirmation in a side panel.
+
+---
+
+**Do** give every modal a brief description (no longer than two sentences) of what the action will do.
+
+**Don't** leave a modal without any explanation of what confirming will do.
 
 ---
 
