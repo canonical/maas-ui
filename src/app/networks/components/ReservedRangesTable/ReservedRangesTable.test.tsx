@@ -1,5 +1,6 @@
 import ReservedRangesTable, { Labels } from "./ReservedRangesTable";
 
+import AddReservedRange from "@/app/networks/components/AddReservedRange";
 import type { IPRange } from "@/app/store/iprange/types";
 import { IPRangeType } from "@/app/store/iprange/types";
 import type { RootState } from "@/app/store/root/types";
@@ -8,6 +9,7 @@ import type { VLAN } from "@/app/store/vlan/types";
 import * as factory from "@/testing/factories";
 import { authResolvers } from "@/testing/resolvers/auth";
 import {
+  mockSidePanel,
   renderWithProviders,
   screen,
   setupMockServer,
@@ -20,6 +22,7 @@ const mockServer = setupMockServer(
   authResolvers.getCurrentUser.handler(),
   authResolvers.getMeEntitlements.handler()
 );
+const { mockOpen } = await mockSidePanel();
 
 let ipRange: IPRange;
 let state: RootState;
@@ -268,6 +271,76 @@ describe("ReservedRangesTable", () => {
     expect(
       screen.getByRole("button", { name: Labels.ReserveRange })
     ).toBeAriaDisabled();
+  });
+
+  describe.each(["subnet", "VLAN"])("actions from a %s", (view) => {
+    it.each([
+      [IPRangeType.Reserved, Labels.ReserveRange],
+      [IPRangeType.Dynamic, Labels.ReserveDynamicRange],
+    ])(
+      "opens the %s form with the correct subnet context",
+      async (type, label) => {
+        renderWithProviders(
+          view === "subnet" ? (
+            <ReservedRangesTable subnetId={subnet.id} />
+          ) : (
+            <ReservedRangesTable hasVLANSubnets vlanId={vlan.id} />
+          ),
+          { state }
+        );
+
+        const button = screen.getByRole("button", {
+          name: Labels.ReserveRange,
+        });
+        await waitFor(() => {
+          expect(button).not.toBeAriaDisabled();
+        });
+        await userEvent.click(button);
+        await userEvent.click(screen.getByRole("menuitem", { name: label }));
+
+        expect(mockOpen).toHaveBeenCalledWith({
+          component: AddReservedRange,
+          title: label,
+          props: {
+            createType: type,
+            subnetId: view === "subnet" ? subnet.id : undefined,
+          },
+        });
+      }
+    );
+
+    it.each([IPRangeType.Reserved, IPRangeType.Dynamic])(
+      "edits a %s range using its own subnet",
+      async (type) => {
+        ipRange.type = type;
+        ipRange.vlan = vlan.id;
+        renderWithProviders(
+          view === "subnet" ? (
+            <ReservedRangesTable subnetId={subnet.id} />
+          ) : (
+            <ReservedRangesTable hasVLANSubnets vlanId={vlan.id} />
+          ),
+          { state }
+        );
+
+        await waitFor(() => {
+          expect(
+            screen.getByRole("button", { name: "Edit" })
+          ).not.toBeAriaDisabled();
+        });
+        await userEvent.click(screen.getByRole("button", { name: "Edit" }));
+
+        expect(mockOpen).toHaveBeenCalledWith({
+          component: AddReservedRange,
+          title: "Edit reserved range",
+          props: {
+            createType: type,
+            ipRangeId: ipRange.id,
+            subnetId: subnet.id,
+          },
+        });
+      }
+    );
   });
 
   it("disables the Reserve range dropdown and table actions without the edit entitlement", async () => {
