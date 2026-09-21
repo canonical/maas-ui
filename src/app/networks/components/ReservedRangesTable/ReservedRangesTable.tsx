@@ -110,6 +110,7 @@ const ReservedRangesTable = ({
                   title: "Reserve range",
                   props: {
                     createType: IPRangeType.Reserved,
+                    subnetId,
                   },
                 });
                 setIsAddingDynamic(false);
@@ -124,6 +125,7 @@ const ReservedRangesTable = ({
                   title: "Reserve dynamic range",
                   props: {
                     createType: IPRangeType.Dynamic,
+                    subnetId,
                   },
                 });
                 setIsAddingDynamic(true);

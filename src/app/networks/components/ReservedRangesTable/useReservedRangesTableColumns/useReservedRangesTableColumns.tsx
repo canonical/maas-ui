@@ -63,7 +63,7 @@ const useReservedRangesColumns = (
         enableSorting: false,
         cell: ({
           row: {
-            original: { ipRangeId, createType },
+            original: { ipRangeId, createType, subnet },
           },
         }) => (
           <TableActions
@@ -85,6 +85,7 @@ const useReservedRangesColumns = (
                 props: {
                   createType,
                   ipRangeId: ipRangeId!,
+                  subnetId: subnet,
                 },
               });
             }}
