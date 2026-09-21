@@ -244,29 +244,66 @@ describe("AddReservedRange", () => {
     ).toHaveAccessibleErrorMessage(/This is not a valid IP address/);
   });
 
-  it("displays an error when an out-of-range IP address is entered", async () => {
-    renderWithProviders(
-      <AddReservedRange createType={ipRange.type} subnetId={subnet.id} />,
-      { state }
-    );
-    await userEvent.type(
-      screen.getByRole("textbox", { name: Labels.StartIp }),
-      "0"
-    );
-    await userEvent.type(
-      screen.getByRole("textbox", { name: Labels.EndIp }),
-      "255"
-    );
-    await userEvent.click(screen.getByRole("button", { name: "Reserve" }));
-    expect(
-      await screen.findByLabelText(Labels.StartIp)
-    ).toHaveAccessibleErrorMessage(
-      /The IP address is outside of the subnet's range/
-    );
-    expect(
-      await screen.findByLabelText(Labels.EndIp)
-    ).toHaveAccessibleErrorMessage(
-      /The IP address is outside of the subnet's range/
-    );
-  });
+  it.each([
+    {
+      type: IPRangeType.Reserved,
+      cidr: "10.10.0.0/24",
+      start: "0",
+      end: "255",
+      invalidFields: [Labels.StartIp, Labels.EndIp],
+    },
+    {
+      type: IPRangeType.Reserved,
+      cidr: "10.10.0.0/25",
+      start: "128",
+      end: "100",
+      invalidFields: [Labels.StartIp],
+    },
+    {
+      type: IPRangeType.Reserved,
+      cidr: "10.10.0.0/25",
+      start: "20",
+      end: "128",
+      invalidFields: [Labels.EndIp],
+    },
+    {
+      type: IPRangeType.Dynamic,
+      cidr: "10.10.0.0/25",
+      start: "20",
+      end: "128",
+      invalidFields: [Labels.EndIp],
+    },
+  ])(
+    "rejects a $type range $start-$end outside $cidr",
+    async ({ type, cidr, start, end, invalidFields }) => {
+      subnet.cidr = cidr;
+      const { store } = renderWithProviders(
+        <AddReservedRange createType={type} subnetId={subnet.id} />,
+        { state }
+      );
+      await userEvent.type(
+        screen.getByRole("textbox", { name: Labels.StartIp }),
+        start
+      );
+      await userEvent.type(
+        screen.getByRole("textbox", { name: Labels.EndIp }),
+        end
+      );
+      await userEvent.click(screen.getByRole("button", { name: "Reserve" }));
+      await waitFor(() => {
+        invalidFields.forEach((label) => {
+          expect(
+            screen.getByRole("textbox", { name: label })
+          ).toHaveAccessibleErrorMessage(
+            /The IP address is outside of the subnet's range/
+          );
+        });
+      });
+      expect(
+        store
+          .getActions()
+          .some((action) => action.type === ipRangeActions.create.type)
+      ).toBe(false);
+    }
+  );
 });
