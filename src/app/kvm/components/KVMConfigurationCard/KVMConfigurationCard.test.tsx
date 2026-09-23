@@ -4,6 +4,7 @@ import { podActions } from "@/app/store/pod";
 import { PodType } from "@/app/store/pod/constants";
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
+import { authResolvers } from "@/testing/resolvers/auth";
 import { poolsResolvers } from "@/testing/resolvers/pools";
 import { zoneResolvers } from "@/testing/resolvers/zones";
 import {
@@ -16,9 +17,11 @@ import {
 } from "@/testing/utils";
 
 let state: RootState;
-setupMockServer(
+const mockServer = setupMockServer(
   poolsResolvers.listPools.handler(),
-  zoneResolvers.listZones.handler()
+  zoneResolvers.listZones.handler(),
+  authResolvers.getCurrentUser.handler(),
+  authResolvers.getMeEntitlements.handler()
 );
 
 describe("KVMConfigurationCard", () => {
@@ -194,5 +197,28 @@ describe("KVMConfigurationCard", () => {
     expect(
       screen.getByRole("button", { name: "Save changes" })
     ).toBeAriaDisabled();
+  });
+
+  it("disables the submit button without the edit machines entitlement", async () => {
+    mockServer.use(authResolvers.getMeEntitlements.handler([]));
+    const pod = factory.podDetails({
+      cpu_over_commit_ratio: 1,
+      id: 1,
+    });
+    renderWithProviders(<KVMConfigurationCard pod={pod} />, {
+      state,
+    });
+
+    // Change value to something other than the initial.
+    fireEvent.change(screen.getByRole("slider", { name: "CPU overcommit" }), {
+      target: { value: (pod.cpu_over_commit_ratio + 1).toString() },
+    });
+
+    // Submit should remain disabled without the entitlement.
+    await waitFor(() => {
+      expect(
+        screen.getByRole("button", { name: "Save changes" })
+      ).toBeAriaDisabled();
+    });
   });
 });

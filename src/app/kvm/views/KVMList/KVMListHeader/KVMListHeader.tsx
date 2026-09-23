@@ -8,9 +8,11 @@ import { useLocation } from "react-router";
 import ModelListSubtitle from "@/app/base/components/ModelListSubtitle";
 import type { SectionHeaderProps } from "@/app/base/components/SectionHeader";
 import { useFetchActions } from "@/app/base/hooks";
+import { useHasEntitlements } from "@/app/base/hooks/permissions";
 import urls from "@/app/base/urls";
 import AddLxd from "@/app/kvm/components/AddLxd";
 import AddVirsh from "@/app/kvm/components/AddVirsh";
+import { Entitlement } from "@/app/settings/views/UserManagement/views/Groups/constants";
 import { podActions } from "@/app/store/pod";
 import podSelectors from "@/app/store/pod/selectors";
 
@@ -22,6 +24,7 @@ const KVMListHeader = ({ title }: Props): ReactElement => {
   const kvms = useSelector(podSelectors.kvms);
   const podsLoaded = useSelector(podSelectors.loaded);
   const lxdTabActive = location.pathname.endsWith(urls.kvm.lxd.index);
+  const canEdit = useHasEntitlements([Entitlement.CAN_EDIT_MACHINES]);
 
   useFetchActions([podActions.fetch]);
 
@@ -37,6 +40,7 @@ const KVMListHeader = ({ title }: Props): ReactElement => {
         <Button
           appearance="positive"
           data-testid="add-kvm"
+          disabled={!canEdit}
           key="add-kvm"
           onClick={() => {
             if (lxdTabActive) {

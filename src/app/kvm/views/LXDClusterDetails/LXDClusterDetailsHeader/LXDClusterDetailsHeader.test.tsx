@@ -4,6 +4,7 @@ import urls from "@/app/base/urls";
 import RefreshForm from "@/app/kvm/components/RefreshForm";
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
+import { authResolvers } from "@/testing/resolvers/auth";
 import { zoneResolvers } from "@/testing/resolvers/zones";
 import {
   userEvent,
@@ -15,7 +16,11 @@ import {
 } from "@/testing/utils";
 
 const { mockOpen } = await mockSidePanel();
-setupMockServer(zoneResolvers.getZone.handler());
+const mockServer = setupMockServer(
+  zoneResolvers.getZone.handler(),
+  authResolvers.getCurrentUser.handler(),
+  authResolvers.getMeEntitlements.handler()
+);
 
 describe("LXDClusterDetailsHeader", () => {
   let state: RootState;
@@ -104,6 +109,11 @@ describe("LXDClusterDetailsHeader", () => {
       state,
     });
 
+    await waitFor(() => {
+      expect(
+        screen.getByRole("button", { name: "Refresh cluster" })
+      ).not.toBeAriaDisabled();
+    });
     await userEvent.click(
       screen.getByRole("button", { name: "Refresh cluster" })
     );
@@ -113,5 +123,26 @@ describe("LXDClusterDetailsHeader", () => {
       title: "Refresh",
       props: { hostIds: hosts.map((host) => host.id) },
     });
+  });
+
+  it("disables the refresh cluster button without the edit machines entitlement", async () => {
+    mockServer.use(authResolvers.getMeEntitlements.handler([]));
+    const hosts = [factory.vmHost(), factory.vmHost()];
+    state.vmcluster.items[0].hosts = hosts;
+    renderWithProviders(<LXDClusterDetailsHeader clusterId={1} />, {
+      initialEntries: [urls.kvm.lxd.cluster.index({ clusterId: 1 })],
+      state,
+    });
+
+    await waitFor(() => {
+      expect(
+        screen.getByRole("button", { name: "Refresh cluster" })
+      ).toBeAriaDisabled();
+    });
+    await userEvent.click(
+      screen.getByRole("button", { name: "Refresh cluster" })
+    );
+
+    expect(mockOpen).not.toHaveBeenCalled();
   });
 });

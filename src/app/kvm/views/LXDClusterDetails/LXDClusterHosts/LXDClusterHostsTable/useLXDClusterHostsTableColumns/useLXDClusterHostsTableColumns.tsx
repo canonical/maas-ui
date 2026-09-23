@@ -5,6 +5,7 @@ import { Button, Icon } from "@canonical/react-components";
 import type { ColumnDef, Row } from "@tanstack/react-table";
 import { Link, useLocation } from "react-router";
 
+import { useHasEntitlements } from "@/app/base/hooks/permissions";
 import urls from "@/app/base/urls";
 import CPUColumn from "@/app/kvm/components/CPUColumn";
 import ComposeForm from "@/app/kvm/components/ComposeForm";
@@ -13,6 +14,7 @@ import RAMColumn from "@/app/kvm/components/RAMColumn";
 import StorageColumn from "@/app/kvm/components/StorageColumn";
 import TagsColumn from "@/app/kvm/components/TagsColumn";
 import type { LXDClusterHost } from "@/app/kvm/views/LXDClusterDetails/LXDClusterHosts/LXDClusterHostsTable/LXDClusterHostsTable";
+import { Entitlement } from "@/app/settings/views/UserManagement/views/Groups/constants";
 
 type LxdKVMClusterHostColumnDef = ColumnDef<
   LXDClusterHost,
@@ -26,6 +28,7 @@ export const useLXDClusterHostsTableColumns = ({
 }): LxdKVMClusterHostColumnDef[] => {
   const { openSidePanel } = useSidePanel();
   const location = useLocation();
+  const canEdit = useHasEntitlements([Entitlement.CAN_EDIT_MACHINES]);
 
   return useMemo(
     () =>
@@ -182,6 +185,7 @@ export const useLXDClusterHostsTableColumns = ({
                   appearance="base"
                   className="is-dense u-table-cell-padding-overlap u-no-margin--right"
                   data-testid="vm-host-compose"
+                  disabled={!canEdit}
                   hasIcon
                   onClick={() => {
                     openSidePanel({
@@ -213,6 +217,6 @@ export const useLXDClusterHostsTableColumns = ({
           },
         },
       ] as LxdKVMClusterHostColumnDef[],
-    [clusterId, openSidePanel, location.pathname]
+    [clusterId, openSidePanel, location.pathname, canEdit]
   );
 };

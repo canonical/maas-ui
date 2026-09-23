@@ -6,6 +6,7 @@ import { PodType } from "@/app/store/pod/constants";
 import type { Pod } from "@/app/store/pod/types";
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
+import { authResolvers } from "@/testing/resolvers/auth";
 import { poolsResolvers } from "@/testing/resolvers/pools";
 import {
   mockSidePanel,
@@ -17,7 +18,11 @@ import {
 } from "@/testing/utils";
 
 const { mockOpen } = await mockSidePanel();
-setupMockServer(poolsResolvers.listPools.handler());
+const mockServer = setupMockServer(
+  poolsResolvers.listPools.handler(),
+  authResolvers.getCurrentUser.handler(),
+  authResolvers.getMeEntitlements.handler()
+);
 
 describe("LXDClusterHostsTable", () => {
   let state: RootState;
@@ -109,6 +114,9 @@ describe("LXDClusterHostsTable", () => {
       { initialEntries: [urls.kvm.lxd.cluster.hosts({ clusterId: 1 })], state }
     );
     await waitFor(() => screen.getByTestId("vm-host-compose"));
+    await waitFor(() => {
+      expect(screen.getByTestId("vm-host-compose")).not.toBeAriaDisabled();
+    });
     await userEvent.click(screen.getByTestId("vm-host-compose"));
     await waitFor(() => {
       expect(mockOpen).toHaveBeenCalledWith({
@@ -117,6 +125,25 @@ describe("LXDClusterHostsTable", () => {
         props: { hostId: 22 },
       });
     });
+  });
+
+  it("disables the compose button without the edit machines entitlement", async () => {
+    mockServer.use(authResolvers.getMeEntitlements.handler([]));
+    renderWithProviders(
+      <LXDClusterHostsTable
+        clusterId={1}
+        currentPage={1}
+        hosts={state.pod.items}
+        searchFilter=""
+      />,
+      { initialEntries: [urls.kvm.lxd.cluster.hosts({ clusterId: 1 })], state }
+    );
+    await waitFor(() => screen.getByTestId("vm-host-compose"));
+    await waitFor(() => {
+      expect(screen.getByTestId("vm-host-compose")).toBeAriaDisabled();
+    });
+    await userEvent.click(screen.getByTestId("vm-host-compose"));
+    expect(mockOpen).not.toHaveBeenCalled();
   });
 
   it("can link to a host's settings page", async () => {

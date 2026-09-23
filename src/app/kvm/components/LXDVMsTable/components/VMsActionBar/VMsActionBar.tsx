@@ -12,6 +12,7 @@ import { useHasSelection } from "@/app/store/machine/utils/hooks";
 import { NodeActions } from "@/app/store/types/node";
 
 type Props = {
+  canEdit?: boolean;
   currentPage: number;
   machinesLoading?: boolean;
   onAddVMClick?: () => void;
@@ -22,6 +23,7 @@ type Props = {
 };
 
 const VMsActionBar = ({
+  canEdit = true,
   currentPage,
   machinesLoading,
   onAddVMClick,
@@ -32,7 +34,7 @@ const VMsActionBar = ({
 }: Props): ReactElement => {
   const { openSidePanel } = useSidePanel();
   const hasSelection = useHasSelection();
-  const vmActionsDisabled = !hasSelection;
+  const vmActionsDisabled = !hasSelection || !canEdit;
 
   return (
     <ActionBar
@@ -49,6 +51,7 @@ const VMsActionBar = ({
             <span className="u-nudge-right">
               <Button
                 className="u-no-margin--bottom"
+                disabled={!canEdit}
                 hasIcon
                 onClick={onAddVMClick}
               >

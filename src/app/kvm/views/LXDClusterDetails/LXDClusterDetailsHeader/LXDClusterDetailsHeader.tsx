@@ -7,9 +7,11 @@ import { useSelector } from "react-redux";
 import { Link, useLocation } from "react-router";
 
 import { useGetZone } from "@/app/api/query/zones";
+import { useHasEntitlements } from "@/app/base/hooks/permissions";
 import urls from "@/app/base/urls";
 import KVMDetailsHeader from "@/app/kvm/components/KVMDetailsHeader";
 import RefreshForm from "@/app/kvm/components/RefreshForm";
+import { Entitlement } from "@/app/settings/views/UserManagement/views/Groups/constants";
 import type { RootState } from "@/app/store/root/types";
 import vmClusterSelectors from "@/app/store/vmcluster/selectors";
 import type { VMCluster } from "@/app/store/vmcluster/types";
@@ -28,7 +30,8 @@ const LXDClusterDetailsHeader = ({ clusterId }: Props): React.ReactElement => {
   // eslint-disable-next-line @typescript-eslint/no-non-null-asserted-optional-chain
   const zone = useGetZone({ path: { zone_id: cluster?.availability_zone! } });
   const location = useLocation();
-  const canRefresh = !!cluster?.hosts.length;
+  const canEdit = useHasEntitlements([Entitlement.CAN_EDIT_MACHINES]);
+  const canRefresh = !!cluster?.hosts.length && canEdit;
 
   let title: ReactNode = <Spinner text="Loading..." />;
   if (cluster) {
