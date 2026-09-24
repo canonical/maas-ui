@@ -45,7 +45,9 @@ const VLANDetailsHeader = ({ vlan }: Props): ReactElement => {
   const fabric = useSelector((state: RootState) =>
     fabricSelectors.getById(state, fabricId)
   );
-  const canEdit = useHasEntitlements([Entitlement.CAN_EDIT_GLOBAL_ENTITIES]);
+  const { allowed: canEdit } = useHasEntitlements([
+    Entitlement.CAN_EDIT_GLOBAL_ENTITIES,
+  ]);
 
   useFetchActions([fabricActions.fetch]);
 

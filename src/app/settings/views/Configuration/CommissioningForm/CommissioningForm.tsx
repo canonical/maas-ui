@@ -34,7 +34,9 @@ const CommissioningForm = (): React.ReactElement => {
   const defaultMinKernelVersion = useSelector(
     configSelectors.defaultMinKernelVersion
   );
-  const canEdit = useHasEntitlements([Entitlement.CAN_EDIT_CONFIGURATIONS]);
+  const { allowed: canEdit } = useHasEntitlements([
+    Entitlement.CAN_EDIT_CONFIGURATIONS,
+  ]);
 
   return (
     <FormikForm<CommissioningFormValues>

@@ -33,7 +33,9 @@ const SubnetSummary = ({ id }: Props): React.ReactElement | null => {
   const vlan = useSelector((state: RootState) =>
     vlanSelectors.getById(state, subnet?.vlan)
   );
-  const canEdit = useHasEntitlements([Entitlement.CAN_EDIT_GLOBAL_ENTITIES]);
+  const { allowed: canEdit } = useHasEntitlements([
+    Entitlement.CAN_EDIT_GLOBAL_ENTITIES,
+  ]);
 
   useFetchActions([spaceActions.fetch, vlanActions.fetch, fabricActions.fetch]);
 

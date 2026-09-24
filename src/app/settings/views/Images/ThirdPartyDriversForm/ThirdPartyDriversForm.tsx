@@ -30,7 +30,9 @@ const ThirdPartyDriversForm = (): ReactElement => {
   const eTag = data?.headers?.get("ETag");
   const enable_third_party_drivers = data?.value || false;
   const updateConfig = useSetConfiguration();
-  const canEdit = useHasEntitlements([Entitlement.CAN_EDIT_BOOT_ENTITIES]);
+  const { allowed: canEdit } = useHasEntitlements([
+    Entitlement.CAN_EDIT_BOOT_ENTITIES,
+  ]);
 
   return (
     <FormikForm

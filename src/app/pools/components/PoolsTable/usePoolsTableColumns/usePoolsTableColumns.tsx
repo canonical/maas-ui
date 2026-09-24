@@ -33,7 +33,9 @@ export type PoolsColumnDef = ColumnDef<
 
 const usePoolsTableColumns = (): PoolsColumnDef[] => {
   const { openSidePanel } = useSidePanel();
-  const canEdit = useHasEntitlements([Entitlement.CAN_EDIT_GLOBAL_ENTITIES]);
+  const { allowed: canEdit } = useHasEntitlements([
+    Entitlement.CAN_EDIT_GLOBAL_ENTITIES,
+  ]);
   return useMemo(
     () =>
       [

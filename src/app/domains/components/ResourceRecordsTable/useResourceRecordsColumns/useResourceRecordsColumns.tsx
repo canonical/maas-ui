@@ -35,7 +35,7 @@ const useResourceRecordsColumns = ({
   id,
 }: Props): ResourceRecordsColumnDef[] => {
   const { openSidePanel } = useSidePanel();
-  const canEditGlobalEntities = useHasEntitlements([
+  const { allowed: canEditGlobalEntities } = useHasEntitlements([
     Entitlement.CAN_EDIT_GLOBAL_ENTITIES,
   ]);
   return useMemo(

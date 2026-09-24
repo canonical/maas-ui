@@ -50,7 +50,9 @@ const DnsForm = (): ReactElement => {
   const { dnssec_validation, dns_trusted_acl, upstream_dns } =
     getConfigsFromResponse(data?.items || [], names);
   const dnssecOptions = useSelector(configSelectors.dnssecOptions);
-  const canEdit = useHasEntitlements([Entitlement.CAN_EDIT_CONFIGURATIONS]);
+  const { allowed: canEdit } = useHasEntitlements([
+    Entitlement.CAN_EDIT_CONFIGURATIONS,
+  ]);
 
   const updateConfig = useBulkSetConfigurations();
 

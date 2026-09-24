@@ -35,7 +35,9 @@ const DeployForm = (): React.ReactElement => {
     configSelectors.hardwareSyncInterval
   );
   const hardwareSyncIntervalMinutes = timeSpanToMinutes(hardwareSyncInterval);
-  const canEdit = useHasEntitlements([Entitlement.CAN_EDIT_CONFIGURATIONS]);
+  const { allowed: canEdit } = useHasEntitlements([
+    Entitlement.CAN_EDIT_CONFIGURATIONS,
+  ]);
 
   return (
     <FormikForm<DeployFormValues>

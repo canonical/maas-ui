@@ -24,7 +24,7 @@ const MachineStorage = (): React.ReactElement => {
     machineSelectors.getById(state, id)
   );
   const canEditStorage = useCanEditStorage(machine);
-  const canEditMachine = useCanEditMachine(id);
+  const { allowed: canEditMachine } = useCanEditMachine(id);
 
   useWindowTitle(`${`${machine?.fqdn} ` || "Machine"} storage`);
 
