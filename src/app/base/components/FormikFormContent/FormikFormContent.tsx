@@ -16,6 +16,7 @@ import type { AnyAction } from "redux";
 import type { FormikFormButtonsProps } from "@/app/base/components/FormikFormButtons";
 import FormikFormButtons from "@/app/base/components/FormikFormButtons";
 import {
+  hasApiErrorDetails,
   useCycled,
   useFormikErrors,
   useFormikFormDisabled,
@@ -57,6 +58,15 @@ const generateNonFieldError = <V extends object, E = null>(
   if (errors) {
     if (typeof errors === "string" || isValidElement(errors)) {
       return errors;
+    } else if (hasApiErrorDetails(errors)) {
+      // Field-specific messages are already surfaced against their fields by
+      // useFormikErrors, so only show messages that aren't tied to a field.
+      const nonFieldMessages = (errors.details ?? [])
+        .filter(({ field }) => !field || !(field in values))
+        .map(({ message }) => message);
+      return nonFieldMessages.length
+        ? nonFieldMessages.join(", ")
+        : (errors.message ?? null);
     } else if (typeof errors === "object") {
       if ("message" in errors) {
         return errors.message;

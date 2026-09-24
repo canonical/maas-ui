@@ -1,49 +1,86 @@
-import { useEffect, isValidElement } from "react";
+import { useEffect, isValidElement, useCallback } from "react";
 
 import { usePrevious } from "@canonical/react-components/dist/hooks";
 import { useFormikContext } from "formik";
 
 import type { AnyObject, APIError } from "../types";
 
+import type { ValidationErrorBodyResponse } from "@/app/apiclient";
 import { FormikFieldChangeError } from "@/app/base/components/FormikField/FormikField";
 import { simpleObjectEquality } from "@/app/settings/utils";
 
+// NotFoundBodyResponse, BadRequestBodyResponse etc. share this same shape,
+// but ValidationErrorBodyResponse is the one relevant to form field errors.
+export const hasApiErrorDetails = (
+  errors: unknown
+): errors is ValidationErrorBodyResponse =>
+  typeof errors === "object" &&
+  errors !== null &&
+  !Array.isArray(errors) &&
+  Array.isArray((errors as ValidationErrorBodyResponse).details);
+
 /**
  * Combines formik validation errors and errors returned from server
- * for use in formik forms.
- * @param errors - The errors object in redux state.
+ * for use in formik forms. Supports both legacy errors (a flat object keyed
+ * by field name, from redux) and errors from the newer API hooks (an object
+ * with a `details` array of field-specific errors).
+ * @param errors - The errors object in redux state, or from an API hook.
  */
 export const useFormikErrors = <V = AnyObject, E = null>(
   errors?: APIError<E>
 ): void => {
   const { setFieldError, setFieldTouched, values } = useFormikContext<V>();
   const previousErrors = usePrevious(errors);
+
+  const setError = useCallback(
+    (field: string, errorString: string) => {
+      setFieldError(field, errorString);
+      setFieldTouched(field, true, false).catch((reason: unknown) => {
+        throw new FormikFieldChangeError(
+          field,
+          "setFieldTouched",
+          reason as string
+        );
+      });
+    },
+    [setFieldError, setFieldTouched]
+  );
+
   useEffect(() => {
     // Only run this effect if the errors have changed.
     if (
-      errors &&
-      typeof errors === "object" &&
-      !isValidElement(errors) &&
-      !simpleObjectEquality(errors, previousErrors)
+      !errors ||
+      typeof errors !== "object" ||
+      isValidElement(errors) ||
+      simpleObjectEquality(errors, previousErrors)
     ) {
-      Object.entries(errors).forEach(([field, fieldErrors]) => {
-        let errorString: string;
-        if (Array.isArray(fieldErrors)) {
-          errorString = fieldErrors.join(" ");
-        } else {
-          errorString = fieldErrors;
-        }
-        setFieldError(field, errorString);
-        setFieldTouched(field, true, false).catch((reason: unknown) => {
-          throw new FormikFieldChangeError(
-            field,
-            "setFieldTouched",
-            reason as string
-          );
-        });
-      });
+      return;
     }
-  }, [errors, previousErrors, setFieldError, setFieldTouched, values]);
+    if (hasApiErrorDetails(errors)) {
+      errors.details?.forEach(({ field, message }) => {
+        if (field) {
+          setError(field, message);
+        }
+      });
+      return;
+    }
+    Object.entries(errors).forEach(([field, fieldErrors]) => {
+      let errorString: string;
+      if (Array.isArray(fieldErrors)) {
+        errorString = fieldErrors.join(" ");
+      } else {
+        errorString = fieldErrors;
+      }
+      setError(field, errorString);
+    });
+  }, [
+    errors,
+    previousErrors,
+    setError,
+    setFieldError,
+    setFieldTouched,
+    values,
+  ]);
 };
 
 /**

@@ -12,7 +12,11 @@ export {
   useWindowTitle,
   usePreviousPersistent,
 } from "./base";
-export { useFormikFormDisabled, useFormikErrors } from "./forms";
+export {
+  useFormikFormDisabled,
+  useFormikErrors,
+  hasApiErrorDetails,
+} from "./forms";
 export { useCompletedIntro, useCompletedUserIntro } from "./intro";
 export {
   useCanEdit,

@@ -7,6 +7,7 @@ import * as Yup from "yup";
 
 import FormikFormContent from "./FormikFormContent";
 
+import type { ValidationErrorBodyResponse } from "@/app/apiclient";
 import { TestIds } from "@/app/base/components/FormikFormButtons";
 import * as hooks from "@/app/base/hooks/analytics";
 import { ConfigNames } from "@/app/store/config/types";
@@ -17,6 +18,7 @@ import {
   screen,
   renderWithProviders,
   render,
+  waitFor,
 } from "@/testing/utils";
 
 const mockStore = configureStore<RootState>();
@@ -174,6 +176,109 @@ describe("FormikFormContent", () => {
     expect(
       screen.getByText("Wrong username, Username must be provided")
     ).toBeInTheDocument();
+  });
+
+  it("can display non-field errors from validation error details", () => {
+    renderWithProviders(
+      <Formik initialValues={{}} onSubmit={vi.fn()}>
+        <FormikFormContent<object, ValidationErrorBodyResponse>
+          errors={{
+            message: "Validation failed",
+            details: [
+              { type: "InvalidField", message: "Something went wrong" },
+            ],
+          }}
+        >
+          Content
+        </FormikFormContent>
+      </Formik>,
+      { state }
+    );
+
+    expect(screen.getByText("Something went wrong")).toBeInTheDocument();
+    expect(screen.queryByText("Validation failed")).not.toBeInTheDocument();
+  });
+
+  it("falls back to the top-level message when all validation error details are field errors", () => {
+    renderWithProviders(
+      <Formik initialValues={{ username: "" }} onSubmit={vi.fn()}>
+        <FormikFormContent<{ username: string }, ValidationErrorBodyResponse>
+          errors={{
+            message: "Validation failed",
+            details: [
+              {
+                type: "InvalidField",
+                field: "username",
+                message: "Wrong username",
+              },
+            ],
+          }}
+        >
+          Content
+        </FormikFormContent>
+      </Formik>,
+      { state }
+    );
+
+    expect(screen.getByText("Validation failed")).toBeInTheDocument();
+    expect(screen.queryByText("Wrong username")).not.toBeInTheDocument();
+  });
+
+  it("sets field-specific errors from legacy errors", async () => {
+    const Proxy = ({ errors }: { errors?: Record<string, string> }) => (
+      <Formik initialValues={{ username: "" }} onSubmit={vi.fn()}>
+        <FormikFormContent<{ username: string }> errors={errors}>
+          {({ errors, touched }) => (
+            <span>
+              {touched.username && errors.username ? errors.username : null}
+            </span>
+          )}
+        </FormikFormContent>
+      </Formik>
+    );
+    const { rerender } = renderWithProviders(<Proxy />, { state });
+
+    rerender(<Proxy errors={{ username: "Wrong username" }} />);
+
+    await waitFor(() => {
+      expect(screen.getByText("Wrong username")).toBeInTheDocument();
+    });
+  });
+
+  it("sets field-specific errors from validation error details", async () => {
+    const Proxy = ({ errors }: { errors?: ValidationErrorBodyResponse }) => (
+      <Formik initialValues={{ username: "" }} onSubmit={vi.fn()}>
+        <FormikFormContent<{ username: string }, ValidationErrorBodyResponse>
+          errors={errors}
+        >
+          {({ errors, touched }) => (
+            <span>
+              {touched.username && errors.username ? errors.username : null}
+            </span>
+          )}
+        </FormikFormContent>
+      </Formik>
+    );
+    const { rerender } = renderWithProviders(<Proxy />, { state });
+
+    rerender(
+      <Proxy
+        errors={{
+          message: "Validation failed",
+          details: [
+            {
+              type: "InvalidField",
+              field: "username",
+              message: "Wrong username",
+            },
+          ],
+        }}
+      />
+    );
+
+    await waitFor(() => {
+      expect(screen.getByText("Wrong username")).toBeInTheDocument();
+    });
   });
 
   it("can display custom components for non-field errors", () => {
