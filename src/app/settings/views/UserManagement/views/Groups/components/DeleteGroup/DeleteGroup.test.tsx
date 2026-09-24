@@ -7,7 +7,7 @@ import {
   setupMockServer,
   renderWithProviders,
   waitFor,
-  mockSidePanel,
+  mockModal,
   waitForLoading,
 } from "@/testing/utils";
 
@@ -15,7 +15,7 @@ const mockServer = setupMockServer(
   groupsResolvers.deleteGroup.handler(),
   groupsResolvers.getGroup.handler()
 );
-const { mockClose } = await mockSidePanel();
+const { mockClose } = await mockModal();
 
 describe("DeleteGroup", () => {
   const testGroupId = 1;

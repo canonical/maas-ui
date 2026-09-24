@@ -1,12 +1,13 @@
 import AppSideNavigation from "./AppSideNavigation";
+import LogoutConfirm from "./LogoutConfirm";
 
 import urls from "@/app/base/urls";
 import { ConfigNames } from "@/app/store/config/types";
 import type { RootState } from "@/app/store/root/types";
-import { statusActions } from "@/app/store/status";
 import * as factory from "@/testing/factories";
 import { authResolvers } from "@/testing/resolvers/auth";
 import {
+  mockModal,
   renderWithProviders,
   screen,
   setupMockServer,
@@ -14,6 +15,8 @@ import {
   waitFor,
   within,
 } from "@/testing/utils";
+
+const { mockOpen } = await mockModal();
 
 const mockUseNavigate = vi.fn();
 vi.mock("react-router", async () => {
@@ -83,8 +86,8 @@ describe("GlobalSideNav", () => {
     ).not.toBeInTheDocument();
   });
 
-  it("can dispatch an action to log out", async () => {
-    const { store } = renderWithProviders(<AppSideNavigation />, { state });
+  it("opens a logout confirmation modal when Log out is clicked", async () => {
+    renderWithProviders(<AppSideNavigation />, { state });
 
     await waitFor(() => {
       expect(
@@ -94,12 +97,12 @@ describe("GlobalSideNav", () => {
 
     await userEvent.click(screen.getByRole("button", { name: "Log out" }));
 
-    const expectedAction = statusActions.logout();
-    await waitFor(() => {
-      expect(
-        store.getActions().find((action) => action.type === expectedAction.type)
-      ).toStrictEqual(expectedAction);
-    });
+    expect(mockOpen).toHaveBeenCalledWith(
+      expect.objectContaining({
+        component: LogoutConfirm,
+        title: "Log out",
+      })
+    );
   });
 
   it("hides nav links if not completed intro", async () => {

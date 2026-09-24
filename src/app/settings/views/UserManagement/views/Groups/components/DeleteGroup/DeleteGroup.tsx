@@ -1,4 +1,3 @@
-import { useSidePanel } from "@canonical/maas-react-components";
 import {
   Spinner,
   Notification as NotificationBanner,
@@ -7,6 +6,7 @@ import pluralize from "pluralize";
 
 import { useDeleteGroup, useGetGroup } from "@/app/api/query/groups";
 import ModelActionForm from "@/app/base/components/ModelActionForm";
+import { useModal } from "@/app/base/modal-context";
 
 type Props = {
   id: number;
@@ -14,7 +14,7 @@ type Props = {
 };
 
 const DeleteGroup = ({ id, user_count }: Props) => {
-  const { closeSidePanel } = useSidePanel();
+  const { closeModal } = useModal();
   const deleteGroup = useDeleteGroup();
   const group = useGetGroup({ path: { group_id: id } });
   const eTag = group.data?.headers?.get("ETag");
@@ -45,14 +45,14 @@ const DeleteGroup = ({ id, user_count }: Props) => {
           ) : null
         }
         modelType="group"
-        onCancel={closeSidePanel}
+        onCancel={closeModal}
         onSubmit={() => {
           deleteGroup.mutate({
             path: { group_id: id },
             headers: { ETag: eTag },
           });
         }}
-        onSuccess={closeSidePanel}
+        onSuccess={closeModal}
         saved={deleteGroup.isSuccess}
         saving={deleteGroup.isPending}
         submitAppearance="negative"
