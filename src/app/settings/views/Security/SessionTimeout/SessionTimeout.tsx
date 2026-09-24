@@ -89,7 +89,9 @@ const SessionTimeout = (): ReactElement => {
   const updateConfig = useBulkSetConfigurations();
   useWindowTitle("Token Expiration");
   const logout = useLogout();
-  const canEdit = useHasEntitlements([Entitlement.CAN_EDIT_CONFIGURATIONS]);
+  const { allowed: canEdit } = useHasEntitlements([
+    Entitlement.CAN_EDIT_CONFIGURATIONS,
+  ]);
 
   if (isPending) {
     return <Spinner aria-label={Labels.Loading} text={Labels.Loading} />;

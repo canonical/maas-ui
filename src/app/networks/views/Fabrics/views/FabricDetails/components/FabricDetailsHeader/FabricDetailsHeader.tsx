@@ -17,7 +17,9 @@ const FabricDetailsHeader = ({
   fabric,
 }: FabricDetailsHeaderProps): ReactElement => {
   const { openModal } = useModal();
-  const canEdit = useHasEntitlements([Entitlement.CAN_EDIT_GLOBAL_ENTITIES]);
+  const { allowed: canEdit } = useHasEntitlements([
+    Entitlement.CAN_EDIT_GLOBAL_ENTITIES,
+  ]);
 
   return (
     <SectionHeader

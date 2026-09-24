@@ -19,7 +19,9 @@ import { AddRepository } from "@/app/settings/views/Repositories/components";
 
 const RepositoriesTable = () => {
   const { openSidePanel } = useSidePanel();
-  const canEdit = useHasEntitlements([Entitlement.CAN_EDIT_GLOBAL_ENTITIES]);
+  const { allowed: canEdit } = useHasEntitlements([
+    Entitlement.CAN_EDIT_GLOBAL_ENTITIES,
+  ]);
   const { page, debouncedPage, size, handlePageSizeChange, setPage } =
     usePagination();
 

@@ -32,7 +32,9 @@ const NtpForm = (): ReactElement => {
   });
   const eTag = data?.headers?.get("ETag");
   const updateConfig = useBulkSetConfigurations();
-  const canEdit = useHasEntitlements([Entitlement.CAN_EDIT_CONFIGURATIONS]);
+  const { allowed: canEdit } = useHasEntitlements([
+    Entitlement.CAN_EDIT_CONFIGURATIONS,
+  ]);
 
   useWindowTitle("NTP");
 

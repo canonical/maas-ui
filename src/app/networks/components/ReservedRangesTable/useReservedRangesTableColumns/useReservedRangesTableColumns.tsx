@@ -34,7 +34,9 @@ const useReservedRangesColumns = (
   showSubnetColumn: boolean
 ): ReservedRangesColumnsDef[] => {
   const { openSidePanel } = useSidePanel();
-  const canEdit = useHasEntitlements([Entitlement.CAN_EDIT_GLOBAL_ENTITIES]);
+  const { allowed: canEdit } = useHasEntitlements([
+    Entitlement.CAN_EDIT_GLOBAL_ENTITIES,
+  ]);
   return useMemo((): ReservedRangesColumnsDef[] => {
     const columns: ReservedRangesColumnsDef[] = [
       {

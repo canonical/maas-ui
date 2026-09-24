@@ -7,7 +7,9 @@ import { useWindowTitle, useHasEntitlements } from "@/app/base/hooks";
 import LicenseKeyTable from "@/app/settings/views/LicenseKeys/components/LicenseKeyTable/LicenseKeyTable";
 
 const LicenseKeyList = (): React.ReactElement => {
-  const canEdit = useHasEntitlements([Entitlement.CAN_EDIT_LICENSE_KEYS]);
+  const { allowed: canEdit } = useHasEntitlements([
+    Entitlement.CAN_EDIT_LICENSE_KEYS,
+  ]);
   useWindowTitle("License keys");
 
   return (

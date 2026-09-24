@@ -29,7 +29,9 @@ const SingleSignOn = (): ReactElement => {
   const { openSidePanel } = useSidePanel();
   const dispatch = useDispatch();
   const maasURLData = useSelector(maasURL.get);
-  const canEdit = useHasEntitlements([Entitlement.CAN_EDIT_IDENTITIES]);
+  const { allowed: canEdit } = useHasEntitlements([
+    Entitlement.CAN_EDIT_IDENTITIES,
+  ]);
 
   useEffect(() => {
     dispatch(generalActions.fetchMAASURL());

@@ -37,7 +37,9 @@ const ControllerListHeader = ({
   );
   const sendAnalytics = useSendAnalytics();
   const [searchText, setSearchText] = useState(searchFilter);
-  const canEdit = useHasEntitlements([Entitlement.CAN_EDIT_CONTROLLERS]);
+  const { allowed: canEdit } = useHasEntitlements([
+    Entitlement.CAN_EDIT_CONTROLLERS,
+  ]);
 
   const { openSidePanel } = useSidePanel();
   const { openModal } = useModal();

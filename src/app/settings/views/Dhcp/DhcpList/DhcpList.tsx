@@ -39,7 +39,9 @@ const DhcpList = (): React.ReactElement => {
     dhcpsnippetSelectors.search(state, searchText)
   );
   const { page, size, handlePageSizeChange, setPage } = usePagination(50);
-  const canEdit = useHasEntitlements([Entitlement.CAN_EDIT_GLOBAL_ENTITIES]);
+  const { allowed: canEdit } = useHasEntitlements([
+    Entitlement.CAN_EDIT_GLOBAL_ENTITIES,
+  ]);
   const columns = useDHCPListColumns({ canEdit });
 
   const dispatch = useDispatch();

@@ -15,6 +15,24 @@ const mockServer = setupMockServer(
 );
 
 describe("RequireEntitlements", () => {
+  it("does not display a permission message while entitlements are loading", async () => {
+    renderWithProviders(
+      <RequireEntitlements
+        entitlements={[Entitlement.CAN_VIEW_GLOBAL_ENTITIES]}
+      >
+        <div>Child content</div>
+      </RequireEntitlements>
+    );
+
+    expect(
+      screen.queryByRole("heading", {
+        name: /You do not have permission to view this page./,
+      })
+    ).not.toBeInTheDocument();
+    expect(screen.queryByText("Child content")).not.toBeInTheDocument();
+    expect(await screen.findByText("Child content")).toBeInTheDocument();
+  });
+
   it("displays a permission message when the user lacks the entitlement", async () => {
     mockServer.use(authResolvers.getMeEntitlements.handler([]));
     renderWithProviders(
