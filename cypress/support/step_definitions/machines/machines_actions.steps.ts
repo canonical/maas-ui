@@ -13,6 +13,16 @@ let newPoolName = "";
 let newTagName = "";
 let doesMachineExist = false;
 
+type ActionFormContainer = "modal" | "side panel";
+
+const findMachineActionForm = (
+  formName: string,
+  container: ActionFormContainer
+) =>
+  cy.findByRole(container === "modal" ? "dialog" : "complementary", {
+    name: new RegExp(formName, "i"),
+  });
+
 const openMachineActionDropdown = (groupLabel: string) => {
   cy.findAllByRole("button", { name: groupLabel }).first().click();
 };
@@ -66,13 +76,14 @@ When(
     openMachineActionForm(group, action);
   }
 );
-When("the user cancels the {string} form", (formName: string) => {
-  cy.findByRole("complementary", { name: new RegExp(formName, "i") }).within(
-    () => {
+When(
+  /^the user cancels the "([^"]+)" form in the (modal|side panel)$/,
+  (formName: string, container: ActionFormContainer) => {
+    findMachineActionForm(formName, container).within(() => {
       cy.findByRole("button", { name: /Cancel/i }).click();
-    }
-  );
-});
+    });
+  }
+);
 
 When("the user creates a new pool", () => {
   newPoolName = generateName("pool");
@@ -120,22 +131,26 @@ Then("the {string} action should be enabled", (action: string) => {
     .and("be.enabled");
 });
 
-Then("the {string} side panel should be visible", (panelName: string) => {
-  cy.findByRole("complementary", { name: new RegExp(panelName, "i") }).within(
-    () => {
-      cy.findAllByText(/Loading/i).should("have.length", 0);
-      cy.findByRole("heading", { name: new RegExp(panelName, "i") }).should(
-        "exist"
-      );
-    }
-  );
-});
+Then(
+  /^the "([^"]+)" (modal|side panel) should be visible$/,
+  (formName: string, container: ActionFormContainer) => {
+    findMachineActionForm(formName, container)
+      .should("be.visible")
+      .within(() => {
+        cy.findAllByText(/Loading/i).should("have.length", 0);
+        cy.findByRole("heading", { name: new RegExp(formName, "i") }).should(
+          "exist"
+        );
+      });
+  }
+);
 
-Then("the {string} side panel should not exist", (panelName: string) => {
-  cy.findByRole("complementary", { name: new RegExp(panelName, "i") }).should(
-    "not.exist"
-  );
-});
+Then(
+  /^the "([^"]+)" (modal|side panel) should not exist$/,
+  (formName: string, container: ActionFormContainer) => {
+    findMachineActionForm(formName, container).should("not.exist");
+  }
+);
 
 Then("the new pool name should be visible in the machines grid", () => {
   cy.findByRole("grid", { name: /Machines/i }).within(() => {
