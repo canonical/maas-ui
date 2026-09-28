@@ -108,6 +108,38 @@ export const useMachineActionMenus = (
   const machinePronoun = isSingleMachine ? "it" : "them";
   const machinePossessive = isSingleMachine ? "its" : "their";
 
+  const openLockModal = () => {
+    openModal({
+      component: FieldlessFormModal,
+      props: {
+        action: NodeActions.LOCK,
+        actions: machineActions,
+        cleanup: machineActions.cleanup,
+        description: `This will lock ${machinesPluralized}, preventing ${machinePronoun} from being released or deleted.`,
+        errors: actionErrors,
+        modelName: "machine",
+        viewingDetails: isViewingDetails,
+      },
+      title: "Lock",
+    });
+  };
+
+  const openUnlockModal = () => {
+    openModal({
+      component: FieldlessFormModal,
+      props: {
+        action: NodeActions.UNLOCK,
+        actions: machineActions,
+        cleanup: machineActions.cleanup,
+        description: `This will unlock ${machinesPluralized}, allowing ${machinePronoun} to be released or deleted.`,
+        errors: actionErrors,
+        modelName: "machine",
+        viewingDetails: isViewingDetails,
+      },
+      title: "Unlock",
+    });
+  };
+
   const actionMenus: MachineActionGroup[] = [
     {
       name: "lifecycle",
@@ -450,40 +482,12 @@ export const useMachineActionMenus = (
         {
           action: NodeActions.LOCK,
           label: "Lock",
-          onClick: () => {
-            openModal({
-              component: FieldlessFormModal,
-              props: {
-                action: NodeActions.LOCK,
-                actions: machineActions,
-                cleanup: machineActions.cleanup,
-                description: `This will lock ${machinesPluralized}, preventing ${machinePronoun} from being released or deleted.`,
-                errors: actionErrors,
-                modelName: "machine",
-                viewingDetails: isViewingDetails,
-              },
-              title: "Lock",
-            });
-          },
+          onClick: openLockModal,
         },
         {
           action: NodeActions.UNLOCK,
           label: "Unlock",
-          onClick: () => {
-            openModal({
-              component: FieldlessFormModal,
-              props: {
-                action: NodeActions.UNLOCK,
-                actions: machineActions,
-                cleanup: machineActions.cleanup,
-                description: `This will unlock ${machinesPluralized}, allowing ${machinePronoun} to be released or deleted.`,
-                errors: actionErrors,
-                modelName: "machine",
-                viewingDetails: isViewingDetails,
-              },
-              title: "Unlock",
-            });
-          },
+          onClick: openUnlockModal,
         },
       ],
       render:
@@ -497,17 +501,7 @@ export const useMachineActionMenus = (
                   <Switch
                     checked={machine.locked}
                     label="Lock"
-                    onChange={() =>
-                      dispatch(
-                        machine.locked
-                          ? machineActions.unlock({
-                              system_id: machine.system_id,
-                            })
-                          : machineActions.lock({
-                              system_id: machine.system_id,
-                            })
-                      )
-                    }
+                    onChange={machine.locked ? openUnlockModal : openLockModal}
                   />
                 );
               } else {
@@ -559,7 +553,7 @@ export const useMachineActionMenus = (
   return actionMenus;
 };
 
-export const useMachineRowActions = (
+export const useMachineActions = (
   systemId: Machine["system_id"],
   actions: NodeActions[],
   noneMessage?: string | null,

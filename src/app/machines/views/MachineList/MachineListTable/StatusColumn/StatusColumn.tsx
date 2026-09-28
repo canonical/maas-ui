@@ -6,7 +6,7 @@ import { Link } from "react-router";
 
 import DoubleRow from "@/app/base/components/DoubleRow";
 import TooltipButton from "@/app/base/components/TooltipButton";
-import { useMachineRowActions } from "@/app/machines/components/MachineActions/hooks";
+import { useMachineActions } from "@/app/machines/components/MachineActions/hooks";
 import { useToggleMenu } from "@/app/machines/hooks";
 import type { MachineMenuToggleHandler } from "@/app/machines/types";
 import machineSelectors from "@/app/store/machine/selectors";
@@ -123,7 +123,7 @@ export const StatusColumn = ({
   );
   const formattedOS = useFormattedOS(machine, true);
   const toggleMenu = useToggleMenu(onToggleMenu || null);
-  const actionLinks = useMachineRowActions(systemId, actions);
+  const actionLinks = useMachineActions(systemId, actions);
   const statusText = getStatusText(machine, formattedOS);
   const seeLogs = React.useMemo(
     () => ({

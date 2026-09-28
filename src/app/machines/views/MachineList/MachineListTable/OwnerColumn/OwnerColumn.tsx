@@ -5,7 +5,7 @@ import { useSelector } from "react-redux";
 
 import { useUsers } from "@/app/api/query/users";
 import DoubleRow from "@/app/base/components/DoubleRow";
-import { useMachineRowActions } from "@/app/machines/components/MachineActions/hooks";
+import { useMachineActions } from "@/app/machines/components/MachineActions/hooks";
 import { useToggleMenu } from "@/app/machines/hooks";
 import type { MachineMenuToggleHandler } from "@/app/machines/types";
 import machineSelectors from "@/app/store/machine/selectors";
@@ -43,7 +43,7 @@ export const OwnerColumn = ({
     : machine?.owner || "-";
   const tagsDisplay = getTagsDisplay(machineTags);
 
-  const menuLinks = useMachineRowActions(
+  const menuLinks = useMachineActions(
     systemId,
     actions,
     "No owner actions available"

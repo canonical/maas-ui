@@ -7,7 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 
 import DoubleRow from "@/app/base/components/DoubleRow";
 import PowerIcon from "@/app/base/components/PowerIcon";
-import { useMachineRowActions } from "@/app/machines/components/MachineActions/hooks";
+import { useMachineActions } from "@/app/machines/components/MachineActions/hooks";
 import { useToggleMenu } from "@/app/machines/hooks";
 import type { MachineMenuToggleHandler } from "@/app/machines/types";
 import { PowerTypeNames } from "@/app/store/general/constants";
@@ -47,7 +47,7 @@ export const PowerColumn = ({
       powerActions.push(NodeActions.SOFT_OFF);
     }
   }
-  const powerActionLinks = useMachineRowActions(
+  const powerActionLinks = useMachineActions(
     systemId,
     powerActions,
     null,
