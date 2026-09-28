@@ -17,6 +17,7 @@ import * as Yup from "yup";
 import { useAuthenticate, useIsOIDCUser } from "@/app/api/query/auth";
 import type { LoginError } from "@/app/apiclient";
 import FormikField from "@/app/base/components/FormikField";
+import { FormikFieldChangeError } from "@/app/base/components/FormikField/FormikField";
 import FormikForm from "@/app/base/components/FormikForm";
 import PageContent from "@/app/base/components/PageContent";
 import { useWindowTitle } from "@/app/base/hooks";
@@ -166,9 +167,18 @@ export const Login = (): ReactElement => {
                     username: "",
                   }}
                   onCancel={hasEnteredUsername ? handleBack : null}
-                  onSubmit={(values) => {
+                  onSubmit={(values, formikHelpers) => {
                     if (!hasEnteredUsername) {
                       setSubmittedUsername(values.username);
+                      formikHelpers
+                        .setFieldTouched("password", false)
+                        .catch((reason: unknown) => {
+                          throw new FormikFieldChangeError(
+                            "password",
+                            "setFieldTouched",
+                            reason as string
+                          );
+                        });
                     } else {
                       if (isOIDCUser) {
                         // OIDC login - redirect to provider's auth page
