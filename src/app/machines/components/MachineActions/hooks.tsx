@@ -1,7 +1,10 @@
+import type { ReactNode } from "react";
+
 import {
   lazyLoadSidePanel,
   useSidePanel,
 } from "@canonical/maas-react-components";
+import type { ButtonProps } from "@canonical/react-components";
 import { Button, Icon, Switch } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -68,7 +71,10 @@ const PowerOffForm = lazyLoadModal(
 
 export const useMachineActionMenus = (
   isViewingDetails: boolean,
-  systemId?: Machine["system_id"]
+  systemId?: Machine["system_id"],
+  // Set when the menus act on one machine that will be selected just before
+  // an action is opened (e.g. a machine list row menu).
+  { singleMachine = false }: { singleMachine?: boolean } = {}
 ) => {
   const { openSidePanel } = useSidePanel();
   const { openModal } = useModal();
@@ -90,11 +96,12 @@ export const useMachineActionMenus = (
 
   const { selectedCount } = useMachineSelectedCount(
     FilterMachines.parseFetchFilters(searchFilter),
-    { isEnabled: !isViewingDetails }
+    { isEnabled: !isViewingDetails && !singleMachine }
   );
   // Descriptions read naturally for both a single machine (details view or a
   // single selection) and a pluralised bulk selection.
-  const isSingleMachine = isViewingDetails || selectedCount === 1;
+  const isSingleMachine =
+    isViewingDetails || singleMachine || selectedCount === 1;
   const machinesPluralized = isSingleMachine
     ? "this machine"
     : `these ${selectedCount} machines`;
@@ -550,6 +557,54 @@ export const useMachineActionMenus = (
   ];
 
   return actionMenus;
+};
+
+export const useMachineRowActions = (
+  systemId: Machine["system_id"],
+  actions: NodeActions[],
+  noneMessage?: string | null,
+  renderLabel?: (action: NodeActions, label: string) => ReactNode
+): ButtonProps[] => {
+  const dispatch = useDispatch();
+  const machine = useSelector((state: RootState) =>
+    machineSelectors.getById(state, systemId)
+  );
+  const actionMenus = useMachineActionMenus(false, systemId, {
+    singleMachine: true,
+  });
+  const { actionsDisabled, deployDisabled } = useLifecycleActionEntitlements(
+    true,
+    systemId
+  );
+  const items = actionMenus.flatMap((menu) => menu.items);
+
+  const links = actions.reduce<ButtonProps[]>((links, action) => {
+    const item = items.find((item) => item.action === action);
+    // Soft power off isn't listed separately in the machine's actions; it is
+    // available whenever power off is.
+    const availabilityAction =
+      action === NodeActions.SOFT_OFF ? NodeActions.OFF : action;
+    if (!item || !canOpenActionForm(machine, availabilityAction)) {
+      return links;
+    }
+    const isGated =
+      action === NodeActions.DEPLOY ? deployDisabled : actionsDisabled;
+    const label = `${item.label}...`;
+    links.push({
+      children: renderLabel ? renderLabel(action, label) : label,
+      disabled: isGated || undefined,
+      onClick: () => {
+        dispatch(machineActions.setSelected({ items: [systemId] }));
+        item.onClick();
+      },
+    });
+    return links;
+  }, []);
+
+  if (links.length === 0 && noneMessage) {
+    return [{ children: noneMessage, disabled: true }];
+  }
+  return links;
 };
 
 /**

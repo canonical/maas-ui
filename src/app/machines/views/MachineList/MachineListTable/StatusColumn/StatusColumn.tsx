@@ -6,8 +6,7 @@ import { Link } from "react-router";
 
 import DoubleRow from "@/app/base/components/DoubleRow";
 import TooltipButton from "@/app/base/components/TooltipButton";
-import { useMachineActions } from "@/app/base/hooks";
-import type { MachineMenuAction } from "@/app/base/hooks/node";
+import { useMachineRowActions } from "@/app/machines/components/MachineActions/hooks";
 import { useToggleMenu } from "@/app/machines/hooks";
 import type { MachineMenuToggleHandler } from "@/app/machines/types";
 import machineSelectors from "@/app/store/machine/selectors";
@@ -99,7 +98,7 @@ const Progress = ({ machine }: { machine: Machine | null }) => {
   ) : null;
 };
 
-const actions: MachineMenuAction[] = [
+const actions: NodeActions[] = [
   NodeActions.ABORT,
   NodeActions.ACQUIRE,
   NodeActions.COMMISSION,
@@ -124,7 +123,7 @@ export const StatusColumn = ({
   );
   const formattedOS = useFormattedOS(machine, true);
   const toggleMenu = useToggleMenu(onToggleMenu || null);
-  const actionLinks = useMachineActions(systemId, actions);
+  const actionLinks = useMachineRowActions(systemId, actions);
   const statusText = getStatusText(machine, formattedOS);
   const seeLogs = React.useMemo(
     () => ({
