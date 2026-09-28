@@ -2,6 +2,7 @@ import * as reduxToolkit from "@reduxjs/toolkit";
 
 import MachineHeader from "./MachineHeader";
 
+import * as modalContext from "@/app/base/modal-context";
 import { machineActions } from "@/app/store/machine";
 import type { RootState } from "@/app/store/root/types";
 import { PowerState } from "@/app/store/types/enum";
@@ -32,6 +33,20 @@ setupMockServer(
   authResolvers.getCurrentUser.handler(),
   authResolvers.getMeEntitlements.handler()
 );
+
+// Spy per test, as this file restores all mocks after each test.
+const spyOnOpenModal = () => {
+  const openModal = vi.fn();
+  vi.spyOn(modalContext, "useModal").mockReturnValue({
+    isOpen: false,
+    title: "",
+    component: null,
+    props: {},
+    openModal,
+    closeModal: vi.fn(),
+  } as unknown as ReturnType<typeof modalContext.useModal>);
+  return openModal;
+};
 
 describe("MachineHeader", () => {
   let state: RootState;
@@ -200,7 +215,8 @@ describe("MachineHeader", () => {
     ).not.toBeInTheDocument();
   });
 
-  it("shouldn't need confirmation before locking a machine", async () => {
+  it("asks for confirmation before locking a machine via the switch", async () => {
+    const mockOpenModal = spyOnOpenModal();
     state.machine.items[0].actions = [NodeActions.LOCK];
     state.machine.items[0].permissions = ["edit", "delete"];
 
@@ -210,18 +226,38 @@ describe("MachineHeader", () => {
 
     await userEvent.click(screen.getByRole("switch", { name: /lock/i }));
 
+    expect(mockOpenModal).toHaveBeenCalledWith(
+      expect.objectContaining({ title: "Lock" })
+    );
     expect(
-      screen.queryByRole("complementary", {
-        name: /lock/i,
-      })
-    ).not.toBeInTheDocument();
-    const expectedAction = machineActions.lock({
-      system_id: "abc123",
+      store
+        .getActions()
+        .find((action) => action.type === machineActions.lock.type)
+    ).toBeUndefined();
+    expect(screen.getByRole("switch", { name: /lock/i })).not.toBeChecked();
+  });
+
+  it("asks for confirmation before unlocking a machine via the switch", async () => {
+    const mockOpenModal = spyOnOpenModal();
+    state.machine.items[0].actions = [NodeActions.UNLOCK];
+    state.machine.items[0].locked = true;
+    state.machine.items[0].permissions = ["edit", "delete"];
+
+    const { store } = renderWithProviders(<MachineHeader systemId="abc123" />, {
+      state,
     });
 
+    await userEvent.click(screen.getByRole("switch", { name: /lock/i }));
+
+    expect(mockOpenModal).toHaveBeenCalledWith(
+      expect.objectContaining({ title: "Unlock" })
+    );
     expect(
-      store.getActions().find((action) => action.type === expectedAction.type)
-    ).toStrictEqual(expectedAction);
+      store
+        .getActions()
+        .find((action) => action.type === machineActions.unlock.type)
+    ).toBeUndefined();
+    expect(screen.getByRole("switch", { name: /lock/i })).toBeChecked();
   });
 
   it("displays an error icon with configuration tab link when power type is not set and status is unknown", () => {

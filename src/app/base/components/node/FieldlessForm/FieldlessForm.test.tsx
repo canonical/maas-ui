@@ -346,6 +346,43 @@ describe("FieldlessForm", () => {
     ]);
   });
 
+  it("can dispatch rescue mode action on given machines", async () => {
+    const { store } = renderWithProviders(
+      <FieldlessForm
+        action={NodeActions.RESCUE_MODE}
+        actions={machineActions}
+        cleanup={machineActions.cleanup}
+        modelName="machine"
+        nodes={[state.machine.items[0]]}
+        processingCount={0}
+        viewingDetails={false}
+      />,
+      { state }
+    );
+
+    await userEvent.click(
+      screen.getByRole("button", { name: "Enter rescue mode for machine" })
+    );
+    expect(
+      store.getActions().filter(({ type }) => type === "machine/rescueMode")
+    ).toStrictEqual([
+      {
+        type: "machine/rescueMode",
+        meta: {
+          model: "machine",
+          method: "action",
+        },
+        payload: {
+          params: {
+            action: NodeActions.RESCUE_MODE,
+            extra: {},
+            system_id: "abc123",
+          },
+        },
+      },
+    ]);
+  });
+
   it("can dispatch unlock action on given machines", async () => {
     const { store } = renderWithProviders(
       <FieldlessForm

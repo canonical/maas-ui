@@ -9,14 +9,27 @@ import {
   NodeStatusCode,
   TestStatusStatus,
 } from "@/app/store/types/node";
+import { getNodeActionTitle } from "@/app/store/utils";
 import * as factory from "@/testing/factories";
+import { authResolvers } from "@/testing/resolvers/auth";
 import {
+  mockModal,
+  mockSidePanel,
   renderWithProviders,
+  setupMockServer,
   userEvent,
   screen,
   within,
   expectTooltipOnHover,
 } from "@/testing/utils";
+
+setupMockServer(
+  authResolvers.getCurrentUser.handler(),
+  authResolvers.getMeEntitlements.handler()
+);
+
+const { mockOpen: mockOpenSidePanel } = await mockSidePanel();
+const { mockOpen: mockOpenModal } = await mockModal();
 
 describe("StatusColumn", () => {
   let state: RootState;
@@ -217,10 +230,62 @@ describe("StatusColumn", () => {
       machine.actions.forEach((action) => {
         expect(
           within(screen.getByLabelText("sub")).getByRole("menuitem", {
-            name: action,
+            name: `${getNodeActionTitle(action)}...`,
           })
         ).toBeInTheDocument();
       });
+    });
+
+    it("selects only this machine and opens the Deploy form", async () => {
+      machine.actions = [NodeActions.DEPLOY];
+      const { store } = renderWithProviders(
+        <StatusColumn onToggleMenu={vi.fn()} systemId="abc123" />,
+        { state }
+      );
+      await userEvent.click(
+        screen.getByRole("button", { name: /take action/i })
+      );
+      await userEvent.click(
+        screen.getByRole("menuitem", { name: "Deploy..." })
+      );
+
+      expect(store.getActions()).toContainEqual(
+        expect.objectContaining({
+          type: "machine/setSelected",
+          payload: { items: ["abc123"] },
+        })
+      );
+      expect(store.getActions().map(({ type }) => type)).not.toContain(
+        "machine/deploy"
+      );
+      expect(mockOpenSidePanel).toHaveBeenCalledWith(
+        expect.objectContaining({ title: "Deploy" })
+      );
+    });
+
+    it("selects only this machine and opens the Lock modal", async () => {
+      machine.actions = [NodeActions.LOCK];
+      const { store } = renderWithProviders(
+        <StatusColumn onToggleMenu={vi.fn()} systemId="abc123" />,
+        { state }
+      );
+      await userEvent.click(
+        screen.getByRole("button", { name: /take action/i })
+      );
+      await userEvent.click(screen.getByRole("menuitem", { name: "Lock..." }));
+
+      expect(store.getActions()).toContainEqual(
+        expect.objectContaining({
+          type: "machine/setSelected",
+          payload: { items: ["abc123"] },
+        })
+      );
+      expect(store.getActions().map(({ type }) => type)).not.toContain(
+        "machine/lock"
+      );
+      expect(mockOpenModal).toHaveBeenCalledWith(
+        expect.objectContaining({ title: "Lock" })
+      );
     });
 
     it("does not render table menu if onToggleMenu not provided", () => {

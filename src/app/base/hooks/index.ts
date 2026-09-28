@@ -18,11 +18,7 @@ export {
   hasApiErrorDetails,
 } from "./forms";
 export { useCompletedIntro, useCompletedUserIntro } from "./intro";
-export {
-  useCanEdit,
-  useIsRackControllerConnected,
-  useMachineActions,
-} from "./node";
+export { useCanEdit, useIsRackControllerConnected } from "./node";
 export { useIsAllNetworkingDisabled } from "./node-networking";
 export { useTableSort } from "./tables";
 export type { TableSort } from "./tables";

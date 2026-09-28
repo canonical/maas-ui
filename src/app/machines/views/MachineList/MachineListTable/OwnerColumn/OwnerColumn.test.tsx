@@ -8,6 +8,8 @@ import * as factory from "@/testing/factories";
 import { authResolvers } from "@/testing/resolvers/auth";
 import { mockUsers, usersResolvers } from "@/testing/resolvers/users";
 import {
+  mockModal,
+  mockSidePanel,
   renderWithProviders,
   screen,
   setupMockServer,
@@ -20,6 +22,9 @@ const mockServer = setupMockServer(
   usersResolvers.listUsers.handler()
 );
 
+const { mockOpen: mockOpenSidePanel } = await mockSidePanel();
+const { mockOpen: mockOpenModal } = await mockModal();
+
 describe("OwnerColumn", () => {
   let state: RootState;
   beforeEach(() => {
@@ -29,7 +34,7 @@ describe("OwnerColumn", () => {
           data: [
             factory.machineAction({
               name: NodeActions.ACQUIRE,
-              title: "Allocate...",
+              title: "Acquire...",
             }),
             factory.machineAction({
               name: NodeActions.RELEASE,
@@ -126,6 +131,54 @@ describe("OwnerColumn", () => {
     expect(
       screen.getByRole("menuitem", { name: "Release..." })
     ).toBeInTheDocument();
+  });
+
+  it("selects only this machine and opens the Allocate modal", async () => {
+    state.machine.items[0].actions = [NodeActions.ACQUIRE];
+    state.machine.selected = { items: ["other-machine"] };
+    const { store } = renderWithProviders(
+      <OwnerColumn onToggleMenu={vi.fn()} systemId="abc123" />,
+      { state }
+    );
+    await userEvent.click(screen.getByRole("button", { name: "Take action:" }));
+    await userEvent.click(
+      screen.getByRole("menuitem", { name: "Allocate..." })
+    );
+
+    const actionTypes = store.getActions().map(({ type }) => type);
+    expect(store.getActions()).toContainEqual(
+      expect.objectContaining({
+        type: "machine/setSelected",
+        payload: { items: ["abc123"] },
+      })
+    );
+    expect(actionTypes).not.toContain("machine/acquire");
+    expect(mockOpenModal).toHaveBeenCalledWith(
+      expect.objectContaining({ title: "Allocate" })
+    );
+  });
+
+  it("selects only this machine and opens the Release form", async () => {
+    state.machine.items[0].actions = [NodeActions.RELEASE];
+    const { store } = renderWithProviders(
+      <OwnerColumn onToggleMenu={vi.fn()} systemId="abc123" />,
+      { state }
+    );
+    await userEvent.click(screen.getByRole("button", { name: "Take action:" }));
+    await userEvent.click(screen.getByRole("menuitem", { name: "Release..." }));
+
+    expect(store.getActions()).toContainEqual(
+      expect.objectContaining({
+        type: "machine/setSelected",
+        payload: { items: ["abc123"] },
+      })
+    );
+    expect(store.getActions().map(({ type }) => type)).not.toContain(
+      "machine/release"
+    );
+    expect(mockOpenSidePanel).toHaveBeenCalledWith(
+      expect.objectContaining({ title: "Release" })
+    );
   });
 
   it("can show a message when there are no menu items", async () => {
