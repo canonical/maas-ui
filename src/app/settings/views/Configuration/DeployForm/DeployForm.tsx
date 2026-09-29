@@ -5,11 +5,15 @@ import { Entitlement } from "../../UserManagement/views/Groups/constants";
 
 import type { DeployFormValues } from "./types";
 
+import { useConfigurations } from "@/app/api/query/configurations";
+import type { PublicConfigName } from "@/app/apiclient";
 import FormikForm from "@/app/base/components/FormikForm";
 import { useHasEntitlements } from "@/app/base/hooks";
+import { getConfigsFromResponse } from "@/app/settings/utils";
 import DeployFormFields from "@/app/settings/views/Configuration/DeployFormFields";
 import { configActions } from "@/app/store/config";
 import configSelectors from "@/app/store/config/selectors";
+import { ConfigNames } from "@/app/store/config/types";
 import { timeSpanToMinutes } from "@/app/utils";
 
 const DeploySchema = Yup.object().shape({
@@ -20,6 +24,22 @@ const DeploySchema = Yup.object().shape({
     "Hardware sync interval must be at least 1 minute"
   ),
 });
+
+export const deployConfigNames = [
+  ConfigNames.DEFAULT_OSYSTEM,
+  ConfigNames.DEFAULT_DISTRO_SERIES,
+  ConfigNames.HARDWARE_SYNC_INTERVAL,
+] as PublicConfigName[];
+
+export const deployConfigsOptions = {
+  query: { name: deployConfigNames },
+};
+
+type DeployConfigs = {
+  default_osystem?: string;
+  default_distro_series?: string;
+  hardware_sync_interval?: string;
+};
 
 const DeployForm = (): React.ReactElement => {
   const dispatch = useDispatch();
@@ -44,6 +64,7 @@ const DeployForm = (): React.ReactElement => {
       aria-label="deploy configuration"
       cleanup={configActions.cleanup}
       editable={canEdit}
+      enableReinitialize
       errors={errors}
       initialValues={{
         default_osystem: defaultOSystem || "",

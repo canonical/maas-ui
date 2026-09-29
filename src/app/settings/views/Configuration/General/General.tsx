@@ -1,24 +1,23 @@
 import { useEffect } from "react";
 
-import { ContentSection } from "@canonical/maas-react-components";
-import { Spinner } from "@canonical/react-components";
+import { ContentSection, Layout } from "@canonical/maas-react-components";
+import { Notification } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 
-import GeneralForm from "../GeneralForm";
+import GeneralForm, { generalConfigsOptions } from "../GeneralForm/GeneralForm";
 
+import { useConfigurations } from "@/app/api/query/configurations";
 import PageContent from "@/app/base/components/PageContent";
 import { useWindowTitle } from "@/app/base/hooks";
 import { configActions } from "@/app/store/config";
 import configSelectors from "@/app/store/config/selectors";
 
-export enum Labels {
-  Loading = "Loading...",
-}
-
 const General = (): React.ReactElement => {
   const loaded = useSelector(configSelectors.loaded);
-  const loading = useSelector(configSelectors.loading);
   const dispatch = useDispatch();
+  const { isPending, error, isSuccess } = useConfigurations(
+    generalConfigsOptions
+  );
 
   useWindowTitle("General");
 
@@ -28,6 +27,14 @@ const General = (): React.ReactElement => {
     }
   }, [dispatch, loaded]);
 
+  if (isPending) {
+    return (
+      <PageContent>
+        <Layout.Skeleton view="settings" />
+      </PageContent>
+    );
+  }
+
   return (
     <PageContent>
       <ContentSection variant="narrow">
@@ -35,8 +42,15 @@ const General = (): React.ReactElement => {
           General
         </ContentSection.Title>
         <ContentSection.Content>
-          {loading && <Spinner text={Labels.Loading} />}
-          {loaded && <GeneralForm />}
+          {error && (
+            <Notification
+              severity="negative"
+              title="Error while fetching general configurations"
+            >
+              {error.message}
+            </Notification>
+          )}
+          {isSuccess && <GeneralForm />}
         </ContentSection.Content>
       </ContentSection>
     </PageContent>

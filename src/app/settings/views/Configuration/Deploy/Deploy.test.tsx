@@ -1,43 +1,97 @@
 import Deploy from "./Deploy";
 
+import { ConfigNames } from "@/app/store/config/types";
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
-import { renderWithProviders } from "@/testing/utils";
+import { authResolvers } from "@/testing/resolvers/auth";
+import { configurationsResolvers } from "@/testing/resolvers/configurations";
+import {
+  screen,
+  renderWithProviders,
+  setupMockServer,
+  mockIsPending,
+} from "@/testing/utils";
 
-let state: RootState;
+const configItems = [
+  { name: ConfigNames.DEFAULT_OSYSTEM, value: "ubuntu" },
+  { name: ConfigNames.DEFAULT_DISTRO_SERIES, value: "bionic" },
+  { name: ConfigNames.HARDWARE_SYNC_INTERVAL, value: "15m" },
+];
 
-beforeEach(() => {
-  state = factory.rootState();
-});
+const mockServer = setupMockServer(
+  authResolvers.getCurrentUser.handler(),
+  authResolvers.getMeEntitlements.handler(),
+  configurationsResolvers.listConfigurations.handler({ items: configItems })
+);
 
-it(`dispatches actions to fetch config and general os info if either has not
-    already loaded`, () => {
-  state.config.loaded = false;
+describe("Deploy", () => {
+  let state: RootState;
 
-  const { store } = renderWithProviders(<Deploy />, { state });
+  beforeEach(() => {
+    state = factory.rootState({
+      config: factory.configState({ items: configItems }),
+      general: factory.generalState({
+        osInfo: factory.osInfoState({ loaded: true }),
+      }),
+    });
+  });
 
-  const fetchActions = store
-    .getActions()
-    .filter(
-      (action) =>
-        action.type.startsWith("config/fetch") ||
-        action.type.startsWith("general/fetch")
-    );
+  it("displays a skeleton while the configurations are loading", () => {
+    mockIsPending();
+    const { result } = renderWithProviders(<Deploy />, { state });
 
-  expect(fetchActions).toEqual([
-    {
-      type: "config/fetch",
-      meta: { model: "config", method: "list" },
-      payload: null,
-    },
-    {
-      type: "general/fetchOsInfo",
-      meta: {
-        cache: true,
-        model: "general",
-        method: "osinfo",
+    expect(result.container.querySelector(".layout-skeleton")).not.toBeNull();
+  });
+
+  it("displays the Deploy form once the configurations have loaded", async () => {
+    renderWithProviders(<Deploy />, { state });
+
+    expect(
+      await screen.findByRole("form", { name: "deploy configuration" })
+    ).toBeInTheDocument();
+  });
+
+  it("displays an error notification when the request fails", async () => {
+    mockServer.use(configurationsResolvers.listConfigurations.error());
+    renderWithProviders(<Deploy />, { state });
+
+    expect(
+      await screen.findByText("Error while fetching deploy configurations")
+    ).toBeInTheDocument();
+  });
+
+  it(`dispatches actions to fetch config and general os info if either has not
+    already loaded`, async () => {
+    state.config.loaded = false;
+
+    const { store } = renderWithProviders(<Deploy />, { state });
+    expect(
+      await screen.findByRole("form", { name: "deploy configuration" })
+    ).toBeInTheDocument();
+
+    const fetchActions = store
+      .getActions()
+      .filter(
+        (action) =>
+          action.type.startsWith("config/fetch") ||
+          action.type.startsWith("general/fetch")
+      );
+
+    expect(fetchActions).toEqual([
+      {
+        type: "config/fetch",
+        meta: { model: "config", method: "list" },
+        payload: null,
       },
-      payload: null,
-    },
-  ]);
+      {
+        type: "general/fetchOsInfo",
+        meta: {
+          cache: true,
+          model: "general",
+          method: "osinfo",
+        },
+        payload: null,
+      },
+    ]);
+  });
 });
