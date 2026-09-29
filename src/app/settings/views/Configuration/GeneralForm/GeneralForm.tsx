@@ -11,13 +11,17 @@ import { Entitlement } from "../../UserManagement/views/Groups/constants";
 import ThemedRadioButton from "./ThemedRadioButton";
 import { ColorValues } from "./ThemedRadioButton/ThemedRadioButton";
 
+import { useConfigurations } from "@/app/api/query/configurations";
+import type { PublicConfigName } from "@/app/apiclient";
 import FormikField from "@/app/base/components/FormikField";
 import FormikForm from "@/app/base/components/FormikForm";
 import { useSendAnalytics, useHasEntitlements } from "@/app/base/hooks";
 import { useThemeContext } from "@/app/base/theme-context";
 import type { UsabillaLive } from "@/app/base/types";
+import { getConfigsFromResponse } from "@/app/settings/utils";
 import { configActions } from "@/app/store/config";
 import configSelectors from "@/app/store/config/selectors";
+import { ConfigNames } from "@/app/store/config/types";
 
 declare global {
   interface Window {
@@ -28,6 +32,18 @@ declare global {
 export enum Labels {
   FormLabel = "Configuration - General",
 }
+
+export const generalConfigNames = [
+  ConfigNames.MAAS_NAME,
+  ConfigNames.THEME,
+  ConfigNames.ENABLE_ANALYTICS,
+  ConfigNames.RELEASE_NOTIFICATIONS,
+  ConfigNames.EXPERIMENTAL_SWITCH_PROVISIONING,
+] as PublicConfigName[];
+
+export const generalConfigsOptions = {
+  query: { name: generalConfigNames },
+};
 
 const GeneralSchema = Yup.object().shape({
   maas_name: Yup.string().required(),
@@ -45,17 +61,22 @@ type GeneralFormValues = {
   experimental_switch_provisioning: boolean;
 };
 
+type GeneralConfigs = Partial<GeneralFormValues>;
+
 const GeneralForm = (): React.ReactElement => {
   const dispatch = useDispatch();
-  const maasName = useSelector(configSelectors.maasName);
-  const maasTheme = useSelector(configSelectors.theme);
-  const analyticsEnabled = useSelector(configSelectors.analyticsEnabled);
-  const releaseNotifications = useSelector(
-    configSelectors.releaseNotifications
-  );
-  const experimentalSwitchProvisioning = useSelector(
-    configSelectors.experimentalSwitchProvisioning
-  );
+  const { data } = useConfigurations(generalConfigsOptions);
+  const {
+    maas_name: maasName,
+    theme: maasTheme,
+    enable_analytics: analyticsEnabled,
+    release_notifications: releaseNotifications,
+    experimental_switch_provisioning: experimentalSwitchProvisioning,
+  } = getConfigsFromResponse(
+    data?.items ?? [],
+    generalConfigNames
+  ) as GeneralConfigs;
+
   const saved = useSelector(configSelectors.saved);
   const saving = useSelector(configSelectors.saving);
   const errors = useSelector(configSelectors.errors);
@@ -65,6 +86,10 @@ const GeneralForm = (): React.ReactElement => {
   const canEdit = useHasEntitlements([Entitlement.CAN_EDIT_CONFIGURATIONS]);
 
   useEffect(() => {
+    previousReleaseNotifications.current = releaseNotifications;
+  }, [releaseNotifications]);
+
+  useEffect(() => {
     // revert to persisted theme value on unmount
     return () => {
       setTheme(maasTheme ? maasTheme : "default");
@@ -72,7 +97,12 @@ const GeneralForm = (): React.ReactElement => {
   }, [setTheme, maasTheme]);
 
   useEffect(() => {
-    if (analyticsEnabled !== previousEnableAnalytics) {
+    // previousEnableAnalytics is undefined until the configurations resolve, which
+    // is not a user-initiated change.
+    if (
+      previousEnableAnalytics !== undefined &&
+      analyticsEnabled !== previousEnableAnalytics
+    ) {
       // If the analytics setting has been changed, the only way to be
       // completely sure the events are cleared is to reload the window.
       // This needs to be done once the data has been been updated successfully,
@@ -88,6 +118,7 @@ const GeneralForm = (): React.ReactElement => {
       aria-label="Configuration - General"
       cleanup={configActions.cleanup}
       editable={canEdit}
+      enableReinitialize
       errors={errors}
       initialValues={{
         maas_name: maasName || "",

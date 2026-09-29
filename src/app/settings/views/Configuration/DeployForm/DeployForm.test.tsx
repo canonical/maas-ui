@@ -5,6 +5,7 @@ import { ConfigNames } from "@/app/store/config/types";
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
 import { authResolvers } from "@/testing/resolvers/auth";
+import { configurationsResolvers } from "@/testing/resolvers/configurations";
 import {
   userEvent,
   screen,
@@ -16,7 +17,13 @@ import {
 
 const mockServer = setupMockServer(
   authResolvers.getCurrentUser.handler(),
-  authResolvers.getMeEntitlements.handler()
+  authResolvers.getMeEntitlements.handler(),
+  configurationsResolvers.listConfigurations.handler({
+    items: [
+      { name: ConfigNames.DEFAULT_OSYSTEM, value: "ubuntu" },
+      { name: ConfigNames.DEFAULT_DISTRO_SERIES, value: "bionic" },
+    ],
+  })
 );
 
 describe("DeployFormFields", () => {
@@ -87,19 +94,24 @@ describe("DeployFormFields", () => {
     ).toBeInTheDocument();
   });
 
-  it("displays the default hardware sync interval option with a correct value", () => {
-    const syncIntervalValue = "15m";
-    // TODO: Investigate mutating state in integration tests https://github.com/canonical/app-tribe/issues/794
-    state.config.items.push({
-      name: ConfigNames.HARDWARE_SYNC_INTERVAL,
-      value: syncIntervalValue,
-    });
+  it("displays the default hardware sync interval option with a correct value", async () => {
+    mockServer.use(
+      configurationsResolvers.listConfigurations.handler({
+        items: [
+          { name: ConfigNames.DEFAULT_OSYSTEM, value: "ubuntu" },
+          { name: ConfigNames.DEFAULT_DISTRO_SERIES, value: "bionic" },
+          { name: ConfigNames.HARDWARE_SYNC_INTERVAL, value: "15m" },
+        ],
+      })
+    );
 
     renderWithProviders(<DeployForm />, { state });
 
-    expect(
-      screen.getByRole("textbox", { name: /Default hardware sync interval/ })
-    ).toHaveValue("15");
+    await waitFor(() => {
+      expect(
+        screen.getByRole("textbox", { name: /Default hardware sync interval/ })
+      ).toHaveValue("15");
+    });
   });
 
   it("adds a hardware_sync_interval field to the request on submit", async () => {
