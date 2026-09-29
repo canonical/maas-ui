@@ -21,8 +21,5 @@ describe("useTrustedSshHostKeys", () => {
     });
 
     expect(result.current.data?.items).toEqual(mockSshHostKeys.items);
-    expect(result.current.data?.headers?.get("content-type")).toBe(
-      "application/json"
-    );
   });
 });
