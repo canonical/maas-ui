@@ -18,15 +18,26 @@ import {
 
 const mockServer = setupMockServer(authResolvers.getMeEntitlements.handler([]));
 
-const usePermissionResults = () => ({
-  canView: useHasEntitlements([Entitlement.CAN_VIEW_MACHINES]),
-  canEditMachine: useCanEditMachine("abc123"),
-  canEditUnresolvedMachine: useCanEditMachine(),
-  canEditVMHost: useCanEditVMHost(0),
-  canEditUnresolvedVMHost: useCanEditVMHost(),
-  isSuperUser: useIsSuperUser(),
-  query: useGetUserEntitlements(),
-});
+const usePermissionResults = () => {
+  const canView = useHasEntitlements([Entitlement.CAN_VIEW_MACHINES]);
+  const canEditMachine = useCanEditMachine("abc123");
+  const canEditUnresolvedMachine = useCanEditMachine();
+  const isSuperUser = useIsSuperUser();
+  return {
+    canView: canView.allowed,
+    canEditMachine: canEditMachine.allowed,
+    canEditUnresolvedMachine: canEditUnresolvedMachine.allowed,
+    canEditVMHost: useCanEditVMHost(0),
+    canEditUnresolvedVMHost: useCanEditVMHost(),
+    isSuperUser: isSuperUser.allowed,
+    isPending:
+      canView.isPending ||
+      canEditMachine.isPending ||
+      canEditUnresolvedMachine.isPending ||
+      isSuperUser.isPending,
+    query: useGetUserEntitlements(),
+  };
+};
 
 describe("entitlement gates", () => {
   it.each<ExternalAuthType | null>(["RBAC", "CANDID", null])(
@@ -62,6 +73,7 @@ describe("entitlement gates", () => {
         canEditVMHost: allowed,
         canEditUnresolvedVMHost: allowed,
         isSuperUser: false,
+        isPending: false,
       });
     }
   );
@@ -108,7 +120,7 @@ describe("entitlement gates", () => {
     );
     const { result } = renderHookWithProviders(useIsSuperUser);
     await waitFor(() => {
-      expect(result.current).toBe(true);
+      expect(result.current.allowed).toBe(true);
     });
   });
 });

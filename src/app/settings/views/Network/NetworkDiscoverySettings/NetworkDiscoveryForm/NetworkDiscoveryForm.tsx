@@ -42,7 +42,9 @@ const NetworkDiscoveryForm = (): ReactElement => {
   const discoveryIntervalOptions = useSelector(
     configSelectors.discoveryIntervalOptions
   );
-  const canEdit = useHasEntitlements([Entitlement.CAN_EDIT_CONFIGURATIONS]);
+  const { allowed: canEdit } = useHasEntitlements([
+    Entitlement.CAN_EDIT_CONFIGURATIONS,
+  ]);
 
   useWindowTitle("Network discovery");
 

@@ -214,7 +214,10 @@ export const router = createBrowserRouter(
               path: urls.networkDiscovery.index,
               element: (
                 <RequireEntitlements
-                  entitlements={[Entitlement.CAN_VIEW_GLOBAL_ENTITIES]}
+                  entitlements={[
+                    Entitlement.CAN_VIEW_GLOBAL_ENTITIES,
+                    Entitlement.CAN_VIEW_CONFIGURATIONS,
+                  ]}
                 >
                   <ErrorBoundary>
                     <DiscoveriesList />
@@ -778,6 +781,7 @@ export const router = createBrowserRouter(
               element: (
                 <RequireEntitlements
                   entitlements={[Entitlement.CAN_VIEW_CONFIGURATIONS]}
+                  skeletonView="settings"
                 >
                   <Settings />
                 </RequireEntitlements>
@@ -936,6 +940,7 @@ export const router = createBrowserRouter(
                   element: (
                     <RequireEntitlements
                       entitlements={[Entitlement.CAN_VIEW_IDENTITIES]}
+                      skeletonView="settings"
                     >
                       <ErrorBoundary>
                         <UserManagement />
@@ -994,6 +999,7 @@ export const router = createBrowserRouter(
                   element: (
                     <RequireEntitlements
                       entitlements={[Entitlement.CAN_VIEW_LICENSE_KEYS]}
+                      skeletonView="settings"
                     >
                       <ErrorBoundary>
                         <LicenseKeyList />
@@ -1071,6 +1077,7 @@ export const router = createBrowserRouter(
                   element: (
                     <RequireEntitlements
                       entitlements={[Entitlement.CAN_VIEW_GLOBAL_ENTITIES]}
+                      skeletonView="settings"
                     >
                       <ErrorBoundary>
                         <Scripts />
@@ -1148,6 +1155,7 @@ export const router = createBrowserRouter(
                   element: (
                     <RequireEntitlements
                       entitlements={[Entitlement.CAN_VIEW_BOOT_ENTITIES]}
+                      skeletonView="settings"
                     >
                       <ErrorBoundary>
                         <ImageSettings />

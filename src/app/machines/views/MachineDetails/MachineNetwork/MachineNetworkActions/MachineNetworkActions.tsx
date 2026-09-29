@@ -94,7 +94,7 @@ const MachineNetworkActions = ({
     machineSelectors.getById(state, systemId)
   );
   const isAllNetworkingDisabled = useIsAllNetworkingDisabled(machine);
-  const canEditMachine = useCanEditMachine(systemId);
+  const { allowed: canEditMachine } = useCanEditMachine(systemId);
   const sendAnalytics = useSendAnalytics();
 
   if (!isMachineDetails(machine)) {

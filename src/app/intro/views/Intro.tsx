@@ -36,7 +36,8 @@ const Intro = (): ReactElement => {
   const viewingUserIntro = location.pathname.startsWith(urls.intro.user);
 
   const user = useGetCurrentUser();
-  const isSuperUser = useIsSuperUser();
+  const { allowed: isSuperUser, isPending: isSuperUserPending } =
+    useIsSuperUser();
   const isRBAC = useSelector(statusSelectors.isRBAC);
 
   const canConfigure = isRBAC || isSuperUser;
@@ -44,7 +45,12 @@ const Intro = (): ReactElement => {
     !completedIntro && !completedUserIntro && !canConfigure;
 
   useEffect(() => {
-    if (!user.isLoading && !configLoading && !showIncomplete) {
+    if (
+      !user.isLoading &&
+      !configLoading &&
+      !isSuperUserPending &&
+      !showIncomplete
+    ) {
       if (completedIntro && completedUserIntro) {
         // If both intros have been completed then exit the flow.
         navigate(exitURL, { replace: true });
@@ -63,6 +69,7 @@ const Intro = (): ReactElement => {
     user.data,
     user.isLoading,
     configLoading,
+    isSuperUserPending,
     completedIntro,
     completedUserIntro,
     showIncomplete,
@@ -71,7 +78,7 @@ const Intro = (): ReactElement => {
   ]);
 
   let content: ReactNode;
-  if (user.isLoading || configLoading) {
+  if (user.isLoading || configLoading || isSuperUserPending) {
     content = <PageContent header={<SectionHeader loading />} />;
   } else if (showIncomplete) {
     // Prevent the user from reaching any of the intro urls if they are not an admin.

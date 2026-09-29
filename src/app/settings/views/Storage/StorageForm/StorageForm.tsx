@@ -49,7 +49,9 @@ const StorageForm = (): React.ReactElement => {
     enable_disk_erasing_on_release,
   } = getConfigsFromResponse(data?.items || [], names);
   const updateConfig = useBulkSetConfigurations();
-  const canEdit = useHasEntitlements([Entitlement.CAN_EDIT_CONFIGURATIONS]);
+  const { allowed: canEdit } = useHasEntitlements([
+    Entitlement.CAN_EDIT_CONFIGURATIONS,
+  ]);
   useWindowTitle("Storage");
 
   return (

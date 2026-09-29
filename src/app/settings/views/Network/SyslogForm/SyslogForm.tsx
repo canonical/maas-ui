@@ -31,7 +31,9 @@ const SyslogForm = (): ReactElement => {
   const eTag = data?.headers?.get("ETag");
   const remote_syslog = data?.value || "";
   const updateConfig = useSetConfiguration();
-  const canEdit = useHasEntitlements([Entitlement.CAN_EDIT_CONFIGURATIONS]);
+  const { allowed: canEdit } = useHasEntitlements([
+    Entitlement.CAN_EDIT_CONFIGURATIONS,
+  ]);
 
   useWindowTitle("Syslog");
 
