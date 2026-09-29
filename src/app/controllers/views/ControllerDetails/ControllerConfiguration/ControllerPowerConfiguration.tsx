@@ -92,7 +92,9 @@ const ControllerPowerConfiguration = ({
     }
   }, [controller?.power_type, powerTypes]);
 
-  const canEditUser = useHasEntitlements([Entitlement.CAN_EDIT_CONTROLLERS]);
+  const { allowed: canEditUser } = useHasEntitlements([
+    Entitlement.CAN_EDIT_CONTROLLERS,
+  ]);
 
   if (!isDetails || powerTypesLoading) {
     return <Spinner text="Loading..." />;

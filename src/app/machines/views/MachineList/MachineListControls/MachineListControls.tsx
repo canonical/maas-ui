@@ -47,7 +47,9 @@ const MachineListControls = ({
 }: MachineListControlsProps): ReactElement => {
   const [searchText, setSearchText] = useState(filter);
   const hasSelection = useHasSelection();
-  const canEditMachines = useHasEntitlements([Entitlement.CAN_EDIT_MACHINES]);
+  const { allowed: canEditMachines } = useHasEntitlements([
+    Entitlement.CAN_EDIT_MACHINES,
+  ]);
   const dispatch = useDispatch();
 
   useEffect(() => {

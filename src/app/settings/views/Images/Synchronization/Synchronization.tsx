@@ -48,7 +48,9 @@ const Synchronization = (): ReactElement => {
   const syncInterval = (intervalConfig.data?.value as number) ?? 60;
 
   const updateConfig = useSetConfiguration();
-  const canEdit = useHasEntitlements([Entitlement.CAN_EDIT_BOOT_ENTITIES]);
+  const { allowed: canEdit } = useHasEntitlements([
+    Entitlement.CAN_EDIT_BOOT_ENTITIES,
+  ]);
 
   const initialValues: SynchronizationValues = {
     autoSync: autoImport,

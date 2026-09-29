@@ -22,7 +22,9 @@ type Props = {
 
 const VLANSummary = ({ id }: Props): React.ReactElement | null => {
   const { openSidePanel } = useSidePanel();
-  const canEdit = useHasEntitlements([Entitlement.CAN_EDIT_GLOBAL_ENTITIES]);
+  const { allowed: canEdit } = useHasEntitlements([
+    Entitlement.CAN_EDIT_GLOBAL_ENTITIES,
+  ]);
   const vlan = useSelector((state: RootState) =>
     vlanSelectors.getById(state, id)
   );

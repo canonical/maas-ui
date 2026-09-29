@@ -24,7 +24,7 @@ const MachineNetwork = (): ReactElement => {
   const machine = useSelector((state: RootState) =>
     machineSelectors.getById(state, id)
   );
-  const canEditMachine = useCanEditMachine(id);
+  const { allowed: canEditMachine } = useCanEditMachine(id);
 
   useWindowTitle(`${machine?.fqdn ? `${machine?.fqdn} ` : "Machine"} network`);
 

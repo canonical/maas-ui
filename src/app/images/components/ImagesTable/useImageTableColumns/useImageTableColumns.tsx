@@ -81,7 +81,9 @@ const useImageTableColumns = ({
   const { failure } = useToastNotification();
   const startSync = useStartImageSync();
   const stopSync = useStopImageSync();
-  const canEdit = useHasEntitlements([Entitlement.CAN_EDIT_BOOT_ENTITIES]);
+  const { allowed: canEdit } = useHasEntitlements([
+    Entitlement.CAN_EDIT_BOOT_ENTITIES,
+  ]);
 
   const { data: sources, isPending: isSourcesPending } = useImageSources();
   const { data: availableImages, isPending: isAvailableImagesPending } =

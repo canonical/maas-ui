@@ -20,7 +20,9 @@ const ControllerNetwork = ({ systemId }: Props): React.ReactElement => {
   const controller = useSelector((state: RootState) =>
     controllerSelectors.getById(state, systemId)
   );
-  const canEdit = useHasEntitlements([Entitlement.CAN_EDIT_CONTROLLERS]);
+  const { allowed: canEdit } = useHasEntitlements([
+    Entitlement.CAN_EDIT_CONTROLLERS,
+  ]);
   useWindowTitle(`${`${controller?.hostname}` || "Controller"} network`);
 
   if (!controller || !isControllerDetails(controller)) {

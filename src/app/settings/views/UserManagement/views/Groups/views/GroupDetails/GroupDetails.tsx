@@ -29,7 +29,9 @@ const GroupDetails = (): ReactElement => {
   const { data: group, isPending } = useGetGroup({
     path: { group_id: id! },
   });
-  const canEdit = useHasEntitlements([Entitlement.CAN_EDIT_IDENTITIES]);
+  const { allowed: canEdit } = useHasEntitlements([
+    Entitlement.CAN_EDIT_IDENTITIES,
+  ]);
 
   const isValidID = isId(id);
 

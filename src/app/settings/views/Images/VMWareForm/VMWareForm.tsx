@@ -49,7 +49,9 @@ const VMWareForm = (): ReactElement => {
     vcenter_datacenter,
   } = getConfigsFromResponse(data?.items || [], names);
   const updateConfig = useBulkSetConfigurations();
-  const canEdit = useHasEntitlements([Entitlement.CAN_EDIT_BOOT_ENTITIES]);
+  const { allowed: canEdit } = useHasEntitlements([
+    Entitlement.CAN_EDIT_BOOT_ENTITIES,
+  ]);
   return (
     <FormikForm
       aria-label={Labels.FormLabel}

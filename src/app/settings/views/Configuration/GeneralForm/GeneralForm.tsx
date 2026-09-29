@@ -62,7 +62,9 @@ const GeneralForm = (): React.ReactElement => {
   const previousReleaseNotifications = useRef(releaseNotifications);
   const previousEnableAnalytics = usePrevious(analyticsEnabled);
   const { setTheme } = useThemeContext();
-  const canEdit = useHasEntitlements([Entitlement.CAN_EDIT_CONFIGURATIONS]);
+  const { allowed: canEdit } = useHasEntitlements([
+    Entitlement.CAN_EDIT_CONFIGURATIONS,
+  ]);
 
   useEffect(() => {
     // revert to persisted theme value on unmount

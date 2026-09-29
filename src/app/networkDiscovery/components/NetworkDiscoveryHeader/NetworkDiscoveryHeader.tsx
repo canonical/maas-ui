@@ -15,7 +15,9 @@ export enum Labels {
 const NetworkDiscoveryHeader = (): ReactElement => {
   const { openSidePanel } = useSidePanel();
   const discoveries = useNetworkDiscoveries();
-  const canEdit = useHasEntitlements([Entitlement.CAN_EDIT_GLOBAL_ENTITIES]);
+  const { allowed: canEdit } = useHasEntitlements([
+    Entitlement.CAN_EDIT_GLOBAL_ENTITIES,
+  ]);
 
   return (
     <MainToolbar>

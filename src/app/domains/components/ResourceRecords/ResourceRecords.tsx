@@ -26,7 +26,9 @@ const ResourceRecords = ({ id }: Props): React.ReactElement | null => {
     domainsSelectors.getById(state, id)
   );
   const loading = useSelector(domainsSelectors.loading);
-  const canEdit = useHasEntitlements([Entitlement.CAN_EDIT_GLOBAL_ENTITIES]);
+  const { allowed: canEdit } = useHasEntitlements([
+    Entitlement.CAN_EDIT_GLOBAL_ENTITIES,
+  ]);
 
   if (loading) {
     return (

@@ -21,7 +21,9 @@ const DHCPSnippets = ({ modelName, subnetIds }: Props): React.ReactElement => {
     subnetSelectors.getByIds(state, subnetIds)
   );
   const ipranges = useSelector(ipRangeSelectors.all);
-  const canEdit = useHasEntitlements([Entitlement.CAN_EDIT_GLOBAL_ENTITIES]);
+  const { allowed: canEdit } = useHasEntitlements([
+    Entitlement.CAN_EDIT_GLOBAL_ENTITIES,
+  ]);
 
   useFetchActions([subnetActions.fetch, ipRangeActions.fetch]);
 

@@ -16,7 +16,9 @@ export type StaticRouteColumnDef = ColumnDef<StaticRoute, Partial<StaticRoute>>;
 
 const useStaticRoutesColumns = (): StaticRouteColumnDef[] => {
   const { openSidePanel } = useSidePanel();
-  const canEdit = useHasEntitlements([Entitlement.CAN_EDIT_GLOBAL_ENTITIES]);
+  const { allowed: canEdit } = useHasEntitlements([
+    Entitlement.CAN_EDIT_GLOBAL_ENTITIES,
+  ]);
   return useMemo(
     () => [
       {

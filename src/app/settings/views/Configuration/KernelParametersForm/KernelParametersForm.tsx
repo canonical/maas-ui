@@ -40,7 +40,9 @@ const KernelParametersForm = (): React.ReactElement => {
   const enableKernelCrashDump = useSelector(
     configSelectors.enableKernelCrashDump
   );
-  const canEdit = useHasEntitlements([Entitlement.CAN_EDIT_BOOT_ENTITIES]);
+  const { allowed: canEdit } = useHasEntitlements([
+    Entitlement.CAN_EDIT_BOOT_ENTITIES,
+  ]);
 
   return (
     <FormikForm<KernelParametersValues>

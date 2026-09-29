@@ -19,7 +19,9 @@ import usePagination from "@/app/base/hooks/usePagination/usePagination";
 const GroupsTable = () => {
   const [searchText, setSearchText] = useState("");
   const { openSidePanel } = useSidePanel();
-  const canEdit = useHasEntitlements([Entitlement.CAN_EDIT_IDENTITIES]);
+  const { allowed: canEdit } = useHasEntitlements([
+    Entitlement.CAN_EDIT_IDENTITIES,
+  ]);
   const { page, debouncedPage, size, handlePageSizeChange, setPage } =
     usePagination();
   const columns = useGroupsListColumns({ canEdit });
