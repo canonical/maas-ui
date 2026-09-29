@@ -1,10 +1,6 @@
 import { useEffect, useMemo, type ReactElement } from "react";
 
-import {
-  ContentSection,
-  MainToolbar,
-  useSidePanel,
-} from "@canonical/maas-react-components";
+import { ContentSection, MainToolbar } from "@canonical/maas-react-components";
 import {
   Button,
   Notification as NotificationBanner,
@@ -21,12 +17,13 @@ import SingleSignOnForm from "./components/SingleSignOnForm";
 import { useActiveOauthProvider } from "@/app/api/query/auth";
 import PageContent from "@/app/base/components/PageContent";
 import { useHasEntitlements, useWindowTitle } from "@/app/base/hooks";
+import { useModal } from "@/app/base/modal-context";
 import { generalActions } from "@/app/store/general";
 import { maasURL } from "@/app/store/general/selectors";
 
 const SingleSignOn = (): ReactElement => {
   const { data, error, isPending } = useActiveOauthProvider();
-  const { openSidePanel } = useSidePanel();
+  const { openModal } = useModal();
   const dispatch = useDispatch();
   const maasURLData = useSelector(maasURL.get);
   const canEdit = useHasEntitlements([Entitlement.CAN_EDIT_IDENTITIES]);
@@ -64,7 +61,7 @@ const SingleSignOn = (): ReactElement => {
                   disabled={!queryData || !canEdit}
                   onClick={() => {
                     if (data) {
-                      openSidePanel({
+                      openModal({
                         component: ResetSingleSignOn,
                         props: { id: data?.id },
                         title: "Reset OIDC configuration",

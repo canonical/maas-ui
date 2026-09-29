@@ -1,7 +1,7 @@
-import { useSidePanel } from "@canonical/maas-react-components";
 import { useDispatch, useSelector } from "react-redux";
 
 import ModelActionForm from "@/app/base/components/ModelActionForm";
+import { useModal } from "@/app/base/modal-context";
 import { licenseKeysActions } from "@/app/store/licensekeys";
 import licenseKeysSelectors from "@/app/store/licensekeys/selectors";
 import type { LicenseKeys } from "@/app/store/licensekeys/types";
@@ -11,7 +11,7 @@ type Props = {
 };
 
 const LicenseKeyDelete = ({ licenseKey }: Props) => {
-  const { closeSidePanel } = useSidePanel();
+  const { closeModal } = useModal();
   const dispatch = useDispatch();
   const errors = useSelector(licenseKeysSelectors.errors);
   const saved = useSelector(licenseKeysSelectors.saved);
@@ -23,11 +23,11 @@ const LicenseKeyDelete = ({ licenseKey }: Props) => {
       errors={errors}
       initialValues={{}}
       modelType="license key"
-      onCancel={closeSidePanel}
+      onCancel={closeModal}
       onSubmit={() => {
         dispatch(licenseKeysActions.delete(licenseKey));
       }}
-      onSuccess={closeSidePanel}
+      onSuccess={closeModal}
       saved={saved}
       saving={saving}
     />

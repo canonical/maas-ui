@@ -12,6 +12,7 @@ import {
   screen,
   within,
   renderWithProviders,
+  mockModal,
   mockSidePanel,
   setupMockServer,
   waitFor,
@@ -22,6 +23,7 @@ const mockServer = setupMockServer(
   authResolvers.getMeEntitlements.handler()
 );
 const { mockOpen } = await mockSidePanel();
+const { mockOpen: mockOpenModal } = await mockModal();
 
 describe("DhcpList", () => {
   let state: RootState;
@@ -111,7 +113,7 @@ describe("DhcpList", () => {
   });
 
   describe("table actions", () => {
-    it("can show a delete side panel", async () => {
+    it("can show a delete modal", async () => {
       renderWithProviders(<DhcpList />, { state });
       await waitFor(() => {
         expect(
@@ -122,7 +124,7 @@ describe("DhcpList", () => {
         screen.getAllByRole("button", { name: "Delete" })[0]
       );
 
-      expect(mockOpen).toHaveBeenCalledWith(
+      expect(mockOpenModal).toHaveBeenCalledWith(
         expect.objectContaining({
           title: "Delete DHCP snippet",
           component: DhcpDelete,
@@ -130,6 +132,9 @@ describe("DhcpList", () => {
             id: state.dhcpsnippet.items[2].id,
           },
         })
+      );
+      expect(mockOpen).not.toHaveBeenCalledWith(
+        expect.objectContaining({ component: DhcpDelete })
       );
     });
 

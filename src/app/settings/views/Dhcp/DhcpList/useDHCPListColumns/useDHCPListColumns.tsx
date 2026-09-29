@@ -9,6 +9,7 @@ import DhcpTarget from "../../DhcpTarget";
 
 import DhcpSnippetType from "@/app/base/components/DhcpSnippetType";
 import TableActions from "@/app/base/components/TableActions";
+import { useModal } from "@/app/base/modal-context";
 import type { DHCPSnippet } from "@/app/store/dhcpsnippet/types";
 import { formatUtcDatetime } from "@/app/utils/time";
 
@@ -20,6 +21,7 @@ const useDHCPListColumns = ({
   canEdit: boolean;
 }): DHCPListColumnDef[] => {
   const { openSidePanel } = useSidePanel();
+  const { openModal } = useModal();
   return useMemo(
     () => [
       {
@@ -84,7 +86,7 @@ const useDHCPListColumns = ({
             deleteDisabled={!canEdit}
             editDisabled={!canEdit}
             onDelete={() => {
-              openSidePanel({
+              openModal({
                 component: DhcpDelete,
                 title: "Delete DHCP snippet",
                 props: {
@@ -105,7 +107,7 @@ const useDHCPListColumns = ({
         ),
       },
     ],
-    [canEdit, openSidePanel]
+    [canEdit, openModal, openSidePanel]
   );
 };
 

@@ -2,9 +2,11 @@ import { waitFor } from "@testing-library/react";
 
 import RepositoriesList from "./RepositoriesList";
 
+import DeleteRepository from "@/app/settings/views/Repositories/components/DeleteRepository/DeleteRepository";
 import { authResolvers } from "@/testing/resolvers/auth";
 import { packageRepositoriesResolvers } from "@/testing/resolvers/packageRepositories";
 import {
+  mockModal,
   renderWithProviders,
   screen,
   setupMockServer,
@@ -17,6 +19,7 @@ setupMockServer(
   authResolvers.getCurrentUser.handler(),
   authResolvers.getMeEntitlements.handler()
 );
+const { mockOpen: mockOpenModal } = await mockModal();
 
 describe("RepositoriesList", () => {
   it("renders 'Add PPA'", async () => {
@@ -60,7 +63,7 @@ describe("RepositoriesList", () => {
     ).toBeInTheDocument();
   });
 
-  it("renders 'Delete repository'", async () => {
+  it("opens the delete repository modal", async () => {
     renderWithProviders(<RepositoriesList />);
     await waitFor(() => {
       expect(
@@ -68,25 +71,11 @@ describe("RepositoriesList", () => {
       ).not.toBeAriaDisabled();
     });
     await userEvent.click(screen.getAllByRole("button", { name: "Delete" })[0]);
-    expect(
-      screen.getByRole("complementary", { name: "Delete repository" })
-    ).toBeInTheDocument();
-  });
-
-  it("closes side panel form when canceled", async () => {
-    renderWithProviders(<RepositoriesList />);
-    await waitFor(() => {
-      expect(
-        screen.getAllByRole("button", { name: "Delete" })[0]
-      ).not.toBeAriaDisabled();
-    });
-    await userEvent.click(screen.getAllByRole("button", { name: "Delete" })[0]);
-    expect(
-      screen.getByRole("complementary", { name: "Delete repository" })
-    ).toBeInTheDocument();
-    await userEvent.click(screen.getByRole("button", { name: "Cancel" }));
-    expect(
-      screen.queryByRole("complementary", { name: "Delete repository" })
-    ).not.toBeInTheDocument();
+    expect(mockOpenModal).toHaveBeenCalledWith(
+      expect.objectContaining({
+        component: DeleteRepository,
+        title: "Delete repository",
+      })
+    );
   });
 });

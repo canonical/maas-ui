@@ -1,6 +1,5 @@
 import type { Dispatch, SetStateAction } from "react";
 
-import { useSidePanel } from "@canonical/maas-react-components";
 import pluralize from "pluralize";
 
 import { useRemoveGroupMembers } from "@/app/api/query/groups";
@@ -9,6 +8,7 @@ import type {
   UserGroupResponse,
 } from "@/app/apiclient";
 import ModelActionForm from "@/app/base/components/ModelActionForm";
+import { useModal } from "@/app/base/modal-context";
 
 type RemoveGroupMemberProps = {
   groupId: UserGroupResponse["id"];
@@ -21,7 +21,7 @@ const RemoveGroupMember = ({
   members,
   setMemberSelection,
 }: RemoveGroupMemberProps) => {
-  const { closeSidePanel } = useSidePanel();
+  const { closeModal } = useModal();
   const removeMembers = useRemoveGroupMembers();
 
   return (
@@ -45,7 +45,7 @@ const RemoveGroupMember = ({
         </>
       }
       modelType="group member"
-      onCancel={closeSidePanel}
+      onCancel={closeModal}
       onSubmit={() => {
         removeMembers.mutate({
           path: {
@@ -60,7 +60,7 @@ const RemoveGroupMember = ({
         setMemberSelection((prev) =>
           prev.filter((m) => !members.some((r) => r.user_id === m.user_id))
         );
-        closeSidePanel();
+        closeModal();
       }}
       saved={removeMembers.isSuccess}
       saving={removeMembers.isPending}

@@ -5,6 +5,7 @@ import type { ColumnDef } from "@tanstack/react-table";
 
 import type { PackageRepositoryResponse } from "@/app/apiclient";
 import TableActions from "@/app/base/components/TableActions";
+import { useModal } from "@/app/base/modal-context";
 import {
   DeleteRepository,
   EditRepository,
@@ -25,6 +26,7 @@ const useRepositoriesTableColumns = ({
   canEdit: boolean;
 }): RepositoriesColumnDef[] => {
   const { openSidePanel } = useSidePanel();
+  const { openModal } = useModal();
 
   return useMemo(
     () => [
@@ -71,7 +73,7 @@ const useRepositoriesTableColumns = ({
                 : null
             }
             onDelete={() => {
-              openSidePanel({
+              openModal({
                 component: DeleteRepository,
                 title: "Delete repository",
                 props: {
@@ -93,7 +95,7 @@ const useRepositoriesTableColumns = ({
         ),
       },
     ],
-    [canEdit, openSidePanel]
+    [canEdit, openModal, openSidePanel]
   );
 };
 

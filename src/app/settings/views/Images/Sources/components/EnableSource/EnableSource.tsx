@@ -1,6 +1,5 @@
 import type { ReactElement } from "react";
 
-import { useSidePanel } from "@canonical/maas-react-components";
 import {
   Notification as NotificationBanner,
   Spinner,
@@ -11,13 +10,14 @@ import {
   useUpdateImageSource,
 } from "@/app/api/query/imageSources";
 import ModelActionForm from "@/app/base/components/ModelActionForm";
+import { useModal } from "@/app/base/modal-context";
 
 type EnableSourceProps = {
   id: number;
 };
 
 const EnableSource = ({ id }: EnableSourceProps): ReactElement => {
-  const { closeSidePanel } = useSidePanel();
+  const { closeModal } = useModal();
 
   const source = useGetImageSource({ path: { boot_source_id: id } }, true);
 
@@ -44,7 +44,7 @@ const EnableSource = ({ id }: EnableSourceProps): ReactElement => {
             </>
           }
           modelType="default source"
-          onCancel={closeSidePanel}
+          onCancel={closeModal}
           onSubmit={() => {
             enableSource.mutate({
               headers: { ETag: eTag },
@@ -61,7 +61,7 @@ const EnableSource = ({ id }: EnableSourceProps): ReactElement => {
               },
             });
           }}
-          onSuccess={closeSidePanel}
+          onSuccess={closeModal}
           saved={enableSource.isSuccess}
           saving={enableSource.isPending}
           submitAppearance="positive"

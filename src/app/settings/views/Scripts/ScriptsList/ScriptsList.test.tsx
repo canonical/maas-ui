@@ -10,6 +10,7 @@ import { ScriptType } from "@/app/store/script/types";
 import * as factory from "@/testing/factories";
 import { authResolvers } from "@/testing/resolvers/auth";
 import {
+  mockModal,
   mockSidePanel,
   renderWithProviders,
   screen,
@@ -24,6 +25,7 @@ const mockServer = setupMockServer(
   authResolvers.getMeEntitlements.handler()
 );
 const { mockOpen } = await mockSidePanel();
+const { mockOpen: mockOpenModal } = await mockModal();
 
 describe("ScriptsList", () => {
   afterEach(() => {
@@ -122,7 +124,7 @@ describe("ScriptsList", () => {
     ).not.toBeInTheDocument();
   });
 
-  it("opens the delete script side panel when delete is clicked", async () => {
+  it("opens the delete script modal when delete is clicked", async () => {
     renderWithProviders(<ScriptsList />, { state });
 
     const row = screen.getByRole("row", { name: /commissioning-script/ });
@@ -133,12 +135,15 @@ describe("ScriptsList", () => {
     });
     await userEvent.click(within(row).getByRole("button", { name: "Delete" }));
 
-    expect(mockOpen).toHaveBeenCalledWith(
+    expect(mockOpenModal).toHaveBeenCalledWith(
       expect.objectContaining({
         component: DeleteScript,
         title: "Delete script",
         props: { id: 1 },
       })
+    );
+    expect(mockOpen).not.toHaveBeenCalledWith(
+      expect.objectContaining({ component: DeleteScript })
     );
   });
 

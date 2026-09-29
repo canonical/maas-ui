@@ -1,7 +1,7 @@
-import { useSidePanel } from "@canonical/maas-react-components";
 import { useDispatch } from "react-redux";
 
 import ModelActionForm from "@/app/base/components/ModelActionForm";
+import { useModal } from "@/app/base/modal-context";
 import { dhcpsnippetActions } from "@/app/store/dhcpsnippet";
 
 type Props = {
@@ -9,7 +9,7 @@ type Props = {
 };
 
 const DhcpDelete = ({ id }: Props) => {
-  const { closeSidePanel } = useSidePanel();
+  const { closeModal } = useModal();
   const dispatch = useDispatch();
 
   return (
@@ -26,12 +26,12 @@ const DhcpDelete = ({ id }: Props) => {
         </>
       }
       modelType="DHCP snippet"
-      onCancel={closeSidePanel}
+      onCancel={closeModal}
       onSubmit={() => {
         dispatch(dhcpsnippetActions.delete(id));
-        closeSidePanel();
+        closeModal();
       }}
-      onSuccess={closeSidePanel}
+      onSuccess={closeModal}
       submitAppearance="negative"
     />
   );

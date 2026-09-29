@@ -5,6 +5,7 @@ import { ContextualMenu, Icon, Tooltip } from "@canonical/react-components";
 import type { Column, ColumnDef, Header, Row } from "@tanstack/react-table";
 import pluralize from "pluralize";
 
+import { useModal } from "@/app/base/modal-context";
 import { MAAS_IO_URLS } from "@/app/images/constants";
 import { BootResourceSourceType } from "@/app/images/types";
 import type { ImageSource } from "@/app/settings/views/Images/Sources/Sources";
@@ -37,6 +38,7 @@ const useSourcesTableColumns = ({
   canEdit: boolean;
 }): SourcesColumnDef[] => {
   const { openSidePanel } = useSidePanel();
+  const { openModal } = useModal();
 
   return useMemo(
     () =>
@@ -166,7 +168,7 @@ const useSourcesTableColumns = ({
                     ? {
                         children: "Disable source...",
                         onClick: () => {
-                          openSidePanel({
+                          openModal({
                             component: DisableSource,
                             title: `Disable ${original.type === BootResourceSourceType.MAAS_IO ? "default" : "custom"} source`,
                             props: { id: original.id },
@@ -176,7 +178,7 @@ const useSourcesTableColumns = ({
                     : {
                         children: "Enable source...",
                         onClick: () => {
-                          openSidePanel({
+                          openModal({
                             component: EnableSource,
                             title: `Enable ${original.type === BootResourceSourceType.MAAS_IO ? "default" : "custom"} source`,
                             props: { id: original.id },
@@ -186,7 +188,7 @@ const useSourcesTableColumns = ({
                   {
                     children: "Delete source...",
                     onClick: () => {
-                      openSidePanel({
+                      openModal({
                         component: DeleteSource,
                         title: `Delete ${original.type === BootResourceSourceType.MAAS_IO ? "default" : "custom"} source`,
                         props: { id: original.id },
@@ -202,7 +204,7 @@ const useSourcesTableColumns = ({
           },
         },
       ] as SourcesColumnDef[],
-    [canChangeSource, canEdit, openSidePanel]
+    [canChangeSource, canEdit, openModal, openSidePanel]
   );
 };
 

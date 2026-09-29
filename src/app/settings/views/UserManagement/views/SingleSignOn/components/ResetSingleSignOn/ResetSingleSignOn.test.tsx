@@ -3,7 +3,7 @@ import ResetSingleSignOn from "./ResetSingleSignOn";
 import { authResolvers, mockOauthProvider } from "@/testing/resolvers/auth";
 import {
   mockIsPending,
-  mockSidePanel,
+  mockModal,
   renderWithProviders,
   screen,
   setupMockServer,
@@ -17,7 +17,7 @@ const mockServer = setupMockServer(
   authResolvers.getActiveOauthProvider.handler()
 );
 
-const { mockClose } = await mockSidePanel();
+const { mockClose } = await mockModal();
 
 describe("ResetSingleSignOn", () => {
   beforeEach(() => {
