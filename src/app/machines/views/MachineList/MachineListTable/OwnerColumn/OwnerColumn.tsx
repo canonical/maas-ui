@@ -1,12 +1,11 @@
-import { memo, useCallback, useEffect, useMemo, useState } from "react";
+import type { ReactElement } from "react";
+import { memo, useMemo } from "react";
 
-import { Spinner } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 
 import { useUsers } from "@/app/api/query/users";
 import DoubleRow from "@/app/base/components/DoubleRow";
-import { useMachineActions } from "@/app/base/hooks";
-import type { MachineMenuAction } from "@/app/base/hooks/node";
+import { useMachineActions } from "@/app/machines/components/MachineActions/hooks";
 import { useToggleMenu } from "@/app/machines/hooks";
 import type { MachineMenuToggleHandler } from "@/app/machines/types";
 import machineSelectors from "@/app/store/machine/selectors";
@@ -22,14 +21,13 @@ type Props = {
   showFullName?: boolean;
 };
 
-const actions: MachineMenuAction[] = [NodeActions.ACQUIRE, NodeActions.RELEASE];
+const actions: NodeActions[] = [NodeActions.ACQUIRE, NodeActions.RELEASE];
 
 export const OwnerColumn = ({
   onToggleMenu,
   systemId,
   showFullName,
-}: Props): React.ReactElement => {
-  const [updating, setUpdating] = useState<Machine["status"] | null>(null);
+}: Props): ReactElement => {
   const machine = useSelector((state: RootState) =>
     machineSelectors.getById(state, systemId)
   );
@@ -45,33 +43,15 @@ export const OwnerColumn = ({
     : machine?.owner || "-";
   const tagsDisplay = getTagsDisplay(machineTags);
 
-  const handleMachineActionClick = useCallback(() => {
-    if (machine) {
-      setUpdating(machine.status);
-    }
-  }, [machine]);
-
   const menuLinks = useMachineActions(
     systemId,
     actions,
-    "No owner actions available",
-    handleMachineActionClick
+    "No owner actions available"
   );
 
-  useEffect(() => {
-    if (updating !== null && machine?.status !== updating) {
-      setUpdating(null);
-    }
-  }, [updating, machine?.status]);
-
   const primary = useMemo(
-    () => (
-      <>
-        {updating === null ? null : <Spinner className="u-nudge-left--small" />}
-        <span data-testid="owner">{ownerDisplay}</span>
-      </>
-    ),
-    [updating, ownerDisplay]
+    () => <span data-testid="owner">{ownerDisplay}</span>,
+    [ownerDisplay]
   );
   const secondary = useMemo(
     () => (

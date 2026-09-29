@@ -1,10 +1,13 @@
-import { memo, useEffect, useState } from "react";
+import type { ReactElement } from "react";
+import { memo } from "react";
 
 import { Tooltip } from "@canonical/react-components";
+import type { ButtonProps } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 
 import DoubleRow from "@/app/base/components/DoubleRow";
 import PowerIcon from "@/app/base/components/PowerIcon";
+import { useMachineActions } from "@/app/machines/components/MachineActions/hooks";
 import { useToggleMenu } from "@/app/machines/hooks";
 import type { MachineMenuToggleHandler } from "@/app/machines/types";
 import { PowerTypeNames } from "@/app/store/general/constants";
@@ -24,64 +27,44 @@ type Props = {
 export const PowerColumn = ({
   onToggleMenu,
   systemId,
-}: Props): React.ReactElement | null => {
+}: Props): ReactElement | null => {
   const dispatch = useDispatch();
-  const [updating, setUpdating] = useState<PowerState | null>(null);
   const machine = useSelector((state: RootState) =>
     machineSelectors.getById(state, systemId)
   );
   const toggleMenu = useToggleMenu(onToggleMenu || null);
   const powerState = machine?.power_state || PowerState.UNKNOWN;
+  const hasOnAction = !!machine?.actions.includes(NodeActions.ON);
+  const hasOffAction = !!machine?.actions.includes(NodeActions.OFF);
 
-  useEffect(() => {
-    if (
-      updating !== null &&
-      (powerState === PowerState.ERROR || powerState !== updating)
-    ) {
-      setUpdating(null);
+  const powerActions: NodeActions[] = [];
+  if (hasOnAction && powerState !== PowerState.ON) {
+    powerActions.push(NodeActions.ON);
+  }
+  if (hasOffAction && powerState !== PowerState.OFF) {
+    powerActions.push(NodeActions.OFF);
+    if (machine?.power_type === PowerTypeNames.IPMI) {
+      powerActions.push(NodeActions.SOFT_OFF);
     }
-  }, [powerState, updating]);
+  }
+  const powerActionLinks = useMachineActions(
+    systemId,
+    powerActions,
+    null,
+    (action, label) => (
+      <PowerIcon
+        powerState={action === NodeActions.ON ? PowerState.ON : PowerState.OFF}
+      >
+        {label}
+      </PowerIcon>
+    )
+  );
 
   if (!machine) {
     return null;
   }
 
-  const menuLinks = [];
-  const hasOnAction = machine.actions.includes(NodeActions.ON);
-  const hasOffAction = machine.actions.includes(NodeActions.OFF);
-  if (hasOnAction && powerState !== PowerState.ON) {
-    menuLinks.push({
-      children: <PowerIcon powerState={PowerState.ON}>Turn on</PowerIcon>,
-      onClick: () => {
-        dispatch(machineActions.on({ system_id: systemId }));
-        setUpdating(machine.power_state);
-      },
-    });
-  }
-  if (hasOffAction && powerState !== PowerState.OFF) {
-    menuLinks.push({
-      children: <PowerIcon powerState={PowerState.OFF}>Turn off</PowerIcon>,
-      onClick: () => {
-        dispatch(machineActions.off({ system_id: systemId }));
-        setUpdating(machine.power_state);
-      },
-    });
-    if (machine.power_type === PowerTypeNames.IPMI) {
-      menuLinks.push({
-        children: (
-          <PowerIcon powerState={PowerState.OFF}>Soft power off</PowerIcon>
-        ),
-        onClick: () => {
-          dispatch(
-            machineActions.softOff({
-              system_id: systemId,
-            })
-          );
-          setUpdating(machine.power_state);
-        },
-      });
-    }
-  }
+  const menuLinks: ButtonProps[] = [...powerActionLinks];
   if (powerState !== PowerState.UNKNOWN) {
     menuLinks.push({
       children: (
@@ -92,8 +75,6 @@ export const PowerColumn = ({
       ),
       onClick: () => {
         dispatch(machineActions.checkPower(systemId));
-        // Don't display the spinner when checking power as we can't reliably
-        // determine that the event has finished.
       },
     });
   }
@@ -114,7 +95,7 @@ export const PowerColumn = ({
               : null
           }
         >
-          <PowerIcon powerState={powerState} showSpinner={updating !== null} />
+          <PowerIcon powerState={powerState} />
         </Tooltip>
       }
       iconSpace={true}

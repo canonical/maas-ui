@@ -21,39 +21,39 @@ Feature: Machine listing - actions
   Scenario Outline: Loads machine action form
     When the user selects the first machine in the grid
     And the user opens the "<action>" form from the "<group>" menu
-    Then the "<action>" side panel should be visible
-    When the user cancels the "<action>" form
-    Then the "<action>" side panel should not exist
+    Then the "<action>" <container> should be visible
+    When the user cancels the "<action>" form in the <container>
+    Then the "<action>" <container> should not exist
 
     Examples:
-      | group         | action                  |
-      | Actions       | Commission              |
-      | Actions       | Allocate                |
-      | Actions       | Deploy                  |
-      | Actions       | Release                 |
-      | Actions       | Abort                   |
-      | Actions       | Clone from              |
-      | Power         | Power on                |
-      | Power         | Power off               |
-      | Power         | Soft power off          |
-      | Troubleshoot  | Test                    |
-      | Troubleshoot  | Enter rescue mode       |
-      | Troubleshoot  | Exit rescue mode        |
-      | Troubleshoot  | Mark fixed              |
-      | Troubleshoot  | Mark broken             |
-      | Troubleshoot  | Override failed testing |
-      | Categorise    | Tag                     |
-      | Categorise    | Set zone                |
-      | Categorise    | Set pool                |
-      | Lock          | Lock                    |
-      | Lock          | Unlock                  |
+      | group         | action                  | container  |
+      | Actions       | Commission              | side panel |
+      | Actions       | Allocate                | modal      |
+      | Actions       | Deploy                  | side panel |
+      | Actions       | Release                 | side panel |
+      | Actions       | Abort                   | modal      |
+      | Actions       | Clone from              | side panel |
+      | Power         | Power on                | modal      |
+      | Power         | Power off               | modal      |
+      | Power         | Soft power off          | modal      |
+      | Troubleshoot  | Test                    | side panel |
+      | Troubleshoot  | Enter rescue mode       | modal      |
+      | Troubleshoot  | Exit rescue mode        | modal      |
+      | Troubleshoot  | Mark fixed              | modal      |
+      | Troubleshoot  | Mark broken             | side panel |
+      | Troubleshoot  | Override failed testing | side panel |
+      | Categorise    | Tag                     | side panel |
+      | Categorise    | Set zone                | side panel |
+      | Categorise    | Set pool                | side panel |
+      | Lock          | Lock                    | modal      |
+      | Lock          | Unlock                  | modal      |
 
   Scenario: Loads machine Delete form
     When the user selects the first machine in the grid
     And the user clicks the button matching "Delete"
-    Then the "Delete" side panel should be visible
-    When the user cancels the "Delete" form
-    Then the "Delete" side panel should not exist
+    Then the "Delete" modal should be visible
+    When the user cancels the "Delete" form in the modal
+    Then the "Delete" modal should not exist
 
   Scenario: Can create and set the pool of a machine
     When the user selects the first machine in the grid
@@ -74,6 +74,6 @@ Feature: Machine listing - actions
   Scenario: Can open a soft power off form
     When the user selects the first machine in the grid
     And the user opens the "Soft power off" form from the "Power" menu
-    Then the "Soft power off" side panel should be visible
+    Then the "Soft power off" modal should be visible
     And the heading matching "Soft power off" text should exist
     And the text matching "a soft power off generally asks the os to shutdown the system gracefully before powering off\. it is only supported by ipmi." should exist

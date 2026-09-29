@@ -5,12 +5,22 @@ import type { RootState } from "@/app/store/root/types";
 import { PowerState } from "@/app/store/types/enum";
 import { NodeActions } from "@/app/store/types/node";
 import * as factory from "@/testing/factories";
+import { authResolvers } from "@/testing/resolvers/auth";
 import {
+  mockModal,
   renderWithProviders,
   screen,
+  setupMockServer,
   userEvent,
   waitFor,
 } from "@/testing/utils";
+
+setupMockServer(
+  authResolvers.getCurrentUser.handler(),
+  authResolvers.getMeEntitlements.handler()
+);
+
+const { mockOpen: mockOpenModal } = await mockModal();
 
 describe("PowerColumn", () => {
   let state: RootState;
@@ -51,7 +61,7 @@ describe("PowerColumn", () => {
     expect(screen.getByTestId("power_type")).toHaveTextContent("manual");
   });
 
-  it("can show a menu item to turn a machine on", async () => {
+  it("can show a menu item to power a machine on", async () => {
     state.machine.items[0].actions = [NodeActions.ON];
     state.machine.items[0].power_state = PowerState.OFF;
 
@@ -62,10 +72,12 @@ describe("PowerColumn", () => {
     // Open the menu so the elements get rendered.
     await userEvent.click(screen.getByRole("button", { name: "Take action:" }));
 
-    expect(screen.getByText("Turn on")).toBeInTheDocument();
+    expect(
+      screen.getByRole("menuitem", { name: /Power on\.\.\.$/ })
+    ).toBeInTheDocument();
   });
 
-  it("can show a menu item to turn a machine off", async () => {
+  it("can show a menu item to power a machine off", async () => {
     state.machine.items[0].actions = [NodeActions.OFF];
 
     renderWithProviders(
@@ -76,8 +88,64 @@ describe("PowerColumn", () => {
     // Open the menu so the elements get rendered.
     await userEvent.click(screen.getByRole("button", { name: "Take action:" }));
 
-    expect(screen.getByText("Turn off")).toBeInTheDocument();
+    expect(
+      screen.getByRole("menuitem", { name: /Power off\.\.\.$/ })
+    ).toBeInTheDocument();
+    expect(
+      screen.queryByRole("menuitem", { name: /Soft power off\.\.\.$/ })
+    ).not.toBeInTheDocument();
   });
+
+  it("can show a menu item to soft power off an IPMI machine", async () => {
+    state.machine.items[0].actions = [NodeActions.OFF];
+    state.machine.items[0].power_type = PowerTypeNames.IPMI;
+
+    renderWithProviders(
+      <PowerColumn onToggleMenu={vi.fn()} systemId="abc123" />,
+      { state }
+    );
+    await userEvent.click(screen.getByRole("button", { name: "Take action:" }));
+
+    expect(
+      screen.getByRole("menuitem", { name: /Soft power off\.\.\.$/ })
+    ).toBeInTheDocument();
+  });
+
+  it.each([
+    [NodeActions.ON, PowerState.OFF, "Power on", "machine/on"] as const,
+    [NodeActions.OFF, PowerState.ON, "Power off", "machine/off"] as const,
+  ])(
+    "selects only this machine and opens the %s modal",
+    async (action, powerState, title, actionType) => {
+      state.machine.items[0].actions = [action];
+      state.machine.items[0].power_state = powerState;
+      state.machine.selected = { items: ["other-machine"] };
+
+      const { store } = renderWithProviders(
+        <PowerColumn onToggleMenu={vi.fn()} systemId="abc123" />,
+        { state }
+      );
+      await userEvent.click(
+        screen.getByRole("button", { name: "Take action:" })
+      );
+      await userEvent.click(
+        screen.getByRole("menuitem", { name: new RegExp(`${title}\\.\\.\\.$`) })
+      );
+
+      expect(store.getActions()).toContainEqual(
+        expect.objectContaining({
+          type: "machine/setSelected",
+          payload: { items: ["abc123"] },
+        })
+      );
+      expect(store.getActions().map(({ type }) => type)).not.toContain(
+        actionType
+      );
+      expect(mockOpenModal).toHaveBeenCalledWith(
+        expect.objectContaining({ title })
+      );
+    }
+  );
 
   it("can show a menu item to check power", async () => {
     renderWithProviders(

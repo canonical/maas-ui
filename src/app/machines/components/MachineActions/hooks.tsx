@@ -1,7 +1,10 @@
+import type { ReactNode } from "react";
+
 import {
   lazyLoadSidePanel,
   useSidePanel,
 } from "@canonical/maas-react-components";
+import type { ButtonProps } from "@canonical/react-components";
 import { Button, Icon, Switch } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -68,7 +71,10 @@ const PowerOffForm = lazyLoadModal(
 
 export const useMachineActionMenus = (
   isViewingDetails: boolean,
-  systemId?: Machine["system_id"]
+  systemId?: Machine["system_id"],
+  // Set when the menus act on one machine that will be selected just before
+  // an action is opened (e.g. a machine list row menu).
+  { singleMachine = false }: { singleMachine?: boolean } = {}
 ) => {
   const { openSidePanel } = useSidePanel();
   const { openModal } = useModal();
@@ -90,16 +96,49 @@ export const useMachineActionMenus = (
 
   const { selectedCount } = useMachineSelectedCount(
     FilterMachines.parseFetchFilters(searchFilter),
-    { isEnabled: !isViewingDetails }
+    { isEnabled: !isViewingDetails && !singleMachine }
   );
   // Descriptions read naturally for both a single machine (details view or a
   // single selection) and a pluralised bulk selection.
-  const isSingleMachine = isViewingDetails || selectedCount === 1;
+  const isSingleMachine =
+    isViewingDetails || singleMachine || selectedCount === 1;
   const machinesPluralized = isSingleMachine
     ? "this machine"
     : `these ${selectedCount} machines`;
   const machinePronoun = isSingleMachine ? "it" : "them";
   const machinePossessive = isSingleMachine ? "its" : "their";
+
+  const openLockModal = () => {
+    openModal({
+      component: FieldlessFormModal,
+      props: {
+        action: NodeActions.LOCK,
+        actions: machineActions,
+        cleanup: machineActions.cleanup,
+        description: `This will lock ${machinesPluralized}, preventing ${machinePronoun} from being released or deleted.`,
+        errors: actionErrors,
+        modelName: "machine",
+        viewingDetails: isViewingDetails,
+      },
+      title: "Lock",
+    });
+  };
+
+  const openUnlockModal = () => {
+    openModal({
+      component: FieldlessFormModal,
+      props: {
+        action: NodeActions.UNLOCK,
+        actions: machineActions,
+        cleanup: machineActions.cleanup,
+        description: `This will unlock ${machinesPluralized}, allowing ${machinePronoun} to be released or deleted.`,
+        errors: actionErrors,
+        modelName: "machine",
+        viewingDetails: isViewingDetails,
+      },
+      title: "Unlock",
+    });
+  };
 
   const actionMenus: MachineActionGroup[] = [
     {
@@ -443,40 +482,12 @@ export const useMachineActionMenus = (
         {
           action: NodeActions.LOCK,
           label: "Lock",
-          onClick: () => {
-            openModal({
-              component: FieldlessFormModal,
-              props: {
-                action: NodeActions.LOCK,
-                actions: machineActions,
-                cleanup: machineActions.cleanup,
-                description: `This will lock ${machinesPluralized}, preventing ${machinePronoun} from being released or deleted.`,
-                errors: actionErrors,
-                modelName: "machine",
-                viewingDetails: isViewingDetails,
-              },
-              title: "Lock",
-            });
-          },
+          onClick: openLockModal,
         },
         {
           action: NodeActions.UNLOCK,
           label: "Unlock",
-          onClick: () => {
-            openModal({
-              component: FieldlessFormModal,
-              props: {
-                action: NodeActions.UNLOCK,
-                actions: machineActions,
-                cleanup: machineActions.cleanup,
-                description: `This will unlock ${machinesPluralized}, allowing ${machinePronoun} to be released or deleted.`,
-                errors: actionErrors,
-                modelName: "machine",
-                viewingDetails: isViewingDetails,
-              },
-              title: "Unlock",
-            });
-          },
+          onClick: openUnlockModal,
         },
       ],
       render:
@@ -490,17 +501,7 @@ export const useMachineActionMenus = (
                   <Switch
                     checked={machine.locked}
                     label="Lock"
-                    onChange={() =>
-                      dispatch(
-                        machine.locked
-                          ? machineActions.unlock({
-                              system_id: machine.system_id,
-                            })
-                          : machineActions.lock({
-                              system_id: machine.system_id,
-                            })
-                      )
-                    }
+                    onChange={machine.locked ? openUnlockModal : openLockModal}
                   />
                 );
               } else {
@@ -550,6 +551,54 @@ export const useMachineActionMenus = (
   ];
 
   return actionMenus;
+};
+
+export const useMachineActions = (
+  systemId: Machine["system_id"],
+  actions: NodeActions[],
+  noneMessage?: string | null,
+  renderLabel?: (action: NodeActions, label: string) => ReactNode
+): ButtonProps[] => {
+  const dispatch = useDispatch();
+  const machine = useSelector((state: RootState) =>
+    machineSelectors.getById(state, systemId)
+  );
+  const actionMenus = useMachineActionMenus(false, systemId, {
+    singleMachine: true,
+  });
+  const { actionsDisabled, deployDisabled } = useLifecycleActionEntitlements(
+    true,
+    systemId
+  );
+  const items = actionMenus.flatMap((menu) => menu.items);
+
+  const links = actions.reduce<ButtonProps[]>((links, action) => {
+    const item = items.find((item) => item.action === action);
+    // Soft power off isn't listed separately in the machine's actions; it is
+    // available whenever power off is.
+    const availabilityAction =
+      action === NodeActions.SOFT_OFF ? NodeActions.OFF : action;
+    if (!item || !canOpenActionForm(machine, availabilityAction)) {
+      return links;
+    }
+    const isGated =
+      action === NodeActions.DEPLOY ? deployDisabled : actionsDisabled;
+    const label = `${item.label}...`;
+    links.push({
+      children: renderLabel ? renderLabel(action, label) : label,
+      disabled: isGated || undefined,
+      onClick: () => {
+        dispatch(machineActions.setSelected({ items: [systemId] }));
+        item.onClick();
+      },
+    });
+    return links;
+  }, []);
+
+  if (links.length === 0 && noneMessage) {
+    return [{ children: noneMessage, disabled: true }];
+  }
+  return links;
 };
 
 /**
