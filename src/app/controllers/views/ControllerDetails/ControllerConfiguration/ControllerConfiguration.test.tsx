@@ -11,6 +11,8 @@ import { controllerActions } from "@/app/store/controller";
 import { PodType } from "@/app/store/pod/constants";
 import * as factory from "@/testing/factories";
 import { authResolvers } from "@/testing/resolvers/auth";
+import { powerTypesResolvers } from "@/testing/resolvers/powerTypes";
+import { systemResolvers } from "@/testing/resolvers/system";
 import { zoneResolvers } from "@/testing/resolvers/zones";
 import {
   renderWithProviders,
@@ -25,6 +27,8 @@ const route = urls.controllers.controller.index({ id: controller.system_id });
 
 let state: ReturnType<typeof factory.rootState>;
 const mockServer = setupMockServer(
+  powerTypesResolvers.listPowerTypes.handler(),
+  systemResolvers.getSystemInfo.handler(),
   zoneResolvers.listZones.handler(),
   zoneResolvers.listZonesWithStatistics.handler(),
   authResolvers.getCurrentUser.handler(),

@@ -17,6 +17,7 @@ When("the user fills in valid machine details", () => {
   const hostname = `cypress-${nanoid()}`;
   cy.get("input[name='hostname']").type(hostname);
   cy.get("input[name='pxe_mac']").type(generateMac());
-  cy.get("select[name='power_type']").select("manual");
-  cy.get("select[name='power_type']").blur();
+  cy.findByRole("button", { name: /Power type/i }).click();
+  cy.findByRole("option", { name: "Manual" }).click();
+  cy.findByRole("button", { name: /Power type/i }).blur();
 });
