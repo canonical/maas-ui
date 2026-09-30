@@ -1,19 +1,24 @@
 import { useMemo } from "react";
 
+import { useSidePanel } from "@canonical/maas-react-components";
 import type { ColumnDef } from "@tanstack/react-table";
+
+import DeleteTrustedSSHHostKey from "../DeleteTrustedSSHHostKey";
 
 import type { SshHostKeyResponse } from "@/app/apiclient";
 import TableActions from "@/app/base/components/TableActions";
-import { useSidePanel } from "@/app/base/side-panel-context";
-import { TrustedSSHHostKeyActionSidePanelViews } from "@/app/settings/views/Security/TrustedSSHHostKeys/constants";
 
 type TrustedSSHHostKeysColumnDef = ColumnDef<
   SshHostKeyResponse,
   Partial<SshHostKeyResponse>
 >;
 
-const useTrustedSSHHostKeysTableColumns = (): TrustedSSHHostKeysColumnDef[] => {
-  const { setSidePanelContent } = useSidePanel();
+const useTrustedSSHHostKeysTableColumns = ({
+  canEdit,
+}: {
+  canEdit: boolean;
+}): TrustedSSHHostKeysColumnDef[] => {
+  const { openSidePanel } = useSidePanel();
 
   return useMemo(
     () => [
@@ -77,18 +82,24 @@ const useTrustedSSHHostKeysTableColumns = (): TrustedSSHHostKeysColumnDef[] => {
         header: "Actions",
         cell: ({ row: { original } }) => (
           <TableActions
-            data-testid="trusted-ssh-host-key-actions"
+            deleteDisabled={!canEdit}
+            deleteTooltip={
+              !canEdit
+                ? "You do not have permission to delete SSH host keys."
+                : null
+            }
             onDelete={() => {
-              setSidePanelContent({
-                view: TrustedSSHHostKeyActionSidePanelViews.DELETE_TRUSTED_SSH_HOST_KEY,
-                extras: { sshHostKeyId: original.id },
+              openSidePanel({
+                component: DeleteTrustedSSHHostKey,
+                title: "Delete SSH host key",
+                props: { id: original.id },
               });
             }}
           />
         ),
       },
     ],
-    [setSidePanelContent]
+    [canEdit, openSidePanel]
   );
 };
 

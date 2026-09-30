@@ -2,25 +2,28 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 import { useWebsocketAwareQuery } from "./base";
 
-import { queryOptionsWithHeaders } from "@/app/api/utils";
+import {
+  mutationOptionsWithHeaders,
+  queryOptionsWithHeaders,
+} from "@/app/api/utils";
 import type {
   CreateSshHostKeyData,
-  CreateSshHostKeyError,
-  CreateSshHostKeyResponse,
+  CreateSshHostKeyErrors,
+  CreateSshHostKeyResponses,
   DeleteSshHostKeyData,
-  DeleteSshHostKeyError,
-  DeleteSshHostKeyResponse,
+  DeleteSshHostKeyErrors,
+  DeleteSshHostKeyResponses,
   ListSshHostKeysData,
   ListSshHostKeysErrors,
   ListSshHostKeysResponses,
   Options,
 } from "@/app/apiclient";
-import { listSshHostKeys } from "@/app/apiclient";
 import {
-  createSshHostKeyMutation,
-  deleteSshHostKeyMutation,
-  listSshHostKeysQueryKey,
-} from "@/app/apiclient/@tanstack/react-query.gen";
+  createSshHostKey,
+  deleteSshHostKey,
+  listSshHostKeys,
+} from "@/app/apiclient";
+import { listSshHostKeysQueryKey } from "@/app/apiclient/@tanstack/react-query.gen";
 
 export const useTrustedSshHostKeys = (
   options?: Options<ListSshHostKeysData>
@@ -38,12 +41,12 @@ export const useCreateTrustedSshHostKey = (
   mutationOptions?: Options<CreateSshHostKeyData>
 ) => {
   const queryClient = useQueryClient();
-  return useMutation<
-    CreateSshHostKeyResponse,
-    CreateSshHostKeyError,
-    Options<CreateSshHostKeyData>
-  >({
-    ...createSshHostKeyMutation(mutationOptions),
+  return useMutation({
+    ...mutationOptionsWithHeaders<
+      CreateSshHostKeyResponses,
+      CreateSshHostKeyErrors,
+      CreateSshHostKeyData
+    >(mutationOptions, createSshHostKey),
     onSuccess: () => {
       return queryClient.invalidateQueries({
         queryKey: listSshHostKeysQueryKey(),
@@ -56,12 +59,12 @@ export const useDeleteTrustedSshHostKey = (
   mutationOptions?: Options<DeleteSshHostKeyData>
 ) => {
   const queryClient = useQueryClient();
-  return useMutation<
-    DeleteSshHostKeyResponse,
-    DeleteSshHostKeyError,
-    Options<DeleteSshHostKeyData>
-  >({
-    ...deleteSshHostKeyMutation(mutationOptions),
+  return useMutation({
+    ...mutationOptionsWithHeaders<
+      DeleteSshHostKeyResponses,
+      DeleteSshHostKeyErrors,
+      DeleteSshHostKeyData
+    >(mutationOptions, deleteSshHostKey),
     onSuccess: () => {
       return queryClient.invalidateQueries({
         queryKey: listSshHostKeysQueryKey(),
