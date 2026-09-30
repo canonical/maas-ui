@@ -2,6 +2,7 @@ import { AddTrustedSSHHostKey } from "./AddTrustedSSHHostKey";
 
 import { sshHostKeysResolvers } from "@/testing/resolvers/sshHostKeys";
 import {
+  mockSidePanel,
   renderWithProviders,
   screen,
   setupMockServer,
@@ -10,17 +11,30 @@ import {
 } from "@/testing/utils";
 
 setupMockServer(sshHostKeysResolvers.createSshHostKey.handler());
+const { mockClose } = await mockSidePanel();
 
 describe("AddTrustedSSHHostKey", () => {
+  beforeEach(() => {
+    mockClose.mockClear();
+  });
+
   it("can render", () => {
-    renderWithProviders(<AddTrustedSSHHostKey closeForm={vi.fn()} />);
+    renderWithProviders(<AddTrustedSSHHostKey />);
     expect(
       screen.getByRole("form", { name: "Add SSH host key" })
     ).toBeInTheDocument();
   });
 
-  it("can create a trusted SSH host key", async () => {
-    renderWithProviders(<AddTrustedSSHHostKey closeForm={vi.fn()} />);
+  it("closes the side panel when canceled", async () => {
+    renderWithProviders(<AddTrustedSSHHostKey />);
+
+    await userEvent.click(screen.getByRole("button", { name: "Cancel" }));
+
+    expect(mockClose).toHaveBeenCalled();
+  });
+
+  it("can create a trusted SSH host key and close the side panel", async () => {
+    renderWithProviders(<AddTrustedSSHHostKey />);
 
     await userEvent.type(
       screen.getByRole("textbox", { name: "Host" }),
@@ -43,6 +57,7 @@ describe("AddTrustedSSHHostKey", () => {
 
     await waitFor(() => {
       expect(sshHostKeysResolvers.createSshHostKey.resolved).toBeTruthy();
+      expect(mockClose).toHaveBeenCalled();
     });
   });
 });

@@ -1,41 +1,28 @@
-import type { TrustedSSHHostKeySidePanelContent } from "../constants";
-import { TrustedSSHHostKeyActionSidePanelViews } from "../constants";
-
 import TrustedSSHHostKeys from "./TrustedSSHHostKeys";
 
+import { sshHostKey as sshHostKeyFactory } from "@/testing/factories";
+import { authResolvers } from "@/testing/resolvers/auth";
 import { sshHostKeysResolvers } from "@/testing/resolvers/sshHostKeys";
 import {
   renderWithProviders,
   screen,
   setupMockServer,
   userEvent,
+  waitFor,
   waitForLoading,
+  within,
 } from "@/testing/utils";
 
-setupMockServer(sshHostKeysResolvers.listSshHostKeys.handler());
-
-let mockSidePanelContent: TrustedSSHHostKeySidePanelContent | null = null;
-const mockSetSidePanelContent = vi.fn();
-
-vi.mock("@/app/base/side-panel-context", async () => {
-  const actual = await vi.importActual("@/app/base/side-panel-context");
-  return {
-    ...actual,
-    useSidePanel: () => ({
-      sidePanelContent: mockSidePanelContent,
-      setSidePanelContent: mockSetSidePanelContent,
-      sidePanelSize: "regular",
-      setSidePanelSize: vi.fn(),
-    }),
-  };
-});
+setupMockServer(
+  sshHostKeysResolvers.listSshHostKeys.handler({
+    items: [sshHostKeyFactory({ id: 42 })],
+    total: 1,
+  }),
+  authResolvers.getCurrentUser.handler(),
+  authResolvers.getMeEntitlements.handler()
+);
 
 describe("TrustedSSHHostKeys", () => {
-  beforeEach(() => {
-    mockSetSidePanelContent.mockClear();
-    mockSidePanelContent = null;
-  });
-
   it("renders the trusted SSH host keys table", async () => {
     renderWithProviders(<TrustedSSHHostKeys />);
     await waitForLoading();
@@ -45,39 +32,61 @@ describe("TrustedSSHHostKeys", () => {
     ).toBeInTheDocument();
   });
 
-  it("renders AddTrustedSSHHostKey when view is ADD_TRUSTED_SSH_HOST_KEY", () => {
-    mockSidePanelContent = {
-      view: TrustedSSHHostKeyActionSidePanelViews.ADD_TRUSTED_SSH_HOST_KEY,
-    };
-
+  it("opens and closes the add SSH host key side panel", async () => {
     renderWithProviders(<TrustedSSHHostKeys />);
+
+    await waitFor(() => {
+      expect(
+        screen.getByRole("button", { name: "Add SSH key" })
+      ).not.toBeAriaDisabled();
+    });
+    await userEvent.click(screen.getByRole("button", { name: "Add SSH key" }));
+
+    const panel = screen.getByRole("complementary", {
+      name: "Add SSH host key",
+    });
     expect(
-      screen.getByRole("complementary", { name: "Add SSH host key" })
+      within(panel).getByRole("form", { name: "Add SSH host key" })
     ).toBeInTheDocument();
+
+    await userEvent.click(
+      within(panel).getByRole("button", { name: "Cancel" })
+    );
+
+    await waitFor(() => {
+      expect(
+        screen.queryByRole("complementary", { name: "Add SSH host key" })
+      ).not.toBeInTheDocument();
+    });
   });
 
-  it("renders DeleteTrustedSSHHostKey when view is DELETE_TRUSTED_SSH_HOST_KEY and a valid id is provided", () => {
-    mockSidePanelContent = {
-      view: TrustedSSHHostKeyActionSidePanelViews.DELETE_TRUSTED_SSH_HOST_KEY,
-      extras: { sshHostKeyId: 42 },
-    };
-
+  it("opens and closes the delete SSH host key side panel", async () => {
     renderWithProviders(<TrustedSSHHostKeys />);
-    expect(
-      screen.getByRole("complementary", { name: "Delete SSH host key" })
-    ).toBeInTheDocument();
-  });
 
-  it("closes the side panel form when canceled", async () => {
-    mockSidePanelContent = {
-      view: TrustedSSHHostKeyActionSidePanelViews.ADD_TRUSTED_SSH_HOST_KEY,
-    };
+    await waitFor(() => {
+      expect(
+        screen.getByRole("button", { name: "Delete" })
+      ).not.toBeAriaDisabled();
+    });
+    await userEvent.click(screen.getByRole("button", { name: "Delete" }));
 
-    renderWithProviders(<TrustedSSHHostKeys />);
+    const panel = screen.getByRole("complementary", {
+      name: "Delete SSH host key",
+    });
     expect(
-      screen.getByRole("complementary", { name: "Add SSH host key" })
+      within(panel).getByRole("form", {
+        name: "Confirm SSH host key deletion",
+      })
     ).toBeInTheDocument();
-    await userEvent.click(screen.getByRole("button", { name: "Cancel" }));
-    expect(mockSetSidePanelContent).toHaveBeenCalledWith(null);
+
+    await userEvent.click(
+      within(panel).getByRole("button", { name: "Cancel" })
+    );
+
+    await waitFor(() => {
+      expect(
+        screen.queryByRole("complementary", { name: "Delete SSH host key" })
+      ).not.toBeInTheDocument();
+    });
   });
 });

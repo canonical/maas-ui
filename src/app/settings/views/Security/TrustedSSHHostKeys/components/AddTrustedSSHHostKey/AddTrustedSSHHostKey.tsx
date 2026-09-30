@@ -1,5 +1,6 @@
 import type { ReactElement } from "react";
 
+import { useSidePanel } from "@canonical/maas-react-components";
 import { Col, Row, Select, Textarea } from "@canonical/react-components";
 import * as Yup from "yup";
 
@@ -7,10 +8,6 @@ import { useCreateTrustedSshHostKey } from "@/app/api/query/trustedSshHostKeys";
 import type { CreateSshHostKeyError, SshHostKeyRequest } from "@/app/apiclient";
 import FormikField from "@/app/base/components/FormikField";
 import FormikForm from "@/app/base/components/FormikForm";
-
-type AddTrustedSSHHostKeyProps = {
-  closeForm: () => void;
-};
 
 // Standard SSH public-key types accepted by MAAS.
 const KEY_TYPE_OPTIONS = [
@@ -39,9 +36,8 @@ const TrustedSSHHostKeySchema = Yup.object().shape({
   label: Yup.string().max(255, "Label must be 255 characters or less"),
 });
 
-export const AddTrustedSSHHostKey = ({
-  closeForm,
-}: AddTrustedSSHHostKeyProps): ReactElement => {
+export const AddTrustedSSHHostKey = (): ReactElement => {
+  const { closeSidePanel } = useSidePanel();
   const createTrustedSshHostKey = useCreateTrustedSshHostKey();
 
   return (
@@ -49,7 +45,7 @@ export const AddTrustedSSHHostKey = ({
       aria-label="Add SSH host key"
       errors={createTrustedSshHostKey.error}
       initialValues={{ host: "", key_type: "", public_key: "", label: "" }}
-      onCancel={closeForm}
+      onCancel={closeSidePanel}
       onSaveAnalytics={{
         action: "Saved",
         category: "Trusted SSH host keys settings",
@@ -65,7 +61,7 @@ export const AddTrustedSSHHostKey = ({
           },
         });
       }}
-      onSuccess={closeForm}
+      onSuccess={closeSidePanel}
       resetOnSave={true}
       saved={createTrustedSshHostKey.isSuccess}
       saving={createTrustedSshHostKey.isPending}

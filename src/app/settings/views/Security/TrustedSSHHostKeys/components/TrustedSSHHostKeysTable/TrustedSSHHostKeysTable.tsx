@@ -1,15 +1,22 @@
-import { GenericTable, MainToolbar } from "@canonical/maas-react-components";
+import {
+  GenericTable,
+  MainToolbar,
+  useSidePanel,
+} from "@canonical/maas-react-components";
 import { Button, Notification } from "@canonical/react-components";
+
+import AddTrustedSSHHostKey from "../AddTrustedSSHHostKey";
 
 import useTrustedSSHHostKeysTableColumns from "./useTrustedSSHHostKeysTableColumns";
 
 import { useTrustedSshHostKeys } from "@/app/api/query/trustedSshHostKeys";
+import { useHasEntitlements } from "@/app/base/hooks";
 import usePagination from "@/app/base/hooks/usePagination/usePagination";
-import { useSidePanel } from "@/app/base/side-panel-context";
-import { TrustedSSHHostKeyActionSidePanelViews } from "@/app/settings/views/Security/TrustedSSHHostKeys/constants";
+import { Entitlement } from "@/app/settings/views/UserManagement/views/Groups/constants";
 
 const TrustedSSHHostKeysTable = () => {
-  const { setSidePanelContent } = useSidePanel();
+  const { openSidePanel } = useSidePanel();
+  const canEdit = useHasEntitlements([Entitlement.CAN_EDIT_CONFIGURATIONS]);
   const { page, debouncedPage, size, handlePageSizeChange, setPage } =
     usePagination();
 
@@ -20,7 +27,7 @@ const TrustedSSHHostKeysTable = () => {
     },
   });
 
-  const columns = useTrustedSSHHostKeysTableColumns();
+  const columns = useTrustedSSHHostKeysTableColumns({ canEdit });
 
   return (
     <div className="trusted-ssh-host-keys-table">
@@ -28,9 +35,11 @@ const TrustedSSHHostKeysTable = () => {
         <MainToolbar.Title>Trusted SSH host keys</MainToolbar.Title>
         <MainToolbar.Controls>
           <Button
+            disabled={!canEdit}
             onClick={() => {
-              setSidePanelContent({
-                view: TrustedSSHHostKeyActionSidePanelViews.ADD_TRUSTED_SSH_HOST_KEY,
+              openSidePanel({
+                component: AddTrustedSSHHostKey,
+                title: "Add SSH host key",
               });
             }}
           >
