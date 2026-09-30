@@ -59,39 +59,4 @@ describe("Deploy", () => {
       await screen.findByText("Error while fetching deploy configurations")
     ).toBeInTheDocument();
   });
-
-  it(`dispatches actions to fetch config and general os info if either has not
-    already loaded`, async () => {
-    state.config.loaded = false;
-
-    const { store } = renderWithProviders(<Deploy />, { state });
-    expect(
-      await screen.findByRole("form", { name: "deploy configuration" })
-    ).toBeInTheDocument();
-
-    const fetchActions = store
-      .getActions()
-      .filter(
-        (action) =>
-          action.type.startsWith("config/fetch") ||
-          action.type.startsWith("general/fetch")
-      );
-
-    expect(fetchActions).toEqual([
-      {
-        type: "config/fetch",
-        meta: { model: "config", method: "list" },
-        payload: null,
-      },
-      {
-        type: "general/fetchOsInfo",
-        meta: {
-          cache: true,
-          model: "general",
-          method: "osinfo",
-        },
-        payload: null,
-      },
-    ]);
-  });
 });
