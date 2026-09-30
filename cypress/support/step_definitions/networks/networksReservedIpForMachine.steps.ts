@@ -145,8 +145,9 @@ Given("the user has created a machine with a known MAC address", function () {
   cy.findByRole("menuitem", { name: "Machine", timeout: LONG_TIMEOUT }).click();
   cy.findByLabelText("Machine name").type(this.machineName);
   cy.findByLabelText("MAC address").type(this.machineMac);
-  cy.findByLabelText("Power type").select("Manual");
-  cy.findByLabelText("Power type").blur();
+  cy.findByRole("button", { name: /Power type/i }).click();
+  cy.findByRole("option", { name: "Manual" }).click();
+  cy.findByRole("button", { name: /Power type/i }).blur();
   cy.findByRole("button", { name: /save machine/i }).click();
 
   cy.findByRole("heading", { name: /Add machine/i }).should("not.exist");

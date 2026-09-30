@@ -20,6 +20,6 @@ describe("usePowerTypes", () => {
       expect(result.current.isSuccess).toBe(true);
     });
 
-    expect(result.current.data).toEqual(mockPowerTypes);
+    expect(result.current.data?.items).toEqual(mockPowerTypes.items);
   });
 });

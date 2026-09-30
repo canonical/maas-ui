@@ -105,7 +105,7 @@ describe("PowerTypeFields", () => {
   });
 
   it("does not show select if showSelect is false", async () => {
-    const powerTypes = [
+    state.general.powerTypes.data = [
       factory.powerType({
         fields: [
           factory.powerField({ name: "field1" }),
@@ -114,7 +114,6 @@ describe("PowerTypeFields", () => {
         name: PowerTypeNames.MANUAL,
       }),
     ];
-    state.general.powerTypes.data = powerTypes;
     renderWithProviders(
       <Formik
         initialValues={{ power_type: PowerTypeNames.MANUAL }}
@@ -127,11 +126,13 @@ describe("PowerTypeFields", () => {
 
     await waitForLoading();
 
-    expect(screen.queryByRole("combobox")).not.toBeInTheDocument();
+    expect(
+      screen.queryByRole("button", { name: "Power type" })
+    ).not.toBeInTheDocument();
   });
 
   it("can limit the fields to show based on their scope", async () => {
-    const powerTypes = [
+    state.general.powerTypes.data = [
       factory.powerType({
         fields: [
           factory.powerField({
@@ -148,7 +149,6 @@ describe("PowerTypeFields", () => {
         name: PowerTypeNames.MANUAL,
       }),
     ];
-    state.general.powerTypes.data = powerTypes;
     renderWithProviders(
       <Formik
         initialValues={{ power_type: PowerTypeNames.MANUAL }}
@@ -170,7 +170,7 @@ describe("PowerTypeFields", () => {
   });
 
   it("can only show power types suitable for chassis", async () => {
-    const powerTypes = [
+    state.general.powerTypes.data = [
       factory.powerType({
         can_probe: true,
         description: "virsh",
@@ -184,7 +184,6 @@ describe("PowerTypeFields", () => {
         name: PowerTypeNames.MANUAL,
       }),
     ];
-    state.general.powerTypes.data = powerTypes;
     renderWithProviders(
       <Formik initialValues={{ power_type: "" }} onSubmit={vi.fn()}>
         <PowerTypeFields forChassis />
@@ -203,7 +202,7 @@ describe("PowerTypeFields", () => {
   });
 
   it("can be given different values for formik field names", async () => {
-    const powerTypes = [
+    state.general.powerTypes.data = [
       factory.powerType({
         fields: [
           factory.powerField({ name: "parameter1", label: "Parameter 1" }),
@@ -211,7 +210,6 @@ describe("PowerTypeFields", () => {
         name: PowerTypeNames.MANUAL,
       }),
     ];
-    state.general.powerTypes.data = powerTypes;
     renderWithProviders(
       <Formik
         initialValues={{
@@ -266,7 +264,8 @@ describe("PowerTypeFields", () => {
 
   it("resets the fields of the selected power type on change", async () => {
     // Mock two power types that share a power parameter "parameter1"
-    const powerTypes = [
+
+    state.general.powerTypes.data = [
       factory.powerType({
         description: "manual",
         fields: [
@@ -300,7 +299,6 @@ describe("PowerTypeFields", () => {
         name: PowerTypeNames.VIRSH,
       }),
     ];
-    state.general.powerTypes.data = powerTypes;
     renderWithProviders(
       <Formik
         initialValues={{
@@ -344,8 +342,30 @@ describe("PowerTypeFields", () => {
     );
   });
 
+  it("marks the configured power type field as touched on blur", async () => {
+    renderWithProviders(
+      <Formik
+        initialErrors={{ powerType: "Choose a power type." }}
+        initialValues={{ powerType: "" }}
+        onSubmit={vi.fn()}
+        validateOnBlur={false}
+      >
+        <PowerTypeFields powerTypeValueName="powerType" />
+      </Formik>,
+      { state }
+    );
+
+    await waitForLoading();
+
+    expect(screen.queryByText("Choose a power type.")).not.toBeInTheDocument();
+    await userEvent.tab();
+    expect(screen.getByRole("button", { name: "Power type" })).toHaveFocus();
+    await userEvent.tab();
+    expect(screen.getByText("Choose a power type.")).toBeInTheDocument();
+  });
+
   it("renders LXD power fields with custom props if selected", async () => {
-    const powerTypes = [
+    state.general.powerTypes.data = [
       factory.powerType({
         fields: [
           factory.powerField({ name: "certificate" }),
@@ -355,7 +375,6 @@ describe("PowerTypeFields", () => {
         name: PowerTypeNames.LXD,
       }),
     ];
-    state.general.powerTypes.data = powerTypes;
     renderWithProviders(
       <Formik
         initialValues={{
@@ -429,7 +448,7 @@ describe("PowerTypeFields", () => {
       )
     );
 
-    const powerTypes = [
+    state.general.powerTypes.data = [
       factory.powerType({
         name: "manual",
         description: "Manual",
@@ -443,7 +462,6 @@ describe("PowerTypeFields", () => {
         description: "APC PDU",
       }),
     ];
-    state.general.powerTypes.data = powerTypes;
 
     renderWithProviders(
       <Formik
@@ -503,7 +521,7 @@ describe("PowerTypeFields", () => {
       )
     );
 
-    const powerTypes = [
+    state.general.powerTypes.data = [
       factory.powerType({
         name: "manual",
         description: "Manual",
@@ -513,7 +531,6 @@ describe("PowerTypeFields", () => {
         description: "Intel AMT",
       }),
     ];
-    state.general.powerTypes.data = powerTypes;
 
     renderWithProviders(
       <Formik
@@ -539,5 +556,12 @@ describe("PowerTypeFields", () => {
 
     // No FIPS reason tooltip should be shown for any option
     expect(screen.queryByRole("tooltip")).not.toBeInTheDocument();
+
+    const amtOption = screen.getByRole("option", { name: "Intel AMT" });
+    expect(amtOption).not.toHaveClass("disabled");
+    await userEvent.click(amtOption);
+    expect(
+      screen.getByRole("button", { name: "Power type" })
+    ).toHaveTextContent("Intel AMT");
   });
 });

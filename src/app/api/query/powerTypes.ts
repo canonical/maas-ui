@@ -1,21 +1,21 @@
-import type { UseQueryOptions } from "@tanstack/react-query";
-
 import { useWebsocketAwareQuery } from "./base";
 
+import { queryOptionsWithHeaders } from "@/app/api/utils";
 import type {
   ListPowerTypesData,
-  ListPowerTypesError,
-  ListPowerTypesResponse,
+  ListPowerTypesErrors,
+  ListPowerTypesResponses,
   Options,
 } from "@/app/apiclient";
-import { listPowerTypesOptions } from "@/app/apiclient/@tanstack/react-query.gen";
+import { listPowerTypes } from "@/app/apiclient";
+import { listPowerTypesQueryKey } from "@/app/apiclient/@tanstack/react-query.gen";
 
 export const usePowerTypes = (options?: Options<ListPowerTypesData>) => {
   return useWebsocketAwareQuery(
-    listPowerTypesOptions(options) as UseQueryOptions<
-      ListPowerTypesData,
-      ListPowerTypesError,
-      ListPowerTypesResponse
-    >
+    queryOptionsWithHeaders<
+      ListPowerTypesResponses,
+      ListPowerTypesErrors,
+      ListPowerTypesData
+    >(options, listPowerTypes, listPowerTypesQueryKey(options))
   );
 };

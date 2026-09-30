@@ -1,5 +1,11 @@
-import type { ReactNode } from "react";
+import type {
+  ComponentType,
+  FocusEventHandler,
+  ReactElement,
+  ReactNode,
+} from "react";
 
+import type { CustomSelectProps } from "@canonical/react-components";
 import { CustomSelect, Spinner, Tooltip } from "@canonical/react-components";
 import { useFormikContext } from "formik";
 import { useSelector } from "react-redux";
@@ -36,6 +42,11 @@ type Props = {
   showSelect?: boolean;
 };
 
+// CustomSelect forwards onBlur to Field but omits it from its declared props.
+const PowerTypeSelect: ComponentType<
+  CustomSelectProps & { onBlur: FocusEventHandler<HTMLDivElement> }
+> = CustomSelect;
+
 export const PowerTypeFields = <V extends AnyObject>({
   customFieldProps,
   disableSelect = false,
@@ -44,11 +55,12 @@ export const PowerTypeFields = <V extends AnyObject>({
   powerTypeValueName = "power_type",
   fieldScopes = [PowerFieldScope.BMC, PowerFieldScope.NODE],
   showSelect = true,
-}: Props): React.ReactElement => {
+}: Props): ReactElement => {
   const allPowerTypes = useSelector(powerTypesSelectors.get);
   const chassisPowerTypes = useSelector(powerTypesSelectors.canProbe);
   const powerTypesLoaded = useSelector(powerTypesSelectors.loaded);
   const {
+    handleBlur,
     initialErrors,
     initialTouched,
     setErrors,
@@ -64,9 +76,12 @@ export const PowerTypeFields = <V extends AnyObject>({
 
   const powerTypesResponseData = powerTypesResponse.data?.items || [];
   const fipsDisabledPowerTypes = powerTypesResponseData.filter(
-    (powerType) => powerType.fips_supported === false
+    (powerType) => !powerType.fips_supported
   );
   const fipsActive = systemInfo.data?.fips_active;
+  const isPowerTypeDisabled = (name: string) =>
+    fipsActive &&
+    fipsDisabledPowerTypes.some((powerType) => powerType.name === name);
 
   // Only power types that can probe are suitable for use when adding a chassis.
   const powerTypes = forChassis ? chassisPowerTypes : allPowerTypes;
@@ -118,23 +133,31 @@ export const PowerTypeFields = <V extends AnyObject>({
     <>
       {showSelect && (
         <FormikField
-          component={CustomSelect}
+          component={PowerTypeSelect}
           disabled={!powerTypesLoaded || disableSelect}
           label="Power type"
           name={powerTypeValueName}
+          onBlur={handleBlur(powerTypeValueName)}
           onChange={async (value: string) => {
+            // CustomSelect can emit keyboard selections for disabled options.
+            if (isPowerTypeDisabled(value)) {
+              return;
+            }
+
             // Reset errors and touched formik state when selecting a new power
             // type, in order to start validation from new.
 
             // CustomSelect passes the raw string value, not an event, so set
             // the field directly rather than via formik's handleChange.
-            await setFieldValue(powerTypeValueName, value).catch((reason) => {
-              throw new FormikFieldChangeError(
-                powerTypeValueName,
-                "setFieldValue",
-                reason
-              );
-            });
+            await setFieldValue(powerTypeValueName, value).catch(
+              (reason: unknown) => {
+                throw new FormikFieldChangeError(
+                  powerTypeValueName,
+                  "setFieldValue",
+                  String(reason)
+                );
+              }
+            );
             setErrors(initialErrors);
             await setTouched(initialTouched);
 
@@ -166,10 +189,7 @@ export const PowerTypeFields = <V extends AnyObject>({
                 <>
                   <Tooltip
                     message={
-                      fipsActive &&
-                      fipsDisabledPowerTypes?.some(
-                        (type) => powerType.name === type.name
-                      )
+                      isPowerTypeDisabled(powerType.name)
                         ? `Disabled due to ${
                             fipsDisabledPowerTypes.find(
                               (type) => type.name === powerType.name
@@ -185,11 +205,7 @@ export const PowerTypeFields = <V extends AnyObject>({
               ),
               text: powerType.description,
               value: powerType.name,
-              disabled:
-                fipsActive &&
-                fipsDisabledPowerTypes?.some(
-                  (disabledType) => powerType.name === disabledType.name
-                ),
+              disabled: isPowerTypeDisabled(powerType.name),
             })),
           ]}
           required
