@@ -105,7 +105,7 @@ describe("BasePowerField", () => {
 
   it("disables the field when disabled is true", () => {
     const field = factory.powerField({ field_type: PowerFieldType.STRING });
-    render(
+    renderWithProviders(
       <Formik initialValues={{}} onSubmit={vi.fn()}>
         <BasePowerField disabled field={field} />
       </Formik>
@@ -121,7 +121,7 @@ describe("BasePowerField", () => {
       ],
       field_type: PowerFieldType.CHOICE,
     });
-    render(
+    renderWithProviders(
       <Formik initialValues={{}} onSubmit={vi.fn()}>
         <BasePowerField disabledChoices={["choice2"]} field={field} />
       </Formik>

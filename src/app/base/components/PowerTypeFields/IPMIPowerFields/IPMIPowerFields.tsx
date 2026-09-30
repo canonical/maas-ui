@@ -23,8 +23,7 @@ export const NONE_WORKAROUND_VALUE = "";
 
 export const CIPHER_SUITE_ID_FIELD_NAME = "cipher_suite_id";
 
-// Cipher suite 17 (HMAC-SHA256::HMAC_SHA256_128::AES-CBC-128) is the only
-// secure IPMI cipher suite, so it's enforced as the only selectable choice.
+// FIPS requires cipher suite 17 (HMAC-SHA256::HMAC_SHA256_128::AES-CBC-128).
 export const SECURE_CIPHER_SUITE_ID = "17";
 
 export const IPMIPowerFields = <V extends AnyObject>({
@@ -69,11 +68,11 @@ export const IPMIPowerFields = <V extends AnyObject>({
   useEffect(() => {
     if (fipsActive && cipherSuiteFieldValue !== SECURE_CIPHER_SUITE_ID) {
       setFieldValue(cipherSuiteFieldName, SECURE_CIPHER_SUITE_ID).catch(
-        (reason) => {
+        (reason: unknown) => {
           throw new FormikFieldChangeError(
             cipherSuiteFieldName,
             "setFieldValue",
-            reason
+            String(reason)
           );
         }
       );

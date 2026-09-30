@@ -56,7 +56,7 @@ it("forces the cipher suite id field to the secure value and disables other choi
     label: "Cipher suite id",
     name: CIPHER_SUITE_ID_FIELD_NAME,
   });
-  render(
+  renderWithProviders(
     <Formik
       initialValues={{
         power_parameters: { [CIPHER_SUITE_ID_FIELD_NAME]: "3" },
@@ -93,7 +93,7 @@ it("does not force the cipher suite id field when FIPS is not active", async () 
     label: "Cipher suite id",
     name: CIPHER_SUITE_ID_FIELD_NAME,
   });
-  render(
+  renderWithProviders(
     <Formik
       initialValues={{
         power_parameters: { [CIPHER_SUITE_ID_FIELD_NAME]: "3" },
