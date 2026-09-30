@@ -44,6 +44,7 @@ import IpmiSettings from "@/app/settings/views/Security/IpmiSettings";
 import SecretStorage from "@/app/settings/views/Security/SecretStorage";
 import SecurityProtocols from "@/app/settings/views/Security/SecurityProtocols";
 import SessionTimeout from "@/app/settings/views/Security/SessionTimeout";
+import TrustedSSHHostKeys from "@/app/settings/views/Security/TrustedSSHHostKeys";
 import StorageForm from "@/app/settings/views/Storage/StorageForm";
 import UserManagement from "@/app/settings/views/UserManagement";
 import { Entitlement } from "@/app/settings/views/UserManagement/views/Groups/constants";
@@ -905,6 +906,17 @@ export const router = createBrowserRouter(
                   element: (
                     <ErrorBoundary>
                       <IpmiSettings />
+                    </ErrorBoundary>
+                  ),
+                },
+                {
+                  path: getRelativeRoute(
+                    urls.settings.security.trustedSshHostKeys,
+                    urls.settings.index
+                  ),
+                  element: (
+                    <ErrorBoundary>
+                      <TrustedSSHHostKeys />
                     </ErrorBoundary>
                   ),
                 },

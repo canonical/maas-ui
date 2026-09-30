@@ -1,23 +1,23 @@
-import type { UseQueryOptions } from "@tanstack/react-query";
-
 import { useWebsocketAwareQuery } from "./base";
 
+import { queryOptionsWithHeaders } from "@/app/api/utils";
 import type {
   ListSshHostKeysData,
-  ListSshHostKeysError,
-  ListSshHostKeysResponse,
+  ListSshHostKeysErrors,
+  ListSshHostKeysResponses,
   Options,
 } from "@/app/apiclient";
-import { listSshHostKeysOptions } from "@/app/apiclient/@tanstack/react-query.gen";
+import { listSshHostKeys } from "@/app/apiclient";
+import { listSshHostKeysQueryKey } from "@/app/apiclient/@tanstack/react-query.gen";
 
 export const useTrustedSshHostKeys = (
   options?: Options<ListSshHostKeysData>
 ) => {
   return useWebsocketAwareQuery(
-    listSshHostKeysOptions(options) as UseQueryOptions<
-      ListSshHostKeysData,
-      ListSshHostKeysError,
-      ListSshHostKeysResponse
-    >
+    queryOptionsWithHeaders<
+      ListSshHostKeysResponses,
+      ListSshHostKeysErrors,
+      ListSshHostKeysData
+    >(options, listSshHostKeys, listSshHostKeysQueryKey(options))
   );
 };
