@@ -1,4 +1,4 @@
-import type { ReactNode } from "react";
+import type { ReactElement, ReactNode } from "react";
 import { useEffect } from "react";
 
 import { Input } from "@canonical/react-components";
@@ -30,7 +30,7 @@ export const IPMIPowerFields = <V extends AnyObject>({
   fields,
   fipsActive = false,
   powerParametersValueName = "power_parameters",
-}: Props): React.ReactElement | null => {
+}: Props): ReactElement => {
   const { setFieldValue, values } = useFormikContext<V>();
   const workaroundsFieldName = `${powerParametersValueName}.${WORKAROUNDS_FIELD_NAME}`;
   const workaroundsFieldValue = (

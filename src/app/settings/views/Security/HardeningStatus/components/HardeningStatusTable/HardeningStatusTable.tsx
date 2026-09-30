@@ -1,3 +1,5 @@
+import type { ReactElement } from "react";
+
 import { GenericTable } from "@canonical/maas-react-components";
 
 import useHardeningStatusTableColumns from "./useHardeningStatusTableColumns";
@@ -14,7 +16,7 @@ type Props = {
 const HardeningStatusTable = ({
   requirements,
   isLoading,
-}: Props): React.ReactElement => {
+}: Props): ReactElement => {
   const columns = useHardeningStatusTableColumns();
 
   return (
