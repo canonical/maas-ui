@@ -8,17 +8,22 @@ import { machineActions } from "@/app/store/machine";
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
 import { authResolvers } from "@/testing/resolvers/auth";
+import { powerTypesResolvers } from "@/testing/resolvers/powerTypes";
+import { systemResolvers } from "@/testing/resolvers/system";
 import {
   userEvent,
   screen,
   setupMockServer,
   waitFor,
   renderWithProviders,
+  waitForLoading,
 } from "@/testing/utils";
 
 const mockServer = setupMockServer(
   authResolvers.getCurrentUser.handler(),
-  authResolvers.getMeEntitlements.handler()
+  authResolvers.getMeEntitlements.handler(),
+  powerTypesResolvers.listPowerTypes.handler(),
+  systemResolvers.getSystemInfo.handler()
 );
 
 const clickEditButton = async () => {
@@ -29,6 +34,7 @@ const clickEditButton = async () => {
     expect(editButton).not.toBeAriaDisabled();
   });
   await userEvent.click(editButton);
+  await waitForLoading();
 };
 
 let state: RootState;

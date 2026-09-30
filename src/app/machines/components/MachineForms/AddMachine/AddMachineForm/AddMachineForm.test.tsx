@@ -5,6 +5,8 @@ import { machineActions } from "@/app/store/machine";
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
 import { poolsResolvers } from "@/testing/resolvers/pools";
+import { powerTypesResolvers } from "@/testing/resolvers/powerTypes";
+import { systemResolvers } from "@/testing/resolvers/system";
 import { zoneResolvers } from "@/testing/resolvers/zones";
 import {
   userEvent,
@@ -16,6 +18,8 @@ import {
 
 setupMockServer(
   poolsResolvers.listPools.handler(),
+  powerTypesResolvers.listPowerTypes.handler(),
+  systemResolvers.getSystemInfo.handler(),
   zoneResolvers.listZones.handler()
 );
 
