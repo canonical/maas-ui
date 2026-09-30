@@ -39,6 +39,7 @@ export { licenseKeys } from "./licensekeys";
 export { message } from "./message";
 export { modelRef } from "./model";
 export { nodeDevice } from "./nodedevice";
+export { notificationFactoryV3 } from "./notification";
 export {
   controller,
   controllerDetails,

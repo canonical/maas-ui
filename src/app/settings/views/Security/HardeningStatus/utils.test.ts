@@ -7,7 +7,7 @@ import * as factory from "@/testing/factories";
 
 describe("parseHardeningNotification", () => {
   it("splits the description and the resolving command", () => {
-    const notification = factory.notification({
+    const notification = factory.notificationFactoryV3({
       id: 1,
       ident: "hardening-wildcard-bind-api-bind",
       message:
@@ -24,7 +24,7 @@ describe("parseHardeningNotification", () => {
   });
 
   it("extracts the config key from the resolving command", () => {
-    const notification = factory.notification({
+    const notification = factory.notificationFactoryV3({
       ident: "hardening-invalid-bind-dns-bind",
       message:
         "dns_bind 'nope' is not a valid IP address Run: maas config-hardening set dns_bind <specific-ip-address>",
@@ -34,7 +34,7 @@ describe("parseHardeningNotification", () => {
   });
 
   it("keeps a controller-scoped prefix in the description", () => {
-    const notification = factory.notification({
+    const notification = factory.notificationFactoryV3({
       ident: "hardening-ctrl-abc123-api_bind",
       message:
         "[abc123] api_bind '0.0.0.0' binds to all interfaces, which is not allowed when hardening is active Run: maas config-hardening set api_bind <specific-ip-address>",
@@ -51,7 +51,7 @@ describe("parseHardeningNotification", () => {
   });
 
   it("handles a message without a resolving command", () => {
-    const notification = factory.notification({
+    const notification = factory.notificationFactoryV3({
       ident: "hardening-unknown",
       message: "Something is wrong",
     });
@@ -68,11 +68,11 @@ describe("parseHardeningNotification", () => {
 describe("parseHardeningNotifications", () => {
   it("parses a list of notifications", () => {
     const notifications = [
-      factory.notification({
+      factory.notificationFactoryV3({
         message:
           "api_bind is not configured Run: maas config-hardening set api_bind <specific-ip-address>",
       }),
-      factory.notification({
+      factory.notificationFactoryV3({
         message:
           "dns_bind is not configured Run: maas config-hardening set dns_bind <specific-ip-address>",
       }),
