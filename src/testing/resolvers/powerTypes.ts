@@ -43,10 +43,15 @@ const mockListPowerTypesError: ListPowerTypesError = {
 const powerTypesResolvers = {
   listPowerTypes: {
     resolved: false,
-    handler: (data: ListPowerTypesResponse = mockPowerTypes) =>
-      http.get(`${BASE_URL}MAAS/a/v3/power-types`, () => {
+    handler: (
+      data:
+        | ListPowerTypesResponse
+        | Promise<ListPowerTypesResponse> = mockPowerTypes
+    ) =>
+      http.get(`${BASE_URL}MAAS/a/v3/power-types`, async () => {
+        const response = await data;
         powerTypesResolvers.listPowerTypes.resolved = true;
-        return HttpResponse.json(data);
+        return HttpResponse.json(response);
       }),
     error: (error: ListPowerTypesError = mockListPowerTypesError) =>
       http.get(`${BASE_URL}MAAS/a/v3/power-types`, () => {

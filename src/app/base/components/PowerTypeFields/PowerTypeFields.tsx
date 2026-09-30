@@ -7,7 +7,12 @@ import type {
 import { useEffect } from "react";
 
 import type { CustomSelectProps } from "@canonical/react-components";
-import { CustomSelect, Spinner, Tooltip } from "@canonical/react-components";
+import {
+  CustomSelect,
+  Notification,
+  Spinner,
+  Tooltip,
+} from "@canonical/react-components";
 import { useFormikContext } from "formik";
 import { useSelector } from "react-redux";
 
@@ -87,6 +92,9 @@ export const PowerTypeFields = <V extends AnyObject>({
 
   const systemInfo = useSystemInfo();
   const powerTypesResponse = usePowerTypes();
+  const powerControlsAvailable =
+    powerTypesLoaded && systemInfo.isSuccess && powerTypesResponse.isSuccess;
+  const complianceError = systemInfo.error || powerTypesResponse.error;
 
   const powerTypesResponseData = powerTypesResponse.data?.items || [];
   const fipsDisabledPowerTypes = powerTypesResponseData.filter(
@@ -141,11 +149,17 @@ export const PowerTypeFields = <V extends AnyObject>({
     verifySslFieldValue,
   ]);
 
-  if (
-    !powerTypesLoaded ||
-    systemInfo.isPending ||
-    powerTypesResponse.isPending
-  ) {
+  if (complianceError) {
+    fieldContent = (
+      <Notification
+        role="alert"
+        severity="negative"
+        title="Error while fetching power type compliance information"
+      >
+        {complianceError.message}
+      </Notification>
+    );
+  } else if (!powerControlsAvailable) {
     fieldContent = <Spinner text="Loading..." />;
   } else if (selectedPowerType) {
     const fieldsInScope = getFieldsInScope(selectedPowerType, fieldScopes);
@@ -188,13 +202,13 @@ export const PowerTypeFields = <V extends AnyObject>({
       {showSelect && (
         <FormikField
           component={PowerTypeSelect}
-          disabled={!powerTypesLoaded || disableSelect}
+          disabled={!powerControlsAvailable || disableSelect}
           label="Power type"
           name={powerTypeValueName}
           onBlur={handleBlur(powerTypeValueName)}
           onChange={async (value: string) => {
             // CustomSelect can emit keyboard selections for disabled options.
-            if (isPowerTypeDisabled(value)) {
+            if (!powerControlsAvailable || isPowerTypeDisabled(value)) {
               return;
             }
 
@@ -247,7 +261,7 @@ export const PowerTypeFields = <V extends AnyObject>({
                         ? `Disabled due to ${
                             fipsDisabledPowerTypes.find(
                               (type) => type.name === powerType.name
-                            )?.fips_unsupported_reason
+                            )?.fips_unsupported_reason ?? "FIPS incompatibility"
                           }`
                         : ""
                     }
