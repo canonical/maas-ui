@@ -38,7 +38,9 @@ const ProxyForm = (): React.ReactElement => {
 
   const httpProxy = useSelector(configSelectors.httpProxy);
   const proxyType = useSelector(configSelectors.proxyType);
-  const canEdit = useHasEntitlements([Entitlement.CAN_EDIT_CONFIGURATIONS]);
+  const { allowed: canEdit } = useHasEntitlements([
+    Entitlement.CAN_EDIT_CONFIGURATIONS,
+  ]);
 
   useWindowTitle("Proxy");
 

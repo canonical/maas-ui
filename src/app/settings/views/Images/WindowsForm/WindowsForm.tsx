@@ -21,7 +21,9 @@ export enum Labels {
 const WindowsForm = (): React.ReactElement => {
   const dispatch = useDispatch();
   const updateConfig = configActions.update;
-  const canEdit = useHasEntitlements([Entitlement.CAN_EDIT_BOOT_ENTITIES]);
+  const { allowed: canEdit } = useHasEntitlements([
+    Entitlement.CAN_EDIT_BOOT_ENTITIES,
+  ]);
 
   const saved = useSelector(configSelectors.saved);
   const saving = useSelector(configSelectors.saving);

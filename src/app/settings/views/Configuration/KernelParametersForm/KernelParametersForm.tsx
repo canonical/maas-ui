@@ -58,7 +58,9 @@ const KernelParametersForm = (): React.ReactElement => {
     kernelParametersConfigNames
   ) as Partial<KernelParametersValues>;
 
-  const canEdit = useHasEntitlements([Entitlement.CAN_EDIT_BOOT_ENTITIES]);
+  const { allowed: canEdit } = useHasEntitlements([
+    Entitlement.CAN_EDIT_BOOT_ENTITIES,
+  ]);
 
   return (
     <FormikForm<KernelParametersValues>

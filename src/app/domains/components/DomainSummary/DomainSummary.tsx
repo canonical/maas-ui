@@ -52,7 +52,9 @@ const DomainSummary = ({ id }: Props): React.ReactElement | null => {
   const saving = useSelector(domainsSelectors.saving);
   const cleanup = useCallback(() => domainActions.cleanup(), []);
 
-  const canEdit = useHasEntitlements([Entitlement.CAN_EDIT_GLOBAL_ENTITIES]);
+  const { allowed: canEdit } = useHasEntitlements([
+    Entitlement.CAN_EDIT_GLOBAL_ENTITIES,
+  ]);
 
   if (!domain) {
     return null;

@@ -41,7 +41,9 @@ const ImageListHeader = ({
 
   const sources = useImageSources();
   const selectionsStatuses = useSelectionStatuses();
-  const canEdit = useHasEntitlements([Entitlement.CAN_EDIT_BOOT_ENTITIES]);
+  const { allowed: canEdit } = useHasEntitlements([
+    Entitlement.CAN_EDIT_BOOT_ENTITIES,
+  ]);
 
   const isPending = sources.isPending || selectionsStatuses.isPending;
   const isDeleteDisabled = Object.keys(selectedRows).length <= 0;

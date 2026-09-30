@@ -68,7 +68,7 @@ const NetworkTableActions = ({
   const isAllNetworkingDisabled = useIsAllNetworkingDisabled(machine);
   const isLimitedEditingAllowed = useIsLimitedEditingAllowed(nic, machine);
   const canAddVLAN = useCanAddVLAN(machine, nic, link);
-  const canEditMachine = useCanEditMachine(systemId);
+  const { allowed: canEditMachine } = useCanEditMachine(systemId);
   const itCanAddAlias = canAddAlias(machine, nic, link);
   if (!isMachineDetails(machine)) {
     return null;

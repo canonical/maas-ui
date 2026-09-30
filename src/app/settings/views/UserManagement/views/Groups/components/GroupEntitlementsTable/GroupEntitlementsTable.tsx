@@ -25,7 +25,9 @@ const GroupEntitlementsTable = ({
 }: GroupEntitlementsTableProps): ReactElement => {
   const [rowSelection, setRowSelection] = useState<RowSelectionState>({});
   const { page, size, handlePageSizeChange, setPage } = usePagination();
-  const canEdit = useHasEntitlements([Entitlement.CAN_EDIT_IDENTITIES]);
+  const { allowed: canEdit } = useHasEntitlements([
+    Entitlement.CAN_EDIT_IDENTITIES,
+  ]);
 
   const columns = useGroupEntitlementsTableColumns({
     canEdit,

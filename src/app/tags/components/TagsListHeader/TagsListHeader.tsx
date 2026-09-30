@@ -33,7 +33,9 @@ export const TagsListHeader = ({
   setSearchText,
 }: Props): React.ReactElement => {
   const { openSidePanel } = useSidePanel();
-  const canEdit = useHasEntitlements([Entitlement.CAN_EDIT_GLOBAL_ENTITIES]);
+  const { allowed: canEdit } = useHasEntitlements([
+    Entitlement.CAN_EDIT_GLOBAL_ENTITIES,
+  ]);
   return (
     <MainToolbar>
       <MainToolbar.Title>Tags</MainToolbar.Title>

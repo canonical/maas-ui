@@ -49,7 +49,7 @@ const PowerForm = ({ systemId }: Props): React.ReactElement | null => {
   const powerTypesLoading = useSelector(powerTypesSelectors.loading);
   const cleanup = useCallback(() => machineActions.cleanup(), []);
   const canEdit = useCanEdit(machine, true);
-  const canEditMachine = useCanEditMachine(systemId);
+  const { allowed: canEditMachine } = useCanEditMachine(systemId);
   const [selectedPowerType, setSelectedPowerType] = useState<PowerType | null>(
     null
   );

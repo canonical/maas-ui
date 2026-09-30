@@ -14,7 +14,9 @@ import { AddZone } from "@/app/zones/components";
 const ZonesListHeader = (): ReactElement => {
   const { openSidePanel } = useSidePanel();
   const zonesCount = useZoneCount();
-  const canEdit = useHasEntitlements([Entitlement.CAN_EDIT_GLOBAL_ENTITIES]);
+  const { allowed: canEdit } = useHasEntitlements([
+    Entitlement.CAN_EDIT_GLOBAL_ENTITIES,
+  ]);
 
   return (
     <MainToolbar>

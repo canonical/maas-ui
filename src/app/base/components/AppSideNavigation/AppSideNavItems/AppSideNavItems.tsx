@@ -120,7 +120,7 @@ export const AppSideNavItems = ({
   vaultIncomplete,
 }: Props): React.ReactElement => {
   const { data: userEntitlements } = useGetUserEntitlements();
-  const canViewSettingsLink = useHasEntitlements([
+  const { allowed: canViewSettingsLink } = useHasEntitlements([
     Entitlement.CAN_VIEW_CONFIGURATIONS,
   ]);
   const { openModal } = useModal();

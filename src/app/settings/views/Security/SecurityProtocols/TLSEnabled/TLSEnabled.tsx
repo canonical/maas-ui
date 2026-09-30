@@ -54,7 +54,9 @@ const TLSEnabled = (): React.ReactElement | null => {
   const tlsCertificate = useSelector(tlsCertificateSelectors.get);
   const saved = useSelector(configSelectors.saved);
   const saving = useSelector(configSelectors.saving);
-  const canEdit = useHasEntitlements([Entitlement.CAN_EDIT_CONFIGURATIONS]);
+  const { allowed: canEdit } = useHasEntitlements([
+    Entitlement.CAN_EDIT_CONFIGURATIONS,
+  ]);
 
   if (configLoading || tlsCertificateLoading) {
     return <Spinner aria-label={Labels.Loading} />;

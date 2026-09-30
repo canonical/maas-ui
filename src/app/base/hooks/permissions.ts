@@ -7,28 +7,46 @@ import type { Machine } from "@/app/store/machine/types";
 import type { RootState } from "@/app/store/root/types";
 import { hasEntitlementForPool, hasPermissions } from "@/app/utils/permissions";
 
-export const useHasEntitlements = (requiredEntitlements: Entitlement[]) => {
-  const { data: userEntitlements } = useGetUserEntitlements();
-  return hasPermissions(userEntitlements || [], requiredEntitlements);
+type Permissions = {
+  allowed: boolean;
+  // True until the user's entitlements have been fetched. While pending,
+  // `allowed` is always false and should not be treated as a denial.
+  isPending: boolean;
+};
+
+export const useHasEntitlements = (
+  requiredEntitlements: Entitlement[]
+): Permissions => {
+  const { data: userEntitlements, isPending } = useGetUserEntitlements();
+  return {
+    allowed: hasPermissions(userEntitlements || [], requiredEntitlements),
+    isPending,
+  };
 };
 
 export const useCanEditMachine = (
   systemId?: Machine["system_id"] | null
-): boolean => {
-  const { data: userEntitlements } = useGetUserEntitlements();
+): Permissions => {
+  const { data: userEntitlements, isPending } = useGetUserEntitlements();
   const machine = useSelector((state: RootState) =>
     machineSelectors.getById(state, systemId)
   );
   if (!machine) {
-    return hasPermissions(userEntitlements || [], [
-      Entitlement.CAN_EDIT_MACHINES,
-    ]);
+    return {
+      allowed: hasPermissions(userEntitlements || [], [
+        Entitlement.CAN_EDIT_MACHINES,
+      ]),
+      isPending,
+    };
   }
-  return hasEntitlementForPool(
-    userEntitlements,
-    Entitlement.CAN_EDIT_MACHINES,
-    machine.pool.id
-  );
+  return {
+    allowed: hasEntitlementForPool(
+      userEntitlements,
+      Entitlement.CAN_EDIT_MACHINES,
+      machine.pool.id
+    ),
+    isPending,
+  };
 };
 
 // We don't have a way to check if the user is a superuser, so we check if they
@@ -44,4 +62,5 @@ const SUPERUSER_ENTITLEMENTS = [
   Entitlement.CAN_EDIT_NOTIFICATIONS,
 ];
 
-export const useIsSuperUser = () => useHasEntitlements(SUPERUSER_ENTITLEMENTS);
+export const useIsSuperUser = (): Permissions =>
+  useHasEntitlements(SUPERUSER_ENTITLEMENTS);

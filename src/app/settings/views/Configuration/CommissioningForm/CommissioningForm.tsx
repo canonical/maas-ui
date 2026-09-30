@@ -52,7 +52,9 @@ const CommissioningForm = (): React.ReactElement => {
     commissioningConfigNames
   ) as CommissioningConfigs;
 
-  const canEdit = useHasEntitlements([Entitlement.CAN_EDIT_CONFIGURATIONS]);
+  const { allowed: canEdit } = useHasEntitlements([
+    Entitlement.CAN_EDIT_CONFIGURATIONS,
+  ]);
 
   return (
     <FormikForm<CommissioningFormValues>

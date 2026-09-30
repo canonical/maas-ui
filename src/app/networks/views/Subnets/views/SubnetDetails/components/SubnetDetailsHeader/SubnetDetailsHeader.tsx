@@ -23,7 +23,9 @@ const SubnetDetailsHeader = ({ subnet }: Props): ReactElement => {
   const { openSidePanel } = useSidePanel();
   const { openModal } = useModal();
   const { pathname } = useLocation();
-  const canEdit = useHasEntitlements([Entitlement.CAN_EDIT_GLOBAL_ENTITIES]);
+  const { allowed: canEdit } = useHasEntitlements([
+    Entitlement.CAN_EDIT_GLOBAL_ENTITIES,
+  ]);
   const urlBase = `/subnet/${subnet?.id}`;
   return (
     <SectionHeader

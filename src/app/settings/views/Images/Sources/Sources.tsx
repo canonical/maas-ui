@@ -22,7 +22,9 @@ export type ImageSource = BootSourceResponse & {
 
 const Sources = (): ReactElement => {
   const { openSidePanel } = useSidePanel();
-  const canEdit = useHasEntitlements([Entitlement.CAN_EDIT_BOOT_ENTITIES]);
+  const { allowed: canEdit } = useHasEntitlements([
+    Entitlement.CAN_EDIT_BOOT_ENTITIES,
+  ]);
 
   return (
     <PageContent>
