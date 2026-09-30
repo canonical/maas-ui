@@ -1,4 +1,5 @@
-import { useEffect, type ReactNode } from "react";
+import type { ReactElement, ReactNode } from "react";
+import { useEffect } from "react";
 
 import {
   AppStatus,
@@ -111,7 +112,7 @@ const getSyncStatusString = (syncStatus: UtcDatetime) => {
   }
 };
 
-export const StatusBar = (): React.ReactElement | null => {
+export const StatusBar = (): ReactElement | null => {
   const activeController = useSelector(controllerSelectors.active);
   const activeMachine = useSelector(machineSelectors.active);
   const maasName = useSelector(configSelectors.maasName);

@@ -1,3 +1,5 @@
+import type { ReactElement } from "react";
+
 import { ContentSection } from "@canonical/maas-react-components";
 import {
   CodeSnippet,
@@ -20,7 +22,7 @@ import { useWindowTitle } from "@/app/base/hooks";
 
 const HARDENING_DOCS_URL = `${import.meta.env.VITE_APP_BASENAME}/docs/reference/configuration-guides/security-hardening/`;
 
-const HardeningStatus = (): React.ReactElement => {
+const HardeningStatus = (): ReactElement => {
   useWindowTitle("Hardening status");
 
   const systemInfo = useSystemInfo();

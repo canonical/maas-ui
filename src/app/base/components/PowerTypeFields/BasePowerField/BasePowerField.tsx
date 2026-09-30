@@ -1,3 +1,5 @@
+import type { ReactElement } from "react";
+
 import { Input, Select } from "@canonical/react-components";
 import { useFormikContext } from "formik";
 
@@ -20,7 +22,7 @@ export const BasePowerField = <V extends AnyObject>({
   disabledChoices,
   field,
   powerParametersValueName = "power_parameters",
-}: Props): React.ReactElement => {
+}: Props): ReactElement => {
   const { setFieldValue, values } = useFormikContext<V>();
   const { choices, field_type, label, name, required } = field;
   const fieldName = `${powerParametersValueName}.${name}`;
