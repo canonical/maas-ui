@@ -9,13 +9,16 @@ import { statusActions } from "@/app/store/status";
 import * as factory from "@/testing/factories";
 import { authResolvers } from "@/testing/resolvers/auth";
 import { notificationResolvers } from "@/testing/resolvers/notifications";
+import { systemResolvers } from "@/testing/resolvers/system";
 import { renderWithProviders, screen, setupMockServer } from "@/testing/utils";
 
 setupMockServer(
   authResolvers.getCurrentUser.handler(),
   authResolvers.getMeStatistics.handler(),
+  authResolvers.getMeEntitlements.handler(),
   authResolvers.createSession.handler(),
-  notificationResolvers.listNotifications.handler()
+  notificationResolvers.listNotifications.handler(),
+  systemResolvers.getSystemInfo.handler()
 );
 
 vi.mock("@canonical/react-components/dist/hooks", async () => {

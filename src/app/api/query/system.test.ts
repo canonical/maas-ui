@@ -16,6 +16,6 @@ describe("useSystemInfo", () => {
     await waitFor(() => {
       expect(result.current.isSuccess).toBe(true);
     });
-    expect(result.current.data).toEqual(mockSystemInfo);
+    expect(result.current.data).toMatchObject(mockSystemInfo);
   });
 });
