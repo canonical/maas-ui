@@ -121,6 +121,8 @@ export const StatusBar = (): React.ReactElement | null => {
   const { toggleListView, notifications, countBySeverity, isListView } =
     useToastNotification();
 
+  const systemInfo = useSystemInfo();
+
   useNotifications();
   useEventListener("keydown", (e: KeyboardEvent) => {
     // Close notifications list if Escape pressed
@@ -140,8 +142,6 @@ export const StatusBar = (): React.ReactElement | null => {
     }
     return null;
   });
-
-  const systemInfo = useSystemInfo();
 
   const hasNotifications = notifications.length > 0;
 
@@ -183,7 +183,7 @@ export const StatusBar = (): React.ReactElement | null => {
   }
 
   return (
-    <AppStatus aria-label="status bar" className="p-status-bar">
+    <AppStatus aria-label="Status bar" className="p-status-bar">
       <div className="p-status-bar__row u-flex">
         <div className="p-status-bar__primary u-flex--no-shrink u-flex--wrap">
           <strong data-testid="status-bar-maas-name">{maasName} MAAS</strong>

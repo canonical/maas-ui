@@ -1,21 +1,21 @@
-import type { UseQueryOptions } from "@tanstack/react-query";
-
 import { useWebsocketAwareQuery } from "./base";
 
+import { queryOptionsWithHeaders } from "@/app/api/utils";
 import type {
   GetSystemInfoData,
-  GetSystemInfoError,
-  GetSystemInfoResponse,
+  GetSystemInfoErrors,
+  GetSystemInfoResponses,
+  Options,
 } from "@/app/apiclient";
-import { getSystemInfoOptions } from "@/app/apiclient/@tanstack/react-query.gen";
-import type { Options } from "@/app/apiclient/client";
+import { getSystemInfo } from "@/app/apiclient";
+import { getSystemInfoQueryKey } from "@/app/apiclient/@tanstack/react-query.gen";
 
 export const useSystemInfo = (options?: Options<GetSystemInfoData>) => {
   return useWebsocketAwareQuery(
-    getSystemInfoOptions(options) as UseQueryOptions<
-      GetSystemInfoData,
-      GetSystemInfoError,
-      GetSystemInfoResponse
-    >
+    queryOptionsWithHeaders<
+      GetSystemInfoResponses,
+      GetSystemInfoErrors,
+      GetSystemInfoData
+    >(options, getSystemInfo, getSystemInfoQueryKey(options))
   );
 };
