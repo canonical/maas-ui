@@ -52,14 +52,14 @@ describe("StatusBar", () => {
     Object.assign(import.meta.env, { ...originalEnv });
   });
 
-it("can show if a machine is currently commissioning", async () => {
-  state.machine.items = [
-    factory.machineDetails({
-      fqdn: "test.maas",
-      status: NodeStatus.COMMISSIONING,
-      system_id: "abc123",
-    }),
-  ];
+  it("can show if a machine is currently commissioning", async () => {
+    state.machine.items = [
+      factory.machineDetails({
+        fqdn: "test.maas",
+        status: NodeStatus.COMMISSIONING,
+        system_id: "abc123",
+      }),
+    ];
 
     renderWithProviders(<StatusBar />, { state });
 
