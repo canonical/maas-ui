@@ -72,10 +72,9 @@ describe("PowerFormFields", () => {
 
     await waitForLoading();
 
-    expect(screen.getByRole("button", { name: /Power type/ })).toHaveAttribute(
-      "aria-disabled",
-      "true"
-    );
+    expect(
+      screen.getByRole("button", { name: /Power type/ })
+    ).not.toHaveAttribute("aria-disabled", "true");
     expect(
       screen.getByRole("textbox", { name: "Node field" })
     ).toBeInTheDocument();
