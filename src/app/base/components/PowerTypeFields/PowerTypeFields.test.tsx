@@ -1,3 +1,4 @@
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Form, Formik } from "formik";
 
 import {
@@ -9,6 +10,14 @@ import PowerTypeFields, {
   SSL_VERIFICATION_ENABLED_VALUE,
 } from "./PowerTypeFields";
 
+import type {
+  GetSystemInfoResponse,
+  ListPowerTypesResponse,
+} from "@/app/apiclient";
+import {
+  getSystemInfoQueryKey,
+  listPowerTypesQueryKey,
+} from "@/app/apiclient/@tanstack/react-query.gen";
 import { PowerTypeNames } from "@/app/store/general/constants";
 import { PowerFieldScope, PowerFieldType } from "@/app/store/general/types";
 import type { RootState } from "@/app/store/root/types";
@@ -270,9 +279,182 @@ describe("PowerTypeFields", () => {
     );
   });
 
+  it.each(["system information", "power types"])(
+    "keeps controls unavailable while %s is pending",
+    async (pendingQuery) => {
+      const systemInfo = factory.systemInfo({ fips_active: true });
+      const powerTypes = {
+        items: [
+          factory.powerTypeV3({
+            name: PowerTypeNames.MANUAL,
+            fips_supported: true,
+          }),
+          factory.powerTypeV3({
+            name: PowerTypeNames.AMT,
+            fips_supported: false,
+          }),
+        ],
+      };
+      state.general.powerTypes.data = [
+        factory.powerType({
+          name: PowerTypeNames.MANUAL,
+          description: "Manual",
+          fields: [
+            factory.powerField({
+              name: "parameter",
+              label: "Power parameter",
+            }),
+          ],
+        }),
+        factory.powerType({
+          name: PowerTypeNames.AMT,
+          description: "Intel AMT",
+          fields: [],
+        }),
+      ];
+      const systemResponse = Promise.withResolvers<GetSystemInfoResponse>();
+      const powerTypesResponse =
+        Promise.withResolvers<ListPowerTypesResponse>();
+      mockServer.use(
+        systemResolvers.getSystemInfo.handler(systemResponse.promise),
+        powerTypesResolvers.listPowerTypes.handler(powerTypesResponse.promise)
+      );
+      const queryClient = new QueryClient({
+        defaultOptions: { queries: { retry: false } },
+      });
+      renderWithProviders(
+        <QueryClientProvider client={queryClient}>
+          <Formik
+            initialValues={{
+              power_type: PowerTypeNames.MANUAL,
+              power_parameters: { parameter: "" },
+            }}
+            onSubmit={vi.fn()}
+          >
+            <PowerTypeFields />
+          </Formik>
+        </QueryClientProvider>,
+        { state }
+      );
+      const select = screen.getByRole("button", { name: "Power type" });
+
+      expect(select).toHaveAttribute("aria-disabled", "true");
+      expect(
+        screen.queryByRole("textbox", { name: "Power parameter" })
+      ).not.toBeInTheDocument();
+
+      if (pendingQuery === "system information") {
+        powerTypesResponse.resolve(powerTypes);
+      } else {
+        systemResponse.resolve(systemInfo);
+      }
+      await waitFor(() => {
+        expect(
+          queryClient.getQueryState(
+            pendingQuery === "system information"
+              ? listPowerTypesQueryKey()
+              : getSystemInfoQueryKey()
+          )?.status
+        ).toBe("success");
+      });
+
+      expect(select).toHaveAttribute("aria-disabled", "true");
+      await userEvent.click(select);
+      expect(screen.queryByRole("option")).not.toBeInTheDocument();
+      expect(
+        screen.queryByRole("textbox", { name: "Power parameter" })
+      ).not.toBeInTheDocument();
+
+      systemResponse.resolve(systemInfo);
+      powerTypesResponse.resolve(powerTypes);
+      await waitForLoading();
+
+      expect(select).not.toHaveAttribute("aria-disabled", "true");
+      expect(
+        screen.getByRole("textbox", { name: "Power parameter" })
+      ).toBeInTheDocument();
+      await userEvent.click(select);
+      expect(screen.getByRole("option", { name: "Intel AMT" })).toHaveClass(
+        "disabled"
+      );
+      await userEvent.click(screen.getByRole("option", { name: "Intel AMT" }));
+      expect(select).toHaveTextContent("Manual");
+    }
+  );
+
+  it.each([
+    { query: "system information", showSelect: true },
+    { query: "power types", showSelect: true },
+    { query: "system information", showSelect: false },
+    { query: "power types", showSelect: false },
+  ])(
+    "shows an error and keeps controls unavailable when $query fails (showSelect=$showSelect)",
+    async ({ query, showSelect }) => {
+      state.general.powerTypes.data = [
+        factory.powerType({
+          name: PowerTypeNames.MANUAL,
+          description: "Manual",
+          fields: [
+            factory.powerField({
+              name: "parameter",
+              label: "Power parameter",
+            }),
+          ],
+        }),
+        factory.powerType({
+          name: PowerTypeNames.AMT,
+          description: "Intel AMT",
+          fields: [],
+        }),
+      ];
+      mockServer.use(
+        query === "system information"
+          ? systemResolvers.getSystemInfo.error()
+          : powerTypesResolvers.listPowerTypes.error()
+      );
+      const queryClient = new QueryClient({
+        defaultOptions: { queries: { retry: false } },
+      });
+      renderWithProviders(
+        <QueryClientProvider client={queryClient}>
+          <Formik
+            initialValues={{
+              power_type: PowerTypeNames.MANUAL,
+              power_parameters: { parameter: "" },
+            }}
+            onSubmit={vi.fn()}
+          >
+            <PowerTypeFields showSelect={showSelect} />
+          </Formik>
+        </QueryClientProvider>,
+        { state }
+      );
+
+      await waitForLoading();
+
+      const alert = screen.getByRole("alert");
+      expect(alert).toHaveTextContent(
+        "Error while fetching power type compliance information"
+      );
+      expect(alert).toHaveTextContent("Unauthorized");
+      expect(
+        screen.queryByRole("textbox", { name: "Power parameter" })
+      ).not.toBeInTheDocument();
+      if (showSelect) {
+        const select = screen.getByRole("button", { name: "Power type" });
+        expect(select).toHaveAttribute("aria-disabled", "true");
+        await userEvent.click(select);
+        expect(screen.queryByRole("option")).not.toBeInTheDocument();
+      } else {
+        expect(
+          screen.queryByRole("button", { name: "Power type" })
+        ).not.toBeInTheDocument();
+      }
+    }
+  );
+
   it("resets the fields of the selected power type on change", async () => {
     // Mock two power types that share a power parameter "parameter1"
-
     state.general.powerTypes.data = [
       factory.powerType({
         description: "manual",
@@ -423,86 +605,98 @@ describe("PowerTypeFields", () => {
     ).toBeInTheDocument();
   });
 
-  it("disables power types not supported by FIPS when FIPS is active and shows reasons", async () => {
-    const fipsUnsupportedPowerTypesResponse = {
-      items: [
-        factory.powerTypeV3({
+  it.each([
+    {
+      reason: "uses non-approved cryptography",
+      tooltip: "Disabled due to uses non-approved cryptography",
+    },
+    {
+      reason: undefined,
+      tooltip: "Disabled due to FIPS incompatibility",
+    },
+  ])(
+    "disables unsupported power types and shows '$tooltip' when FIPS is active",
+    async ({ reason, tooltip }) => {
+      const fipsUnsupportedPowerTypesResponse = {
+        items: [
+          factory.powerTypeV3({
+            name: "manual",
+            description: "Manual",
+            fips_supported: true,
+            fips_unsupported_reason: undefined,
+          }),
+          factory.powerTypeV3({
+            name: "amt",
+            description: "Intel AMT",
+            fips_supported: false,
+            fips_unsupported_reason: reason,
+          }),
+          factory.powerTypeV3({
+            name: "apc",
+            description: "APC PDU",
+            fips_supported: false,
+            fips_unsupported_reason: "network vulnerability",
+          }),
+        ],
+      };
+
+      mockServer.use(
+        powerTypesResolvers.listPowerTypes.handler(
+          fipsUnsupportedPowerTypesResponse
+        ),
+        systemResolvers.getSystemInfo.handler(
+          factory.systemInfo({ fips_active: true })
+        )
+      );
+
+      state.general.powerTypes.data = [
+        factory.powerType({
           name: "manual",
           description: "Manual",
-          fips_supported: true,
-          fips_unsupported_reason: undefined,
         }),
-        factory.powerTypeV3({
+        factory.powerType({
           name: "amt",
           description: "Intel AMT",
-          fips_supported: false,
-          fips_unsupported_reason: "uses non-approved cryptography",
         }),
-        factory.powerTypeV3({
+        factory.powerType({
           name: "apc",
           description: "APC PDU",
-          fips_supported: false,
-          fips_unsupported_reason: "network vulnerability",
         }),
-      ],
-    };
+      ];
 
-    mockServer.use(
-      powerTypesResolvers.listPowerTypes.handler(
-        fipsUnsupportedPowerTypesResponse
-      ),
-      systemResolvers.getSystemInfo.handler(
-        factory.systemInfo({ fips_active: true })
-      )
-    );
+      renderWithProviders(
+        <Formik
+          initialValues={{
+            power_parameters: {},
+            power_type: PowerTypeNames.MANUAL,
+          }}
+          onSubmit={vi.fn()}
+        >
+          <PowerTypeFields />
+        </Formik>,
+        { state }
+      );
 
-    state.general.powerTypes.data = [
-      factory.powerType({
-        name: "manual",
-        description: "Manual",
-      }),
-      factory.powerType({
-        name: "amt",
-        description: "Intel AMT",
-      }),
-      factory.powerType({
-        name: "apc",
-        description: "APC PDU",
-      }),
-    ];
+      await waitForLoading();
 
-    renderWithProviders(
-      <Formik
-        initialValues={{
-          power_parameters: {},
-          power_type: PowerTypeNames.MANUAL,
-        }}
-        onSubmit={vi.fn()}
-      >
-        <PowerTypeFields />
-      </Formik>,
-      { state }
-    );
+      await userEvent.click(screen.getByRole("button", { name: "Power type" }));
 
-    await waitForLoading();
-
-    await userEvent.click(screen.getByRole("button", { name: "Power type" }));
-
-    // FIPS-unsupported power types should show their reason as a tooltip
-    // (hover the tooltip's inner wrapper, since it holds the hover handlers)
-    await expectTooltipOnHover(
-      within(screen.getByRole("option", { name: "Intel AMT" })).getByText(
-        "Intel AMT"
-      ).parentElement,
-      "Disabled due to uses non-approved cryptography"
-    );
-    await expectTooltipOnHover(
-      within(screen.getByRole("option", { name: "APC PDU" })).getByText(
-        "APC PDU"
-      ).parentElement,
-      "Disabled due to network vulnerability"
-    );
-  });
+      // FIPS-unsupported power types should show their reason as a tooltip
+      // (hover the tooltip's inner wrapper, since it holds the hover handlers)
+      await expectTooltipOnHover(
+        within(screen.getByRole("option", { name: "Intel AMT" })).getByText(
+          "Intel AMT"
+        ).parentElement,
+        tooltip
+      );
+      await expectTooltipOnHover(
+        within(screen.getByRole("option", { name: "APC PDU" })).getByText(
+          "APC PDU"
+        ).parentElement,
+        "Disabled due to network vulnerability"
+      );
+    }
+  );
 
   it("shows all power types without FIPS reasons when FIPS is not active", async () => {
     const noFipsRestrictionsResponse = {

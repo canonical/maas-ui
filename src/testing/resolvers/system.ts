@@ -20,10 +20,15 @@ const mockSystemInfoError: GetSystemInfoError = {
 const systemResolvers = {
   getSystemInfo: {
     resolved: false,
-    handler: (data: GetSystemInfoResponse = mockSystemInfo) =>
-      http.get(`${BASE_URL}MAAS/a/v3/system/info`, () => {
+    handler: (
+      data:
+        | GetSystemInfoResponse
+        | Promise<GetSystemInfoResponse> = mockSystemInfo
+    ) =>
+      http.get(`${BASE_URL}MAAS/a/v3/system/info`, async () => {
+        const response = await data;
         systemResolvers.getSystemInfo.resolved = true;
-        return HttpResponse.json(data);
+        return HttpResponse.json(response);
       }),
     error: (error: GetSystemInfoError = mockSystemInfoError) =>
       http.get(`${BASE_URL}MAAS/a/v3/system/info`, () => {
