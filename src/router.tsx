@@ -40,6 +40,7 @@ import SyslogForm from "@/app/settings/views/Network/SyslogForm";
 import RepositoriesList from "@/app/settings/views/Repositories/views";
 import Scripts from "@/app/settings/views/Scripts";
 import ScriptsList from "@/app/settings/views/Scripts/ScriptsList";
+import HardeningStatus from "@/app/settings/views/Security/HardeningStatus";
 import IpmiSettings from "@/app/settings/views/Security/IpmiSettings";
 import SecretStorage from "@/app/settings/views/Security/SecretStorage";
 import SecurityProtocols from "@/app/settings/views/Security/SecurityProtocols";
@@ -917,6 +918,17 @@ export const router = createBrowserRouter(
                   element: (
                     <ErrorBoundary>
                       <TrustedSSHHostKeys />
+                    </ErrorBoundary>
+                  ),
+                },
+                {
+                  path: getRelativeRoute(
+                    urls.settings.security.hardeningStatus,
+                    urls.settings.index
+                  ),
+                  element: (
+                    <ErrorBoundary>
+                      <HardeningStatus />
                     </ErrorBoundary>
                   ),
                 },

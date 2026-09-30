@@ -1,7 +1,7 @@
-import type { Notification } from "@/app/store/notification/types";
+import type { NotificationResponse } from "@/app/apiclient";
 
 export type HardeningRequirement = {
-  id: Notification["id"];
+  id: NotificationResponse["id"];
   configKey: string;
   description: string;
   command: string;
@@ -18,7 +18,7 @@ const CONFIG_KEY_REGEX = /config-hardening set (\S+)/;
  * @returns The parsed hardening requirement.
  */
 export const parseHardeningNotification = (
-  notification: Notification
+  notification: NotificationResponse
 ): HardeningRequirement => {
   const message = notification.message ?? "";
   const runIndex = message.indexOf(RUN_SEPARATOR);
@@ -39,5 +39,5 @@ export const parseHardeningNotification = (
  * @returns The parsed hardening requirements.
  */
 export const parseHardeningNotifications = (
-  notifications: Notification[]
+  notifications: NotificationResponse[]
 ): HardeningRequirement[] => notifications.map(parseHardeningNotification);
