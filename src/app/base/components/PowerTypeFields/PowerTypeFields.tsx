@@ -109,8 +109,8 @@ export const PowerTypeFields = <V extends AnyObject>({
 
   const sslVerificationEnforced = Boolean(
     fipsActive &&
-      selectedPowerType &&
-      SSL_VERIFICATION_ENFORCED_POWER_TYPES.includes(selectedPowerType.name)
+    selectedPowerType &&
+    SSL_VERIFICATION_ENFORCED_POWER_TYPES.includes(selectedPowerType.name)
   );
   const verifySslFieldName = `${powerParametersValueName}.${POWER_VERIFY_SSL_FIELD_NAME}`;
   const verifySslFieldValue = (
@@ -125,11 +125,11 @@ export const PowerTypeFields = <V extends AnyObject>({
       verifySslFieldValue !== SSL_VERIFICATION_ENABLED_VALUE
     ) {
       setFieldValue(verifySslFieldName, SSL_VERIFICATION_ENABLED_VALUE).catch(
-        (reason) => {
+        (reason: unknown) => {
           throw new FormikFieldChangeError(
             verifySslFieldName,
             "setFieldValue",
-            reason
+            String(reason)
           );
         }
       );
