@@ -1,3 +1,4 @@
+import type { ReactElement } from "react";
 import { useEffect, useState } from "react";
 
 import { Link, Select } from "@canonical/react-components";
@@ -17,7 +18,7 @@ import type { EventRecord } from "@/app/store/event/types";
 import type { MachineDetails } from "@/app/store/machine/types";
 import type { RootState } from "@/app/store/root/types";
 
-type Props = {
+type EventLogsProps = {
   node: ControllerDetails | MachineDetails;
 };
 
@@ -36,7 +37,10 @@ const filterEvents = (events: EventRecord[], searchText: string) => {
     ? events.filter(
         (eventRecord) =>
           eventRecord.description?.toLowerCase().includes(lowerSearchText) ||
-          eventRecord.type?.description?.toLowerCase().includes(lowerSearchText)
+          eventRecord.type?.description
+            ?.toLowerCase()
+            .includes(lowerSearchText) ||
+          eventRecord.type?.level.includes(lowerSearchText)
       )
     : [...events];
 };
@@ -54,7 +58,7 @@ const getPageEvents = (
     .slice(startIndex, startIndex + pageSize);
 };
 
-const EventLogs = ({ node }: Props): React.ReactElement => {
+const EventLogs = ({ node }: EventLogsProps): ReactElement => {
   const [searchText, setSearchText] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [requestedCount, setRequestedCount] = useState(false);
@@ -126,7 +130,7 @@ const EventLogs = ({ node }: Props): React.ReactElement => {
         <div className="u-flex--grow">
           <SearchBox
             onChange={setSearchText}
-            placeholder="Search event logs"
+            placeholder="Search event logs by type, time, or name"
             value={searchText}
           />
         </div>

@@ -26,7 +26,7 @@ const EventLogsTable = ({
       data={events}
       isLoading={loading}
       noData="No event logs available."
-      variant="regular"
+      variant="full-height"
     />
   );
 };
