@@ -126,7 +126,7 @@ const EventLogs = ({ node }: EventLogsProps): ReactElement => {
         <div className="u-flex--grow">
           <SearchBox
             onChange={setSearchText}
-            placeholder="Search event logs by type, time, or name"
+            placeholder="Search event logs by type or name"
             value={searchText}
           />
         </div>
