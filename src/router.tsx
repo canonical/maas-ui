@@ -314,13 +314,9 @@ export const router = createBrowserRouter(
             {
               path: `${urls.settings.index}/*`,
               element: (
-                <RequireEntitlements
-                  entitlements={[Entitlement.CAN_VIEW_CONFIGURATIONS]}
-                >
-                  <ErrorBoundary>
-                    <Settings />
-                  </ErrorBoundary>
-                </RequireEntitlements>
+                <ErrorBoundary>
+                  <Settings />
+                </ErrorBoundary>
               ),
             },
             {
@@ -693,10 +689,7 @@ export const router = createBrowserRouter(
             {
               path: urls.settings.index,
               element: (
-                <RequireEntitlements
-                  entitlements={[Entitlement.CAN_VIEW_CONFIGURATIONS]}
-                  skeletonView="settings"
-                >
+                <RequireEntitlements entitlements={[]} skeletonView="settings">
                   <Settings />
                 </RequireEntitlements>
               ),
