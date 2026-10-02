@@ -5,6 +5,7 @@ import { ConfigNames } from "@/app/store/config/types";
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
 import { authResolvers } from "@/testing/resolvers/auth";
+import { configurationsResolvers } from "@/testing/resolvers/configurations";
 import {
   screen,
   renderWithProviders,
@@ -14,7 +15,14 @@ import {
 
 const mockServer = setupMockServer(
   authResolvers.getCurrentUser.handler(),
-  authResolvers.getMeEntitlements.handler()
+  authResolvers.getMeEntitlements.handler(),
+  configurationsResolvers.listConfigurations.handler({
+    items: [
+      { name: ConfigNames.HTTP_PROXY, value: "http://www.url.com" },
+      { name: ConfigNames.ENABLE_HTTP_PROXY, value: false },
+      { name: ConfigNames.USE_PEER_PROXY, value: false },
+    ],
+  })
 );
 
 describe("ProxyFormFields", () => {
@@ -24,29 +32,18 @@ describe("ProxyFormFields", () => {
       config: factory.configState({
         loading: false,
         loaded: true,
-        items: [
-          {
-            name: ConfigNames.HTTP_PROXY,
-            value: "http://www.url.com",
-          },
-          {
-            name: ConfigNames.ENABLE_HTTP_PROXY,
-            value: false,
-          },
-          {
-            name: ConfigNames.USE_PEER_PROXY,
-            value: false,
-          },
-        ],
       }),
     });
   });
 
-  it("can render", () => {
+  it("can render", async () => {
     renderWithProviders(<ProxyForm />, { state });
 
     const fields = ["Don't use a proxy", "MAAS built-in", "External", "Peer"];
 
+    expect(
+      await screen.findByRole("radio", { name: fields[0] })
+    ).toBeInTheDocument();
     fields.forEach((field) => {
       expect(screen.getByRole("radio", { name: field })).toBeInTheDocument();
     });
@@ -64,10 +61,9 @@ describe("ProxyFormFields", () => {
 
     const fields = ["Don't use a proxy", "MAAS built-in", "External", "Peer"];
 
+    const noProxyRadio = await screen.findByRole("radio", { name: fields[0] });
     await waitFor(() => {
-      expect(
-        screen.getByRole("radio", { name: "Don't use a proxy" })
-      ).toBeDisabled();
+      expect(noProxyRadio).toBeDisabled();
     });
     fields.forEach((field) => {
       expect(screen.getByRole("radio", { name: field })).toBeDisabled();
