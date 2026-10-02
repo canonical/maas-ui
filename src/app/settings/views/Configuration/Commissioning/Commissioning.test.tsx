@@ -54,9 +54,11 @@ describe("Commissioning", () => {
 
   it("displays a skeleton while the configurations are loading", () => {
     mockIsPending();
-    const { result } = renderWithProviders(<Commissioning />, { state });
+    renderWithProviders(<Commissioning />, { state });
 
-    expect(result.container.querySelector(".layout-skeleton")).not.toBeNull();
+    expect(
+      screen.getAllByRole("progressbar", { hidden: true }).length
+    ).toBeGreaterThan(0);
   });
 
   it("displays the Commissioning form once the configurations have loaded", async () => {

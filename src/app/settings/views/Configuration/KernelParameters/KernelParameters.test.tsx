@@ -37,9 +37,11 @@ describe("KernelParameters", () => {
   it("displays a skeleton while the configurations are loading", () => {
     mockIsPending();
     const state = { ...initialState };
-    const { result } = renderWithProviders(<KernelParameters />, { state });
+    renderWithProviders(<KernelParameters />, { state });
 
-    expect(result.container.querySelector(".layout-skeleton")).not.toBeNull();
+    expect(
+      screen.getAllByRole("progressbar", { hidden: true }).length
+    ).toBeGreaterThan(0);
   });
 
   it("displays the KernelParameters form once the configurations have loaded", async () => {

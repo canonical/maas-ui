@@ -39,8 +39,11 @@ describe("General", () => {
 
   it("displays a skeleton while the configurations are loading", () => {
     mockIsPending();
-    const { result } = renderWithProviders(<General />, { state });
-    expect(result.container.querySelector(".layout-skeleton")).not.toBeNull();
+    renderWithProviders(<General />, { state });
+
+    expect(
+      screen.getAllByRole("progressbar", { hidden: true }).length
+    ).toBeGreaterThan(0);
   });
 
   it("displays the General form once the configurations have loaded", async () => {
