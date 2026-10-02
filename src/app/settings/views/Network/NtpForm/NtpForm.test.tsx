@@ -12,7 +12,6 @@ import {
   renderWithProviders,
   mockIsPending,
   waitFor,
-  waitForLoading,
 } from "@/testing/utils";
 
 const mockServer = setupMockServer(
@@ -28,12 +27,14 @@ const mockServer = setupMockServer(
 );
 
 describe("NtpForm", () => {
-  it("displays a spinner if config is loading", () => {
+  it("displays a skeleton while the configurations are loading", () => {
     mockIsPending();
 
     renderWithProviders(<NtpForm />);
 
-    expect(screen.getByText("Loading...")).toBeInTheDocument();
+    expect(
+      screen.getAllByRole("progressbar", { hidden: true }).length
+    ).toBeGreaterThan(0);
   });
 
   it("shows errors encountered when fetching configurations", async () => {
@@ -54,9 +55,7 @@ describe("NtpForm", () => {
   it("updates config on save button click", async () => {
     renderWithProviders(<NtpForm />);
 
-    await waitForLoading();
-
-    const ntpServersInput = screen.getByRole("textbox", {
+    const ntpServersInput = await screen.findByRole("textbox", {
       name: "Addresses of NTP servers",
     });
     await waitFor(() => {
@@ -79,11 +78,11 @@ describe("NtpForm", () => {
       ])
     );
     renderWithProviders(<NtpForm />);
-    await waitForLoading();
+    const ntpServersInput = await screen.findByRole("textbox", {
+      name: "Addresses of NTP servers",
+    });
     await waitFor(() => {
-      expect(
-        screen.getByRole("textbox", { name: "Addresses of NTP servers" })
-      ).toBeDisabled();
+      expect(ntpServersInput).toBeDisabled();
     });
     expect(
       screen.queryByRole("button", { name: "Save" })

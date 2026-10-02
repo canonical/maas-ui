@@ -11,10 +11,12 @@ import {
   setupMockServer,
   mockIsPending,
   renderWithProviders,
-  waitForLoading,
   userEvent,
   waitFor,
 } from "@/testing/utils";
+
+const upstreamDnsLabel =
+  "Upstream DNS used to resolve domains not managed by this MAAS (space-separated IP addresses)";
 
 const configItems = [
   {
@@ -62,11 +64,8 @@ describe("DnsForm", () => {
   });
   it("renders the dns form", async () => {
     renderWithProviders(<DnsForm />, { state });
-    await waitForLoading();
     expect(
-      screen.getByRole("textbox", {
-        name: "Upstream DNS used to resolve domains not managed by this MAAS (space-separated IP addresses)",
-      })
+      await screen.findByRole("textbox", { name: upstreamDnsLabel })
     ).toHaveValue("");
     const combo = screen.getByRole("combobox", {
       name: "Enable DNSSEC validation of upstream zones",
@@ -80,9 +79,8 @@ describe("DnsForm", () => {
   });
   it("updates the DNS config on save", async () => {
     renderWithProviders(<DnsForm />, { state });
-    await waitForLoading();
-    const upstream_dns_input = screen.getByRole("textbox", {
-      name: "Upstream DNS used to resolve domains not managed by this MAAS (space-separated IP addresses)",
+    const upstream_dns_input = await screen.findByRole("textbox", {
+      name: upstreamDnsLabel,
     });
     await waitFor(() => {
       expect(upstream_dns_input).not.toBeDisabled();
@@ -95,11 +93,13 @@ describe("DnsForm", () => {
     });
   });
 
-  it("displays a spinner if config is loading", () => {
+  it("displays a skeleton while the configurations are loading", () => {
     mockIsPending();
     renderWithProviders(<DnsForm />, { state });
 
-    expect(screen.getByText("Loading...")).toBeInTheDocument();
+    expect(
+      screen.getAllByRole("progressbar", { hidden: true }).length
+    ).toBeGreaterThan(0);
   });
   it("shows an error message when fetching configurations fails", async () => {
     mockServer.use(
@@ -129,9 +129,8 @@ describe("DnsForm", () => {
     );
 
     renderWithProviders(<DnsForm />, { state });
-    await waitForLoading();
-    const upstream_dns_input = screen.getByRole("textbox", {
-      name: "Upstream DNS used to resolve domains not managed by this MAAS (space-separated IP addresses)",
+    const upstream_dns_input = await screen.findByRole("textbox", {
+      name: upstreamDnsLabel,
     });
     await waitFor(() => {
       expect(upstream_dns_input).not.toBeDisabled();
@@ -157,13 +156,11 @@ describe("DnsForm", () => {
       configurationsResolvers.listConfigurations.handler({ items: configItems })
     );
     renderWithProviders(<DnsForm />, { state });
-    await waitForLoading();
+    const upstream_dns_input = await screen.findByRole("textbox", {
+      name: upstreamDnsLabel,
+    });
     await waitFor(() => {
-      expect(
-        screen.getByRole("textbox", {
-          name: "Upstream DNS used to resolve domains not managed by this MAAS (space-separated IP addresses)",
-        })
-      ).toBeDisabled();
+      expect(upstream_dns_input).toBeDisabled();
     });
     expect(
       screen.queryByRole("button", { name: "Save" })
