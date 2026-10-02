@@ -38,9 +38,11 @@ describe("Deploy", () => {
 
   it("displays a skeleton while the configurations are loading", () => {
     mockIsPending();
-    const { result } = renderWithProviders(<Deploy />, { state });
+    renderWithProviders(<Deploy />, { state });
 
-    expect(result.container.querySelector(".layout-skeleton")).not.toBeNull();
+    expect(
+      screen.getAllByRole("progressbar", { hidden: true }).length
+    ).toBeGreaterThan(0);
   });
 
   it("displays the Deploy form once the configurations have loaded", async () => {
