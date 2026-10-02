@@ -9,51 +9,60 @@ type EventLogColumnDef = ColumnDef<EventRecord, Partial<EventRecord>>;
 
 const useEventLogsTableColumns = (): EventLogColumnDef[] => {
   return useMemo(
-    () => [
-      {
-        id: "time",
-        accessorKey: "created",
-        header: "Time",
-        cell: ({
-          row: {
-            original: { type, created },
+    () =>
+      [
+        {
+          id: "type",
+          accessorKey: "type",
+          header: "Event type",
+          enableSorting: false,
+          cell: ({
+            row: {
+              original: { type },
+            },
+          }: {
+            row: Row<EventRecord>;
+          }) => {
+            let icon: string = type.level;
+            switch (icon) {
+              case "audit":
+              case "info":
+                icon = "information";
+                break;
+              case "critical":
+                icon = "error";
+                break;
+              case "debug":
+                icon = "inspector-debug";
+                break;
+            }
+            return (
+              <>
+                <Icon name={icon} /> {type.level.toUpperCase()}
+              </>
+            );
           },
-        }: {
-          row: Row<EventRecord>;
-        }) => {
-          let icon: string = type.level;
-          switch (icon) {
-            case "audit":
-            case "info":
-              icon = "information";
-              break;
-            case "critical":
-              icon = "error";
-              break;
-            case "debug":
-              icon = "inspector-debug";
-              break;
-          }
-          return (
-            <>
-              <Icon name={icon} /> {created}
-            </>
-          );
         },
-      },
-      {
-        id: "event",
-        accessorKey: "description",
-        header: "Event",
-        cell: ({
-          row: {
-            original: { type, description },
-          },
-        }: {
-          row: Row<EventRecord>;
-        }) => [type.description, description].filter(Boolean).join(" - "),
-      },
-    ],
+        {
+          id: "time",
+          accessorKey: "created",
+          header: "Time",
+          enableSorting: false,
+        },
+        {
+          id: "event",
+          accessorKey: "description",
+          header: "Event",
+          enableSorting: false,
+          cell: ({
+            row: {
+              original: { type, description },
+            },
+          }: {
+            row: Row<EventRecord>;
+          }) => [type.description, description].filter(Boolean).join(" - "),
+        },
+      ] as EventLogColumnDef[],
     []
   );
 };

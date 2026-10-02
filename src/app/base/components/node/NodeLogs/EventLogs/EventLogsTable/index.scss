@@ -9,3 +9,11 @@
     }
   }
 }
+
+.event-logs__back-to-top {
+  position: absolute;
+  right: 1rem;
+  bottom: 1rem;
+  z-index: 1;
+  background-color: var(--vf-color-background-default);
+}

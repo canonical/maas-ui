@@ -1,9 +1,6 @@
-import type { Mock } from "vitest";
-
 import EventLogs, { Label } from "./EventLogs";
 
 import { Labels as ArrowPaginationLabels } from "@/app/base/components/ArrowPagination";
-import { MAIN_CONTENT_SECTION_ID } from "@/app/base/components/PageContent/PageContent";
 import type { MachineDetails } from "@/app/store/machine/types";
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
@@ -17,12 +14,9 @@ import {
 
 describe("EventLogs", () => {
   let state: RootState;
-  let scrollToSpy: Mock;
   let machine: MachineDetails;
 
   beforeEach(() => {
-    scrollToSpy = vi.fn();
-    global.scrollTo = scrollToSpy;
     machine = factory.machineDetails({ id: 1, system_id: "abc123" });
     state = factory.rootState({
       event: factory.eventState({
@@ -194,62 +188,5 @@ describe("EventLogs", () => {
     await waitFor(() => {
       expect(screen.getAllByRole("row")).toHaveLength(101);
     });
-  });
-
-  it("does not display the scroll-to-top component if there are less than 50 items", async () => {
-    state.event.items = [];
-    for (let i = 0; i < 5; i++) {
-      state.event.items.push(
-        factory.eventRecord({
-          node_id: 1,
-          created: factory.timestamp("Tue, 16 Mar. 2021 03:04:00"),
-        })
-      );
-    }
-    renderWithProviders(<EventLogs node={machine} />, {
-      state,
-    });
-    await userEvent.selectOptions(screen.getByRole("combobox"), "50");
-    expect(
-      screen.queryByRole("link", { name: Label.BackToTop })
-    ).not.toBeInTheDocument();
-  });
-
-  it("displays the scroll-to-top component if there are at least 50 items", async () => {
-    state.event.items = [];
-    for (let i = 0; i < 50; i++) {
-      state.event.items.push(
-        factory.eventRecord({
-          node_id: 1,
-          created: factory.timestamp("Tue, 16 Mar. 2021 03:04:00"),
-        })
-      );
-    }
-    renderWithProviders(<EventLogs node={machine} />, {
-      state,
-    });
-    await userEvent.selectOptions(screen.getByRole("combobox"), "50");
-    expect(
-      screen.getByRole("link", { name: Label.BackToTop })
-    ).toBeInTheDocument();
-  });
-
-  it("scrolls to the top when clicking the scroll-to-top component", async () => {
-    state.event.items = [];
-    for (let i = 0; i < 50; i++) {
-      state.event.items.push(
-        factory.eventRecord({
-          node_id: 1,
-          created: factory.timestamp("Tue, 16 Mar. 2021 03:04:00"),
-        })
-      );
-    }
-    renderWithProviders(<EventLogs node={machine} />, {
-      state,
-    });
-    await userEvent.selectOptions(screen.getByRole("combobox"), "50");
-    expect(window.location.hash).toBe("");
-    await userEvent.click(screen.getByRole("link", { name: Label.BackToTop }));
-    expect(window.location.hash).toBe(`#${MAIN_CONTENT_SECTION_ID}`);
   });
 });

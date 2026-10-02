@@ -18,6 +18,10 @@ const useDarkMode = (): [boolean, () => void] => {
   const [isDarkMode, setIsDarkMode] = useState<boolean>(getInitialDarkMode());
 
   useEffect(() => {
+    // Keep Pragma's native color scheme and tokens in sync with Vanilla
+    document.documentElement.classList.toggle("dark", isDarkMode);
+    document.documentElement.classList.toggle("light", !isDarkMode);
+
     // Apply or remove the dark mode class on the body
     if (isDarkMode) {
       document.body.classList.add(DARK_MODE_CLASS);
