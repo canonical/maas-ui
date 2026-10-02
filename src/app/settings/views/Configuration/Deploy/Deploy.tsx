@@ -33,11 +33,7 @@ const Deploy = (): React.ReactElement => {
   }, [dispatch, loaded]);
 
   if (isPending || !osInfoLoaded) {
-    return (
-      <PageContent>
-        <Layout.Skeleton view="settings" />
-      </PageContent>
-    );
+    return <Layout.Skeleton view="settings" />;
   }
 
   return (
