@@ -8,6 +8,7 @@ import LicenseKeyDelete from "@/app/settings/views/LicenseKeys/components/Licens
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
 import {
+  mockModal,
   mockSidePanel,
   renderWithProviders,
   screen,
@@ -16,6 +17,7 @@ import {
 } from "@/testing/utils";
 
 const { mockOpen } = await mockSidePanel();
+const { mockOpen: mockOpenModal } = await mockModal();
 
 describe("LicenseKeyTable", () => {
   let initialState: RootState;
@@ -121,7 +123,7 @@ describe("LicenseKeyTable", () => {
       });
     });
 
-    it("opens the 'Delete license key' side panel when the 'Delete' button is clicked", async () => {
+    it("opens the 'Delete license key' modal when the 'Delete' button is clicked", async () => {
       const state = { ...initialState };
       renderWithProviders(<LicenseKeyTable canEdit={true} />, { state });
       await waitFor(() => {
@@ -133,13 +135,16 @@ describe("LicenseKeyTable", () => {
         screen.getAllByRole("button", { name: "Delete" })[0]
       );
 
-      expect(mockOpen).toHaveBeenCalledWith({
+      expect(mockOpenModal).toHaveBeenCalledWith({
         component: LicenseKeyDelete,
         title: "Delete license key",
         props: {
           licenseKey: state.licensekeys.items[0],
         },
       });
+      expect(mockOpen).not.toHaveBeenCalledWith(
+        expect.objectContaining({ component: LicenseKeyDelete })
+      );
     });
   });
 

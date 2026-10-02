@@ -10,6 +10,7 @@ import type { UserWithStatistics } from "@/app/api/query/users";
 import TableActions from "@/app/base/components/TableActions";
 import TableHeader from "@/app/base/components/TableHeader";
 import TooltipButton from "@/app/base/components/TooltipButton";
+import { useModal } from "@/app/base/modal-context";
 import urls from "@/app/base/urls";
 import {
   DeleteUser,
@@ -29,6 +30,7 @@ const useUsersTableColumns = ({
   statisticsPending: boolean;
 }): UsersColumnDef[] => {
   const { openSidePanel } = useSidePanel();
+  const { openModal } = useModal();
   const authUser = useGetCurrentUser();
   const [isDisplayingUsername, setIsDisplayingUsername] = useState(true);
   return useMemo(
@@ -210,7 +212,7 @@ const useUsersTableColumns = ({
                 editDisabled={isAuthUser ? false : !canEdit}
                 editPath={isAuthUser ? urls.preferences.details : undefined}
                 onDelete={() => {
-                  openSidePanel({
+                  openModal({
                     component: DeleteUser,
                     title: "Delete user",
                     props: { id },
@@ -236,6 +238,7 @@ const useUsersTableColumns = ({
       authUser.data?.id,
       canEdit,
       isDisplayingUsername,
+      openModal,
       openSidePanel,
       statisticsPending,
     ]

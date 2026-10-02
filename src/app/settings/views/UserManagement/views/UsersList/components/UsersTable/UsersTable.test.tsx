@@ -14,6 +14,7 @@ import { authResolvers } from "@/testing/resolvers/auth";
 import { usersResolvers } from "@/testing/resolvers/users";
 import {
   mockIsPending,
+  mockModal,
   mockSidePanel,
   renderWithProviders,
   screen,
@@ -31,6 +32,7 @@ const mockServer = setupMockServer(
   authResolvers.getMeStatistics.handler()
 );
 const { mockOpen } = await mockSidePanel();
+const { mockOpen: mockOpenModal } = await mockModal();
 
 describe("UsersTable", () => {
   describe("display", () => {
@@ -259,7 +261,7 @@ describe("UsersTable", () => {
       });
     });
 
-    it("opens delete user side panel form", async () => {
+    it("opens delete user modal", async () => {
       mockServer.use(
         usersResolvers.listUsers.handler({
           items: [factory.user({ id: 2 })],
@@ -283,11 +285,14 @@ describe("UsersTable", () => {
 
       await userEvent.click(screen.getByRole("button", { name: "Delete" }));
 
-      expect(mockOpen).toHaveBeenCalledWith({
+      expect(mockOpenModal).toHaveBeenCalledWith({
         component: DeleteUser,
         title: "Delete user",
         props: { id: 2 },
       });
+      expect(mockOpen).not.toHaveBeenCalledWith(
+        expect.objectContaining({ component: DeleteUser })
+      );
     });
   });
 });

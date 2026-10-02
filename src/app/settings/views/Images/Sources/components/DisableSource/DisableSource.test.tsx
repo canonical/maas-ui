@@ -10,7 +10,7 @@ import {
   waitForLoading,
   waitFor,
   setupMockServer,
-  mockSidePanel,
+  mockModal,
 } from "@/testing/utils";
 
 const mockServer = setupMockServer(
@@ -23,7 +23,7 @@ const mockServer = setupMockServer(
   ),
   imageSourceResolvers.updateImageSource.handler()
 );
-const { mockClose } = await mockSidePanel();
+const { mockClose } = await mockModal();
 
 describe("DisableSource", () => {
   it("calls closeForm on cancel click", async () => {

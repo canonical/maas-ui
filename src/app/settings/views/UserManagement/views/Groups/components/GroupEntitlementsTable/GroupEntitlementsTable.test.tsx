@@ -14,10 +14,10 @@ import {
   screen,
   mockIsPending,
   waitFor,
-  mockSidePanel,
+  mockModal,
 } from "@/testing/utils";
 
-const { mockOpen } = await mockSidePanel();
+const { mockOpen } = await mockModal();
 
 const mockServer = setupMockServer(
   authResolvers.getCurrentUser.handler(),
@@ -105,7 +105,7 @@ describe("GroupEntitlementsTable", () => {
   });
 
   describe("actions", () => {
-    it("opens the RemoveGroupEntitlement side panel when clicking Remove entitlement", async () => {
+    it("opens the RemoveGroupEntitlement modal when clicking Remove entitlement", async () => {
       renderWithProviders(
         <GroupEntitlementsTable
           entitlementSelection={[]}

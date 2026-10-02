@@ -10,10 +10,10 @@ import {
   screen,
   mockIsPending,
   waitFor,
-  mockSidePanel,
+  mockModal,
 } from "@/testing/utils";
 
-const { mockOpen } = await mockSidePanel();
+const { mockOpen } = await mockModal();
 
 const mockServer = setupMockServer(
   authResolvers.getCurrentUser.handler(),
@@ -98,7 +98,7 @@ describe("GroupMembersTable", () => {
   });
 
   describe("actions", () => {
-    it("opens the RemoveGroupMember side panel when clicking Remove member", async () => {
+    it("opens the RemoveGroupMember modal when clicking Remove member", async () => {
       renderWithProviders(
         <GroupMembersTable
           id={1}

@@ -7,6 +7,7 @@ import type { ColumnDef } from "@tanstack/react-table";
 import DeleteScript from "../../components/DeleteScript";
 
 import TableActions from "@/app/base/components/TableActions";
+import { useModal } from "@/app/base/modal-context";
 import ScriptDetails from "@/app/settings/views/Scripts/ScriptDetails";
 import type { Script } from "@/app/store/script/types";
 import { formatUtcDatetime } from "@/app/utils/time";
@@ -25,6 +26,7 @@ const useScriptsTableColumns = ({
   type: "commissioning" | "deployment" | "switch" | "testing";
 }): ScriptColumnDef[] => {
   const { openSidePanel } = useSidePanel();
+  const { openModal } = useModal();
 
   return useMemo(
     () => [
@@ -81,7 +83,7 @@ const useScriptsTableColumns = ({
                   : null
             }
             onDelete={() => {
-              openSidePanel({
+              openModal({
                 component: DeleteScript,
                 title: "Delete script",
                 props: { id: row.original.id },
@@ -92,7 +94,7 @@ const useScriptsTableColumns = ({
         ),
       },
     ],
-    [openSidePanel, canEdit, type]
+    [openModal, openSidePanel, canEdit, type]
   );
 };
 

@@ -1,6 +1,5 @@
 import type { ReactElement } from "react";
 
-import { useSidePanel } from "@canonical/maas-react-components";
 import {
   Notification as NotificationBanner,
   Spinner,
@@ -14,6 +13,7 @@ import {
 } from "@/app/api/query/auth";
 import type { OAuthProviderResponse } from "@/app/apiclient";
 import ModelActionForm from "@/app/base/components/ModelActionForm";
+import { useModal } from "@/app/base/modal-context";
 
 type Props = {
   id: OAuthProviderResponse["id"];
@@ -24,7 +24,7 @@ const ResetSingleSignOn = ({ id }: Props): ReactElement => {
   const eTag = data?.headers?.get("ETag");
   const updateProvider = useUpdateOauthProvider();
   const deleteProvider = useDeleteOauthProvider();
-  const { closeSidePanel } = useSidePanel();
+  const { closeModal } = useModal();
 
   if (error) {
     return (
@@ -66,7 +66,7 @@ const ResetSingleSignOn = ({ id }: Props): ReactElement => {
         </>
       }
       modelType="single sign-on provider"
-      onCancel={closeSidePanel}
+      onCancel={closeModal}
       onSubmit={() => {
         updateProvider.mutate(
           {
@@ -80,7 +80,7 @@ const ResetSingleSignOn = ({ id }: Props): ReactElement => {
             onSuccess: () => {
               deleteProvider.mutate(
                 { path: { provider_id: id } },
-                { onSuccess: closeSidePanel }
+                { onSuccess: closeModal }
               );
             },
           }

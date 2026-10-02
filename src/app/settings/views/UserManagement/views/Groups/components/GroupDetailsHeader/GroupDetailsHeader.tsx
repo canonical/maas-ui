@@ -59,7 +59,7 @@ const GroupDetailsHeader = ({
                 appearance="negative"
                 disabled={entitlementSelection.length <= 0 || !canEdit}
                 onClick={() => {
-                  openSidePanel({
+                  openModal({
                     component: RemoveGroupEntitlement,
                     title: "Remove entitlements",
                     props: {
@@ -94,7 +94,7 @@ const GroupDetailsHeader = ({
                 appearance="negative"
                 disabled={memberSelection.length <= 0 || !canEdit}
                 onClick={() => {
-                  openSidePanel({
+                  openModal({
                     component: RemoveGroupMember,
                     props: {
                       groupId: group!.id,

@@ -14,6 +14,7 @@ import { authResolvers } from "@/testing/resolvers/auth";
 import { packageRepositoriesResolvers } from "@/testing/resolvers/packageRepositories";
 import {
   mockIsPending,
+  mockModal,
   mockSidePanel,
   renderWithProviders,
   screen,
@@ -29,6 +30,7 @@ const mockServer = setupMockServer(
   authResolvers.getMeEntitlements.handler()
 );
 const { mockOpen } = await mockSidePanel();
+const { mockOpen: mockOpenModal } = await mockModal();
 
 describe("RepositoriesTable", () => {
   describe("display", () => {
@@ -243,7 +245,7 @@ describe("RepositoriesTable", () => {
       });
     });
 
-    it("opens the 'Delete repository' side panel when the 'Delete' button is clicked", async () => {
+    it("opens the 'Delete repository' modal when the 'Delete' button is clicked", async () => {
       mockServer.use(
         packageRepositoriesResolvers.listPackageRepositories.handler({
           total: 2,
@@ -261,13 +263,16 @@ describe("RepositoriesTable", () => {
       });
       await userEvent.click(deleteButton);
 
-      expect(mockOpen).toHaveBeenCalledWith({
+      expect(mockOpenModal).toHaveBeenCalledWith({
         component: DeleteRepository,
         title: "Delete repository",
         props: {
           id: 1,
         },
       });
+      expect(mockOpen).not.toHaveBeenCalledWith(
+        expect.objectContaining({ component: DeleteRepository })
+      );
     });
   });
 });
