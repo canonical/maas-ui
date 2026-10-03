@@ -354,6 +354,9 @@ import type {
   GetSwitchData,
   GetSwitchErrors,
   GetSwitchResponses,
+  GetSystemInfoData,
+  GetSystemInfoErrors,
+  GetSystemInfoResponses,
   GetTagData,
   GetTagErrors,
   GetTagResponses,
@@ -474,6 +477,9 @@ import type {
   ListPackageRepositoriesData,
   ListPackageRepositoriesErrors,
   ListPackageRepositoriesResponses,
+  ListPowerTypesData,
+  ListPowerTypesErrors,
+  ListPowerTypesResponses,
   ListRackAgentsData,
   ListRackAgentsErrors,
   ListRackAgentsResponses,
@@ -603,6 +609,9 @@ import type {
   UpdateSpaceData,
   UpdateSpaceErrors,
   UpdateSpaceResponses,
+  UpdateSshHostKeyData,
+  UpdateSshHostKeyErrors,
+  UpdateSshHostKeyResponses,
   UpdateSwitchData,
   UpdateSwitchErrors,
   UpdateSwitchResponses,
@@ -2394,6 +2403,22 @@ export const updatePackageRepository = <ThrowOnError extends boolean = false>(
   });
 
 /**
+ * List Power Types
+ */
+export const listPowerTypes = <ThrowOnError extends boolean = false>(
+  options?: Options<ListPowerTypesData, ThrowOnError>
+) =>
+  (options?.client ?? client).get<
+    ListPowerTypesResponses,
+    ListPowerTypesErrors,
+    ThrowOnError
+  >({
+    security: [{ scheme: "bearer", type: "http" }],
+    url: "/MAAS/a/v3/power-types",
+    ...options,
+  });
+
+/**
  * List Racks
  */
 export const listRacks = <ThrowOnError extends boolean = false>(
@@ -2764,6 +2789,22 @@ export const listResourcePoolsStatistics = <
   >({
     security: [{ scheme: "bearer", type: "http" }],
     url: "/MAAS/a/v3/resource_pools:statistics",
+    ...options,
+  });
+
+/**
+ * Get System Info
+ */
+export const getSystemInfo = <ThrowOnError extends boolean = false>(
+  options?: Options<GetSystemInfoData, ThrowOnError>
+) =>
+  (options?.client ?? client).get<
+    GetSystemInfoResponses,
+    GetSystemInfoErrors,
+    ThrowOnError
+  >({
+    security: [{ scheme: "bearer", type: "http" }],
+    url: "/MAAS/a/v3/system/info",
     ...options,
   });
 
@@ -3191,6 +3232,26 @@ export const getSshHostKey = <ThrowOnError extends boolean = false>(
     security: [{ scheme: "bearer", type: "http" }],
     url: "/MAAS/a/v3/ssh-host-keys/{ssh_host_key_id}",
     ...options,
+  });
+
+/**
+ * Update Ssh Host Key
+ */
+export const updateSshHostKey = <ThrowOnError extends boolean = false>(
+  options: Options<UpdateSshHostKeyData, ThrowOnError>
+) =>
+  (options.client ?? client).put<
+    UpdateSshHostKeyResponses,
+    UpdateSshHostKeyErrors,
+    ThrowOnError
+  >({
+    security: [{ scheme: "bearer", type: "http" }],
+    url: "/MAAS/a/v3/ssh-host-keys/{ssh_host_key_id}",
+    ...options,
+    headers: {
+      "Content-Type": "application/json",
+      ...options.headers,
+    },
   });
 
 /**
