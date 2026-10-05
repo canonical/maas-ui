@@ -36,7 +36,6 @@ export {
 export { imageSourceFactory } from "./imageSource";
 export { ipRange } from "./iprange";
 export { licenseKeys } from "./licensekeys";
-export { message } from "./message";
 export { modelRef } from "./model";
 export { nodeDevice } from "./nodedevice";
 export {
@@ -122,7 +121,6 @@ export {
   machineStateLists,
   machineStatus,
   machineStatuses,
-  messageState,
   msmState,
   msmStatus,
   nodeDeviceState,

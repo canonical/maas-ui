@@ -4,13 +4,12 @@ import { useState, useEffect } from "react";
 import { Layout } from "@canonical/maas-react-components";
 import {
   Notification as NotificationBanner,
-  NotificationProvider,
   ToastNotificationProvider,
 } from "@canonical/react-components";
 import { usePrevious } from "@canonical/react-components/dist/hooks";
 import * as Sentry from "@sentry/browser";
 import { useDispatch, useSelector } from "react-redux";
-import { Outlet, useLocation } from "react-router";
+import { Outlet } from "react-router";
 
 import packageInfo from "../../package.json";
 
@@ -92,7 +91,6 @@ export const App = (): React.ReactElement => {
   const extendSession = useExtendSession();
   const previousAuthenticated = usePrevious(authenticated, false);
   const dismissMutation = useDismissNotification();
-  const location = useLocation();
   const dismiss = useDismissNotifications(dismissMutation.mutate);
   const [hasRenderedAppContent, setHasRenderedAppContent] = useState(false);
 
@@ -188,12 +186,10 @@ export const App = (): React.ReactElement => {
   return (
     <ThemePreviewContextProvider>
       <ToastNotificationProvider onDismiss={dismiss}>
-        <NotificationProvider pathname={location.pathname}>
-          <ModalContextProvider>
-            <ConnectionStatus />
-            <AppLayout>{content}</AppLayout>
-          </ModalContextProvider>
-        </NotificationProvider>
+        <ModalContextProvider>
+          <ConnectionStatus />
+          <AppLayout>{content}</AppLayout>
+        </ModalContextProvider>
       </ToastNotificationProvider>
     </ThemePreviewContextProvider>
   );

@@ -27,6 +27,21 @@ vi.mock("@reduxjs/toolkit", async () => {
   };
 });
 
+const successMock = vi.fn();
+
+vi.mock("@canonical/react-components", async (orig) => {
+  const actual = (await orig()) as Record<string, unknown>;
+  return {
+    ...actual,
+    useToastNotification: () => ({
+      failure: vi.fn(),
+      success: successMock,
+      caution: vi.fn(),
+      info: vi.fn(),
+    }),
+  };
+});
+
 let state: RootState;
 beforeEach(() => {
   vi.spyOn(query, "generateCallId").mockReturnValue("mocked-nanoid");
@@ -249,7 +264,7 @@ it("shows a notification on success", async () => {
   state.machine.selected = {
     items: machines.map((machine) => machine.system_id),
   };
-  const { store } = renderWithProviders(<TagForm isViewingDetails={false} />, {
+  renderWithProviders(<TagForm isViewingDetails={false} />, {
     state,
   });
   // Mock state.tag.saved transitioning from "false" to "true"
@@ -266,10 +281,7 @@ it("shows a notification on success", async () => {
   );
 
   await waitFor(() => {
-    const action = store
-      .getActions()
-      .find((action) => action.type === "message/add");
-    expect(action.payload.message).toBe(Label.Saved);
+    expect(successMock).toHaveBeenCalledWith(Label.Saved);
   });
 });
 

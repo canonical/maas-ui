@@ -13,6 +13,21 @@ import {
   renderWithProviders,
 } from "@/testing/utils";
 
+const infoMock = vi.fn();
+
+vi.mock("@canonical/react-components", async (orig) => {
+  const actual = (await orig()) as Record<string, unknown>;
+  return {
+    ...actual,
+    useToastNotification: () => ({
+      failure: vi.fn(),
+      success: vi.fn(),
+      caution: vi.fn(),
+      info: infoMock,
+    }),
+  };
+});
+
 setupMockServer(networkDiscoveryResolvers.clearNetworkDiscoveries.handler());
 
 describe("ClearAllForm", () => {
@@ -78,15 +93,13 @@ describe("ClearAllForm", () => {
   it("shows a success message when completed", async () => {
     mockFormikFormSaved();
 
-    const { store } = renderWithProviders(<ClearAllForm />, { state });
+    renderWithProviders(<ClearAllForm />, { state });
 
     await userEvent.click(
       screen.getByRole("button", { name: ClearAllFormLabels.SubmitLabel })
     );
     await waitFor(() => {
-      expect(
-        store.getActions().some(({ type }) => type === "message/add")
-      ).toBe(true);
+      expect(infoMock).toHaveBeenCalledWith("All discoveries cleared.");
     });
   });
 });
