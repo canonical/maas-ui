@@ -5,6 +5,7 @@ import { ConfigNames } from "@/app/store/config/types";
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
 import { authResolvers } from "@/testing/resolvers/auth";
+import { configurationsResolvers } from "@/testing/resolvers/configurations";
 import {
   userEvent,
   screen,
@@ -13,83 +14,87 @@ import {
   waitFor,
 } from "@/testing/utils";
 
+const configItems = [
+  factory.config({ name: ConfigNames.MAAS_NAME, value: "bionic-maas" }),
+  factory.config({ name: ConfigNames.THEME, value: "default" }),
+  factory.config({ name: ConfigNames.ENABLE_ANALYTICS, value: true }),
+  factory.config({ name: ConfigNames.RELEASE_NOTIFICATIONS, value: true }),
+  factory.config({
+    name: ConfigNames.EXPERIMENTAL_SWITCH_PROVISIONING,
+    value: false,
+  }),
+];
+
 const mockServer = setupMockServer(
   authResolvers.getCurrentUser.handler(),
-  authResolvers.getMeEntitlements.handler()
+  authResolvers.getMeEntitlements.handler(),
+  configurationsResolvers.listConfigurations.handler({ items: configItems })
 );
 
 describe("GeneralForm", () => {
   let state: RootState;
   beforeEach(() => {
     state = factory.rootState({
-      config: factory.configState({
-        items: [
-          factory.config({ name: ConfigNames.MAAS_NAME, value: "bionic-maas" }),
-          factory.config({ name: ConfigNames.THEME, value: "default" }),
-          factory.config({ name: ConfigNames.ENABLE_ANALYTICS, value: true }),
-          factory.config({
-            name: ConfigNames.RELEASE_NOTIFICATIONS,
-            value: true,
-          }),
-          factory.config({
-            name: ConfigNames.EXPERIMENTAL_SWITCH_PROVISIONING,
-            value: false,
-          }),
-        ],
-      }),
+      config: factory.configState({ items: configItems }),
     });
   });
 
-  it("can render", () => {
+  it("can render", async () => {
     renderWithProviders(<GeneralForm />, { state });
 
     expect(
-      screen.getByRole("form", { name: "Configuration - General" })
+      await screen.findByRole("form", { name: "Configuration - General" })
     ).toBeInTheDocument();
   });
 
-  it("sets maas_name value", () => {
+  it("sets maas_name value", async () => {
     renderWithProviders(<GeneralForm />, { state });
 
-    expect(screen.getByRole("textbox", { name: "MAAS name" })).toHaveValue(
-      "bionic-maas"
-    );
+    await waitFor(() => {
+      expect(screen.getByRole("textbox", { name: "MAAS name" })).toHaveValue(
+        "bionic-maas"
+      );
+    });
   });
 
-  it("sets theme value", () => {
+  it("sets theme value", async () => {
     renderWithProviders(<GeneralForm />, { state });
 
     expect(
-      screen.getByRole("radio", {
+      await screen.findByRole("radio", {
         name: "Default",
       })
     ).toHaveProperty("checked", true);
   });
 
-  it("sets enable_analytics value", () => {
+  it("sets enable_analytics value", async () => {
     renderWithProviders(<GeneralForm />, { state });
 
-    expect(
-      screen.getByRole("checkbox", {
-        name: "Enable analytics to shape improvements to user experience",
-      })
-    ).toHaveProperty("checked", true);
+    await waitFor(() => {
+      expect(
+        screen.getByRole("checkbox", {
+          name: "Enable analytics to shape improvements to user experience",
+        })
+      ).toHaveProperty("checked", true);
+    });
   });
 
-  it("sets release_notifications value", () => {
+  it("sets release_notifications value", async () => {
     renderWithProviders(<GeneralForm />, { state });
 
-    expect(
-      screen.getByRole("checkbox", {
-        name: "Enable new release notifications",
-      })
-    ).toHaveProperty("checked", true);
+    await waitFor(() => {
+      expect(
+        screen.getByRole("checkbox", {
+          name: "Enable new release notifications",
+        })
+      ).toHaveProperty("checked", true);
+    });
   });
 
   it("can change the MAAS theme colour", async () => {
     renderWithProviders(<GeneralForm />, { state });
 
-    const redRadioButton = screen.getByRole("radio", { name: "Red" });
+    const redRadioButton = await screen.findByRole("radio", { name: "Red" });
     const saveButton = await screen.findByRole("button", { name: "Save" });
 
     await userEvent.click(redRadioButton);
@@ -98,11 +103,11 @@ describe("GeneralForm", () => {
     expect(redRadioButton).toHaveProperty("checked", true);
   });
 
-  it("sets experimental_switch_provisioning value", () => {
+  it("sets experimental_switch_provisioning value", async () => {
     renderWithProviders(<GeneralForm />, { state });
 
     expect(
-      screen.getByRole("checkbox", { name: "Switch commissioning" })
+      await screen.findByRole("checkbox", { name: "Switch commissioning" })
     ).toHaveProperty("checked", false);
   });
 
@@ -110,8 +115,11 @@ describe("GeneralForm", () => {
     window.usabilla_live = vi.fn();
     renderWithProviders(<GeneralForm />, { state });
 
-    const release_notifications_checkbox = screen.getByRole("checkbox", {
+    const release_notifications_checkbox = await screen.findByRole("checkbox", {
       name: "Enable new release notifications",
+    });
+    await waitFor(() => {
+      expect(release_notifications_checkbox).toHaveProperty("checked", true);
     });
 
     const saveButton = await screen.findByRole("button", { name: "Save" });

@@ -1,12 +1,15 @@
 import { useEffect } from "react";
 
-import { ContentSection } from "@canonical/maas-react-components";
-import { Spinner } from "@canonical/react-components";
+import { ContentSection, Layout } from "@canonical/maas-react-components";
+import { Notification } from "@canonical/react-components";
 import { useSelector, useDispatch } from "react-redux";
 
+import { useConfigurations } from "@/app/api/query/configurations";
 import PageContent from "@/app/base/components/PageContent";
 import { useWindowTitle } from "@/app/base/hooks";
-import DeployForm from "@/app/settings/views/Configuration/DeployForm";
+import DeployForm, {
+  deployConfigsOptions,
+} from "@/app/settings/views/Configuration/DeployForm/DeployForm";
 import { configActions } from "@/app/store/config";
 import configSelectors from "@/app/store/config/selectors";
 import { generalActions } from "@/app/store/general";
@@ -14,12 +17,11 @@ import { osInfo as osInfoSelectors } from "@/app/store/general/selectors";
 
 const Deploy = (): React.ReactElement => {
   const configLoaded = useSelector(configSelectors.loaded);
-  const configLoading = useSelector(configSelectors.loading);
   const osInfoLoaded = useSelector(osInfoSelectors.loaded);
-  const osInfoLoading = useSelector(osInfoSelectors.loading);
   const loaded = configLoaded && osInfoLoaded;
-  const loading = configLoading || osInfoLoading;
   const dispatch = useDispatch();
+  const { isPending, error, isSuccess } =
+    useConfigurations(deployConfigsOptions);
 
   useWindowTitle("Deploy");
 
@@ -30,6 +32,10 @@ const Deploy = (): React.ReactElement => {
     }
   }, [dispatch, loaded]);
 
+  if (isPending || !osInfoLoaded) {
+    return <Layout.Skeleton view="settings" />;
+  }
+
   return (
     <PageContent>
       <ContentSection variant="narrow">
@@ -37,8 +43,15 @@ const Deploy = (): React.ReactElement => {
           Deploy
         </ContentSection.Title>
         <ContentSection.Content>
-          {loading && <Spinner text="Loading..." />}
-          {loaded && <DeployForm />}
+          {error && (
+            <Notification
+              severity="negative"
+              title="Error while fetching deploy configurations"
+            >
+              {error.message}
+            </Notification>
+          )}
+          {isSuccess && <DeployForm />}
         </ContentSection.Content>
       </ContentSection>
     </PageContent>
