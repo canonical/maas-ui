@@ -8,21 +8,21 @@ import EditGroup from "@/app/settings/views/UserManagement/views/Groups/componen
 import RemoveGroupEntitlement from "@/app/settings/views/UserManagement/views/Groups/components/RemoveGroupEntitlement";
 import RemoveGroupMember from "@/app/settings/views/UserManagement/views/Groups/components/RemoveGroupMember";
 import {
-  groupMember as groupMemberFactory,
   group as groupFactory,
+  groupMember as groupMemberFactory,
 } from "@/testing/factories/groups";
 import {
   groupsResolvers,
   mockGroupStatistics,
 } from "@/testing/resolvers/groups";
 import {
+  mockModal,
+  mockSidePanel,
   renderWithProviders,
   screen,
   setupMockServer,
   userEvent,
   waitFor,
-  mockModal,
-  mockSidePanel,
   waitForLoading,
 } from "@/testing/utils";
 
@@ -414,7 +414,7 @@ describe("GroupDetailsHeader", () => {
       );
     });
 
-    it("opens Remove entitlements side panel with the current selection", async () => {
+    it("opens Remove entitlements modal with the current selection", async () => {
       const entitlementSelection = [
         {
           entitlement: "can_edit_machines",
@@ -444,7 +444,7 @@ describe("GroupDetailsHeader", () => {
         screen.getByRole("button", { name: "Remove entitlements" })
       );
 
-      expect(mockOpen).toHaveBeenCalledWith(
+      expect(mockOpenModal).toHaveBeenCalledWith(
         expect.objectContaining({
           component: RemoveGroupEntitlement,
           title: "Remove entitlements",
@@ -456,7 +456,7 @@ describe("GroupDetailsHeader", () => {
       );
     });
 
-    it("opens Remove members side panel with the current selection", async () => {
+    it("opens Remove members modal with the current selection", async () => {
       const member = groupMemberFactory({
         user_id: 1,
         username: "alice",
@@ -484,7 +484,7 @@ describe("GroupDetailsHeader", () => {
         screen.getByRole("button", { name: "Remove members" })
       );
 
-      expect(mockOpen).toHaveBeenCalledWith(
+      expect(mockOpenModal).toHaveBeenCalledWith(
         expect.objectContaining({
           component: RemoveGroupMember,
           title: "Remove members",

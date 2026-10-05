@@ -1,6 +1,5 @@
 import type { Dispatch, SetStateAction } from "react";
 
-import { useSidePanel } from "@canonical/maas-react-components";
 import { ContextualMenu } from "@canonical/react-components";
 import type { ColumnDef } from "@tanstack/react-table";
 
@@ -8,6 +7,7 @@ import type {
   UserGroupMemberResponse,
   UserGroupResponse,
 } from "@/app/apiclient";
+import { useModal } from "@/app/base/modal-context";
 import RemoveGroupMember from "@/app/settings/views/UserManagement/views/Groups/components/RemoveGroupMember";
 
 export type MemberColumnDef = ColumnDef<
@@ -24,7 +24,7 @@ const useGroupMembersTableColumns = ({
   groupId: UserGroupResponse["id"];
   setMemberSelection: Dispatch<SetStateAction<UserGroupMemberResponse[]>>;
 }): MemberColumnDef[] => {
-  const { openSidePanel } = useSidePanel();
+  const { openModal } = useModal();
   return [
     {
       id: "username",
@@ -51,7 +51,7 @@ const useGroupMembersTableColumns = ({
             {
               children: "Remove member...",
               onClick: () => {
-                openSidePanel({
+                openModal({
                   component: RemoveGroupMember,
                   title: "Remove member",
                   props: {

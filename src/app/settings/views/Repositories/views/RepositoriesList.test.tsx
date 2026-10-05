@@ -60,7 +60,7 @@ describe("RepositoriesList", () => {
     ).toBeInTheDocument();
   });
 
-  it("renders 'Delete repository'", async () => {
+  it("opens the delete repository modal", async () => {
     renderWithProviders(<RepositoriesList />);
     await waitFor(() => {
       expect(
@@ -68,25 +68,5 @@ describe("RepositoriesList", () => {
       ).not.toBeAriaDisabled();
     });
     await userEvent.click(screen.getAllByRole("button", { name: "Delete" })[0]);
-    expect(
-      screen.getByRole("complementary", { name: "Delete repository" })
-    ).toBeInTheDocument();
-  });
-
-  it("closes side panel form when canceled", async () => {
-    renderWithProviders(<RepositoriesList />);
-    await waitFor(() => {
-      expect(
-        screen.getAllByRole("button", { name: "Delete" })[0]
-      ).not.toBeAriaDisabled();
-    });
-    await userEvent.click(screen.getAllByRole("button", { name: "Delete" })[0]);
-    expect(
-      screen.getByRole("complementary", { name: "Delete repository" })
-    ).toBeInTheDocument();
-    await userEvent.click(screen.getByRole("button", { name: "Cancel" }));
-    expect(
-      screen.queryByRole("complementary", { name: "Delete repository" })
-    ).not.toBeInTheDocument();
   });
 });

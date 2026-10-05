@@ -1,6 +1,5 @@
 import type { ReactElement } from "react";
 
-import { useSidePanel } from "@canonical/maas-react-components";
 import {
   Notification as NotificationBanner,
   Spinner,
@@ -10,13 +9,14 @@ import { useQueryClient } from "@tanstack/react-query";
 import { useDeleteUser, useGetUser } from "@/app/api/query/users";
 import { getUserQueryKey } from "@/app/apiclient/@tanstack/react-query.gen";
 import ModelActionForm from "@/app/base/components/ModelActionForm";
+import { useModal } from "@/app/base/modal-context";
 
 type DeleteUserProps = {
   id: number;
 };
 
 const DeleteUser = ({ id }: DeleteUserProps): ReactElement => {
-  const { closeSidePanel } = useSidePanel();
+  const { closeModal } = useModal();
   const queryClient = useQueryClient();
   const user = useGetUser({ path: { user_id: id } });
   const eTag = user.data?.headers?.get("ETag");
@@ -45,7 +45,7 @@ const DeleteUser = ({ id }: DeleteUserProps): ReactElement => {
             </>
           }
           modelType="user"
-          onCancel={closeSidePanel}
+          onCancel={closeModal}
           onSubmit={() => {
             deleteUser.mutate({
               headers: { ETag: eTag },
@@ -55,7 +55,7 @@ const DeleteUser = ({ id }: DeleteUserProps): ReactElement => {
           onSuccess={async () => {
             // async with closeForm called first, because unlike
             // other delete forms, this one uses GET
-            closeSidePanel();
+            closeModal();
             return queryClient.invalidateQueries({
               queryKey: getUserQueryKey({
                 path: { user_id: id },

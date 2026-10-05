@@ -2,10 +2,12 @@ import { waitFor } from "@testing-library/react";
 
 import { Entitlement } from "@/app/settings/views/UserManagement/views/Groups/constants";
 import UsersList from "@/app/settings/views/UserManagement/views/UsersList";
+import { DeleteUser } from "@/app/settings/views/UserManagement/views/UsersList/components";
 import * as factory from "@/testing/factories";
 import { authResolvers } from "@/testing/resolvers/auth";
 import { usersResolvers } from "@/testing/resolvers/users";
 import {
+  mockModal,
   renderWithProviders,
   screen,
   setupMockServer,
@@ -20,6 +22,7 @@ const mockServer = setupMockServer(
   authResolvers.getMeEntitlements.handler(),
   authResolvers.getMeStatistics.handler()
 );
+const { mockOpen: mockOpenModal } = await mockModal();
 
 describe("UsersList", () => {
   const state = factory.rootState({
@@ -84,9 +87,12 @@ describe("UsersList", () => {
       ).not.toBeAriaDisabled();
     });
     await userEvent.click(screen.getAllByRole("button", { name: "Delete" })[0]);
-    expect(
-      screen.getByRole("complementary", { name: "Delete user" })
-    ).toBeInTheDocument();
+    expect(mockOpenModal).toHaveBeenCalledWith(
+      expect.objectContaining({
+        component: DeleteUser,
+        title: "Delete user",
+      })
+    );
   });
 
   it("closes side panel form when canceled", async () => {

@@ -8,14 +8,14 @@ import {
   waitFor,
   renderWithProviders,
   waitForLoading,
-  mockSidePanel,
+  mockModal,
 } from "@/testing/utils";
 
 const mockServer = setupMockServer(
   usersResolvers.getUser.handler(),
   usersResolvers.deleteUser.handler()
 );
-const { mockClose } = await mockSidePanel();
+const { mockClose } = await mockModal();
 
 describe("DeleteUser", () => {
   it("calls closeForm on cancel click", async () => {

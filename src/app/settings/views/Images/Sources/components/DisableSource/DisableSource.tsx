@@ -1,6 +1,5 @@
 import type { ReactElement } from "react";
 
-import { useSidePanel } from "@canonical/maas-react-components";
 import {
   Notification as NotificationBanner,
   Spinner,
@@ -11,13 +10,14 @@ import {
   useUpdateImageSource,
 } from "@/app/api/query/imageSources";
 import ModelActionForm from "@/app/base/components/ModelActionForm";
+import { useModal } from "@/app/base/modal-context";
 
 type DisableSourceProps = {
   id: number;
 };
 
 const DisableSource = ({ id }: DisableSourceProps): ReactElement => {
-  const { closeSidePanel } = useSidePanel();
+  const { closeModal } = useModal();
 
   const source = useGetImageSource({ path: { boot_source_id: id } }, true);
 
@@ -44,7 +44,7 @@ const DisableSource = ({ id }: DisableSourceProps): ReactElement => {
             </>
           }
           modelType="default source"
-          onCancel={closeSidePanel}
+          onCancel={closeModal}
           onSubmit={() => {
             disableSource.mutate({
               headers: { ETag: eTag },
@@ -61,7 +61,7 @@ const DisableSource = ({ id }: DisableSourceProps): ReactElement => {
               },
             });
           }}
-          onSuccess={closeSidePanel}
+          onSuccess={closeModal}
           saved={disableSource.isSuccess}
           saving={disableSource.isPending}
           submitLabel="Disable source"

@@ -1,4 +1,3 @@
-import { useSidePanel } from "@canonical/maas-react-components";
 import {
   Notification as NotificationBanner,
   Spinner,
@@ -12,13 +11,14 @@ import {
 import type { PackageRepositoryResponse } from "@/app/apiclient";
 import { getPackageRepositoryQueryKey } from "@/app/apiclient/@tanstack/react-query.gen";
 import ModelActionForm from "@/app/base/components/ModelActionForm";
+import { useModal } from "@/app/base/modal-context";
 
 type Props = {
   id: PackageRepositoryResponse["id"];
 };
 
 const DeleteRepository = ({ id }: Props) => {
-  const { closeSidePanel } = useSidePanel();
+  const { closeModal } = useModal();
   const {
     isPending,
     isError,
@@ -56,7 +56,7 @@ const DeleteRepository = ({ id }: Props) => {
       errors={deleteRepo.error}
       initialValues={{}}
       modelType="repository"
-      onCancel={closeSidePanel}
+      onCancel={closeModal}
       onSubmit={() => {
         deleteRepo.mutate(
           { headers: { ETag: eTag }, path: { package_repository_id: id } },
@@ -71,7 +71,7 @@ const DeleteRepository = ({ id }: Props) => {
           }
         );
       }}
-      onSuccess={closeSidePanel}
+      onSuccess={closeModal}
       saved={deleteRepo.isSuccess}
       saving={deleteRepo.isPending}
     />

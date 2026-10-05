@@ -1,6 +1,5 @@
 import type { ReactElement } from "react";
 
-import { useSidePanel } from "@canonical/maas-react-components";
 import {
   Notification as NotificationBanner,
   Spinner,
@@ -11,13 +10,14 @@ import {
   useGetImageSource,
 } from "@/app/api/query/imageSources";
 import ModelActionForm from "@/app/base/components/ModelActionForm";
+import { useModal } from "@/app/base/modal-context";
 
 type DeleteSourceProps = {
   id: number;
 };
 
 const DeleteSource = ({ id }: DeleteSourceProps): ReactElement => {
-  const { closeSidePanel } = useSidePanel();
+  const { closeModal } = useModal();
 
   const source = useGetImageSource({ path: { boot_source_id: id } }, true);
 
@@ -53,14 +53,14 @@ const DeleteSource = ({ id }: DeleteSourceProps): ReactElement => {
               </>
             }
             modelType="custom source"
-            onCancel={closeSidePanel}
+            onCancel={closeModal}
             onSubmit={() => {
               deleteSource.mutate({
                 headers: { ETag: eTag },
                 path: { boot_source_id: id },
               });
             }}
-            onSuccess={closeSidePanel}
+            onSuccess={closeModal}
             saved={deleteSource.isSuccess}
             saving={deleteSource.isPending}
             submitLabel="Delete source"

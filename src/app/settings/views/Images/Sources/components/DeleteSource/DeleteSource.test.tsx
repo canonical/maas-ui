@@ -2,7 +2,7 @@ import DeleteSource from "./DeleteSource";
 
 import { imageSourceResolvers } from "@/testing/resolvers/imageSources";
 import {
-  mockSidePanel,
+  mockModal,
   renderWithProviders,
   screen,
   setupMockServer,
@@ -15,7 +15,7 @@ const mockServer = setupMockServer(
   imageSourceResolvers.getImageSource.handler(),
   imageSourceResolvers.deleteImageSource.handler()
 );
-const { mockClose } = await mockSidePanel();
+const { mockClose } = await mockModal();
 
 describe("DeleteSource", () => {
   it("calls closeForm on cancel click", async () => {

@@ -12,6 +12,7 @@ import { imageSourceResolvers } from "@/testing/resolvers/imageSources";
 import { imageResolvers } from "@/testing/resolvers/images";
 import {
   mockIsPending,
+  mockModal,
   mockSidePanel,
   renderWithProviders,
   screen,
@@ -36,6 +37,7 @@ const mockServer = setupMockServer(
   configurationsResolvers.setConfiguration.handler()
 );
 const { mockOpen } = await mockSidePanel();
+const { mockOpen: mockOpenModal } = await mockModal();
 
 describe("SourcesTable", () => {
   describe("display", () => {
@@ -210,7 +212,7 @@ describe("SourcesTable", () => {
       });
     });
 
-    it("opens delete source side panel form", async () => {
+    it("opens delete source modal", async () => {
       mockServer.use(
         imageSourceResolvers.listImageSources.handler({
           items: [
@@ -243,7 +245,7 @@ describe("SourcesTable", () => {
         screen.getByRole("menuitem", { name: "Delete source..." })
       );
 
-      expect(mockOpen).toHaveBeenCalledWith({
+      expect(mockOpenModal).toHaveBeenCalledWith({
         component: DeleteSource,
         title: "Delete custom source",
         props: { id: 1 },

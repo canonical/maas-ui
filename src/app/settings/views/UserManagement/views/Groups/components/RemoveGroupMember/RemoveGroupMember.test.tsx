@@ -7,14 +7,14 @@ import {
   setupMockServer,
   renderWithProviders,
   waitFor,
-  mockSidePanel,
+  mockModal,
 } from "@/testing/utils";
 
 const mockServer = setupMockServer(groupsResolvers.removeGroupMember.handler());
-const { mockClose } = await mockSidePanel();
+const { mockClose } = await mockModal();
 
 describe("RemoveGroupMember", () => {
-  it("closes the side panel when the cancel button is clicked", async () => {
+  it("closes the modal when the cancel button is clicked", async () => {
     renderWithProviders(
       <RemoveGroupMember
         groupId={1}
@@ -99,7 +99,7 @@ describe("RemoveGroupMember", () => {
     ).toBeInTheDocument();
   });
 
-  it("closes the side panel on successful removal", async () => {
+  it("closes the modal on successful removal", async () => {
     renderWithProviders(
       <RemoveGroupMember
         groupId={1}

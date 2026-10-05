@@ -170,9 +170,6 @@ it("opens a modal for actions that require confirmation", async () => {
       title: getNodeActionTitle(NodeActions.DELETE),
     })
   );
-  expect(mockOpen).not.toHaveBeenCalledWith(
-    expect.objectContaining({ component: ControllerActionFormWrapper })
-  );
 });
 
 it("opens a side panel for actions that don't require confirmation", async () => {

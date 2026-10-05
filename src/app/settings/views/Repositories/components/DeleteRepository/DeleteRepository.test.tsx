@@ -8,10 +8,10 @@ import {
   setupMockServer,
   waitFor,
   waitForLoading,
-  mockSidePanel,
+  mockModal,
 } from "@/testing/utils";
 
-const { mockClose } = await mockSidePanel();
+const { mockClose } = await mockModal();
 
 const mockServer = setupMockServer(
   packageRepositoriesResolvers.getPackageRepository.handler(),
@@ -19,14 +19,14 @@ const mockServer = setupMockServer(
 );
 
 describe("RepositoryDelete", () => {
-  it("runs closeSidePanel function when the cancel button is clicked", async () => {
+  it("runs closeModal function when the cancel button is clicked", async () => {
     renderWithProviders(<DeleteRepository id={1} />);
     await waitForLoading();
     await userEvent.click(screen.getByRole("button", { name: /Cancel/i }));
     expect(mockClose).toHaveBeenCalled();
   });
 
-  it("can delete a repository and close the side panel", async () => {
+  it("can delete a repository and close the modal", async () => {
     renderWithProviders(<DeleteRepository id={1} />);
     await waitForLoading();
     await userEvent.click(screen.getByRole("button", { name: "Delete" }));
@@ -34,6 +34,9 @@ describe("RepositoryDelete", () => {
       expect(
         packageRepositoriesResolvers.deletePackageRepository.resolved
       ).toBe(true);
+    });
+    await waitFor(() => {
+      expect(mockClose).toHaveBeenCalled();
     });
   });
 

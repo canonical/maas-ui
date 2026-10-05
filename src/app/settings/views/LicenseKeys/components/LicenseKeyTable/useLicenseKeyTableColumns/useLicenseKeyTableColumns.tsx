@@ -4,6 +4,7 @@ import { useSidePanel } from "@canonical/maas-react-components";
 import type { ColumnDef } from "@tanstack/react-table";
 
 import TableActions from "@/app/base/components/TableActions";
+import { useModal } from "@/app/base/modal-context";
 import { LicenseKeyEdit } from "@/app/settings/views/LicenseKeys/components";
 import LicenseKeyDelete from "@/app/settings/views/LicenseKeys/components/LicenseKeyDelete/LicenseKeyDelete";
 import type { LicenseKeys } from "@/app/store/licensekeys/types";
@@ -16,6 +17,7 @@ const useLicenseKeyTableColumns = ({
   canEdit: boolean;
 }): LicenseKeysColumnDef[] => {
   const { openSidePanel } = useSidePanel();
+  const { openModal } = useModal();
 
   return useMemo(
     () => [
@@ -40,7 +42,7 @@ const useLicenseKeyTableColumns = ({
             deleteDisabled={!canEdit}
             editDisabled={!canEdit}
             onDelete={() => {
-              openSidePanel({
+              openModal({
                 component: LicenseKeyDelete,
                 title: "Delete license key",
                 props: {
@@ -62,7 +64,7 @@ const useLicenseKeyTableColumns = ({
         ),
       },
     ],
-    [canEdit, openSidePanel]
+    [canEdit, openModal, openSidePanel]
   );
 };
 

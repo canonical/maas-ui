@@ -4,13 +4,13 @@ import type { RootState } from "@/app/store/root/types";
 import { ScriptType } from "@/app/store/script/types";
 import * as factory from "@/testing/factories";
 import {
-  mockSidePanel,
+  mockModal,
   renderWithProviders,
   screen,
   userEvent,
 } from "@/testing/utils";
 
-const { mockClose } = await mockSidePanel();
+const { mockClose } = await mockModal();
 
 describe("DeleteScript", () => {
   let state: RootState;
@@ -48,7 +48,7 @@ describe("DeleteScript", () => {
     ).not.toBeInTheDocument();
   });
 
-  it("closes the side panel when Close is clicked on the not-found message", async () => {
+  it("closes the modal when Close is clicked on the not-found message", async () => {
     renderWithProviders(<DeleteScript id={99} />, { state });
 
     await userEvent.click(screen.getByRole("button", { name: "Close" }));

@@ -7,7 +7,7 @@ import * as factory from "@/testing/factories";
 import { authResolvers, mockOauthProvider } from "@/testing/resolvers/auth";
 import {
   mockIsPending,
-  mockSidePanel,
+  mockModal,
   renderWithProviders,
   screen,
   setupMockServer,
@@ -21,7 +21,7 @@ const mockServer = setupMockServer(
   authResolvers.getMeEntitlements.handler()
 );
 
-const { mockOpen } = await mockSidePanel();
+const { mockOpen } = await mockModal();
 
 describe("Single sign-on", () => {
   let state: RootState;
@@ -152,7 +152,7 @@ describe("Single sign-on", () => {
     });
   });
 
-  it("opens the side panel when 'Reset' is clicked", async () => {
+  it("opens the modal when 'Reset' is clicked", async () => {
     renderWithProviders(<SingleSignOn />, { state });
 
     await waitFor(() => {
