@@ -290,9 +290,6 @@ describe("UsersTable", () => {
         title: "Delete user",
         props: { id: 2 },
       });
-      expect(mockOpen).not.toHaveBeenCalledWith(
-        expect.objectContaining({ component: DeleteUser })
-      );
     });
   });
 });

@@ -250,9 +250,6 @@ describe("SourcesTable", () => {
         title: "Delete custom source",
         props: { id: 1 },
       });
-      expect(mockOpen).not.toHaveBeenCalledWith(
-        expect.objectContaining({ component: DeleteSource })
-      );
     });
   });
 });

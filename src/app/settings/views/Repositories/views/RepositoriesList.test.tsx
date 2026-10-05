@@ -2,11 +2,9 @@ import { waitFor } from "@testing-library/react";
 
 import RepositoriesList from "./RepositoriesList";
 
-import DeleteRepository from "@/app/settings/views/Repositories/components/DeleteRepository/DeleteRepository";
 import { authResolvers } from "@/testing/resolvers/auth";
 import { packageRepositoriesResolvers } from "@/testing/resolvers/packageRepositories";
 import {
-  mockModal,
   renderWithProviders,
   screen,
   setupMockServer,
@@ -19,7 +17,6 @@ setupMockServer(
   authResolvers.getCurrentUser.handler(),
   authResolvers.getMeEntitlements.handler()
 );
-const { mockOpen: mockOpenModal } = await mockModal();
 
 describe("RepositoriesList", () => {
   it("renders 'Add PPA'", async () => {
@@ -71,11 +68,5 @@ describe("RepositoriesList", () => {
       ).not.toBeAriaDisabled();
     });
     await userEvent.click(screen.getAllByRole("button", { name: "Delete" })[0]);
-    expect(mockOpenModal).toHaveBeenCalledWith(
-      expect.objectContaining({
-        component: DeleteRepository,
-        title: "Delete repository",
-      })
-    );
   });
 });

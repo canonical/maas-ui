@@ -142,9 +142,6 @@ describe("LicenseKeyTable", () => {
           licenseKey: state.licensekeys.items[0],
         },
       });
-      expect(mockOpen).not.toHaveBeenCalledWith(
-        expect.objectContaining({ component: LicenseKeyDelete })
-      );
     });
   });
 

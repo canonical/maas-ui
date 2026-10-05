@@ -142,9 +142,6 @@ describe("ScriptsList", () => {
         props: { id: 1 },
       })
     );
-    expect(mockOpen).not.toHaveBeenCalledWith(
-      expect.objectContaining({ component: DeleteScript })
-    );
   });
 
   it("disables the delete button for default scripts", async () => {

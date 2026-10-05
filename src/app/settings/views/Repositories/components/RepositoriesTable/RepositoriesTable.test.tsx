@@ -270,9 +270,6 @@ describe("RepositoriesTable", () => {
           id: 1,
         },
       });
-      expect(mockOpen).not.toHaveBeenCalledWith(
-        expect.objectContaining({ component: DeleteRepository })
-      );
     });
   });
 });

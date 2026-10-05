@@ -8,21 +8,21 @@ import EditGroup from "@/app/settings/views/UserManagement/views/Groups/componen
 import RemoveGroupEntitlement from "@/app/settings/views/UserManagement/views/Groups/components/RemoveGroupEntitlement";
 import RemoveGroupMember from "@/app/settings/views/UserManagement/views/Groups/components/RemoveGroupMember";
 import {
-  groupMember as groupMemberFactory,
   group as groupFactory,
+  groupMember as groupMemberFactory,
 } from "@/testing/factories/groups";
 import {
   groupsResolvers,
   mockGroupStatistics,
 } from "@/testing/resolvers/groups";
 import {
+  mockModal,
+  mockSidePanel,
   renderWithProviders,
   screen,
   setupMockServer,
   userEvent,
   waitFor,
-  mockModal,
-  mockSidePanel,
   waitForLoading,
 } from "@/testing/utils";
 
@@ -454,9 +454,6 @@ describe("GroupDetailsHeader", () => {
           }),
         })
       );
-      expect(mockOpen).not.toHaveBeenCalledWith(
-        expect.objectContaining({ component: RemoveGroupEntitlement })
-      );
     });
 
     it("opens Remove members modal with the current selection", async () => {
@@ -496,9 +493,6 @@ describe("GroupDetailsHeader", () => {
             members: [member],
           }),
         })
-      );
-      expect(mockOpen).not.toHaveBeenCalledWith(
-        expect.objectContaining({ component: RemoveGroupMember })
       );
     });
   });

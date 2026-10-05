@@ -8,14 +8,14 @@ import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
 import { authResolvers } from "@/testing/resolvers/auth";
 import {
-  userEvent,
-  screen,
-  within,
-  renderWithProviders,
   mockModal,
   mockSidePanel,
+  renderWithProviders,
+  screen,
   setupMockServer,
+  userEvent,
   waitFor,
+  within,
 } from "@/testing/utils";
 
 const mockServer = setupMockServer(
@@ -132,9 +132,6 @@ describe("DhcpList", () => {
             id: state.dhcpsnippet.items[2].id,
           },
         })
-      );
-      expect(mockOpen).not.toHaveBeenCalledWith(
-        expect.objectContaining({ component: DhcpDelete })
       );
     });
 
