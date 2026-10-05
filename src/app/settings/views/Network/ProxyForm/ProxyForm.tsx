@@ -1,5 +1,3 @@
-import { useEffect } from "react";
-
 import { ContentSection, Layout } from "@canonical/maas-react-components";
 import { Notification } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
@@ -64,7 +62,6 @@ const ProxyForm = (): React.ReactElement => {
   const dispatch = useDispatch();
   const updateConfig = configActions.update;
 
-  const loaded = useSelector(configSelectors.loaded);
   const saved = useSelector(configSelectors.saved);
   const saving = useSelector(configSelectors.saving);
   const errors = useSelector(configSelectors.errors);
@@ -82,12 +79,6 @@ const ProxyForm = (): React.ReactElement => {
   ]);
 
   useWindowTitle("Proxy");
-
-  useEffect(() => {
-    if (!loaded) {
-      dispatch(configActions.fetch());
-    }
-  }, [dispatch, loaded]);
 
   if (isPending) {
     return <Layout.Skeleton view="settings" />;

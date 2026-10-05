@@ -149,25 +149,6 @@ describe("ProxyForm", () => {
     });
   });
 
-  it("dispatches action to fetch config if not already loaded", () => {
-    state.config.loaded = false;
-    const { store } = renderWithProviders(<ProxyForm />, { state });
-    const fetchActions = store
-      .getActions()
-      .filter((action) => action.type.endsWith("fetch"));
-
-    expect(fetchActions).toEqual([
-      {
-        type: "config/fetch",
-        meta: {
-          model: "config",
-          method: "list",
-        },
-        payload: null,
-      },
-    ]);
-  });
-
   it("disables fields without edit permissions", async () => {
     mockServer.use(
       authResolvers.getMeEntitlements.handler([
