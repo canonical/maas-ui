@@ -4,12 +4,16 @@ import * as Yup from "yup";
 
 import { Entitlement } from "../../UserManagement/views/Groups/constants";
 
+import { useConfigurations } from "@/app/api/query/configurations";
+import type { PublicConfigName } from "@/app/apiclient";
 import FormikField from "@/app/base/components/FormikField";
 import FormikForm from "@/app/base/components/FormikForm";
 import TooltipButton from "@/app/base/components/TooltipButton";
 import { useHasEntitlements } from "@/app/base/hooks";
+import { getConfigsFromResponse } from "@/app/settings/utils";
 import { configActions } from "@/app/store/config";
 import configSelectors from "@/app/store/config/selectors";
+import { ConfigNames } from "@/app/store/config/types";
 
 type KernelParametersValues = {
   kernel_opts: string;
@@ -21,6 +25,15 @@ export enum Labels {
   GlobalBootParams = "Global boot parameters always passed to the kernel",
   KernelCrashDump = "Try to enable kernel crash dump by default",
 }
+
+export const kernelParametersConfigNames = [
+  ConfigNames.KERNEL_OPTS,
+  ConfigNames.ENABLE_KERNEL_CRASH_DUMP,
+] as PublicConfigName[];
+
+export const kernelParametersConfigsOptions = {
+  query: { name: kernelParametersConfigNames },
+};
 
 const KernelParametersSchema = Yup.object()
   .shape({
@@ -36,10 +49,15 @@ const KernelParametersForm = (): React.ReactElement => {
   const saving = useSelector(configSelectors.saving);
   const errors = useSelector(configSelectors.errors);
 
-  const kernelParams = useSelector(configSelectors.kernelParams);
-  const enableKernelCrashDump = useSelector(
-    configSelectors.enableKernelCrashDump
-  );
+  const { data } = useConfigurations(kernelParametersConfigsOptions);
+  const {
+    kernel_opts: kernelParams,
+    enable_kernel_crash_dump: enableKernelCrashDump,
+  } = getConfigsFromResponse(
+    data?.items ?? [],
+    kernelParametersConfigNames
+  ) as Partial<KernelParametersValues>;
+
   const { allowed: canEdit } = useHasEntitlements([
     Entitlement.CAN_EDIT_BOOT_ENTITIES,
   ]);
@@ -49,6 +67,7 @@ const KernelParametersForm = (): React.ReactElement => {
       aria-label={Labels.FormLabel}
       cleanup={configActions.cleanup}
       editable={canEdit}
+      enableReinitialize
       errors={errors}
       initialValues={{
         kernel_opts: kernelParams || "",

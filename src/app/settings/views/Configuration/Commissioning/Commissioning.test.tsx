@@ -1,11 +1,29 @@
 import { Labels as CommissioningFormLabels } from "../CommissioningForm/CommissioningForm";
 
-import Commissioning, { Labels as CommissioningLabels } from "./Commissioning";
+import Commissioning from "./Commissioning";
 
 import { ConfigNames } from "@/app/store/config/types";
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
-import { screen, renderWithProviders } from "@/testing/utils";
+import { authResolvers } from "@/testing/resolvers/auth";
+import { configurationsResolvers } from "@/testing/resolvers/configurations";
+import {
+  screen,
+  renderWithProviders,
+  setupMockServer,
+  mockIsPending,
+} from "@/testing/utils";
+
+const configItems = [
+  { name: ConfigNames.COMMISSIONING_DISTRO_SERIES, value: "bionic" },
+  { name: ConfigNames.DEFAULT_MIN_HWE_KERNEL, value: "ga-16.04-lowlatency" },
+];
+
+const mockServer = setupMockServer(
+  authResolvers.getCurrentUser.handler(),
+  authResolvers.getMeEntitlements.handler(),
+  configurationsResolvers.listConfigurations.handler({ items: configItems })
+);
 
 describe("Commissioning", () => {
   let state: RootState;
@@ -34,19 +52,33 @@ describe("Commissioning", () => {
     });
   });
 
-  it("displays a spinner if config is loading", () => {
-    state.config.loading = true;
-    renderWithProviders(<Commissioning />, { state });
-
-    expect(screen.getByText(CommissioningLabels.Loading)).toBeInTheDocument();
-  });
-
-  it("displays the Commissioning form if config is loaded", () => {
-    state.config.loaded = true;
+  it("displays a skeleton while the configurations are loading", () => {
+    mockIsPending();
     renderWithProviders(<Commissioning />, { state });
 
     expect(
-      screen.getByRole("form", { name: CommissioningFormLabels.FormLabel })
+      screen.getAllByRole("progressbar", { hidden: true }).length
+    ).toBeGreaterThan(0);
+  });
+
+  it("displays the Commissioning form once the configurations have loaded", async () => {
+    renderWithProviders(<Commissioning />, { state });
+
+    expect(
+      await screen.findByRole("form", {
+        name: CommissioningFormLabels.FormLabel,
+      })
+    ).toBeInTheDocument();
+  });
+
+  it("displays an error notification when the request fails", async () => {
+    mockServer.use(configurationsResolvers.listConfigurations.error());
+    renderWithProviders(<Commissioning />, { state });
+
+    expect(
+      await screen.findByText(
+        "Error while fetching commissioning configurations"
+      )
     ).toBeInTheDocument();
   });
 
