@@ -3,7 +3,28 @@ import CommissioningForm from "../CommissioningForm";
 import { ConfigNames } from "@/app/store/config/types";
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
-import { screen, renderWithProviders } from "@/testing/utils";
+import { authResolvers } from "@/testing/resolvers/auth";
+import { configurationsResolvers } from "@/testing/resolvers/configurations";
+import {
+  screen,
+  renderWithProviders,
+  setupMockServer,
+  waitFor,
+} from "@/testing/utils";
+
+setupMockServer(
+  authResolvers.getCurrentUser.handler(),
+  authResolvers.getMeEntitlements.handler(),
+  configurationsResolvers.listConfigurations.handler({
+    items: [
+      { name: ConfigNames.COMMISSIONING_DISTRO_SERIES, value: "bionic" },
+      {
+        name: ConfigNames.DEFAULT_MIN_HWE_KERNEL,
+        value: "hwe-18.04-lowlatency",
+      },
+    ],
+  })
+);
 
 describe("CommissioningFormFields", () => {
   let initialState: RootState;
@@ -65,23 +86,25 @@ describe("CommissioningFormFields", () => {
     });
   });
 
-  it("updates value for default distro series", () => {
+  it("updates value for default distro series", async () => {
     const state = { ...initialState };
 
     renderWithProviders(<CommissioningForm />, { state });
 
-    const bionic_option: HTMLOptionElement = screen.getByRole("option", {
+    const bionic_option: HTMLOptionElement = await screen.findByRole("option", {
       name: 'Ubuntu 18.04 LTS "Bionic Beaver"',
     });
-    expect(bionic_option.selected).toBe(true);
+    await waitFor(() => {
+      expect(bionic_option.selected).toBe(true);
+    });
   });
 
-  it("updates value for default min kernel", () => {
+  it("updates value for default min kernel", async () => {
     const state = { ...initialState };
 
     renderWithProviders(<CommissioningForm />, { state });
 
-    const hwe_18_lowlatency_option: HTMLOptionElement = screen.getByRole(
+    const hwe_18_lowlatency_option: HTMLOptionElement = await screen.findByRole(
       "option",
       {
         name: "bionic (hwe-18.04-lowlatency)",

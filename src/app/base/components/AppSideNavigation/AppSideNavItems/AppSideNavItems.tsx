@@ -15,11 +15,9 @@ import {
   type CurrentUserInfo,
 } from "@/app/api/query/auth";
 import type { EntitlementResponse } from "@/app/apiclient";
-import { useHasEntitlements } from "@/app/base/hooks";
 import { useId } from "@/app/base/hooks/base";
 import { useModal } from "@/app/base/modal-context";
 import urls from "@/app/base/urls";
-import { Entitlement } from "@/app/settings/views/UserManagement/views/Groups/constants";
 import configSelectors from "@/app/store/config/selectors";
 import { hasPermissions } from "@/app/utils/permissions";
 
@@ -120,9 +118,6 @@ export const AppSideNavItems = ({
   vaultIncomplete,
 }: Props): React.ReactElement => {
   const { data: userEntitlements } = useGetUserEntitlements();
-  const { allowed: canViewSettingsLink } = useHasEntitlements([
-    Entitlement.CAN_VIEW_CONFIGURATIONS,
-  ]);
   const { openModal } = useModal();
   return (
     <>
@@ -147,7 +142,7 @@ export const AppSideNavItems = ({
             <ul className="p-side-navigation__list">
               <>
                 <AppSideNavItem
-                  disabled={!canViewSettingsLink}
+                  disabled={false}
                   icon="settings"
                   navLink={{ label: "Settings", url: urls.settings.index }}
                   path={path}
