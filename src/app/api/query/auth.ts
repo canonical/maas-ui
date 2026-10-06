@@ -5,7 +5,7 @@ import {
   useQueryClient,
   type UseQueryResult,
 } from "@tanstack/react-query";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 import { useWebsocketAwareQuery } from "@/app/api/query/base";
 import type { WithHeaders } from "@/app/api/utils";
@@ -94,6 +94,7 @@ import {
 } from "@/app/apiclient/@tanstack/react-query.gen";
 import { Labels } from "@/app/login/Login/Login";
 import { statusActions } from "@/app/store/status";
+import statusSelectors from "@/app/store/status/selectors";
 import { setCookie } from "@/app/utils";
 import { COOKIE_NAMES } from "@/app/utils/cookies";
 
@@ -350,12 +351,15 @@ export const useGetCurrentUser = (
 export const useGetUserEntitlements = (
   options?: Options<GetUserEntitlementsData>
 ) => {
+  const isRBAC = useSelector(statusSelectors.isRBAC);
+  const preLoginLoaded = useSelector(statusSelectors.preLoginLoaded);
   return useWebsocketAwareQuery({
     ...queryOptionsWithHeaders<
       GetUserEntitlementsResponses,
       GetUserEntitlementsErrors,
       GetUserEntitlementsData
     >(options, getUserEntitlements, getUserEntitlementsQueryKey(options)),
+    enabled: preLoginLoaded && !isRBAC,
     select: (data) => data.items,
   });
 };

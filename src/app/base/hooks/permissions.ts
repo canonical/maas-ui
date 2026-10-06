@@ -6,20 +6,26 @@ import machineSelectors from "@/app/store/machine/selectors";
 import type { Machine } from "@/app/store/machine/types";
 import type { Pod } from "@/app/store/pod/types";
 import type { RootState } from "@/app/store/root/types";
+import statusSelectors from "@/app/store/status/selectors";
 import { hasEntitlementForPool, hasPermissions } from "@/app/utils/permissions";
 
 export const useHasEntitlements = (requiredEntitlements: Entitlement[]) => {
+  const isRBAC = useSelector(statusSelectors.isRBAC);
   const { data: userEntitlements } = useGetUserEntitlements();
-  return hasPermissions(userEntitlements || [], requiredEntitlements);
+  return isRBAC || hasPermissions(userEntitlements || [], requiredEntitlements);
 };
 
 export const useCanEditMachine = (
   systemId?: Machine["system_id"] | null
 ): boolean => {
+  const isRBAC = useSelector(statusSelectors.isRBAC);
   const { data: userEntitlements } = useGetUserEntitlements();
   const machine = useSelector((state: RootState) =>
     machineSelectors.getById(state, systemId)
   );
+  if (isRBAC) {
+    return true;
+  }
   if (!machine) {
     return hasPermissions(userEntitlements || [], [
       Entitlement.CAN_EDIT_MACHINES,
@@ -33,12 +39,16 @@ export const useCanEditMachine = (
 };
 
 export const useCanEditVMHost = (hostId?: Pod["id"] | null): boolean => {
+  const isRBAC = useSelector(statusSelectors.isRBAC);
   const { data: userEntitlements } = useGetUserEntitlements();
   const pod = useSelector((state: RootState) =>
     hostId || hostId === 0
       ? (state.pod.items.find((item) => item.id === hostId) ?? null)
       : null
   );
+  if (isRBAC) {
+    return true;
+  }
   if (!pod) {
     return hasPermissions(userEntitlements || [], [
       Entitlement.CAN_EDIT_MACHINES,
@@ -64,4 +74,9 @@ const SUPERUSER_ENTITLEMENTS = [
   Entitlement.CAN_EDIT_NOTIFICATIONS,
 ];
 
-export const useIsSuperUser = () => useHasEntitlements(SUPERUSER_ENTITLEMENTS);
+export const useIsSuperUser = () => {
+  const isRBAC = useSelector(statusSelectors.isRBAC);
+  const { data: userEntitlements } = useGetUserEntitlements();
+  // Bypassing UI gates does not establish superuser status for RBAC users.
+  return !isRBAC && hasPermissions(userEntitlements, SUPERUSER_ENTITLEMENTS);
+};

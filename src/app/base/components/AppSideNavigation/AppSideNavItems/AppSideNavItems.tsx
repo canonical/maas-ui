@@ -19,6 +19,7 @@ import { useId } from "@/app/base/hooks/base";
 import urls from "@/app/base/urls";
 import { Entitlement } from "@/app/settings/views/UserManagement/views/Groups/constants";
 import configSelectors from "@/app/store/config/selectors";
+import statusSelectors from "@/app/store/status/selectors";
 import { hasPermissions } from "@/app/utils/permissions";
 
 type Props = {
@@ -46,6 +47,7 @@ const AppSideNavItemGroup = ({
   path,
   setIsCollapsed,
 }: AppSideNavItemGroupProps) => {
+  const isRBAC = useSelector(statusSelectors.isRBAC);
   const id = useId();
   const hasActiveChild = useMemo(() => {
     for (const navLink of group.navLinks) {
@@ -67,10 +69,9 @@ const AppSideNavItemGroup = ({
     )
     .map((navLink) => ({
       ...navLink,
-      disabled: !hasPermissions(
-        entitlements,
-        navLink.requiredEntitlements || []
-      ),
+      disabled:
+        !isRBAC &&
+        !hasPermissions(entitlements, navLink.requiredEntitlements || []),
     }));
 
   return (
