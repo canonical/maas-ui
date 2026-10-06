@@ -1,6 +1,5 @@
 import { http, HttpResponse } from "msw";
 
-import { notificationFactoryV3 } from "../factories/notification";
 import { BASE_URL } from "../utils";
 
 import type {
@@ -8,6 +7,7 @@ import type {
   ListNotificationsError,
   ListNotificationsResponse,
 } from "@/app/apiclient";
+import { notificationFactoryV3 } from "@/testing/factories";
 
 const mockNotifications: ListNotificationsResponse = {
   items: [
@@ -55,12 +55,27 @@ const notificationResolvers = {
   listNotifications: {
     resolved: false,
     handler: (data: ListNotificationsResponse = mockNotifications) =>
-      http.get(`${BASE_URL}MAAS/a/v3/notifications`, () => {
+      http.get(`${BASE_URL}MAAS/a/v3/notifications`, ({ request }) => {
         notificationResolvers.listNotifications.resolved = true;
-        return HttpResponse.json(data);
+        const params = new URL(request.url).searchParams;
+        const page = Number(params.get("page") ?? 1);
+        const size = Number(params.get("size") ?? data.items.length);
+        return HttpResponse.json({
+          ...data,
+          items: data.items.slice((page - 1) * size, page * size),
+        });
       }),
-    error: (error: ListNotificationsError = mockListNotificationsError) =>
-      http.get(`${BASE_URL}MAAS/a/v3/notifications`, () => {
+    error: (
+      error: ListNotificationsError = mockListNotificationsError,
+      page?: number
+    ) =>
+      http.get(`${BASE_URL}MAAS/a/v3/notifications`, ({ request }) => {
+        if (
+          page !== undefined &&
+          Number(new URL(request.url).searchParams.get("page")) !== page
+        ) {
+          return;
+        }
         notificationResolvers.listNotifications.resolved = true;
         return HttpResponse.json(error, { status: error.code });
       }),

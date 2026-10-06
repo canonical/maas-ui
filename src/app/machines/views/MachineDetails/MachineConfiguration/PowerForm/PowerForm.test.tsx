@@ -8,17 +8,22 @@ import { machineActions } from "@/app/store/machine";
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
 import { authResolvers } from "@/testing/resolvers/auth";
+import { powerTypesResolvers } from "@/testing/resolvers/powerTypes";
+import { systemResolvers } from "@/testing/resolvers/system";
 import {
   userEvent,
   screen,
   setupMockServer,
   waitFor,
   renderWithProviders,
+  waitForLoading,
 } from "@/testing/utils";
 
 const mockServer = setupMockServer(
   authResolvers.getCurrentUser.handler(),
-  authResolvers.getMeEntitlements.handler()
+  authResolvers.getMeEntitlements.handler(),
+  powerTypesResolvers.listPowerTypes.handler(),
+  systemResolvers.getSystemInfo.handler()
 );
 
 const clickEditButton = async () => {
@@ -29,6 +34,7 @@ const clickEditButton = async () => {
     expect(editButton).not.toBeAriaDisabled();
   });
   await userEvent.click(editButton);
+  await waitForLoading();
 };
 
 let state: RootState;
@@ -38,6 +44,7 @@ beforeEach(() => {
       powerTypes: factory.powerTypesState({
         data: [
           factory.powerType({
+            description: "AMT",
             fields: [
               factory.powerField({
                 name: "amt-field",
@@ -49,6 +56,7 @@ beforeEach(() => {
             name: PowerTypeNames.AMT,
           }),
           factory.powerType({
+            description: "APC",
             fields: [
               factory.powerField({
                 name: "apc-field",
@@ -60,6 +68,7 @@ beforeEach(() => {
             name: PowerTypeNames.APC,
           }),
           factory.powerType({
+            description: "IPMI",
             fields: [
               factory.powerField({
                 name: "ip_address",
@@ -119,13 +128,13 @@ it("renders read-only text fields until edit button is pressed", async () => {
   renderWithProviders(<PowerForm systemId="abc123" />, { state });
 
   expect(
-    screen.queryByRole("combobox", { name: "Power type" })
+    screen.queryByRole("button", { name: "Power type" })
   ).not.toBeInTheDocument();
 
   await clickEditButton();
 
   expect(
-    screen.getByRole("combobox", { name: "Power type" })
+    screen.getByRole("button", { name: "Power type" })
   ).toBeInTheDocument();
 });
 
@@ -134,10 +143,8 @@ it("can validate IPv6 addresses with a port for IPMI power type", async () => {
 
   await clickEditButton();
 
-  await userEvent.selectOptions(
-    screen.getByRole("combobox", { name: "Power type" }),
-    PowerTypeNames.IPMI
-  );
+  await userEvent.click(screen.getByRole("button", { name: "Power type" }));
+  await userEvent.click(screen.getByRole("option", { name: "IPMI" }));
 
   await userEvent.clear(screen.getByRole("textbox", { name: "IP address" }));
   await userEvent.type(
@@ -171,10 +178,8 @@ it("can validate IPv4 addresses with a port for IPMI power type", async () => {
 
   await clickEditButton();
 
-  await userEvent.selectOptions(
-    screen.getByRole("combobox", { name: "Power type" }),
-    PowerTypeNames.IPMI
-  );
+  await userEvent.click(screen.getByRole("button", { name: "Power type" }));
+  await userEvent.click(screen.getByRole("option", { name: "IPMI" }));
 
   await userEvent.clear(screen.getByRole("textbox", { name: "IP address" }));
   await userEvent.type(
@@ -214,10 +219,8 @@ it("correctly dispatches an action to update a machine's power", async () => {
   });
 
   await clickEditButton();
-  await userEvent.selectOptions(
-    screen.getByRole("combobox", { name: "Power type" }),
-    PowerTypeNames.APC
-  );
+  await userEvent.click(screen.getByRole("button", { name: "Power type" }));
+  await userEvent.click(screen.getByRole("option", { name: "APC" }));
   await userEvent.clear(screen.getByRole("textbox", { name: "APC field" }));
   await userEvent.type(
     screen.getByRole("textbox", { name: "APC field" }),

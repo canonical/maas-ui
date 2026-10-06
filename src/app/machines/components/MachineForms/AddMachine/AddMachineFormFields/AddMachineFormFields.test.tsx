@@ -3,6 +3,8 @@ import AddMachineForm from "../AddMachineForm";
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
 import { poolsResolvers } from "@/testing/resolvers/pools";
+import { powerTypesResolvers } from "@/testing/resolvers/powerTypes";
+import { systemResolvers } from "@/testing/resolvers/system";
 import { zoneResolvers } from "@/testing/resolvers/zones";
 import {
   renderWithProviders,
@@ -14,6 +16,8 @@ import {
 } from "@/testing/utils";
 
 setupMockServer(
+  powerTypesResolvers.listPowerTypes.handler(),
+  systemResolvers.getSystemInfo.handler(),
   zoneResolvers.listZones.handler(),
   zoneResolvers.listZonesWithStatistics.handler(),
   poolsResolvers.listPools.handler()
@@ -169,10 +173,8 @@ describe("AddMachineFormFields", () => {
     });
     expect(screen.getByRole("textbox", { name: "MAC address" })).toBeRequired();
 
-    await userEvent.selectOptions(
-      screen.getByRole("combobox", { name: "Power type" }),
-      "ipmi"
-    );
+    await userEvent.click(screen.getByRole("button", { name: "Power type" }));
+    await userEvent.click(screen.getByRole("option", { name: "IPMI" }));
 
     expect(
       screen.getByRole("textbox", { name: "MAC address" })
