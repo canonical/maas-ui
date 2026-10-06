@@ -1,4 +1,4 @@
-import reducers from "./slice";
+import reducers, { actions } from "./slice";
 
 import * as factory from "@/testing/factories";
 
@@ -176,7 +176,7 @@ describe("status", () => {
     );
   });
 
-  it("should correctly reduce status/checkAuthenticatedSuccess", () => {
+  it("stores the external auth URL for legacy login", () => {
     expect(
       reducers(
         factory.statusState({
@@ -184,14 +184,14 @@ describe("status", () => {
           authenticated: false,
           noUsers: false,
         }),
-        {
-          type: "status/checkAuthenticatedSuccess",
-          payload: {
-            is_authenticated: true,
-            external_legacy_login_url: "http://login.example.com",
-            no_users: true,
+        actions.checkAuthenticatedSuccess({
+          is_authenticated: true,
+          external_legacy_login: {
+            url: "http://login.example.com",
+            type: "CANDID",
           },
-        }
+          no_users: true,
+        })
       )
     ).toStrictEqual(
       factory.statusState({
@@ -199,6 +199,30 @@ describe("status", () => {
         authenticated: true,
         externalAuthURL: "http://login.example.com",
         noUsers: true,
+      })
+    );
+  });
+
+  it("clears the external auth URL when legacy login is absent", () => {
+    expect(
+      reducers(
+        factory.statusState({
+          authenticating: true,
+          authenticated: true,
+          externalAuthURL: "http://login.example.com",
+          noUsers: true,
+        }),
+        actions.checkAuthenticatedSuccess({
+          is_authenticated: false,
+          no_users: false,
+        })
+      )
+    ).toStrictEqual(
+      factory.statusState({
+        authenticating: false,
+        authenticated: false,
+        externalAuthURL: "",
+        noUsers: false,
       })
     );
   });

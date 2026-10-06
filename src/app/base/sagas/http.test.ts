@@ -17,6 +17,7 @@ import {
   SERVICE_API,
 } from "./http";
 
+import type { PreLoginInfoResponse } from "@/app/apiclient";
 import { ScriptType } from "@/app/store/script/types";
 import { ScriptResultNames } from "@/app/store/scriptresult/types";
 import { getCookie } from "@/app/utils";
@@ -31,7 +32,10 @@ describe("Auth API", () => {
 
   describe("check authenticated", () => {
     it("returns a SUCCESS action", () => {
-      const payload = { authenticated: true };
+      const payload: PreLoginInfoResponse = {
+        is_authenticated: true,
+        no_users: false,
+      };
       return expectSaga(checkAuthenticatedSaga)
         .provide([[matchers.call.fn(api.auth.checkAuthenticated), payload]])
         .put({ type: "status/checkAuthenticatedStart" })
@@ -41,6 +45,46 @@ describe("Auth API", () => {
         })
         .run();
     });
+
+    it("forwards the nested legacy login configuration", () => {
+      const payload: PreLoginInfoResponse = {
+        is_authenticated: false,
+        no_users: false,
+        external_legacy_login: {
+          url: "http://login.example.com",
+          type: "CANDID",
+        },
+      };
+      fetchMock.mockResponseOnce(JSON.stringify(payload));
+
+      return expectSaga(checkAuthenticatedSaga)
+        .put({ type: "status/checkAuthenticatedStart" })
+        .put({
+          type: "status/checkAuthenticatedSuccess",
+          payload,
+        })
+        .run();
+    });
+
+    it.each([401, 403, 422, 500])(
+      "reports HTTP %s as an authentication check error",
+      (status) => {
+        fetchMock.mockResponseOnce("", {
+          status,
+          statusText: "Pre-login request failed",
+        });
+
+        return expectSaga(checkAuthenticatedSaga)
+          .put({ type: "status/checkAuthenticatedStart" })
+          .put({
+            error: true,
+            type: "status/checkAuthenticatedError",
+            payload: "Pre-login request failed",
+          })
+          .not.put.actionType("status/checkAuthenticatedSuccess")
+          .run();
+      }
+    );
 
     it("handles errors", () => {
       const error = new Error("kerblam!");
