@@ -9,6 +9,7 @@ import { matchPath, useLocation } from "react-router";
 
 import SecondaryNavigation from "../SecondaryNavigation";
 
+import HardeningNotification from "@/app/base/components/HardeningNotification";
 import { useThemeContext } from "@/app/base/theme-context";
 import { MAAS_UI_ID } from "@/app/constants";
 import { preferencesNavItems } from "@/app/preferences/constants";
@@ -69,6 +70,7 @@ const AppLayout = ({ children }: AppLayoutProps): ReactElement => {
       }
       view={isSettingsPage || isPreferencesPage ? "settings" : "table"}
     >
+      {authenticated && <HardeningNotification />}
       <Suspense fallback={null}>
         <Modal />
       </Suspense>

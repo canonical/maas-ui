@@ -1,3 +1,5 @@
+import type { ReactElement } from "react";
+
 import { Input, Select } from "@canonical/react-components";
 import { useFormikContext } from "formik";
 
@@ -9,14 +11,18 @@ import type { PowerField } from "@/app/store/general/types";
 import type { PowerParameters } from "@/app/store/types/node";
 
 type Props = {
+  disabled?: boolean;
+  disabledChoices?: string[];
   field: PowerField;
   powerParametersValueName?: string;
 };
 
 export const BasePowerField = <V extends AnyObject>({
+  disabled,
+  disabledChoices,
   field,
   powerParametersValueName = "power_parameters",
-}: Props): React.ReactElement => {
+}: Props): ReactElement => {
   const { setFieldValue, values } = useFormikContext<V>();
   const { choices, field_type, label, name, required } = field;
   const fieldName = `${powerParametersValueName}.${name}`;
@@ -65,12 +71,14 @@ export const BasePowerField = <V extends AnyObject>({
   return (
     <FormikField
       component={field_type === PowerFieldType.CHOICE ? Select : Input}
+      disabled={disabled}
       key={fieldName}
       label={label}
       name={fieldName}
       options={
         field_type === "choice"
           ? choices.map((choice) => ({
+              disabled: disabledChoices?.includes(choice[0]),
               key: `${name}-${choice[0]}`,
               label: choice[1],
               value: choice[0],

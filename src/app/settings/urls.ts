@@ -70,6 +70,8 @@ const urls = {
     securityProtocols: "/settings/security/security-protocols",
     ipmiSettings: "/settings/security/ipmi-settings",
     sessionTimeout: "/settings/security/session-timeout",
+    trustedSshHostKeys: "/settings/security/trusted-ssh-host-keys",
+    hardeningStatus: "/settings/security/hardening-status",
   },
   storage: "/settings/storage",
   userManagement: {

@@ -40,7 +40,10 @@ describe("configureAuthInterceptor", () => {
     const interceptor = vi.mocked(client.interceptors.request.use).mock
       .calls[0][0];
 
-    const result = await interceptor(mockRequest, { url: "" });
+    const result = await interceptor(mockRequest, {
+      url: "",
+      headers: new Headers(),
+    });
 
     expect(getCookie).toHaveBeenCalledWith(COOKIE_NAMES.LOCAL_JWT_TOKEN_NAME);
     expect(result.headers.get("Authorization")).toBe("Bearer test-token-123");
@@ -58,7 +61,10 @@ describe("configureAuthInterceptor", () => {
     const interceptor = vi.mocked(client.interceptors.request.use).mock
       .calls[0][0];
 
-    const result = await interceptor(request, { url: "" });
+    const result = await interceptor(request, {
+      url: "",
+      headers: new Headers(),
+    });
 
     expect(result.headers.get("Authorization")).toBeNull();
   });
