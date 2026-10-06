@@ -7,7 +7,10 @@ import {
   useUsers,
   useUsersStatistics,
 } from "@/app/api/query/users";
-import type { UserCreateRequest, UserUpdateRequest } from "@/app/apiclient";
+import type {
+  UserCreateRequest,
+  UserUpdateRequestAdmin,
+} from "@/app/apiclient";
 import { authResolvers } from "@/testing/resolvers/auth";
 import {
   mockUsers,
@@ -111,7 +114,7 @@ describe("useCreateUser", () => {
 
 describe("useUpdateUser", () => {
   it("should update a user", async () => {
-    const updatedUser: UserUpdateRequest = {
+    const updatedUser: UserUpdateRequestAdmin = {
       email: "updated.user@example.com",
       first_name: "Test",
       last_name: "User",
