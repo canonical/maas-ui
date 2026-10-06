@@ -67,6 +67,10 @@ const routes = [
     path: urls.settings.security.ipmiSettings,
   },
   {
+    title: "Hardening status",
+    path: urls.settings.security.hardeningStatus,
+  },
+  {
     title: "Users",
     path: urls.settings.users.index,
   },

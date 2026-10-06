@@ -139,6 +139,9 @@ import type {
   UpdatePackageRepositoryData,
   UpdatePackageRepositoryResponses,
   UpdatePackageRepositoryErrors,
+  ListPowerTypesData,
+  ListPowerTypesResponses,
+  ListPowerTypesErrors,
   ListFabricVlanSubnetReservedIpsData,
   ListFabricVlanSubnetReservedIpsResponses,
   ListFabricVlanSubnetReservedIpsErrors,
@@ -172,6 +175,9 @@ import type {
   ListResourcePoolsWithSummaryData,
   ListResourcePoolsWithSummaryResponses,
   ListResourcePoolsWithSummaryErrors,
+  GetSystemInfoData,
+  GetSystemInfoResponses,
+  GetSystemInfoErrors,
   ListFabricVlanSubnetStaticroutesData,
   ListFabricVlanSubnetStaticroutesResponses,
   ListFabricVlanSubnetStaticroutesErrors,
@@ -232,6 +238,18 @@ import type {
   GetUserSslkeysWithSummaryData,
   GetUserSslkeysWithSummaryResponses,
   GetUserSslkeysWithSummaryErrors,
+  ListSshHostKeysData,
+  ListSshHostKeysResponses,
+  ListSshHostKeysErrors,
+  CreateSshHostKeyData,
+  CreateSshHostKeyResponses,
+  CreateSshHostKeyErrors,
+  DeleteSshHostKeyData,
+  DeleteSshHostKeyResponses,
+  DeleteSshHostKeyErrors,
+  GetSshHostKeyData,
+  GetSshHostKeyResponses,
+  GetSshHostKeyErrors,
   ListFabricVlanSubnetsData,
   ListFabricVlanSubnetsResponses,
   ListFabricVlanSubnetsErrors,
@@ -1380,6 +1398,28 @@ export const updatePackageRepository = <ThrowOnError extends boolean = false>(
 };
 
 /**
+ * List Power Types
+ */
+export const listPowerTypes = <ThrowOnError extends boolean = false>(
+  options?: Options<ListPowerTypesData, ThrowOnError>
+) => {
+  return (options?.client ?? _heyApiClient).get<
+    ListPowerTypesResponses,
+    ListPowerTypesErrors,
+    ThrowOnError
+  >({
+    security: [
+      {
+        scheme: "bearer",
+        type: "http",
+      },
+    ],
+    url: "/MAAS/a/v3/power-types",
+    ...options,
+  });
+};
+
+/**
  * List Fabric Vlan Subnet Reserved Ips
  */
 export const listFabricVlanSubnetReservedIps = <
@@ -1646,6 +1686,28 @@ export const listResourcePoolsWithSummary = <
       },
     ],
     url: "/MAAS/a/v3/resource_pools_with_summary",
+    ...options,
+  });
+};
+
+/**
+ * Get System Info
+ */
+export const getSystemInfo = <ThrowOnError extends boolean = false>(
+  options?: Options<GetSystemInfoData, ThrowOnError>
+) => {
+  return (options?.client ?? _heyApiClient).get<
+    GetSystemInfoResponses,
+    GetSystemInfoErrors,
+    ThrowOnError
+  >({
+    security: [
+      {
+        scheme: "bearer",
+        type: "http",
+      },
+    ],
+    url: "/MAAS/a/v3/system/info",
     ...options,
   });
 };
@@ -2125,6 +2187,98 @@ export const getUserSslkeysWithSummary = <ThrowOnError extends boolean = false>(
       },
     ],
     url: "/MAAS/a/v3/users/me/sslkeys_with_summary",
+    ...options,
+  });
+};
+
+/**
+ * List Ssh Host Keys
+ */
+export const listSshHostKeys = <ThrowOnError extends boolean = false>(
+  options?: Options<ListSshHostKeysData, ThrowOnError>
+) => {
+  return (options?.client ?? _heyApiClient).get<
+    ListSshHostKeysResponses,
+    ListSshHostKeysErrors,
+    ThrowOnError
+  >({
+    security: [
+      {
+        scheme: "bearer",
+        type: "http",
+      },
+    ],
+    url: "/MAAS/a/v3/ssh-host-keys",
+    ...options,
+  });
+};
+
+/**
+ * Create Ssh Host Key
+ */
+export const createSshHostKey = <ThrowOnError extends boolean = false>(
+  options: Options<CreateSshHostKeyData, ThrowOnError>
+) => {
+  return (options.client ?? _heyApiClient).post<
+    CreateSshHostKeyResponses,
+    CreateSshHostKeyErrors,
+    ThrowOnError
+  >({
+    security: [
+      {
+        scheme: "bearer",
+        type: "http",
+      },
+    ],
+    url: "/MAAS/a/v3/ssh-host-keys",
+    ...options,
+    headers: {
+      "Content-Type": "application/json",
+      ...options.headers,
+    },
+  });
+};
+
+/**
+ * Delete Ssh Host Key
+ */
+export const deleteSshHostKey = <ThrowOnError extends boolean = false>(
+  options: Options<DeleteSshHostKeyData, ThrowOnError>
+) => {
+  return (options.client ?? _heyApiClient).delete<
+    DeleteSshHostKeyResponses,
+    DeleteSshHostKeyErrors,
+    ThrowOnError
+  >({
+    security: [
+      {
+        scheme: "bearer",
+        type: "http",
+      },
+    ],
+    url: "/MAAS/a/v3/ssh-host-keys/{ssh_host_key_id}",
+    ...options,
+  });
+};
+
+/**
+ * Get Ssh Host Key
+ */
+export const getSshHostKey = <ThrowOnError extends boolean = false>(
+  options: Options<GetSshHostKeyData, ThrowOnError>
+) => {
+  return (options.client ?? _heyApiClient).get<
+    GetSshHostKeyResponses,
+    GetSshHostKeyErrors,
+    ThrowOnError
+  >({
+    security: [
+      {
+        scheme: "bearer",
+        type: "http",
+      },
+    ],
+    url: "/MAAS/a/v3/ssh-host-keys/{ssh_host_key_id}",
     ...options,
   });
 };

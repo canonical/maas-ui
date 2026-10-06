@@ -36,6 +36,14 @@ export const settingsNavItems: NavItem[] = [
         path: settingsURLs.security.ipmiSettings,
         label: "IPMI settings",
       },
+      {
+        path: settingsURLs.security.trustedSshHostKeys,
+        label: "Trusted SSH host keys",
+      },
+      {
+        path: settingsURLs.security.hardeningStatus,
+        label: "Hardening status",
+      },
     ],
   },
   {

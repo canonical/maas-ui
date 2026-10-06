@@ -20,3 +20,7 @@ export enum ReleaseNotificationPaths {
   machines = "/machines",
   settings = "/settings",
 }
+
+// Hardening requirement notifications share this stable ident prefix (set by
+// the region's sync_hardening_notifications); their idents are otherwise dynamic.
+export const HARDENING_NOTIFICATION_IDENT_PREFIX = "hardening-";

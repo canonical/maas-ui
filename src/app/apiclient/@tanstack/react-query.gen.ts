@@ -46,6 +46,7 @@ import {
   deletePackageRepository,
   getPackageRepository,
   updatePackageRepository,
+  listPowerTypes,
   listFabricVlanSubnetReservedIps,
   createFabricVlanSubnetReservedIp,
   deleteFabricVlanSubnetReservedIp,
@@ -57,6 +58,7 @@ import {
   getResourcePool,
   updateResourcePool,
   listResourcePoolsWithSummary,
+  getSystemInfo,
   listFabricVlanSubnetStaticroutes,
   createFabricVlanSubnetStaticroute,
   deleteFabricVlanSubnetStaticroute,
@@ -77,6 +79,10 @@ import {
   deleteUserSslkey,
   getUserSslkey,
   getUserSslkeysWithSummary,
+  listSshHostKeys,
+  createSshHostKey,
+  deleteSshHostKey,
+  getSshHostKey,
   listFabricVlanSubnets,
   createFabricVlanSubnet,
   deleteFabricVlanSubnet,
@@ -227,6 +233,7 @@ import type {
   UpdatePackageRepositoryData,
   UpdatePackageRepositoryError,
   UpdatePackageRepositoryResponse,
+  ListPowerTypesData,
   ListFabricVlanSubnetReservedIpsData,
   ListFabricVlanSubnetReservedIpsError,
   ListFabricVlanSubnetReservedIpsResponse,
@@ -256,6 +263,7 @@ import type {
   ListResourcePoolsWithSummaryData,
   ListResourcePoolsWithSummaryError,
   ListResourcePoolsWithSummaryResponse,
+  GetSystemInfoData,
   ListFabricVlanSubnetStaticroutesData,
   ListFabricVlanSubnetStaticroutesError,
   ListFabricVlanSubnetStaticroutesResponse,
@@ -308,6 +316,16 @@ import type {
   GetUserSslkeysWithSummaryData,
   GetUserSslkeysWithSummaryError,
   GetUserSslkeysWithSummaryResponse,
+  ListSshHostKeysData,
+  ListSshHostKeysError,
+  ListSshHostKeysResponse,
+  CreateSshHostKeyData,
+  CreateSshHostKeyError,
+  CreateSshHostKeyResponse,
+  DeleteSshHostKeyData,
+  DeleteSshHostKeyError,
+  DeleteSshHostKeyResponse,
+  GetSshHostKeyData,
   ListFabricVlanSubnetsData,
   ListFabricVlanSubnetsError,
   ListFabricVlanSubnetsResponse,
@@ -2298,6 +2316,29 @@ export const updatePackageRepositoryMutation = (
   return mutationOptions;
 };
 
+export const listPowerTypesQueryKey = (options?: Options<ListPowerTypesData>) =>
+  createQueryKey("listPowerTypes", options);
+
+/**
+ * List Power Types
+ */
+export const listPowerTypesOptions = (
+  options?: Options<ListPowerTypesData>
+) => {
+  return queryOptions({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await listPowerTypes({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: listPowerTypesQueryKey(options),
+  });
+};
+
 export const listFabricVlanSubnetReservedIpsQueryKey = (
   options: Options<ListFabricVlanSubnetReservedIpsData>
 ) => createQueryKey("listFabricVlanSubnetReservedIps", options);
@@ -2781,6 +2822,27 @@ export const listResourcePoolsWithSummaryInfiniteOptions = (
       queryKey: listResourcePoolsWithSummaryInfiniteQueryKey(options),
     }
   );
+};
+
+export const getSystemInfoQueryKey = (options?: Options<GetSystemInfoData>) =>
+  createQueryKey("getSystemInfo", options);
+
+/**
+ * Get System Info
+ */
+export const getSystemInfoOptions = (options?: Options<GetSystemInfoData>) => {
+  return queryOptions({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await getSystemInfo({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: getSystemInfoQueryKey(options),
+  });
 };
 
 export const listFabricVlanSubnetStaticroutesQueryKey = (
@@ -3655,6 +3717,180 @@ export const getUserSslkeysWithSummaryInfiniteOptions = (
       queryKey: getUserSslkeysWithSummaryInfiniteQueryKey(options),
     }
   );
+};
+
+export const listSshHostKeysQueryKey = (
+  options?: Options<ListSshHostKeysData>
+) => createQueryKey("listSshHostKeys", options);
+
+/**
+ * List Ssh Host Keys
+ */
+export const listSshHostKeysOptions = (
+  options?: Options<ListSshHostKeysData>
+) => {
+  return queryOptions({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await listSshHostKeys({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: listSshHostKeysQueryKey(options),
+  });
+};
+
+export const listSshHostKeysInfiniteQueryKey = (
+  options?: Options<ListSshHostKeysData>
+): QueryKey<Options<ListSshHostKeysData>> =>
+  createQueryKey("listSshHostKeys", options, true);
+
+/**
+ * List Ssh Host Keys
+ */
+export const listSshHostKeysInfiniteOptions = (
+  options?: Options<ListSshHostKeysData>
+) => {
+  return infiniteQueryOptions<
+    ListSshHostKeysResponse,
+    ListSshHostKeysError,
+    InfiniteData<ListSshHostKeysResponse>,
+    QueryKey<Options<ListSshHostKeysData>>,
+    | Pick<
+        QueryKey<Options<ListSshHostKeysData>>[0],
+        "body" | "headers" | "path" | "query"
+      >
+    | number
+  >(
+    // @ts-ignore
+    {
+      queryFn: async ({ pageParam, queryKey, signal }) => {
+        // @ts-ignore
+        const page: Pick<
+          QueryKey<Options<ListSshHostKeysData>>[0],
+          "body" | "headers" | "path" | "query"
+        > =
+          typeof pageParam === "object"
+            ? pageParam
+            : {
+                query: {
+                  page: pageParam,
+                },
+              };
+        const params = createInfiniteParams(queryKey, page);
+        const { data } = await listSshHostKeys({
+          ...options,
+          ...params,
+          signal,
+          throwOnError: true,
+        });
+        return data;
+      },
+      queryKey: listSshHostKeysInfiniteQueryKey(options),
+    }
+  );
+};
+
+export const createSshHostKeyQueryKey = (
+  options: Options<CreateSshHostKeyData>
+) => createQueryKey("createSshHostKey", options);
+
+/**
+ * Create Ssh Host Key
+ */
+export const createSshHostKeyOptions = (
+  options: Options<CreateSshHostKeyData>
+) => {
+  return queryOptions({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await createSshHostKey({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: createSshHostKeyQueryKey(options),
+  });
+};
+
+/**
+ * Create Ssh Host Key
+ */
+export const createSshHostKeyMutation = (
+  options?: Partial<Options<CreateSshHostKeyData>>
+): UseMutationOptions<
+  CreateSshHostKeyResponse,
+  CreateSshHostKeyError,
+  Options<CreateSshHostKeyData>
+> => {
+  const mutationOptions: UseMutationOptions<
+    CreateSshHostKeyResponse,
+    CreateSshHostKeyError,
+    Options<CreateSshHostKeyData>
+  > = {
+    mutationFn: async (localOptions) => {
+      const { data } = await createSshHostKey({
+        ...options,
+        ...localOptions,
+        throwOnError: true,
+      });
+      return data;
+    },
+  };
+  return mutationOptions;
+};
+
+/**
+ * Delete Ssh Host Key
+ */
+export const deleteSshHostKeyMutation = (
+  options?: Partial<Options<DeleteSshHostKeyData>>
+): UseMutationOptions<
+  DeleteSshHostKeyResponse,
+  DeleteSshHostKeyError,
+  Options<DeleteSshHostKeyData>
+> => {
+  const mutationOptions: UseMutationOptions<
+    DeleteSshHostKeyResponse,
+    DeleteSshHostKeyError,
+    Options<DeleteSshHostKeyData>
+  > = {
+    mutationFn: async (localOptions) => {
+      const { data } = await deleteSshHostKey({
+        ...options,
+        ...localOptions,
+        throwOnError: true,
+      });
+      return data;
+    },
+  };
+  return mutationOptions;
+};
+
+export const getSshHostKeyQueryKey = (options: Options<GetSshHostKeyData>) =>
+  createQueryKey("getSshHostKey", options);
+
+/**
+ * Get Ssh Host Key
+ */
+export const getSshHostKeyOptions = (options: Options<GetSshHostKeyData>) => {
+  return queryOptions({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await getSshHostKey({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: getSshHostKeyQueryKey(options),
+  });
 };
 
 export const listFabricVlanSubnetsQueryKey = (

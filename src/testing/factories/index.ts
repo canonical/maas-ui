@@ -173,6 +173,7 @@ export { modelRef } from "./model";
 export { nodeDevice } from "./nodedevice";
 export { notification } from "./notification";
 export { packageRepository } from "./packagerepository";
+export { powerTypeV3 } from "./powertype";
 export { reservedIp, reservedIpNodeSummary } from "./reservedip";
 export { resourcePool } from "./resourcepool";
 export {
@@ -184,6 +185,7 @@ export {
 export { script } from "./script";
 export { service } from "./service";
 export { space } from "./space";
+export { sshHostKey } from "./sshHostKey";
 export { sshKey } from "./sshkey";
 export { sslKey } from "./sslkey";
 export { staticRoute } from "./staticroute";
@@ -200,6 +202,7 @@ export {
   subnetStatistics,
   subnetStatisticsRange,
 } from "./subnet";
+export { systemInfo } from "./system";
 export { tag } from "./tag";
 export { token } from "./token";
 export { user } from "./user";

@@ -11,6 +11,7 @@ import type {
   Notification,
   NotificationState,
 } from "@/app/store/notification/types";
+import { isHardeningNotification } from "@/app/store/notification/utils";
 import type { RootState } from "@/app/store/root/types";
 import { generateBaseSelectors } from "@/app/store/utils";
 
@@ -114,10 +115,20 @@ const info = createSelector([allEnabled], (notifications) =>
   )
 );
 
+/**
+ * Returns notifications advertising hardening requirements.
+ * @param {RootState} state - The redux state.
+ * @returns {Notification[]} Hardening notifications.
+ */
+const hardening = createSelector([allEnabled], (notifications) =>
+  notifications.filter(isHardeningNotification)
+);
+
 const selectors = {
   ...defaultSelectors,
   allEnabled,
   errors,
+  hardening,
   info,
   success,
   warnings,

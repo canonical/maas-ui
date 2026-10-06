@@ -164,10 +164,8 @@ describe("AddChassisForm", () => {
     );
 
     // Select vmware from power types dropdown
-    await userEvent.selectOptions(
-      screen.getByLabelText("Power type"),
-      "vmware"
-    );
+    await userEvent.click(screen.getByRole("button", { name: "Power type" }));
+    await userEvent.click(screen.getByRole("option", { name: "VMware" }));
 
     await userEvent.type(
       screen.getByRole("textbox", { name: "VMware IP" }),
