@@ -67,8 +67,9 @@ Cypress.Commands.add("addMachine", (hostname = generateName()) => {
   cy.findByRole("menuitem", { name: "Machine", timeout: LONG_TIMEOUT }).click();
   cy.get("input[name='hostname']").type(hostname);
   cy.get("input[name='pxe_mac']").type(generateMac());
-  cy.get("select[name='power_type']").select("manual");
-  cy.get("select[name='power_type']").blur();
+  cy.findByRole("button", { name: /Power type/i }).click();
+  cy.findByRole("option", { name: "Manual" }).click();
+  cy.findByRole("button", { name: /Power type/i }).blur();
   cy.findByRole("button", { name: /save machine/i }).click();
   cy.get("#aside-panel").should("not.be.visible");
 });
@@ -110,8 +111,9 @@ Cypress.Commands.add("addMachines", (hostnames: string[]) => {
   hostnames.forEach((hostname, index) => {
     cy.get("input[name='hostname']").type(hostname);
     cy.get("input[name='pxe_mac']").type(generateMac());
-    cy.get("select[name='power_type']").select("manual");
-    cy.get("select[name='power_type']").blur();
+    cy.findByRole("button", { name: /Power type/i }).click();
+    cy.findByRole("option", { name: "Manual" }).click();
+    cy.findByRole("button", { name: /Power type/i }).blur();
     if (index < hostnames.length - 1) {
       cy.findByRole("button", { name: /Save and add another/i }).click();
       cy.findByRole("textbox", { name: /Machine name/i }).should(

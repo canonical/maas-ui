@@ -5,6 +5,8 @@ import { machineActions } from "@/app/store/machine";
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
 import { poolsResolvers } from "@/testing/resolvers/pools";
+import { powerTypesResolvers } from "@/testing/resolvers/powerTypes";
+import { systemResolvers } from "@/testing/resolvers/system";
 import { zoneResolvers } from "@/testing/resolvers/zones";
 import {
   userEvent,
@@ -16,6 +18,8 @@ import {
 
 setupMockServer(
   poolsResolvers.listPools.handler(),
+  powerTypesResolvers.listPowerTypes.handler(),
+  systemResolvers.getSystemInfo.handler(),
   zoneResolvers.listZones.handler()
 );
 
@@ -48,10 +52,12 @@ describe("AddMachineForm", () => {
           data: [
             factory.powerType({
               name: "manual",
+              description: "Manual",
               fields: [],
             }),
             factory.powerType({
               name: "amt",
+              description: "AMT",
               fields: [
                 factory.powerField({
                   name: "power_address",
@@ -62,6 +68,7 @@ describe("AddMachineForm", () => {
             }),
             factory.powerType({
               name: "apc",
+              description: "APC",
               fields: [
                 factory.powerField({
                   name: "power_id",
@@ -117,10 +124,10 @@ describe("AddMachineForm", () => {
     await waitFor(() => {
       expect(screen.queryByTestId(/Loading/)).not.toBeInTheDocument();
     });
-    await userEvent.selectOptions(
-      await screen.findByRole("combobox", { name: "Power type" }),
-      "manual"
+    await userEvent.click(
+      await screen.findByRole("button", { name: "Power type" })
     );
+    await userEvent.click(screen.getByRole("option", { name: "Manual" }));
     await userEvent.type(
       screen.getByRole("textbox", { name: "MAC address" }),
       "11:11:11:11:11:11"
@@ -173,10 +180,8 @@ describe("AddMachineForm", () => {
     await userEvent.click(
       screen.getByRole("checkbox", { name: /Register as DPU/i })
     );
-    await userEvent.selectOptions(
-      screen.getByRole("combobox", { name: "Power type" }),
-      "manual"
-    );
+    await userEvent.click(screen.getByRole("button", { name: "Power type" }));
+    await userEvent.click(screen.getByRole("option", { name: "Manual" }));
     await userEvent.click(screen.getByRole("button", { name: "Save machine" }));
 
     const expectedAction = machineActions.create({
@@ -214,18 +219,14 @@ describe("AddMachineForm", () => {
       screen.getByRole("textbox", { name: "MAC address" }),
       "11:11:11:11:11:11"
     );
-    await userEvent.selectOptions(
-      screen.getByRole("combobox", { name: "Power type" }),
-      "amt"
-    );
+    await userEvent.click(screen.getByRole("button", { name: "Power type" }));
+    await userEvent.click(screen.getByRole("option", { name: "AMT" }));
     const amtField = screen.getByRole("textbox", { name: "IP address" });
     await userEvent.type(amtField, "192.168.1.1");
 
     // Change power type and fill in new fields.
-    await userEvent.selectOptions(
-      screen.getByRole("combobox", { name: "Power type" }),
-      "apc"
-    );
+    await userEvent.click(screen.getByRole("button", { name: "Power type" }));
+    await userEvent.click(screen.getByRole("option", { name: "APC" }));
     const apcField = screen.getByRole("textbox", { name: "Power ID" });
     await userEvent.clear(apcField);
     await userEvent.type(apcField, "12345");
@@ -261,15 +262,13 @@ describe("AddMachineForm", () => {
     });
     await waitFor(() => {
       expect(
-        screen.getByRole("combobox", { name: "Power type" })
+        screen.getByRole("button", { name: "Power type" })
       ).toBeInTheDocument();
     });
 
     // Submit the form with two extra macs, where one is an empty string
-    await userEvent.selectOptions(
-      screen.getByRole("combobox", { name: "Power type" }),
-      "manual"
-    );
+    await userEvent.click(screen.getByRole("button", { name: "Power type" }));
+    await userEvent.click(screen.getByRole("option", { name: "Manual" }));
     await userEvent.type(
       screen.getByRole("textbox", { name: "MAC address" }),
       "11:11:11:11:11:11"
