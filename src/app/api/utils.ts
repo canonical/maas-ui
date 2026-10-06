@@ -49,7 +49,7 @@ export const queryOptionsWithHeaders = <
         ...(queryKey[0] as object),
         signal,
         throwOnError: true,
-      } as Options<TData>);
+      } as Options<TData, true>);
       return { ...data, headers } as WithHeaders<TResponses[keyof TResponses]>;
     },
     queryKey,

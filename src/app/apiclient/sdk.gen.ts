@@ -354,6 +354,9 @@ import type {
   GetSwitchData,
   GetSwitchErrors,
   GetSwitchResponses,
+  GetSystemInfoData,
+  GetSystemInfoErrors,
+  GetSystemInfoResponses,
   GetTagData,
   GetTagErrors,
   GetTagResponses,
@@ -474,6 +477,9 @@ import type {
   ListPackageRepositoriesData,
   ListPackageRepositoriesErrors,
   ListPackageRepositoriesResponses,
+  ListPowerTypesData,
+  ListPowerTypesErrors,
+  ListPowerTypesResponses,
   ListRackAgentsData,
   ListRackAgentsErrors,
   ListRackAgentsResponses,
@@ -603,6 +609,9 @@ import type {
   UpdateSpaceData,
   UpdateSpaceErrors,
   UpdateSpaceResponses,
+  UpdateSshHostKeyData,
+  UpdateSshHostKeyErrors,
+  UpdateSshHostKeyResponses,
   UpdateSwitchData,
   UpdateSwitchErrors,
   UpdateSwitchResponses,
@@ -687,11 +696,7 @@ export const createSession = <ThrowOnError extends boolean = false>(
     CreateSessionResponses,
     CreateSessionErrors,
     ThrowOnError
-  >({
-    security: [{ scheme: "bearer", type: "http" }],
-    url: "/MAAS/a/v3/auth/sessions",
-    ...options,
-  });
+  >({ url: "/MAAS/a/v3/auth/sessions", ...options });
 
 /**
  * Delete Oauth Provider
@@ -755,11 +760,7 @@ export const extendSession = <ThrowOnError extends boolean = false>(
     ExtendSessionResponses,
     ExtendSessionErrors,
     ThrowOnError
-  >({
-    security: [{ scheme: "bearer", type: "http" }],
-    url: "/MAAS/a/v3/auth/sessions:extend",
-    ...options,
-  });
+  >({ url: "/MAAS/a/v3/auth/sessions:extend", ...options });
 
 /**
  * Get Access Token
@@ -771,11 +772,7 @@ export const getAccessToken = <ThrowOnError extends boolean = false>(
     GetAccessTokenResponses,
     GetAccessTokenErrors,
     ThrowOnError
-  >({
-    security: [{ scheme: "bearer", type: "http" }],
-    url: "/MAAS/a/v3/auth/access_token",
-    ...options,
-  });
+  >({ url: "/MAAS/a/v3/auth/access_token", ...options });
 
 /**
  * Get Oauth Provider
@@ -1700,11 +1697,7 @@ export const getDomainRrsets = <ThrowOnError extends boolean = false>(
     GetDomainRrsetsResponses,
     GetDomainRrsetsErrors,
     ThrowOnError
-  >({
-    security: [{ scheme: "bearer", type: "http" }],
-    url: "/MAAS/a/v3/domains/{domain_id}/rrsets",
-    ...options,
-  });
+  >({ url: "/MAAS/a/v3/domains/{domain_id}/rrsets", ...options });
 
 /**
  * Create Domain Rrsets
@@ -1958,7 +1951,6 @@ export const listFabricVlanSubnetIprange = <
     ListFabricVlanSubnetIprangeErrors,
     ThrowOnError
   >({
-    security: [{ scheme: "bearer", type: "http" }],
     url: "/MAAS/a/v3/fabrics/{fabric_id}/vlans/{vlan_id}/subnets/{subnet_id}/ipranges",
     ...options,
   });
@@ -1976,7 +1968,6 @@ export const createFabricVlanSubnetIprange = <
     CreateFabricVlanSubnetIprangeErrors,
     ThrowOnError
   >({
-    security: [{ scheme: "bearer", type: "http" }],
     url: "/MAAS/a/v3/fabrics/{fabric_id}/vlans/{vlan_id}/subnets/{subnet_id}/ipranges",
     ...options,
     headers: {
@@ -1998,7 +1989,6 @@ export const deleteFabricVlanSubnetIprange = <
     DeleteFabricVlanSubnetIprangeErrors,
     ThrowOnError
   >({
-    security: [{ scheme: "bearer", type: "http" }],
     url: "/MAAS/a/v3/fabrics/{fabric_id}/vlans/{vlan_id}/subnets/{subnet_id}/ipranges/{iprange_id}",
     ...options,
   });
@@ -2016,7 +2006,6 @@ export const updateFabricVlanSubnetIprange = <
     UpdateFabricVlanSubnetIprangeErrors,
     ThrowOnError
   >({
-    security: [{ scheme: "bearer", type: "http" }],
     url: "/MAAS/a/v3/fabrics/{fabric_id}/vlans/{vlan_id}/subnets/{subnet_id}/ipranges/{iprange_id}",
     ...options,
     headers: {
@@ -2038,7 +2027,6 @@ export const getFabricVlanSubnetIprange = <
     GetFabricVlanSubnetIprangeErrors,
     ThrowOnError
   >({
-    security: [{ scheme: "bearer", type: "http" }],
     url: "/MAAS/a/v3/fabrics/{fabric_id}/vlans/{vlan_id}/subnets/{subnet_id}/ipranges/{id}",
     ...options,
   });
@@ -2139,11 +2127,7 @@ export const listNotifications = <ThrowOnError extends boolean = false>(
     ListNotificationsResponses,
     ListNotificationsErrors,
     ThrowOnError
-  >({
-    security: [{ scheme: "bearer", type: "http" }],
-    url: "/MAAS/a/v3/notifications",
-    ...options,
-  });
+  >({ url: "/MAAS/a/v3/notifications", ...options });
 
 /**
  * Create Notification
@@ -2191,11 +2175,7 @@ export const getNotification = <ThrowOnError extends boolean = false>(
     GetNotificationResponses,
     GetNotificationErrors,
     ThrowOnError
-  >({
-    security: [{ scheme: "bearer", type: "http" }],
-    url: "/MAAS/a/v3/notifications/{notification_id}",
-    ...options,
-  });
+  >({ url: "/MAAS/a/v3/notifications/{notification_id}", ...options });
 
 /**
  * Update Notification
@@ -2227,11 +2207,7 @@ export const dismissNotification = <ThrowOnError extends boolean = false>(
     DismissNotificationResponses,
     DismissNotificationErrors,
     ThrowOnError
-  >({
-    security: [{ scheme: "bearer", type: "http" }],
-    url: "/MAAS/a/v3/notifications/{notification_id}:dismiss",
-    ...options,
-  });
+  >({ url: "/MAAS/a/v3/notifications/{notification_id}:dismiss", ...options });
 
 /**
  * Cancel Operation
@@ -2245,11 +2221,7 @@ export const cancelOperation = <ThrowOnError extends boolean = false>(
     CancelOperationResponses,
     CancelOperationErrors,
     ThrowOnError
-  >({
-    security: [{ scheme: "bearer", type: "http" }],
-    url: "/MAAS/a/v3/operations/{operation_uuid}",
-    ...options,
-  });
+  >({ url: "/MAAS/a/v3/operations/{operation_uuid}", ...options });
 
 /**
  * Get Operation
@@ -2263,11 +2235,7 @@ export const getOperation = <ThrowOnError extends boolean = false>(
     GetOperationResponses,
     GetOperationErrors,
     ThrowOnError
-  >({
-    security: [{ scheme: "bearer", type: "http" }],
-    url: "/MAAS/a/v3/operations/{operation_uuid}",
-    ...options,
-  });
+  >({ url: "/MAAS/a/v3/operations/{operation_uuid}", ...options });
 
 /**
  * Get Operation Tasks
@@ -2281,11 +2249,7 @@ export const getOperationTasks = <ThrowOnError extends boolean = false>(
     GetOperationTasksResponses,
     GetOperationTasksErrors,
     ThrowOnError
-  >({
-    security: [{ scheme: "bearer", type: "http" }],
-    url: "/MAAS/a/v3/operations/{operation_uuid}/tasks",
-    ...options,
-  });
+  >({ url: "/MAAS/a/v3/operations/{operation_uuid}/tasks", ...options });
 
 /**
  * List Operations
@@ -2299,11 +2263,7 @@ export const listOperations = <ThrowOnError extends boolean = false>(
     ListOperationsResponses,
     ListOperationsErrors,
     ThrowOnError
-  >({
-    security: [{ scheme: "bearer", type: "http" }],
-    url: "/MAAS/a/v3/operations",
-    ...options,
-  });
+  >({ url: "/MAAS/a/v3/operations", ...options });
 
 /**
  * List Package Repositories
@@ -2392,6 +2352,18 @@ export const updatePackageRepository = <ThrowOnError extends boolean = false>(
       ...options.headers,
     },
   });
+
+/**
+ * List Power Types
+ */
+export const listPowerTypes = <ThrowOnError extends boolean = false>(
+  options?: Options<ListPowerTypesData, ThrowOnError>
+) =>
+  (options?.client ?? client).get<
+    ListPowerTypesResponses,
+    ListPowerTypesErrors,
+    ThrowOnError
+  >({ url: "/MAAS/a/v3/power-types", ...options });
 
 /**
  * List Racks
@@ -2768,6 +2740,18 @@ export const listResourcePoolsStatistics = <
   });
 
 /**
+ * Get System Info
+ */
+export const getSystemInfo = <ThrowOnError extends boolean = false>(
+  options?: Options<GetSystemInfoData, ThrowOnError>
+) =>
+  (options?.client ?? client).get<
+    GetSystemInfoResponses,
+    GetSystemInfoErrors,
+    ThrowOnError
+  >({ url: "/MAAS/a/v3/system/info", ...options });
+
+/**
  * List Fabric Vlan Subnet Staticroutes
  */
 export const listFabricVlanSubnetStaticroutes = <
@@ -2963,11 +2947,7 @@ export const listUserSshkeys = <ThrowOnError extends boolean = false>(
     ListUserSshkeysResponses,
     ListUserSshkeysErrors,
     ThrowOnError
-  >({
-    security: [{ scheme: "bearer", type: "http" }],
-    url: "/MAAS/a/v3/users/me/sshkeys",
-    ...options,
-  });
+  >({ url: "/MAAS/a/v3/users/me/sshkeys", ...options });
 
 /**
  * Create User Sshkeys
@@ -2980,7 +2960,6 @@ export const createUserSshkeys = <ThrowOnError extends boolean = false>(
     CreateUserSshkeysErrors,
     ThrowOnError
   >({
-    security: [{ scheme: "bearer", type: "http" }],
     url: "/MAAS/a/v3/users/me/sshkeys",
     ...options,
     headers: {
@@ -2999,11 +2978,7 @@ export const deleteUserSshkey = <ThrowOnError extends boolean = false>(
     DeleteUserSshkeyResponses,
     DeleteUserSshkeyErrors,
     ThrowOnError
-  >({
-    security: [{ scheme: "bearer", type: "http" }],
-    url: "/MAAS/a/v3/users/me/sshkeys/{id}",
-    ...options,
-  });
+  >({ url: "/MAAS/a/v3/users/me/sshkeys/{id}", ...options });
 
 /**
  * Get User Sshkey
@@ -3015,11 +2990,7 @@ export const getUserSshkey = <ThrowOnError extends boolean = false>(
     GetUserSshkeyResponses,
     GetUserSshkeyErrors,
     ThrowOnError
-  >({
-    security: [{ scheme: "bearer", type: "http" }],
-    url: "/MAAS/a/v3/users/me/sshkeys/{sshkey_id}",
-    ...options,
-  });
+  >({ url: "/MAAS/a/v3/users/me/sshkeys/{sshkey_id}", ...options });
 
 /**
  * Import User Sshkeys
@@ -3032,7 +3003,6 @@ export const importUserSshkeys = <ThrowOnError extends boolean = false>(
     ImportUserSshkeysErrors,
     ThrowOnError
   >({
-    security: [{ scheme: "bearer", type: "http" }],
     url: "/MAAS/a/v3/users/me/sshkeys:import",
     ...options,
     headers: {
@@ -3051,11 +3021,7 @@ export const getUserSslkeys = <ThrowOnError extends boolean = false>(
     GetUserSslkeysResponses,
     GetUserSslkeysErrors,
     ThrowOnError
-  >({
-    security: [{ scheme: "bearer", type: "http" }],
-    url: "/MAAS/a/v3/users/me/sslkeys",
-    ...options,
-  });
+  >({ url: "/MAAS/a/v3/users/me/sslkeys", ...options });
 
 /**
  * Create User Sslkey
@@ -3068,7 +3034,6 @@ export const createUserSslkey = <ThrowOnError extends boolean = false>(
     CreateUserSslkeyErrors,
     ThrowOnError
   >({
-    security: [{ scheme: "bearer", type: "http" }],
     url: "/MAAS/a/v3/users/me/sslkeys",
     ...options,
     headers: {
@@ -3087,11 +3052,7 @@ export const deleteUserSslkey = <ThrowOnError extends boolean = false>(
     DeleteUserSslkeyResponses,
     DeleteUserSslkeyErrors,
     ThrowOnError
-  >({
-    security: [{ scheme: "bearer", type: "http" }],
-    url: "/MAAS/a/v3/users/me/sslkeys/{sslkey_id}",
-    ...options,
-  });
+  >({ url: "/MAAS/a/v3/users/me/sslkeys/{sslkey_id}", ...options });
 
 /**
  * Get User Sslkey
@@ -3103,11 +3064,7 @@ export const getUserSslkey = <ThrowOnError extends boolean = false>(
     GetUserSslkeyResponses,
     GetUserSslkeyErrors,
     ThrowOnError
-  >({
-    security: [{ scheme: "bearer", type: "http" }],
-    url: "/MAAS/a/v3/users/me/sslkeys/{sslkey_id}",
-    ...options,
-  });
+  >({ url: "/MAAS/a/v3/users/me/sslkeys/{sslkey_id}", ...options });
 
 /**
  * List User Sslkeys Statistics
@@ -3119,11 +3076,7 @@ export const listUserSslkeysStatistics = <ThrowOnError extends boolean = false>(
     ListUserSslkeysStatisticsResponses,
     ListUserSslkeysStatisticsErrors,
     ThrowOnError
-  >({
-    security: [{ scheme: "bearer", type: "http" }],
-    url: "/MAAS/a/v3/users/me/sslkeys:statistics",
-    ...options,
-  });
+  >({ url: "/MAAS/a/v3/users/me/sslkeys:statistics", ...options });
 
 /**
  * List Ssh Host Keys
@@ -3191,6 +3144,26 @@ export const getSshHostKey = <ThrowOnError extends boolean = false>(
     security: [{ scheme: "bearer", type: "http" }],
     url: "/MAAS/a/v3/ssh-host-keys/{ssh_host_key_id}",
     ...options,
+  });
+
+/**
+ * Update Ssh Host Key
+ */
+export const updateSshHostKey = <ThrowOnError extends boolean = false>(
+  options: Options<UpdateSshHostKeyData, ThrowOnError>
+) =>
+  (options.client ?? client).put<
+    UpdateSshHostKeyResponses,
+    UpdateSshHostKeyErrors,
+    ThrowOnError
+  >({
+    security: [{ scheme: "bearer", type: "http" }],
+    url: "/MAAS/a/v3/ssh-host-keys/{ssh_host_key_id}",
+    ...options,
+    headers: {
+      "Content-Type": "application/json",
+      ...options.headers,
+    },
   });
 
 /**
@@ -3770,11 +3743,7 @@ export const getMeStatistics = <ThrowOnError extends boolean = false>(
     GetMeStatisticsResponses,
     GetMeStatisticsErrors,
     ThrowOnError
-  >({
-    security: [{ scheme: "bearer", type: "http" }],
-    url: "/MAAS/a/v3/users/me:statistics",
-    ...options,
-  });
+  >({ url: "/MAAS/a/v3/users/me:statistics", ...options });
 
 /**
  * Get User Info
@@ -3786,11 +3755,7 @@ export const getUserInfo = <ThrowOnError extends boolean = false>(
     GetUserInfoResponses,
     GetUserInfoErrors,
     ThrowOnError
-  >({
-    security: [{ scheme: "bearer", type: "http" }],
-    url: "/MAAS/a/v3/users/me",
-    ...options,
-  });
+  >({ url: "/MAAS/a/v3/users/me", ...options });
 
 /**
  * Update User Me
@@ -3803,7 +3768,6 @@ export const updateUserMe = <ThrowOnError extends boolean = false>(
     UpdateUserMeErrors,
     ThrowOnError
   >({
-    security: [{ scheme: "bearer", type: "http" }],
     url: "/MAAS/a/v3/users/me",
     ...options,
     headers: {
@@ -3822,11 +3786,7 @@ export const getUserEntitlements = <ThrowOnError extends boolean = false>(
     GetUserEntitlementsResponses,
     GetUserEntitlementsErrors,
     ThrowOnError
-  >({
-    security: [{ scheme: "bearer", type: "http" }],
-    url: "/MAAS/a/v3/users/me:get_entitlements",
-    ...options,
-  });
+  >({ url: "/MAAS/a/v3/users/me:get_entitlements", ...options });
 
 /**
  * Complete Intro
@@ -3838,11 +3798,7 @@ export const completeIntro = <ThrowOnError extends boolean = false>(
     CompleteIntroResponses,
     CompleteIntroErrors,
     ThrowOnError
-  >({
-    security: [{ scheme: "bearer", type: "http" }],
-    url: "/MAAS/a/v3/users/me:complete_intro",
-    ...options,
-  });
+  >({ url: "/MAAS/a/v3/users/me:complete_intro", ...options });
 
 /**
  * Change Password User
@@ -3855,7 +3811,6 @@ export const changePasswordUser = <ThrowOnError extends boolean = false>(
     ChangePasswordUserErrors,
     ThrowOnError
   >({
-    security: [{ scheme: "bearer", type: "http" }],
     url: "/MAAS/a/v3/users/me:change_password",
     ...options,
     headers: {

@@ -9,8 +9,9 @@ export const completeAddMachineForm = () => {
   cy.findByRole("menuitem", { name: "Machine", timeout: LONG_TIMEOUT }).click();
   cy.findByLabelText("Machine name").type(name);
   cy.findByLabelText("MAC address").type(generateMac());
-  cy.findByLabelText("Power type").select("Manual");
-  cy.findByLabelText("Power type").blur();
+  cy.findByRole("button", { name: /Power type/i }).click();
+  cy.findByRole("option", { name: "Manual" }).click();
+  cy.findByRole("button", { name: /Power type/i }).blur();
   cy.get("aside#aside-panel.l-aside")
     .find('[type="submit"]')
     .should(($btn) => {
