@@ -15,6 +15,7 @@ describe("status", () => {
         externalAuthURL: null,
         externalLoginURL: null,
         noUsers: false,
+        preLoginLoaded: false,
       })
     );
   });
@@ -172,17 +173,20 @@ describe("status", () => {
     ).toStrictEqual(
       factory.statusState({
         authenticating: true,
+        preLoginLoaded: false,
       })
     );
   });
 
-  it("stores the external auth URL for legacy login", () => {
+  it("stores the external auth URL and replaces the previous auth type", () => {
     expect(
       reducers(
         factory.statusState({
           authenticating: true,
           authenticated: false,
           noUsers: false,
+          externalAuthType: "RBAC",
+          preLoginLoaded: false,
         }),
         actions.checkAuthenticatedSuccess({
           is_authenticated: true,
@@ -198,18 +202,20 @@ describe("status", () => {
         authenticating: false,
         authenticated: true,
         externalAuthURL: "http://login.example.com",
+        externalAuthType: "CANDID",
         noUsers: true,
       })
     );
   });
 
-  it("clears the external auth URL when legacy login is absent", () => {
+  it("clears the external auth URL and type when legacy login is absent", () => {
     expect(
       reducers(
         factory.statusState({
           authenticating: true,
           authenticated: true,
           externalAuthURL: "http://login.example.com",
+          externalAuthType: "RBAC",
           noUsers: true,
         }),
         actions.checkAuthenticatedSuccess({
@@ -225,6 +231,21 @@ describe("status", () => {
         noUsers: false,
       })
     );
+  });
+
+  it("retains the explicit RBAC type from pre-login", () => {
+    const state = reducers(
+      factory.statusState(),
+      actions.checkAuthenticatedSuccess({
+        is_authenticated: true,
+        no_users: false,
+        external_legacy_login: {
+          url: "http://login.example.com",
+          type: "RBAC",
+        },
+      })
+    );
+    expect(state.externalAuthType).toBe("RBAC");
   });
 
   it("should correctly reduce status/loginStart", () => {
@@ -374,6 +395,7 @@ describe("status", () => {
         authenticating: false,
         authenticated: false,
         error: "Gateway Timeout",
+        preLoginLoaded: false,
       })
     );
   });

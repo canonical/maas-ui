@@ -84,6 +84,29 @@ describe("Intro", () => {
     });
   });
 
+  it("allows RBAC users to reach configuration without superuser entitlements", async () => {
+    state.status.externalAuthType = "RBAC";
+    mockServer.use(
+      authResolvers.getMeEntitlements.handler([]),
+      authResolvers.getMeStatistics.handler(
+        factory.userStatistics({ completed_intro: false })
+      )
+    );
+    renderWithProviders(<Intro />, {
+      initialEntries: ["/intro"],
+      pattern: "/intro/*",
+      state,
+    });
+    expect(
+      await screen.findByRole("button", { name: /save and continue/i })
+    ).toBeInTheDocument();
+    expect(
+      screen.queryByText(
+        "This MAAS has not be configured. Ask an admin to log in and finish the configuration."
+      )
+    ).not.toBeInTheDocument();
+  });
+
   it("exits the intro if both intros have been completed", async () => {
     state.config = factory.configState({
       items: [{ name: ConfigNames.COMPLETED_INTRO, value: true }],

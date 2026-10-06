@@ -72,6 +72,31 @@ describe("MachineActionMenuBar", () => {
     ).not.toBeInTheDocument();
   });
 
+  it("preserves action availability and explicit restrictions for RBAC", async () => {
+    state.status.externalAuthType = "RBAC";
+    state.machine.items = [
+      factory.machine({
+        system_id: "abc123",
+        actions: [NodeActions.DEPLOY],
+      }),
+    ];
+    renderWithProviders(
+      <MachineActionMenuBar
+        disabledActions={[NodeActions.RELEASE]}
+        isViewingDetails
+        systemId="abc123"
+      />,
+      { state }
+    );
+    await openMenu("Actions");
+    const menu = getSubMenu("Actions");
+    expect(getActionButton(menu, NodeActions.DEPLOY)).not.toBeAriaDisabled();
+    expect(getActionButton(menu, NodeActions.RELEASE)).toBeAriaDisabled();
+    expect(
+      queryActionButton(menu, NodeActions.COMMISSION)
+    ).not.toBeInTheDocument();
+  });
+
   it("can show disabled actions, even if a machine cannot perform them", async () => {
     const machine = factory.machine({
       actions: [NodeActions.DEPLOY],

@@ -70,6 +70,24 @@ describe("LXDSingleSettings", () => {
     await waitFor(() => {
       expect(screen.getByText(Label.Permissions)).toBeInTheDocument();
     });
+
     expect(screen.queryByText(/loading/i)).not.toBeInTheDocument();
+  });
+
+  it("renders RBAC settings without waiting for entitlements", async () => {
+    state.status.externalAuthType = "RBAC";
+    mockServer.use(
+      authResolvers.getMeEntitlements.handler([]),
+      poolsResolvers.getPool.handler(),
+      zoneResolvers.listZonesWithStatistics.handler()
+    );
+    renderWithProviders(<LXDSingleSettings id={1} />, { state });
+    await waitFor(() => {
+      expect(screen.queryByText(/loading/i)).not.toBeInTheDocument();
+    });
+    expect(
+      screen.getByRole("heading", { name: "KVM configuration" })
+    ).toBeInTheDocument();
+    expect(screen.queryByText(Label.Permissions)).not.toBeInTheDocument();
   });
 });

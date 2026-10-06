@@ -1,8 +1,33 @@
 import status from "./selectors";
 
+import type { ExternalAuthType } from "@/app/apiclient";
 import * as factory from "@/testing/factories";
 
 describe("status", () => {
+  it.each([true, false])(
+    "returns the pre-login loaded state %s",
+    (preLoginLoaded) => {
+      const state = factory.rootState({
+        status: factory.statusState({ preLoginLoaded }),
+      });
+      expect(status.preLoginLoaded(state)).toBe(preLoginLoaded);
+    }
+  );
+
+  it.each<[ExternalAuthType | null, boolean]>([
+    ["RBAC", true],
+    ["CANDID", false],
+    [null, false],
+  ])(
+    "identifies RBAC for external auth type %s",
+    (externalAuthType, expected) => {
+      const state = factory.rootState({
+        status: factory.statusState({ externalAuthType }),
+      });
+      expect(status.isRBAC(state)).toBe(expected);
+    }
+  );
+
   it("can get the connected status", () => {
     const state = factory.rootState({
       status: factory.statusState({

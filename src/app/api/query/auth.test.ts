@@ -1,4 +1,4 @@
-import { http } from "msw";
+import { http, HttpResponse } from "msw";
 import { describe, it, expect, vi, beforeEach } from "vitest";
 
 import {
@@ -16,9 +16,12 @@ import {
   usePreLogin,
   useUpdateOauthProvider,
 } from "@/app/api/query/auth";
+import type { ExternalAuthType } from "@/app/apiclient";
 import { Labels } from "@/app/login/Login/Login";
+import statusReducer, { actions } from "@/app/store/status/slice";
 import { setCookie } from "@/app/utils";
 import { COOKIE_NAMES } from "@/app/utils/cookies";
+import * as factory from "@/testing/factories";
 import {
   authResolvers,
   mockAuth,
@@ -321,6 +324,132 @@ describe("useGetCurrentUser", () => {
 });
 
 describe("useGetUserEntitlements", () => {
+  describe("pre-login readiness", () => {
+    const getEntitlements = vi.fn(() => HttpResponse.json({ items: [] }));
+
+    beforeEach(() => {
+      getEntitlements.mockClear();
+      mockServer.use(
+        http.get(/\/MAAS\/a\/v3\/users\/me:get_entitlements$/, getEntitlements)
+      );
+    });
+
+    it.each<ExternalAuthType | null>(["RBAC", "CANDID", null])(
+      "waits for pre-login success before deciding whether to fetch for %s",
+      async (type) => {
+        const initialStatus = statusReducer(undefined, { type: "" });
+        const { result: pendingResult } = renderHookWithProviders(
+          useGetUserEntitlements,
+          {
+            state: factory.rootState({ status: initialStatus }),
+          }
+        );
+
+        expect(pendingResult.current.fetchStatus).toBe("idle");
+        expect(pendingResult.current.status).toBe("pending");
+        expect(getEntitlements).not.toHaveBeenCalled();
+
+        const loadedStatus = statusReducer(
+          initialStatus,
+          actions.checkAuthenticatedSuccess({
+            is_authenticated: true,
+            no_users: false,
+            ...(type
+              ? {
+                  external_legacy_login: {
+                    url: "http://login.example.com",
+                    type,
+                  },
+                }
+              : {}),
+          })
+        );
+        const { result } = renderHookWithProviders(useGetUserEntitlements, {
+          state: factory.rootState({ status: loadedStatus }),
+        });
+
+        if (type === "RBAC") {
+          expect(result.current.fetchStatus).toBe("idle");
+          expect(result.current.status).toBe("pending");
+          expect(getEntitlements).not.toHaveBeenCalled();
+        } else {
+          await waitFor(() => {
+            expect(result.current.isSuccess).toBe(true);
+          });
+          expect(getEntitlements).toHaveBeenCalledTimes(1);
+        }
+      }
+    );
+
+    it("does not fetch after a failed pre-login, but fetches after a successful retry", async () => {
+      const failedStatus = statusReducer(
+        statusReducer(undefined, { type: "" }),
+        actions.checkAuthenticatedError("Pre-login request failed")
+      );
+      const { result: failedResult } = renderHookWithProviders(
+        useGetUserEntitlements,
+        {
+          state: factory.rootState({ status: failedStatus }),
+        }
+      );
+
+      expect(failedResult.current.fetchStatus).toBe("idle");
+      expect(failedResult.current.status).toBe("pending");
+      expect(getEntitlements).not.toHaveBeenCalled();
+
+      const retryingStatus = statusReducer(
+        failedStatus,
+        actions.checkAuthenticatedStart()
+      );
+      const { result: retryingResult } = renderHookWithProviders(
+        useGetUserEntitlements,
+        {
+          state: factory.rootState({ status: retryingStatus }),
+        }
+      );
+      expect(retryingResult.current.fetchStatus).toBe("idle");
+      expect(retryingResult.current.status).toBe("pending");
+      expect(getEntitlements).not.toHaveBeenCalled();
+
+      const loadedStatus = statusReducer(
+        retryingStatus,
+        actions.checkAuthenticatedSuccess({
+          is_authenticated: true,
+          no_users: false,
+        })
+      );
+      const { result } = renderHookWithProviders(useGetUserEntitlements, {
+        state: factory.rootState({ status: loadedStatus }),
+      });
+      await waitFor(() => {
+        expect(result.current.isSuccess).toBe(true);
+      });
+      expect(getEntitlements).toHaveBeenCalledTimes(1);
+    });
+  });
+
+  it("skips fetching entitlements for RBAC", () => {
+    const { result } = renderHookWithProviders(useGetUserEntitlements, {
+      state: factory.rootState({
+        status: factory.statusState({ externalAuthType: "RBAC" }),
+      }),
+    });
+    expect(result.current.fetchStatus).toBe("idle");
+    expect(result.current.data).toBeUndefined();
+  });
+
+  it("still fetches entitlements for Candid", async () => {
+    const { result } = renderHookWithProviders(useGetUserEntitlements, {
+      state: factory.rootState({
+        status: factory.statusState({ externalAuthType: "CANDID" }),
+      }),
+    });
+    await waitFor(() => {
+      expect(result.current.isSuccess).toBe(true);
+    });
+    expect(result.current.data).toEqual(mockUserEntitlements);
+  });
+
   it("should return the user's entitlements", async () => {
     const expectedUserEntitlements = mockUserEntitlements;
     const { result } = renderHookWithProviders(() => useGetUserEntitlements());

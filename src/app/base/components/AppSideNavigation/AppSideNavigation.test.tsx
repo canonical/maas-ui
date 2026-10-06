@@ -1,5 +1,6 @@
 import AppSideNavigation from "./AppSideNavigation";
 
+import type { ExternalAuthType } from "@/app/apiclient";
 import urls from "@/app/base/urls";
 import { ConfigNames } from "@/app/store/config/types";
 import type { RootState } from "@/app/store/root/types";
@@ -71,6 +72,23 @@ describe("GlobalSideNav", () => {
 
     expect(screen.getByRole("navigation")).toBeInTheDocument();
   });
+
+  it.each<ExternalAuthType | null>(["RBAC", "CANDID", null])(
+    "only bypasses navigation entitlements for RBAC (mode %s)",
+    async (externalAuthType) => {
+      state.status.externalAuthType = externalAuthType;
+      mockServer.use(authResolvers.getMeEntitlements.handler([]));
+      renderWithProviders(<AppSideNavigation />, { state });
+
+      for (const name of ["Machines", "Settings"]) {
+        const link = await screen.findByRole("link", { name });
+        expect(link).toHaveAttribute(
+          "aria-disabled",
+          externalAuthType === "RBAC" ? "false" : "true"
+        );
+      }
+    }
+  );
 
   it("can handle a logged out user", () => {
     mockServer.use(authResolvers.getCurrentUser.error({}));
