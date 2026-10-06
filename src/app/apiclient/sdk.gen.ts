@@ -1338,11 +1338,7 @@ export const getConfiguration = <ThrowOnError extends boolean = false>(
     GetConfigurationResponses,
     GetConfigurationErrors,
     ThrowOnError
-  >({
-    security: [{ scheme: "bearer", type: "http" }],
-    url: "/MAAS/a/v3/configurations/{name}",
-    ...options,
-  });
+  >({ url: "/MAAS/a/v3/configurations/{name}", ...options });
 
 /**
  * Set Configuration
@@ -1374,11 +1370,7 @@ export const getConfigurations = <ThrowOnError extends boolean = false>(
     GetConfigurationsResponses,
     GetConfigurationsErrors,
     ThrowOnError
-  >({
-    security: [{ scheme: "bearer", type: "http" }],
-    url: "/MAAS/a/v3/configurations",
-    ...options,
-  });
+  >({ url: "/MAAS/a/v3/configurations", ...options });
 
 /**
  * Set Configurations

@@ -1353,6 +1353,22 @@ export type EventsListResponse = {
 };
 
 /**
+ * ExternalAuthType
+ */
+export type ExternalAuthType = "CANDID" | "RBAC";
+
+/**
+ * ExternalLegacyLogin
+ */
+export type ExternalLegacyLogin = {
+  /**
+   * Url
+   */
+  url: string;
+  type: ExternalAuthType;
+};
+
+/**
  * FabricRequest
  */
 export type FabricRequest = {
@@ -1946,6 +1962,7 @@ export type KnownArchesEnum =
   | "armhf"
   | "i386"
   | "ppc64el"
+  | "riscv64"
   | "s390x";
 
 /**
@@ -3078,10 +3095,7 @@ export type PreLoginInfoResponse = {
    * No Users
    */
   no_users: boolean;
-  /**
-   * External Legacy Login Url
-   */
-  external_legacy_login_url?: string;
+  external_legacy_login?: ExternalLegacyLogin;
 };
 
 /**
@@ -7183,6 +7197,10 @@ export type GetConfigurationData = {
 
 export type GetConfigurationErrors = {
   /**
+   * Forbidden
+   */
+  403: ForbiddenBodyResponse;
+  /**
    * Not Found
    */
   404: NotFoundBodyResponse;
@@ -7253,6 +7271,10 @@ export type GetConfigurationsData = {
 };
 
 export type GetConfigurationsErrors = {
+  /**
+   * Forbidden
+   */
+  403: ForbiddenBodyResponse;
   /**
    * Not Found
    */
