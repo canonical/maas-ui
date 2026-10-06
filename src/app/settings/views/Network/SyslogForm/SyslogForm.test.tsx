@@ -11,10 +11,11 @@ import {
   setupMockServer,
   mockIsPending,
   renderWithProviders,
-  waitForLoading,
   userEvent,
   waitFor,
 } from "@/testing/utils";
+
+const syslogLabel = "Remote syslog server to forward machine logs";
 
 const mockServer = setupMockServer(
   authResolvers.getCurrentUser.handler(),
@@ -37,18 +38,14 @@ describe("SyslogForm", () => {
 
   it("renders the syslog form", async () => {
     renderWithProviders(<SyslogForm />, { state });
-    await waitForLoading();
     expect(
-      screen.getByRole("textbox", {
-        name: "Remote syslog server to forward machine logs",
-      })
+      await screen.findByRole("textbox", { name: syslogLabel })
     ).toHaveValue("");
   });
   it("updates the syslog form", async () => {
     renderWithProviders(<SyslogForm />, { state });
-    await waitForLoading();
-    const syslogInput = screen.getByRole("textbox", {
-      name: "Remote syslog server to forward machine logs",
+    const syslogInput = await screen.findByRole("textbox", {
+      name: syslogLabel,
     });
     await waitFor(() => {
       expect(syslogInput).not.toBeDisabled();
@@ -61,11 +58,13 @@ describe("SyslogForm", () => {
     });
   });
 
-  it("displays a spinner if config is loading", () => {
+  it("displays a skeleton while the configuration is loading", () => {
     mockIsPending();
     renderWithProviders(<SyslogForm />, { state });
 
-    expect(screen.getByText("Loading...")).toBeInTheDocument();
+    expect(
+      screen.getAllByRole("progressbar", { hidden: true }).length
+    ).toBeGreaterThan(0);
   });
 
   it("shows an error message when fetching configurations fails", async () => {
@@ -93,9 +92,8 @@ describe("SyslogForm", () => {
     );
 
     renderWithProviders(<SyslogForm />, { state });
-    await waitForLoading();
-    const syslogInput = screen.getByRole("textbox", {
-      name: "Remote syslog server to forward machine logs",
+    const syslogInput = await screen.findByRole("textbox", {
+      name: syslogLabel,
     });
     await waitFor(() => {
       expect(syslogInput).not.toBeDisabled();
@@ -120,13 +118,11 @@ describe("SyslogForm", () => {
       ])
     );
     renderWithProviders(<SyslogForm />, { state });
-    await waitForLoading();
+    const syslogInput = await screen.findByRole("textbox", {
+      name: syslogLabel,
+    });
     await waitFor(() => {
-      expect(
-        screen.getByRole("textbox", {
-          name: "Remote syslog server to forward machine logs",
-        })
-      ).toBeDisabled();
+      expect(syslogInput).toBeDisabled();
     });
     expect(
       screen.queryByRole("button", { name: "Save" })
