@@ -119,6 +119,7 @@ import {
   getSshHostKey,
   getSubnet,
   getSwitch,
+  getSystemInfo,
   getTag,
   getUser,
   getUserEntitlements,
@@ -159,6 +160,7 @@ import {
   listOauthProviders,
   listOperations,
   listPackageRepositories,
+  listPowerTypes,
   listRackAgents,
   listRacks,
   listRacksWithSummary,
@@ -203,6 +205,7 @@ import {
   updateRack,
   updateResourcePool,
   updateSpace,
+  updateSshHostKey,
   updateSwitch,
   updateTag,
   updateUser,
@@ -552,6 +555,9 @@ import type {
   GetSwitchData,
   GetSwitchError,
   GetSwitchResponse,
+  GetSystemInfoData,
+  GetSystemInfoError,
+  GetSystemInfoResponse,
   GetTagData,
   GetTagError,
   GetTagResponse,
@@ -672,6 +678,9 @@ import type {
   ListPackageRepositoriesData,
   ListPackageRepositoriesError,
   ListPackageRepositoriesResponse,
+  ListPowerTypesData,
+  ListPowerTypesError,
+  ListPowerTypesResponse,
   ListRackAgentsData,
   ListRackAgentsError,
   ListRackAgentsResponse,
@@ -799,6 +808,9 @@ import type {
   UpdateSpaceData,
   UpdateSpaceError,
   UpdateSpaceResponse,
+  UpdateSshHostKeyData,
+  UpdateSshHostKeyError,
+  UpdateSshHostKeyResponse,
   UpdateSwitchData,
   UpdateSwitchError,
   UpdateSwitchResponse,
@@ -3621,6 +3633,31 @@ export const updatePackageRepositoryMutation = (
   return mutationOptions;
 };
 
+export const listPowerTypesQueryKey = (options?: Options<ListPowerTypesData>) =>
+  createQueryKey("listPowerTypes", options);
+
+/**
+ * List Power Types
+ */
+export const listPowerTypesOptions = (options?: Options<ListPowerTypesData>) =>
+  queryOptions<
+    ListPowerTypesResponse,
+    ListPowerTypesError,
+    ListPowerTypesResponse,
+    ReturnType<typeof listPowerTypesQueryKey>
+  >({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await listPowerTypes({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: listPowerTypesQueryKey(options),
+  });
+
 export const listRacksQueryKey = (options?: Options<ListRacksData>) =>
   createQueryKey("listRacks", options);
 
@@ -4184,6 +4221,31 @@ export const listResourcePoolsStatisticsOptions = (
       return data;
     },
     queryKey: listResourcePoolsStatisticsQueryKey(options),
+  });
+
+export const getSystemInfoQueryKey = (options?: Options<GetSystemInfoData>) =>
+  createQueryKey("getSystemInfo", options);
+
+/**
+ * Get System Info
+ */
+export const getSystemInfoOptions = (options?: Options<GetSystemInfoData>) =>
+  queryOptions<
+    GetSystemInfoResponse,
+    GetSystemInfoError,
+    GetSystemInfoResponse,
+    ReturnType<typeof getSystemInfoQueryKey>
+  >({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await getSystemInfo({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: getSystemInfoQueryKey(options),
   });
 
 export const listFabricVlanSubnetStaticroutesQueryKey = (
@@ -4826,6 +4888,33 @@ export const getSshHostKeyOptions = (options: Options<GetSshHostKeyData>) =>
     },
     queryKey: getSshHostKeyQueryKey(options),
   });
+
+/**
+ * Update Ssh Host Key
+ */
+export const updateSshHostKeyMutation = (
+  options?: Partial<Options<UpdateSshHostKeyData>>
+): UseMutationOptions<
+  UpdateSshHostKeyResponse,
+  UpdateSshHostKeyError,
+  Options<UpdateSshHostKeyData>
+> => {
+  const mutationOptions: UseMutationOptions<
+    UpdateSshHostKeyResponse,
+    UpdateSshHostKeyError,
+    Options<UpdateSshHostKeyData>
+  > = {
+    mutationFn: async (fnOptions) => {
+      const { data } = await updateSshHostKey({
+        ...options,
+        ...fnOptions,
+        throwOnError: true,
+      });
+      return data;
+    },
+  };
+  return mutationOptions;
+};
 
 export const listFabricVlanSubnetsQueryKey = (
   options: Options<ListFabricVlanSubnetsData>

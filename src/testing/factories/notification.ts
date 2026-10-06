@@ -7,7 +7,7 @@ export const notificationFactoryV3 = define<NotificationResponse>({
   users: true,
   admins: true,
   message: "This is a test notification",
-  context: {},
+  context: () => ({}),
   category: "info",
   dismissable: true,
 });

@@ -4,7 +4,20 @@ import { PowerTypeNames } from "@/app/store/general/constants";
 import { PowerFieldScope, PowerFieldType } from "@/app/store/general/types";
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
-import { renderWithProviders, screen, userEvent } from "@/testing/utils";
+import { powerTypesResolvers } from "@/testing/resolvers/powerTypes";
+import { systemResolvers } from "@/testing/resolvers/system";
+import {
+  renderWithProviders,
+  screen,
+  setupMockServer,
+  userEvent,
+  waitForLoading,
+} from "@/testing/utils";
+
+setupMockServer(
+  powerTypesResolvers.listPowerTypes.handler(),
+  systemResolvers.getSystemInfo.handler()
+);
 
 describe("AddChassisFormFields", () => {
   let state: RootState;
@@ -33,7 +46,7 @@ describe("AddChassisFormFields", () => {
     ).toBeInTheDocument();
     expect(screen.getByRole("option", { name: "maas" })).toBeInTheDocument();
     expect(
-      screen.getByRole("combobox", { name: "Power type" })
+      screen.getByRole("button", { name: "Power type" })
     ).toBeInTheDocument();
     expect(
       screen.getByRole("button", { name: "Save chassis" })
@@ -82,10 +95,15 @@ describe("AddChassisFormFields", () => {
       state,
     });
 
-    const powerTypeSelect = screen.getByRole("combobox", {
+    await waitForLoading();
+
+    const powerTypeSelect = screen.getByRole("button", {
       name: "Power type",
     });
-    await userEvent.selectOptions(powerTypeSelect, PowerTypeNames.VIRSH);
+    await userEvent.click(powerTypeSelect);
+    await userEvent.click(
+      screen.getByRole("option", { name: "Virsh (virtual systems)" })
+    );
 
     expect(screen.getByLabelText(/Address/i)).toBeInTheDocument();
     expect(screen.queryByLabelText(/Virsh VM ID/i)).not.toBeInTheDocument();
