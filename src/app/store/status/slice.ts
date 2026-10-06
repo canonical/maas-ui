@@ -14,6 +14,7 @@ const statusSlice = createSlice({
     authenticated: false,
     authenticationError: null,
     externalAuthURL: null,
+    externalAuthType: null,
     externalLoginURL: null,
     connected: false,
     connecting: false,
@@ -21,6 +22,7 @@ const statusSlice = createSlice({
     connectedCount: 0,
     error: null,
     noUsers: false,
+    preLoginLoaded: false,
   } as StatusState,
   reducers: {
     checkAuthenticated: {
@@ -31,6 +33,7 @@ const statusSlice = createSlice({
     },
     checkAuthenticatedStart: (state: StatusState) => {
       state.authenticating = true;
+      state.preLoginLoaded = false;
     },
     checkAuthenticatedSuccess: (
       state: StatusState,
@@ -39,7 +42,10 @@ const statusSlice = createSlice({
       state.authenticating = false;
       state.authenticated = action.payload.is_authenticated;
       state.externalAuthURL = action.payload.external_legacy_login?.url ?? "";
+      state.externalAuthType =
+        action.payload.external_legacy_login?.type ?? null;
       state.noUsers = action.payload.no_users;
+      state.preLoginLoaded = true;
     },
     login: {
       prepare: (params: { password: string; username: string }) => ({
@@ -105,6 +111,7 @@ const statusSlice = createSlice({
     ) => {
       state.authenticating = false;
       state.authenticated = false;
+      state.preLoginLoaded = false;
       state.error = action.payload;
     },
     websocketConnect: (state: StatusState) => {
