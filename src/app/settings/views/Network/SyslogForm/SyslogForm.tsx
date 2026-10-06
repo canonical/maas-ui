@@ -1,10 +1,7 @@
 import type { ReactElement } from "react";
 
-import { ContentSection } from "@canonical/maas-react-components";
-import {
-  Spinner,
-  Notification as NotificationBanner,
-} from "@canonical/react-components";
+import { ContentSection, Layout } from "@canonical/maas-react-components";
+import { Notification as NotificationBanner } from "@canonical/react-components";
 import * as Yup from "yup";
 
 import { Entitlement } from "../../UserManagement/views/Groups/constants";
@@ -37,6 +34,10 @@ const SyslogForm = (): ReactElement => {
 
   useWindowTitle("Syslog");
 
+  if (isPending) {
+    return <Layout.Skeleton view="settings" />;
+  }
+
   return (
     <PageContent>
       <ContentSection variant="narrow">
@@ -44,7 +45,6 @@ const SyslogForm = (): ReactElement => {
           Syslog
         </ContentSection.Title>
         <ContentSection.Content>
-          {isPending && <Spinner text="Loading..." />}
           {error && (
             <NotificationBanner
               severity="negative"
