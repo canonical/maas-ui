@@ -40,4 +40,19 @@ describe("SecondaryNavigation", () => {
       "is-active"
     );
   });
+
+  it("renders a disabled item as a non-link", () => {
+    renderWithProviders(
+      <SecondaryNavigation
+        isOpen
+        items={[{ label: "Item 1", path: "/item1", disabled: true }]}
+        title={title}
+      />
+    );
+
+    expect(
+      screen.queryByRole("link", { name: "Item 1" })
+    ).not.toBeInTheDocument();
+    expect(screen.getByText("Item 1")).toBeAriaDisabled();
+  });
 });

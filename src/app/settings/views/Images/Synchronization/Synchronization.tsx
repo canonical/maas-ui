@@ -49,7 +49,7 @@ const Synchronization = (): ReactElement => {
 
   const updateConfig = useSetConfiguration();
   const { allowed: canEdit } = useHasEntitlements([
-    Entitlement.CAN_EDIT_BOOT_ENTITIES,
+    Entitlement.CAN_EDIT_CONFIGURATIONS,
   ]);
 
   const initialValues: SynchronizationValues = {
