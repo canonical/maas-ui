@@ -1145,9 +1145,20 @@ export const router = createBrowserRouter(
                   ),
                 },
                 {
+                  path: getRelativeRoute(
+                    urls.settings.images.ubuntu,
+                    urls.settings.index
+                  ),
+                  element: (
+                    <ErrorBoundary>
+                      <ThirdPartyDrivers />
+                    </ErrorBoundary>
+                  ),
+                },
+                {
                   element: (
                     <RequireEntitlements
-                      entitlements={[Entitlement.CAN_VIEW_BOOT_ENTITIES]}
+                      entitlements={[Entitlement.CAN_VIEW_CONFIGURATIONS]}
                       skeletonView="settings"
                     >
                       <ErrorBoundary>
@@ -1178,17 +1189,31 @@ export const router = createBrowserRouter(
                         </ErrorBoundary>
                       ),
                     },
-                    {
-                      path: getRelativeRoute(
-                        urls.settings.images.ubuntu,
-                        urls.settings.index
-                      ),
-                      element: (
-                        <ErrorBoundary>
-                          <ThirdPartyDrivers />
-                        </ErrorBoundary>
-                      ),
-                    },
+                  ],
+                },
+                {
+                  path: getRelativeRoute(
+                    urls.settings.images.sync,
+                    urls.settings.index
+                  ),
+                  element: (
+                    <ErrorBoundary>
+                      <Synchronization />
+                    </ErrorBoundary>
+                  ),
+                },
+                {
+                  element: (
+                    <RequireEntitlements
+                      entitlements={[Entitlement.CAN_VIEW_BOOT_ENTITIES]}
+                      skeletonView="settings"
+                    >
+                      <ErrorBoundary>
+                        <ImageSettings />
+                      </ErrorBoundary>
+                    </RequireEntitlements>
+                  ),
+                  children: [
                     {
                       path: getRelativeRoute(
                         urls.settings.images.sources,
@@ -1197,17 +1222,6 @@ export const router = createBrowserRouter(
                       element: (
                         <ErrorBoundary>
                           <Sources />
-                        </ErrorBoundary>
-                      ),
-                    },
-                    {
-                      path: getRelativeRoute(
-                        urls.settings.images.sync,
-                        urls.settings.index
-                      ),
-                      element: (
-                        <ErrorBoundary>
-                          <Synchronization />
                         </ErrorBoundary>
                       ),
                     },

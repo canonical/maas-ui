@@ -1,32 +1,25 @@
-import { useEffect } from "react";
-
 import { ContentSection } from "@canonical/maas-react-components";
-import { Spinner } from "@canonical/react-components";
-import { useDispatch, useSelector } from "react-redux";
+import {
+  Notification as NotificationBanner,
+  Spinner,
+} from "@canonical/react-components";
 
-import WindowsForm from "../WindowsForm";
+import WindowsForm, { windowsConfigName } from "../WindowsForm/WindowsForm";
 
+import { useGetConfiguration } from "@/app/api/query/configurations";
 import PageContent from "@/app/base/components/PageContent";
 import { useWindowTitle } from "@/app/base/hooks";
-import { configActions } from "@/app/store/config";
-import configSelectors from "@/app/store/config/selectors";
 
 export enum Labels {
   Loading = "Loading...",
 }
 
 const Windows = (): React.ReactElement => {
-  const loaded = useSelector(configSelectors.loaded);
-  const loading = useSelector(configSelectors.loading);
-  const dispatch = useDispatch();
+  const { isPending, error, isSuccess } = useGetConfiguration({
+    path: { name: windowsConfigName },
+  });
 
   useWindowTitle("Windows");
-
-  useEffect(() => {
-    if (!loaded) {
-      dispatch(configActions.fetch());
-    }
-  }, [dispatch, loaded]);
 
   return (
     <PageContent>
@@ -35,8 +28,16 @@ const Windows = (): React.ReactElement => {
           Windows
         </ContentSection.Title>
         <ContentSection.Content>
-          {loading && <Spinner text={Labels.Loading} />}
-          {loaded && <WindowsForm />}
+          {isPending && <Spinner text={Labels.Loading} />}
+          {error && (
+            <NotificationBanner
+              severity="negative"
+              title="Error while fetching image configurations"
+            >
+              {error.message}
+            </NotificationBanner>
+          )}
+          {isSuccess && <WindowsForm />}
         </ContentSection.Content>
       </ContentSection>
     </PageContent>
