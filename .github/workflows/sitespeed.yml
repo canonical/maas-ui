@@ -7,6 +7,12 @@ on:
       - "3.7"
       - "3.8"
       - "*sitespeed*"
+  workflow_dispatch:
+    inputs:
+      build-from-source:
+        description: "Build the MAAS backend from source instead of installing its published snap"
+        type: boolean
+        default: false
 jobs:
   run-sitespeed:
     name: Run sitespeed.io
@@ -28,7 +34,7 @@ jobs:
         uses: canonical/setup-maas@main
         with:
           branch: ${{ contains(github.ref_name, 'sitespeed') && 'main' || github.ref_name }}
-          build-from-source: false
+          build-from-source: ${{ inputs.build-from-source || false }}
           maas-url: ${{ env.MAAS_URL }}/MAAS
           use-maasdb-dump: true
           maasdb-dump-url: https://github.com/canonical/maas-ui-testing/raw/main/db/maasdb-${{ (github.ref_name == '3.6' || github.ref_name == '3.7') && '24.04' || '26.04' }}-master-1000.dump
