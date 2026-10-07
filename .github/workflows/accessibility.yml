@@ -17,7 +17,7 @@ jobs:
       - name: Setup MAAS
         uses: canonical/setup-maas@main
         with:
-          branch: ${{ contains(github.ref_name, 'accessibility') && 'main' || github.ref_name }}
+          branch: ${{ contains(github.ref_name, 'a11y') && 'main' || github.ref_name }}
           build-from-source: false
           maas-url: ${{env.MAAS_URL}}/MAAS
       - name: Use Node.js from .nvmrc
