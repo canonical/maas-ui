@@ -17,8 +17,6 @@ jobs:
   run-sitespeed:
     name: Run sitespeed.io
     runs-on: ubuntu-24.04
-    strategy:
-      fail-fast: false
     env:
       MAAS_DOMAIN: localhost
       MAAS_URL: http://localhost:5240
