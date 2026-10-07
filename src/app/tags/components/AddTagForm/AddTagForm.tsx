@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 
 import { useSidePanel } from "@canonical/maas-react-components";
-import { Col, NotificationSeverity, Row } from "@canonical/react-components";
+import { Col, Row, useToastNotification } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router";
 import * as Yup from "yup";
@@ -12,7 +12,6 @@ import { useSendAnalytics } from "@/app/base/hooks";
 import type { SyncNavigateFunction } from "@/app/base/types";
 import urls from "@/app/base/urls";
 import { TAG_NAME_REGEX } from "@/app/base/validation";
-import { messageActions } from "@/app/store/message";
 import type { RootState } from "@/app/store/root/types";
 import { tagActions } from "@/app/store/tag";
 import tagSelectors from "@/app/store/tag/selectors";
@@ -39,6 +38,7 @@ const AddTagFormSchema = Yup.object().shape({
 export const AddTagForm = (): React.ReactElement => {
   const { closeSidePanel } = useSidePanel();
   const dispatch = useDispatch();
+  const { success } = useToastNotification();
   const navigate: SyncNavigateFunction = useNavigate();
   const [savedName, setSavedName] = useState<Tag["name"] | null>(null);
   const saved = useSelector(tagSelectors.saved);
@@ -81,12 +81,7 @@ export const AddTagForm = (): React.ReactElement => {
       onSuccess={({ definition, name }) => {
         setSavedName(name);
         if (!!definition) {
-          dispatch(
-            messageActions.add(
-              `Created ${name}. ${NewDefinitionMessage}`,
-              NotificationSeverity.POSITIVE
-            )
-          );
+          success(`Created ${name}. ${NewDefinitionMessage}`);
         }
       }}
       saved={saved}

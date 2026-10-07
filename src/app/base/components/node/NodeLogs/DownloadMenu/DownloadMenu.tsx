@@ -2,7 +2,7 @@ import { useContext, useEffect, useRef } from "react";
 
 import {
   ContextualMenu,
-  NotificationSeverity,
+  useToastNotification,
 } from "@canonical/react-components";
 import { nanoid } from "@reduxjs/toolkit";
 import { format } from "date-fns";
@@ -18,7 +18,6 @@ import { controllerActions } from "@/app/store/controller";
 import type { ControllerDetails } from "@/app/store/controller/types";
 import { machineActions } from "@/app/store/machine";
 import type { MachineDetails } from "@/app/store/machine/types";
-import { messageActions } from "@/app/store/message";
 import type { RootState } from "@/app/store/root/types";
 import scriptResultSelectors from "@/app/store/scriptresult/selectors";
 import { ScriptResultNames } from "@/app/store/scriptresult/types";
@@ -39,6 +38,7 @@ export enum Label {
 
 export const DownloadMenu = ({ node }: Props): React.ReactElement | null => {
   const dispatch = useDispatch();
+  const { failure } = useToastNotification();
   const installationResults = useSelector((state: RootState) =>
     scriptResultSelectors.getInstallationByNodeId(state, node.system_id)
   );
@@ -169,12 +169,7 @@ export const DownloadMenu = ({ node }: Props): React.ReactElement | null => {
                         );
                       })
                       .catch((error: unknown) => {
-                        dispatch(
-                          messageActions.add(
-                            `curtin.tar could not be downloaded: ${error as string}`,
-                            NotificationSeverity.NEGATIVE
-                          )
-                        );
+                        failure("curtin.tar could not be downloaded", error);
                       });
                     sendAnalytics(
                       `${nodeLabel} details logs`,

@@ -29,6 +29,21 @@ import {
 
 enableCallIdMocks();
 
+const successMock = vi.fn();
+
+vi.mock("@canonical/react-components", async (orig) => {
+  const actual = (await orig()) as Record<string, unknown>;
+  return {
+    ...actual,
+    useToastNotification: () => ({
+      failure: vi.fn(),
+      success: successMock,
+      caution: vi.fn(),
+      info: vi.fn(),
+    }),
+  };
+});
+
 setupMockServer(
   switchResolvers.createSwitch.handler(),
   imageResolvers.listSelections.handler()
@@ -292,25 +307,25 @@ describe("DiscoveryAddForm", () => {
   it("displays a success message when a hostname is provided", async () => {
     mockFormikFormSaved();
 
-    const { store } = renderWithProviders(
-      <DiscoveryAddForm discovery={discovery} />,
-      { state }
-    );
+    renderWithProviders(<DiscoveryAddForm discovery={discovery} />, {
+      state,
+    });
 
     await userEvent.click(
       screen.getByRole("button", { name: DiscoveryAddFormLabels.SubmitLabel })
     );
 
-    expect(
-      store.getActions().find((action) => action.type === "message/add").payload
-        .message
-    ).toBe("discovery-hostname has been added.");
+    await waitFor(() => {
+      expect(successMock).toHaveBeenCalledWith(
+        "discovery-hostname has been added."
+      );
+    });
   });
 
   it("displays a success message for a device with no hostname", async () => {
     mockFormikFormSaved();
 
-    const { store } = renderWithProviders(
+    renderWithProviders(
       <DiscoveryAddForm discovery={factory.discovery({ hostname: "" })} />,
       { state }
     );
@@ -325,14 +340,13 @@ describe("DiscoveryAddForm", () => {
       screen.getByRole("button", { name: DiscoveryAddFormLabels.SubmitLabel })
     );
 
-    expect(
-      store.getActions().find((action) => action.type === "message/add").payload
-        .message
-    ).toBe("A device has been added.");
+    await waitFor(() => {
+      expect(successMock).toHaveBeenCalledWith("A device has been added.");
+    });
   });
 
   it("displays a success message for an interface with no hostname", async () => {
-    const { store } = renderWithProviders(
+    renderWithProviders(
       <DiscoveryAddForm discovery={factory.discovery({ hostname: "" })} />,
       { state }
     );
@@ -350,10 +364,7 @@ describe("DiscoveryAddForm", () => {
     );
 
     await waitFor(() => {
-      expect(
-        store.getActions().find((action) => action.type === "message/add")
-          .payload.message
-      ).toBe("An interface has been added.");
+      expect(successMock).toHaveBeenCalledWith("An interface has been added.");
     });
   });
 });

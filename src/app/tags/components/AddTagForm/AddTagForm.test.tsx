@@ -16,6 +16,21 @@ import {
   waitFor,
 } from "@/testing/utils";
 
+const successMock = vi.fn();
+
+vi.mock("@canonical/react-components", async (orig) => {
+  const actual = (await orig()) as Record<string, unknown>;
+  return {
+    ...actual,
+    useToastNotification: () => ({
+      failure: vi.fn(),
+      success: successMock,
+      caution: vi.fn(),
+      info: vi.fn(),
+    }),
+  };
+});
+
 let state: RootState;
 
 beforeEach(() => {
@@ -159,7 +174,7 @@ it("sends analytics when there is no definition", async () => {
 });
 
 it("shows a confirmation when an automatic tag is added", async () => {
-  const { store } = renderWithProviders(<AddTagForm />, { state });
+  renderWithProviders(<AddTagForm />, { state });
 
   await userEvent.type(
     screen.getByRole("textbox", { name: Label.Name }),
@@ -182,11 +197,9 @@ it("shows a confirmation when an automatic tag is added", async () => {
   await userEvent.click(screen.getByRole("button", { name: "Save" }));
 
   await waitFor(() => {
-    const action = store
-      .getActions()
-      .find((action) => action.type === "message/add");
-    const strippedMessage = action.payload.message.replace(/\s+/g, " ").trim();
-    expect(strippedMessage).toBe(`Created name1. ${NewDefinitionMessage}`);
+    expect(successMock).toHaveBeenCalledWith(
+      `Created name1. ${NewDefinitionMessage}`
+    );
   });
 });
 
