@@ -163,7 +163,7 @@ jobs:
           fi
 
   cypress-no-users:
-    name: Cypress (no-users)${{ github.event_name == 'schedule' && format(' - {0}', matrix.branch) || '' }}
+    name: Cypress (no-users)
     needs: detect-changes
     runs-on: ubuntu-24.04
     strategy:
@@ -262,7 +262,7 @@ jobs:
           path: cypress/maas_logs.txt
 
   cypress-with-users:
-    name: Cypress (with-users)${{ github.event_name == 'schedule' && format(' - {0}', matrix.branch) || '' }}
+    name: Cypress (with-users)
     needs: detect-changes
     # Skip entirely on PRs when no relevant app/ or features/ files were changed.
     # On push/schedule/workflow_dispatch spec_glob is 'all', so the job always runs.
