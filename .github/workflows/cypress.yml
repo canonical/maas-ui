@@ -11,6 +11,10 @@ on:
   schedule:
     - cron: "0 3 * * *"   # daily at 03:00 UTC
 
+env:
+  # PRs use their target branch; feature-branch runs use the main backend.
+  MAAS_BRANCH: ${{ startsWith(github.base_ref || github.ref_name, '3.') && (github.base_ref || github.ref_name) || 'main' }}
+
 jobs:
   # Detect which app/ directories changed (PR only) and resolve the matching
   # features/ subdirectories that exist on disk.
@@ -21,6 +25,7 @@ jobs:
     runs-on: ubuntu-24.04
     outputs:
       spec_glob: ${{ steps.resolve.outputs.spec_glob }}
+      branches: ${{ github.event_name == 'schedule' && '["main", "3.6", "3.7", "3.8"]' || format('["{0}"]', env.MAAS_BRANCH) }}
     steps:
       - uses: actions/checkout@main
         with:
@@ -153,19 +158,27 @@ jobs:
           fi
 
   cypress-no-users:
-    name: Cypress (no-users)
+    name: Cypress (no-users)${{ github.event_name == 'schedule' && format(' - {0}', matrix.branch) || '' }}
     needs: detect-changes
     runs-on: ubuntu-24.04
+    strategy:
+      fail-fast: false
+      matrix:
+        branch: ${{ fromJSON(needs.detect-changes.outputs.branches) }}
     env:
-      MAAS_URL: https://localhost:5443
-      MAAS_UI_URL: https://localhost:8400
+      # The 3.6/3.7 UI proxies only support HTTP.
+      USE_TLS: ${{ matrix.branch != '3.6' && matrix.branch != '3.7' }}
+      MAAS_URL: ${{ (matrix.branch == '3.6' || matrix.branch == '3.7') && 'http://localhost:5240' || 'https://localhost:5443' }}
+      MAAS_UI_URL: ${{ (matrix.branch == '3.6' || matrix.branch == '3.7') && 'http://localhost:8400' || 'https://localhost:8400' }}
     steps:
       - uses: actions/checkout@main
-      - name: Get branch name
-        uses: nelonoel/branch-name@v1.0.1
+        with:
+          ref: ${{ github.event_name == 'schedule' && matrix.branch || github.sha }}
       - name: Setup MAAS
         uses: canonical/setup-maas@main
         with:
+          branch: ${{ matrix.branch }}
+          build-from-source: false
           maas-url: http://localhost:5240/MAAS
       - name: Use Node.js from .nvmrc
         uses: actions/setup-node@v6
@@ -178,6 +191,7 @@ jobs:
           install-command: yarn install
           build: yarn build
       - name: Enable TLS for MAAS
+        if: env.USE_TLS == 'true'
         shell: bash
         run: |
           echo "Generating self-signed certificate"
@@ -198,22 +212,28 @@ jobs:
             /var/snap/maas/common/certs/cert.pem
 
           # Forward the HTTPS port from the host to the container
-          MAAS_IP=$(lxc query /1.0/containers/maas-backend/state | jq -r '.network.eth0.addresses[0].address')
-          sudo socat TCP-LISTEN:5443,fork,reuseaddr TCP:${MAAS_IP}:5443 &
+          lxc config device add maas-backend maas-https proxy \
+            listen=tcp:127.0.0.1:5443 connect=tcp:127.0.0.1:5443
       - name: Trust self-signed certificate
+        if: env.USE_TLS == 'true'
         run: |
-          # Trust on the host (for Cypress / socat-proxied connections)
+          # Trust on the host (for Cypress / proxied connections)
           sudo cp /tmp/maas-certs/cert.pem /usr/local/share/ca-certificates/maas-selfsigned.crt
           sudo update-ca-certificates
           # Trust inside the LXD container (for maas CLI → HTTPS MAAS API calls)
           lxc file push /tmp/maas-certs/cert.pem maas-backend/usr/local/share/ca-certificates/maas-selfsigned.crt
           lxc exec maas-backend -- update-ca-certificates
+      - name: Wait for MAAS HTTPS API
+        if: env.USE_TLS == 'true'
+        env:
+          NODE_EXTRA_CA_CERTS: /tmp/maas-certs/cert.pem
+        run: yarn wait-on --timeout 120000 https-get://localhost:5443/MAAS/api/2.0/version/
       - name: Run Cypress tests
         uses: cypress-io/github-action@v7.3.0
         env:
-          HTTPS_CERT: /tmp/maas-certs/cert.pem
-          HTTPS_KEY: /tmp/maas-certs/key.pem
-          NODE_EXTRA_CA_CERTS: /tmp/maas-certs/cert.pem
+          HTTPS_CERT: ${{ env.USE_TLS == 'true' && '/tmp/maas-certs/cert.pem' || '' }}
+          HTTPS_KEY: ${{ env.USE_TLS == 'true' && '/tmp/maas-certs/key.pem' || '' }}
+          NODE_EXTRA_CA_CERTS: ${{ env.USE_TLS == 'true' && '/tmp/maas-certs/cert.pem' || '' }}
         with:
           config: baseUrl=${{env.MAAS_UI_URL}},pageLoadTimeout=100000
           install: false
@@ -224,7 +244,7 @@ jobs:
       - uses: actions/upload-artifact@v4
         if: failure()
         with:
-          name: cypress-screenshots-no-users
+          name: cypress-screenshots-no-users-${{ matrix.branch }}
           path: cypress/screenshots
       - name: Collect MAAS logs
         if: failure()
@@ -233,28 +253,37 @@ jobs:
       - uses: actions/upload-artifact@v4
         if: failure()
         with:
-          name: maas_logs-no-users
+          name: maas_logs-no-users-${{ matrix.branch }}
           path: cypress/maas_logs.txt
 
   cypress-with-users:
-    name: Cypress (with-users)
+    name: Cypress (with-users)${{ github.event_name == 'schedule' && format(' - {0}', matrix.branch) || '' }}
     needs: detect-changes
     # Skip entirely on PRs when no relevant app/ or features/ files were changed.
     # On push/schedule/workflow_dispatch spec_glob is 'all', so the job always runs.
     if: needs.detect-changes.outputs.spec_glob != 'none'
     runs-on: ubuntu-24.04
+    strategy:
+      fail-fast: false
+      matrix:
+        branch: ${{ fromJSON(needs.detect-changes.outputs.branches) }}
     env:
-      MAAS_URL: https://localhost:5443
-      MAAS_UI_URL: https://localhost:8400
+      # The 3.6/3.7 UI proxies only support HTTP.
+      USE_TLS: ${{ matrix.branch != '3.6' && matrix.branch != '3.7' }}
+      MAAS_URL: ${{ (matrix.branch == '3.6' || matrix.branch == '3.7') && 'http://localhost:5240' || 'https://localhost:5443' }}
+      MAAS_UI_URL: ${{ (matrix.branch == '3.6' || matrix.branch == '3.7') && 'http://localhost:8400' || 'https://localhost:8400' }}
     steps:
       - uses: actions/checkout@main
-      - name: Get branch name
-        uses: nelonoel/branch-name@v1.0.1
+        with:
+          ref: ${{ github.event_name == 'schedule' && matrix.branch || github.sha }}
       - name: Setup MAAS
         uses: canonical/setup-maas@main
         with:
+          branch: ${{ matrix.branch }}
+          build-from-source: false
           maas-url: http://localhost:5240/MAAS
       - name: Setup Keycloak for SSO tests
+        if: matrix.branch != '3.6' && matrix.branch != '3.7'
         run: |
           CONTAINER_NAME=keycloak-test
           CONTAINER_PORT=8080
@@ -351,6 +380,7 @@ jobs:
           lxc exec maas-backend -- maas login admin http://localhost:5240/MAAS "$API_KEY"
           lxc exec maas-backend -- maas admin users create username=user password=test email=fake-user@example.org is_superuser=0
       - name: Add Keycloak as OIDC provider in MAAS
+        if: matrix.branch != '3.6' && matrix.branch != '3.7'
         shell: bash
         run: |
           # MAAS runs inside the LXD container; resolve the host IP as seen from the
@@ -369,6 +399,7 @@ jobs:
             redirect_uri="https://localhost:8400/MAAS/r/login/oidc/callback" \
             scopes="openid profile email offline_access"
       - name: Enable TLS for MAAS
+        if: env.USE_TLS == 'true'
         shell: bash
         run: |
           echo "Generating self-signed certificate"
@@ -389,22 +420,28 @@ jobs:
             /var/snap/maas/common/certs/cert.pem
 
           # Forward the HTTPS port from the host to the container
-          MAAS_IP=$(lxc query /1.0/containers/maas-backend/state | jq -r '.network.eth0.addresses[0].address')
-          sudo socat TCP-LISTEN:5443,fork,reuseaddr TCP:${MAAS_IP}:5443 &
+          lxc config device add maas-backend maas-https proxy \
+            listen=tcp:127.0.0.1:5443 connect=tcp:127.0.0.1:5443
       - name: Trust self-signed certificate
+        if: env.USE_TLS == 'true'
         run: |
-          # Trust on the host (for Cypress / socat-proxied connections)
+          # Trust on the host (for Cypress / proxied connections)
           sudo cp /tmp/maas-certs/cert.pem /usr/local/share/ca-certificates/maas-selfsigned.crt
           sudo update-ca-certificates
           # Trust inside the LXD container (for maas CLI → HTTPS MAAS API calls)
           lxc file push /tmp/maas-certs/cert.pem maas-backend/usr/local/share/ca-certificates/maas-selfsigned.crt
           lxc exec maas-backend -- update-ca-certificates
+      - name: Wait for MAAS HTTPS API
+        if: env.USE_TLS == 'true'
+        env:
+          NODE_EXTRA_CA_CERTS: /tmp/maas-certs/cert.pem
+        run: yarn wait-on --timeout 120000 https-get://localhost:5443/MAAS/api/2.0/version/
       - name: Wait for MAAS boot resources
         shell: bash
         run: |
-          # TLS is now enabled; re-login using the HTTPS endpoint inside the container
+          # Use the branch's configured protocol for the API inside the container.
           API_KEY=$(lxc exec maas-backend -- maas apikey --username=admin)
-          lxc exec maas-backend -- maas login admin https://localhost:5443/MAAS "$API_KEY"
+          lxc exec maas-backend -- maas login admin "${MAAS_URL}/MAAS" "$API_KEY"
           lxc exec maas-backend -- bash -c 'while [ $(maas admin boot-resources is-importing -k | cat) == "true" ]; do sleep 10; done; echo "syncing finished"'
       - name: Set spec pattern
         id: spec
@@ -418,9 +455,9 @@ jobs:
       - name: Run Cypress tests
         uses: cypress-io/github-action@v7.3.0
         env:
-          HTTPS_CERT: /tmp/maas-certs/cert.pem
-          HTTPS_KEY: /tmp/maas-certs/key.pem
-          NODE_EXTRA_CA_CERTS: /tmp/maas-certs/cert.pem
+          HTTPS_CERT: ${{ env.USE_TLS == 'true' && '/tmp/maas-certs/cert.pem' || '' }}
+          HTTPS_KEY: ${{ env.USE_TLS == 'true' && '/tmp/maas-certs/key.pem' || '' }}
+          NODE_EXTRA_CA_CERTS: ${{ env.USE_TLS == 'true' && '/tmp/maas-certs/cert.pem' || '' }}
           # cy.origin() in the SSO login step needs to match the origin the browser
           # is actually redirected to — the Keycloak authorization URL embeds HOST_IP
           # (the LXD default-gateway IP on which Docker publishes Keycloak port 8080).
@@ -436,7 +473,7 @@ jobs:
       - uses: actions/upload-artifact@v4
         if: failure()
         with:
-          name: cypress-screenshots-with-users
+          name: cypress-screenshots-with-users-${{ matrix.branch }}
           path: cypress/screenshots
       - name: Collect MAAS logs
         if: failure()
@@ -445,5 +482,5 @@ jobs:
       - uses: actions/upload-artifact@v4
         if: failure()
         with:
-          name: maas_logs-with-users
+          name: maas_logs-with-users-${{ matrix.branch }}
           path: cypress/maas_logs.txt

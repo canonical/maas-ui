@@ -4,19 +4,21 @@ on:
     branches:
       - main
       - "3.*"
+      - "*a11y*"
 jobs:
   cypress-axe:
     name: cypress-axe
     runs-on: ubuntu-24.04
     env:
       MAAS_URL: http://localhost:5240
+      MAAS_UI_URL: http://localhost:8400
     steps:
       - uses: actions/checkout@main
-      - name: Get branch name
-        uses: nelonoel/branch-name@v1.0.1
       - name: Setup MAAS
         uses: canonical/setup-maas@main
         with:
+          branch: ${{ contains(github.ref_name, 'accessibility') && 'main' || github.ref_name }}
+          build-from-source: false
           maas-url: ${{env.MAAS_URL}}/MAAS
       - name: Use Node.js from .nvmrc
         uses: actions/setup-node@v6
@@ -32,7 +34,9 @@ jobs:
       - name: Run cypress-axe accessibility tests
         uses: cypress-io/github-action@v7.3.0
         with:
-          config: baseUrl=${{env.MAAS_URL}},pageLoadTimeout=100000
+          config: baseUrl=${{env.MAAS_UI_URL}},pageLoadTimeout=100000
           install: false
+          start: yarn start
           spec: "cypress/e2e/accessibility/**/*.spec.ts"
-          wait-on: "${{env.MAAS_URL}}/MAAS/r/machines"
+          wait-on: "${{env.MAAS_UI_URL}}/MAAS/r/machines"
+          wait-on-timeout: 120
