@@ -35,14 +35,18 @@ jobs:
         with:
           runTests: false
           install-command: yarn install
+          build: yarn build
       - name: Create MAAS admin
         run: lxc exec maas-backend -- maas createadmin --username=admin --password=test --email=fake@example.org
       - name: Run cypress-axe accessibility tests
         uses: cypress-io/github-action@v7.3.0
+        env:
+          NODE_ENV: production
+          STATIC_DEMO: "true"
         with:
           config: baseUrl=${{env.MAAS_UI_URL}},pageLoadTimeout=100000
           install: false
-          start: yarn start
+          start: node scripts/proxy.js
           spec: "cypress/e2e/accessibility/**/*.spec.ts"
           wait-on: "${{env.MAAS_UI_URL}}/MAAS/r/machines"
           wait-on-timeout: 120
