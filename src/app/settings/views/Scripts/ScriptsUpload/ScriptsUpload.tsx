@@ -2,7 +2,7 @@ import type { ReactElement } from "react";
 import { useCallback, useEffect, useState } from "react";
 
 import { useSidePanel } from "@canonical/maas-react-components";
-import { NotificationSeverity, Row } from "@canonical/react-components";
+import { Row, useToastNotification } from "@canonical/react-components";
 import classNames from "classnames";
 import type { FileRejection, FileWithPath } from "react-dropzone";
 import { useDropzone } from "react-dropzone";
@@ -12,7 +12,6 @@ import type { ReadScriptResponse } from "./readScript";
 import readScript from "./readScript";
 
 import FormikForm from "@/app/base/components/FormikForm";
-import { messageActions } from "@/app/store/message";
 import { scriptActions } from "@/app/store/script";
 import scriptSelectors from "@/app/store/script/selectors";
 import { ScriptType } from "@/app/store/script/types";
@@ -36,20 +35,16 @@ const ScriptsUpload = ({ type }: ScriptsUploadProps): ReactElement => {
   const [script, setScript] = useState<ReadScriptResponse | null>(null);
   const dispatch = useDispatch();
   const { closeSidePanel } = useSidePanel();
+  const { failure, info } = useToastNotification();
 
   useEffect(() => {
     if (hasErrors && errors && typeof errors === "object") {
       Object.values(errors).forEach((error) => {
-        dispatch(
-          messageActions.add(
-            `Error uploading ${savedScript}: ${error}`,
-            NotificationSeverity.NEGATIVE
-          )
-        );
+        failure(`Error uploading ${savedScript}: ${error}`, error);
       });
       dispatch(scriptActions.cleanup());
     }
-  }, [savedScript, hasErrors, errors, dispatch]);
+  }, [savedScript, hasErrors, errors, dispatch, failure]);
 
   const onDrop = useCallback(
     (acceptedFiles: FileWithPath[], fileRejections: FileRejection[]) => {
@@ -59,31 +54,25 @@ const ScriptsUpload = ({ type }: ScriptsUploadProps): ReactElement => {
           // override error message for 'too-many-files' as we prefer ours.
           if (error.code === "too-many-files") {
             if (!tooManyFiles) {
-              dispatch(
-                messageActions.add(
-                  `Only a single file may be uploaded.`,
-                  NotificationSeverity.NEGATIVE
-                )
-              );
+              failure(`Only a single file may be uploaded.`, error);
             }
             tooManyFiles = true;
             return;
           }
           // handle all other errors
-          dispatch(
-            messageActions.add(
-              `${rejection.file.name}: ${error.message}`,
-              NotificationSeverity.NEGATIVE
-            )
-          );
+          failure(`${rejection.file.name}: ${error.message}`, error);
         });
       });
 
       if (!fileRejections.length && acceptedFiles.length) {
-        readScript(acceptedFiles[0], dispatch, setScript);
+        readScript(
+          acceptedFiles[0],
+          (message) => failure(message, undefined),
+          setScript
+        );
       }
     },
-    [dispatch]
+    [failure]
   );
 
   const {
@@ -102,15 +91,10 @@ const ScriptsUpload = ({ type }: ScriptsUploadProps): ReactElement => {
   useEffect(() => {
     if (saved) {
       dispatch(scriptActions.cleanup());
-      dispatch(
-        messageActions.add(
-          `${savedScript} uploaded successfully.`,
-          NotificationSeverity.INFORMATION
-        )
-      );
+      info(`${savedScript} uploaded successfully.`);
       setSavedScript(null);
     }
-  }, [dispatch, saved, savedScript]);
+  }, [dispatch, saved, savedScript, info]);
 
   const uploadedFile: FileWithPath = acceptedFiles[0];
 

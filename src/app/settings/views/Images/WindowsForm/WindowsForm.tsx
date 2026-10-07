@@ -1,13 +1,18 @@
+import type { ReactElement } from "react";
+
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 
 import { Entitlement } from "../../UserManagement/views/Groups/constants";
 
+import { useGetConfiguration } from "@/app/api/query/configurations";
+import type { PublicConfigName } from "@/app/apiclient";
 import FormikField from "@/app/base/components/FormikField";
 import FormikForm from "@/app/base/components/FormikForm";
 import { useHasEntitlements } from "@/app/base/hooks";
 import { configActions } from "@/app/store/config";
 import configSelectors from "@/app/store/config/selectors";
+import { ConfigNames } from "@/app/store/config/types";
 
 const WindowsSchema = Yup.object().shape({
   windows_kms_host: Yup.string(),
@@ -18,27 +23,30 @@ export enum Labels {
   KMSHostLabel = "Windows KMS activation host",
 }
 
-const WindowsForm = (): React.ReactElement => {
-  const dispatch = useDispatch();
-  const updateConfig = configActions.update;
-  const { allowed: canEdit } = useHasEntitlements([
-    Entitlement.CAN_EDIT_BOOT_ENTITIES,
-  ]);
+export const windowsConfigName =
+  ConfigNames.WINDOWS_KMS_HOST as PublicConfigName;
 
+const WindowsForm = (): ReactElement => {
+  const dispatch = useDispatch();
+  const { data } = useGetConfiguration({
+    path: { name: windowsConfigName },
+  });
   const saved = useSelector(configSelectors.saved);
   const saving = useSelector(configSelectors.saving);
   const errors = useSelector(configSelectors.errors);
-
-  const windowsKmsHost = useSelector(configSelectors.windowsKmsHost);
+  const { allowed: canEdit } = useHasEntitlements([
+    Entitlement.CAN_EDIT_CONFIGURATIONS,
+  ]);
 
   return (
     <FormikForm
       aria-label={Labels.FormLabel}
       cleanup={configActions.cleanup}
       editable={canEdit}
+      enableReinitialize
       errors={errors}
       initialValues={{
-        windows_kms_host: windowsKmsHost ?? "",
+        windows_kms_host: (data?.value as string) ?? "",
       }}
       onSaveAnalytics={{
         action: "Saved",
@@ -46,7 +54,7 @@ const WindowsForm = (): React.ReactElement => {
         label: "Windows form",
       }}
       onSubmit={(values, { resetForm }) => {
-        dispatch(updateConfig(values));
+        dispatch(configActions.update(values));
         resetForm({ values });
       }}
       saved={saved}

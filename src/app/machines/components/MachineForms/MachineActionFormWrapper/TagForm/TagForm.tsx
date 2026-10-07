@@ -2,7 +2,7 @@ import type { ReactElement } from "react";
 import { useEffect, useState } from "react";
 
 import { useSidePanel } from "@canonical/maas-react-components";
-import { Col, NotificationSeverity, Row } from "@canonical/react-components";
+import { Col, Row, useToastNotification } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 
@@ -19,7 +19,6 @@ import {
   useMachineSelectedCount,
   useSelectedMachinesActionsDispatch,
 } from "@/app/store/machine/utils/hooks";
-import { messageActions } from "@/app/store/message";
 import tagSelectors from "@/app/store/tag/selectors";
 import type { Tag, TagMeta } from "@/app/store/tag/types";
 import { NodeActions } from "@/app/store/types/node";
@@ -48,6 +47,7 @@ export const TagForm = ({
   closeForm,
 }: TagFormProps): ReactElement => {
   const dispatch = useDispatch();
+  const { success } = useToastNotification();
   const searchFilter = FilterMachines.filtersToString(
     FilterMachines.queryStringToFilters(location.search)
   );
@@ -163,9 +163,7 @@ export const TagForm = ({
             } else {
               closeSidePanel();
             }
-            dispatch(
-              messageActions.add(Label.Saved, NotificationSeverity.POSITIVE)
-            );
+            success(Label.Saved);
           }}
           selectedCount={selectedCount ?? 0}
           showProcessingCount={!isViewingMachineConfig}

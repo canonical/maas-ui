@@ -1,5 +1,5 @@
 import { useSidePanel } from "@canonical/maas-react-components";
-import { NotificationSeverity, Spinner } from "@canonical/react-components";
+import { Spinner, useToastNotification } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 
@@ -7,7 +7,6 @@ import UpdateTagFormFields from "./UpdateTagFormFields";
 
 import FormikForm from "@/app/base/components/FormikForm";
 import { useFetchActions } from "@/app/base/hooks";
-import { messageActions } from "@/app/store/message";
 import type { RootState } from "@/app/store/root/types";
 import { tagActions } from "@/app/store/tag";
 import tagSelectors from "@/app/store/tag/selectors";
@@ -40,6 +39,7 @@ const UpdateAutoTagFormSchema = Yup.object().shape({
 const UpdateTagForm = ({ id }: Props): React.ReactElement => {
   const { closeSidePanel } = useSidePanel();
   const dispatch = useDispatch();
+  const { success } = useToastNotification();
   const tag = useSelector((state: RootState) =>
     tagSelectors.getById(state, id)
   );
@@ -79,12 +79,7 @@ const UpdateTagForm = ({ id }: Props): React.ReactElement => {
       }}
       onSuccess={(values) => {
         if (isAuto && values.definition !== tag.definition) {
-          dispatch(
-            messageActions.add(
-              `Updated ${tag.name}. ${NewDefinitionMessage}`,
-              NotificationSeverity.POSITIVE
-            )
-          );
+          success(`Updated ${tag.name}. ${NewDefinitionMessage}`);
         }
         closeSidePanel();
       }}
