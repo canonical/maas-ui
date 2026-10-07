@@ -84,7 +84,7 @@ describe("VMWareForm", () => {
       }),
       authResolvers.getMeEntitlements.handler([
         factory.entitlement({
-          entitlement: Entitlement.CAN_VIEW_BOOT_ENTITIES,
+          entitlement: Entitlement.CAN_VIEW_CONFIGURATIONS,
         }),
       ])
     );

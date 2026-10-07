@@ -14,7 +14,6 @@ import type {
 import type { DeviceMeta, DeviceStatus } from "@/app/store/device/types";
 import type { GeneralMeta } from "@/app/store/general/types";
 import type { MachineMeta, MachineStatus } from "@/app/store/machine/types";
-import type { MessageMeta } from "@/app/store/message/types";
 import type { MsmMeta } from "@/app/store/msm/types/enum";
 import type { NodeScriptResultMeta } from "@/app/store/nodescriptresult/types";
 import type { RootState } from "@/app/store/root/types";
@@ -37,7 +36,6 @@ export type GenericMeta = {
 // - 'bootresource' does not follow the standard shape.
 // - 'config' contains a collection of children without IDs.
 // - 'general' has a collection of sub-models that form a different shape.
-// - 'messages' not an API model.
 // - 'nodescriptresult' returns an object of data rather than an array.
 // - 'router' is the react-router state.
 // - 'status' is not an API model.
@@ -45,7 +43,6 @@ export type CommonStates = Omit<
   RootState,
   | ConfigMeta.MODEL
   | GeneralMeta.MODEL
-  | MessageMeta.MODEL
   | MsmMeta.MODEL
   | NodeScriptResultMeta.MODEL
   | StatusMeta.MODEL

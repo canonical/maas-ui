@@ -8,6 +8,7 @@ export type NavItem = {
   label: string;
   path?: string;
   items?: NavItem[];
+  disabled?: boolean;
 };
 
 type ItemProps = { item: NavItem };
@@ -17,6 +18,14 @@ const SideNavigationLink = ({ item }: ItemProps) => {
   const isActive = getIsActive({ item, location });
   if (!item.path) {
     return null;
+  }
+  if (item.disabled) {
+    // Rendered as a non-link so it cannot be activated by pointer or keyboard.
+    return (
+      <span aria-disabled className="p-side-navigation__link">
+        {item.label}
+      </span>
+    );
   }
   return (
     <Link

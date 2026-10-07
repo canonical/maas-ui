@@ -20,7 +20,6 @@ import type {
   LicenseKeysMeta,
 } from "@/app/store/licensekeys/types";
 import type { MachineState, MachineMeta } from "@/app/store/machine/types";
-import type { MessageState, MessageMeta } from "@/app/store/message/types";
 import type { MsmState } from "@/app/store/msm/types/base";
 import type { MsmMeta } from "@/app/store/msm/types/enum";
 import type {
@@ -66,7 +65,6 @@ export type RootState = {
   [IPRangeMeta.MODEL]: IPRangeState;
   [LicenseKeysMeta.MODEL]: LicenseKeysState;
   [MachineMeta.MODEL]: MachineState;
-  [MessageMeta.MODEL]: MessageState;
   [MsmMeta.MODEL]: MsmState;
   [NodeDeviceMeta.MODEL]: NodeDeviceState;
   [NodeScriptResultMeta.MODEL]: NodeScriptResultState;

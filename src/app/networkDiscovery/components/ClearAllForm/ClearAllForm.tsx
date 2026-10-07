@@ -4,8 +4,9 @@ import { ExternalLink, useSidePanel } from "@canonical/maas-react-components";
 import {
   Notification as NotificationBanner,
   NotificationSeverity,
+  useToastNotification,
 } from "@canonical/react-components";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 
 import { useClearNetworkDiscoveries } from "@/app/api/query/networkDiscovery";
 import type { ClearAllDiscoveriesWithOptionalIpAndMacError } from "@/app/apiclient";
@@ -14,7 +15,6 @@ import docsUrls from "@/app/base/docsUrls";
 import type { EmptyObject } from "@/app/base/types";
 import configSelectors from "@/app/store/config/selectors";
 import { NetworkDiscovery } from "@/app/store/config/types";
-import { messageActions } from "@/app/store/message";
 
 export enum Labels {
   SubmitLabel = "Clear all discoveries",
@@ -23,7 +23,7 @@ export enum Labels {
 const ClearAllForm = (): ReactElement => {
   const { closeSidePanel } = useSidePanel();
 
-  const dispatch = useDispatch();
+  const { info } = useToastNotification();
   const networkDiscovery = useSelector(configSelectors.networkDiscovery);
   const clearDiscovery = useClearNetworkDiscoveries();
   let content: ReactElement;
@@ -71,12 +71,7 @@ const ClearAllForm = (): ReactElement => {
         clearDiscovery.mutate({});
       }}
       onSuccess={() => {
-        dispatch(
-          messageActions.add(
-            "All discoveries cleared.",
-            NotificationSeverity.INFORMATION
-          )
-        );
+        info("All discoveries cleared.");
         closeSidePanel();
       }}
       saved={clearDiscovery.isSuccess}

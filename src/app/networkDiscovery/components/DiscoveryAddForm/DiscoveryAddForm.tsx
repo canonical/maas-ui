@@ -2,7 +2,7 @@ import type { ReactElement } from "react";
 import { useState } from "react";
 
 import { useSidePanel } from "@canonical/maas-react-components";
-import { NotificationSeverity, Spinner } from "@canonical/react-components";
+import { Spinner, useToastNotification } from "@canonical/react-components";
 import { useQueryClient } from "@tanstack/react-query";
 import { useDispatch, useSelector } from "react-redux";
 import type { Dispatch } from "redux";
@@ -26,7 +26,6 @@ import { DeviceIpAssignment, DeviceMeta } from "@/app/store/device/types";
 import { domainActions } from "@/app/store/domain";
 import domainSelectors from "@/app/store/domain/selectors";
 import { useFetchMachines } from "@/app/store/machine/utils/hooks";
-import { messageActions } from "@/app/store/message";
 import type { RootState } from "@/app/store/root/types";
 import { subnetActions } from "@/app/store/subnet";
 import subnetSelectors from "@/app/store/subnet/selectors";
@@ -133,6 +132,7 @@ const DiscoveryAddForm = ({ discovery }: Props): ReactElement => {
   const { closeSidePanel } = useSidePanel();
 
   const dispatch = useDispatch();
+  const { success } = useToastNotification();
   const [redirect, setRedirect] = useState<string | null>(null);
   const initialDeviceType = DeviceType.DEVICE;
   const [deviceType, setDeviceType] = useState<DeviceType>(initialDeviceType);
@@ -262,12 +262,7 @@ const DiscoveryAddForm = ({ discovery }: Props): ReactElement => {
           } else {
             device = `A ${values.type}`;
           }
-          dispatch(
-            messageActions.add(
-              `${device} has been added.`,
-              NotificationSeverity.POSITIVE
-            )
-          );
+          success(`${device} has been added.`);
         }
       }}
       saved={processed}

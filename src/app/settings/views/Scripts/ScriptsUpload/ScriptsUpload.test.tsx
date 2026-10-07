@@ -1,5 +1,4 @@
 import type { FileWithPath } from "react-dropzone";
-import type { Dispatch } from "redux";
 
 import ScriptsUpload, { Labels as ScriptsUploadLabels } from "./ScriptsUpload";
 import type { ReadScriptResponse } from "./readScript";
@@ -18,6 +17,21 @@ import {
 } from "@/testing/utils";
 
 const { mockClose } = await mockSidePanel();
+
+const failureMock = vi.fn();
+
+vi.mock("@canonical/react-components", async (orig) => {
+  const actual = (await orig()) as Record<string, unknown>;
+  return {
+    ...actual,
+    useToastNotification: () => ({
+      failure: failureMock,
+      success: vi.fn(),
+      caution: vi.fn(),
+      info: vi.fn(),
+    }),
+  };
+});
 
 vi.mock("./readScript", async () => {
   const actual: typeof readScript = await vi.importActual("./readScript");
@@ -73,16 +87,19 @@ describe("ScriptsUpload", () => {
   it("displays an error if a file larger than 2MB is uploaded", async () => {
     const files = [createFile("foo.sh", 3000000, "text/script")];
 
-    const { store } = renderWithProviders(<ScriptsUpload type="testing" />, {
+    renderWithProviders(<ScriptsUpload type="testing" />, {
       state,
     });
 
     const upload = screen.getByLabelText(ScriptsUploadLabels.FileUploadArea);
     await userEvent.upload(upload, files);
 
-    expect(store.getActions()[0].payload.message).toEqual(
-      "foo.sh: File is larger than 2000000 bytes"
-    );
+    await waitFor(() => {
+      expect(failureMock).toHaveBeenCalledWith(
+        "foo.sh: File is larger than 2000000 bytes",
+        expect.anything()
+      );
+    });
   });
 
   it("displays a single error if multiple files are uploaded", async () => {
@@ -91,7 +108,7 @@ describe("ScriptsUpload", () => {
       createFile("bar.sh", 1000, "text/script"),
     ];
 
-    const { store } = renderWithProviders(<ScriptsUpload type="testing" />, {
+    renderWithProviders(<ScriptsUpload type="testing" />, {
       state,
     });
 
@@ -99,11 +116,12 @@ describe("ScriptsUpload", () => {
     // necessary to use a fireEvent instead of userEvent, since userEvent doesn't support "drag n drop" multiple file upload
     fireEvent.drop(upload, { target: { files } });
     await waitFor(() => {
-      expect(store.getActions()[0].payload.message).toEqual(
-        "Only a single file may be uploaded."
+      expect(failureMock).toHaveBeenCalledWith(
+        "Only a single file may be uploaded.",
+        expect.anything()
       );
     });
-    expect(store.getActions().length).toBe(1);
+    expect(failureMock).toHaveBeenCalledTimes(1);
   });
 
   it("dispatches uploadScript without a name if script has metadata", async () => {
@@ -111,7 +129,7 @@ describe("ScriptsUpload", () => {
     vi.spyOn(readScript, "readScript").mockImplementation(
       (
         _name: FileWithPath,
-        _script: Dispatch,
+        _onError: (message: string) => void,
         callback: (script: ReadScriptResponse | null) => void
       ) => {
         callback({
@@ -148,7 +166,7 @@ describe("ScriptsUpload", () => {
     vi.spyOn(readScript, "readScript").mockImplementation(
       (
         _name: FileWithPath,
-        _script: Dispatch,
+        _onError: (message: string) => void,
         callback: (script: ReadScriptResponse | null) => void
       ) => {
         callback({

@@ -68,7 +68,6 @@ import type {
   MachineStatuses,
 } from "@/app/store/machine/types";
 import { FilterGroupKey, FilterGroupType } from "@/app/store/machine/types";
-import type { MessageState } from "@/app/store/message/types";
 import type { MsmState, MsmStatus } from "@/app/store/msm/types/base";
 import type { NodeDeviceState } from "@/app/store/nodedevice/types";
 import type { NodeScriptResultState } from "@/app/store/nodescriptresult/types";
@@ -334,10 +333,6 @@ export const packageRepositoryState = define<PackageRepositoryState>({
   errors: null,
 });
 
-export const messageState = define<MessageState>({
-  items: () => [],
-});
-
 export const msmStatus = define<MsmStatus | null>({
   running: "not_connected",
   smUrl: "http://example.com",
@@ -558,7 +553,6 @@ export const rootState = define<RootState>({
   iprange: ipRangeState,
   licensekeys: licenseKeysState,
   machine: machineState,
-  message: messageState,
   msm: msmState,
   nodedevice: nodeDeviceState,
   nodescriptresult: nodeScriptResultState,

@@ -1,8 +1,4 @@
-import { NotificationSeverity } from "@canonical/react-components";
 import type { FileWithPath } from "react-dropzone";
-import type { Dispatch } from "redux";
-
-import { messageActions } from "@/app/store/message";
 
 export type ReadScriptResponse = {
   name: string | null;
@@ -29,7 +25,7 @@ export const hasMetadata = (binaryStr: string): boolean => {
 
 export const readScript = (
   file: FileWithPath,
-  dispatch: Dispatch,
+  onError: (message: string) => void,
   callback: (script: ReadScriptResponse | null) => void
 ): void => {
   const scriptName = file.path ? file.name : null;
@@ -37,14 +33,10 @@ export const readScript = (
   const reader = new FileReader();
 
   reader.onabort = () => {
-    dispatch(
-      messageActions.add("Reading file aborted.", NotificationSeverity.NEGATIVE)
-    );
+    onError("Reading file aborted.");
   };
   reader.onerror = () => {
-    dispatch(
-      messageActions.add("Error reading file.", NotificationSeverity.NEGATIVE)
-    );
+    onError("Error reading file.");
   };
 
   reader.onload = () => {

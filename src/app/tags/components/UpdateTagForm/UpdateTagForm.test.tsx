@@ -15,6 +15,21 @@ import {
   waitFor,
 } from "@/testing/utils";
 
+const successMock = vi.fn();
+
+vi.mock("@canonical/react-components", async (orig) => {
+  const actual = (await orig()) as Record<string, unknown>;
+  return {
+    ...actual,
+    useToastNotification: () => ({
+      failure: vi.fn(),
+      success: successMock,
+      caution: vi.fn(),
+      info: vi.fn(),
+    }),
+  };
+});
+
 let state: RootState;
 
 beforeEach(() => {
@@ -105,7 +120,7 @@ it("shows a confirmation when a tag's definition is updated", async () => {
   const tag = factory.tag({ id: 1, definition: "abc", name: "baggage" });
   state.tag.items = [tag];
 
-  const { store } = renderWithProviders(<UpdateTagForm id={1} />, { state });
+  renderWithProviders(<UpdateTagForm id={1} />, { state });
 
   const definitionInput = screen.getByRole("textbox", {
     name: Label.Definition,
@@ -116,10 +131,8 @@ it("shows a confirmation when a tag's definition is updated", async () => {
   await userEvent.click(screen.getByRole("button", { name: "Save changes" }));
 
   await waitFor(() => {
-    const action = store
-      .getActions()
-      .find((action) => action.type === "message/add");
-    const strippedMessage = action.payload?.message.replace(/\s+/g, " ").trim();
-    expect(strippedMessage).toBe(`Updated baggage. ${NewDefinitionMessage}`);
+    expect(successMock).toHaveBeenCalledWith(
+      `Updated baggage. ${NewDefinitionMessage}`
+    );
   });
 });

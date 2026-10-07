@@ -50,7 +50,7 @@ const VMWareForm = (): ReactElement => {
   } = getConfigsFromResponse(data?.items || [], names);
   const updateConfig = useBulkSetConfigurations();
   const { allowed: canEdit } = useHasEntitlements([
-    Entitlement.CAN_EDIT_BOOT_ENTITIES,
+    Entitlement.CAN_EDIT_CONFIGURATIONS,
   ]);
   return (
     <FormikForm
