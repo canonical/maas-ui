@@ -23,11 +23,14 @@ export enum Labels {
   KMSHostLabel = "Windows KMS activation host",
 }
 
-const name = ConfigNames.WINDOWS_KMS_HOST as PublicConfigName;
+export const windowsConfigName =
+  ConfigNames.WINDOWS_KMS_HOST as PublicConfigName;
 
 const WindowsForm = (): ReactElement => {
   const dispatch = useDispatch();
-  const { data } = useGetConfiguration({ path: { name } });
+  const { data } = useGetConfiguration({
+    path: { name: windowsConfigName },
+  });
   const saved = useSelector(configSelectors.saved);
   const saving = useSelector(configSelectors.saving);
   const errors = useSelector(configSelectors.errors);

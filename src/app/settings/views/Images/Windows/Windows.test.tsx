@@ -3,58 +3,46 @@ import { Labels as WindowsFormLabels } from "../WindowsForm/WindowsForm";
 import Windows, { Labels as WindowsLabels } from "./Windows";
 
 import { ConfigNames } from "@/app/store/config/types";
-import type { RootState } from "@/app/store/root/types";
-import * as factory from "@/testing/factories";
-import { screen, renderWithProviders } from "@/testing/utils";
+import { authResolvers } from "@/testing/resolvers/auth";
+import { configurationsResolvers } from "@/testing/resolvers/configurations";
+import {
+  screen,
+  setupMockServer,
+  mockIsPending,
+  renderWithProviders,
+} from "@/testing/utils";
+
+const mockServer = setupMockServer(
+  authResolvers.getCurrentUser.handler(),
+  authResolvers.getMeEntitlements.handler(),
+  configurationsResolvers.getConfiguration.handler({
+    name: ConfigNames.WINDOWS_KMS_HOST,
+    value: "127.0.0.1",
+  })
+);
 
 describe("Windows", () => {
-  let state: RootState;
+  it("displays a spinner while the configuration is loading", () => {
+    mockIsPending();
+    renderWithProviders(<Windows />);
 
-  beforeEach(() => {
-    state = factory.rootState({
-      config: factory.configState({
-        loading: false,
-        loaded: true,
-        items: [
-          factory.config({
-            name: ConfigNames.WINDOWS_KMS_HOST,
-            value: "127.0.0.1",
-          }),
-        ],
-      }),
-    });
-  });
-
-  it("displays a spinner if config is loading", () => {
-    state.config.loading = true;
-    renderWithProviders(<Windows />, { state });
     expect(screen.getByText(WindowsLabels.Loading)).toBeInTheDocument();
   });
 
-  it("displays the Windows form if config is loaded", () => {
-    state.config.loaded = true;
-    renderWithProviders(<Windows />, { state });
+  it("displays the Windows form once the configuration has loaded", async () => {
+    renderWithProviders(<Windows />);
+
     expect(
-      screen.getByRole("form", { name: WindowsFormLabels.FormLabel })
+      await screen.findByRole("form", { name: WindowsFormLabels.FormLabel })
     ).toBeInTheDocument();
   });
 
-  it("dispatches action to fetch config if not already loaded", () => {
-    state.config.loaded = false;
-    const { store } = renderWithProviders(<Windows />, { state });
-    const fetchActions = store
-      .getActions()
-      .filter((action) => action.type.endsWith("fetch"));
+  it("displays an error notification when the request fails", async () => {
+    mockServer.use(configurationsResolvers.getConfiguration.error());
+    renderWithProviders(<Windows />);
 
-    expect(fetchActions).toEqual([
-      {
-        type: "config/fetch",
-        meta: {
-          model: "config",
-          method: "list",
-        },
-        payload: null,
-      },
-    ]);
+    expect(
+      await screen.findByText("Error while fetching image configurations")
+    ).toBeInTheDocument();
   });
 });
