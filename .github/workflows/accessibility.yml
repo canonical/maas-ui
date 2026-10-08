@@ -2,43 +2,56 @@ name: Accessibility
 on:
   push:
     branches:
-      - "3.6"
+      - main
+      - "3.*"
+      - "*a11y*"
+  workflow_call:
+    inputs:
+      version:
+        type: string
+        default: ""
+      build-from-source:
+        type: boolean
+        default: false
 jobs:
   cypress-axe:
     name: cypress-axe
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     env:
+      TARGET_BRANCH: ${{ inputs.version || github.ref_name }}
       MAAS_URL: http://localhost:5240
+      MAAS_UI_URL: http://localhost:8400
     steps:
       - uses: actions/checkout@main
-      - name: Get branch name
-        uses: nelonoel/branch-name@v1.0.1
+        with:
+          ref: ${{ inputs.version && format('refs/heads/{0}', inputs.version) || github.sha }}
       - name: Setup MAAS
         uses: canonical/setup-maas@main
         with:
+          branch: ${{ contains(env.TARGET_BRANCH, 'a11y') && 'main' || env.TARGET_BRANCH }}
+          build-from-source: ${{ inputs.build-from-source || false }}
           maas-url: ${{env.MAAS_URL}}/MAAS
+      - name: Use Node.js from .nvmrc
+        uses: actions/setup-node@v6
+        with:
+          node-version-file: ".nvmrc"
       - name: Install Cypress
-        uses: cypress-io/github-action@v4
+        uses: cypress-io/github-action@v7.3.0
         with:
           runTests: false
           install-command: yarn install
+          build: yarn build
       - name: Create MAAS admin
-        run: sudo maas createadmin --username=admin --password=test --email=fake@example.org
+        run: lxc exec maas-backend -- maas createadmin --username=admin --password=test --email=fake@example.org
       - name: Run cypress-axe accessibility tests
-        uses: cypress-io/github-action@v4
-        with:
-          config: baseUrl=${{env.MAAS_URL}},pageLoadTimeout=100000
-          install: false
-          spec: "cypress/e2e/accessibility/**/*.spec.ts"
-          wait-on: "${{env.MAAS_URL}}/MAAS/r/machines"
-      - name: Create issue on failure
-        if: failure()
-        uses: JasonEtco/create-an-issue@v2
+        uses: cypress-io/github-action@v7.3.0
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          REPO: ${{ github.repository }}
-          RUN_ID: ${{ github.run_id }}
-          WORKFLOW: ${{ github.workflow }}
+          NODE_ENV: production
+          STATIC_DEMO: "true"
         with:
-          filename: .github/ISSUE_TEMPLATE/ci-failure.md
-          update_existing: true
+          config: baseUrl=${{env.MAAS_UI_URL}},pageLoadTimeout=100000
+          install: false
+          start: node scripts/proxy.js
+          spec: "cypress/e2e/accessibility/**/*.spec.ts"
+          wait-on: "${{env.MAAS_UI_URL}}/MAAS/r/machines"
+          wait-on-timeout: 120

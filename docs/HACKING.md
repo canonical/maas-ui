@@ -82,10 +82,37 @@ You need at least 5GB of free space to setup MAAS-UI (about 2.6gb of node module
 - Click `start e2e testing`
 - Click the browser you'd like to use for our test
 
+Scheduled Cypress runs exercise both the no-users and with-users suites on
+`main`, `3.6`, `3.7`, and `3.8`, checking out each UI branch against its matching
+MAAS backend. The `3.6`/`3.7` entries use HTTP without the newer SSO setup;
+`main`/`3.8` use HTTPS and Keycloak. PR and push runs keep a single backend target
+and test the triggering UI revision. Domain-based spec selection applies only to
+PRs targeting `main` or `3.8`; other targets run the full suite. Changes to the
+Cypress workflow, version-run dispatcher, configuration, proxy, or dependencies
+also select the full suite. For manual runs, open **Version runs**, select
+**Cypress**, and choose `main`, `3.6`, `3.7`, `3.8`, or `all` using the `version`
+input. Each selected UI branch runs against its matching backend.
+
+Branches matching `*cypress*` or `*a11y*` also trigger their respective
+workflows on push. Accessibility feature-branch runs use the main backend.
+
 #### Performance tests
 
-Performance tests use [Sitespeed.io](https://www.sitespeed.io/) and are run when
-PRs are merged.
+Performance tests use [Sitespeed.io](https://www.sitespeed.io/) and run on pushes
+to `main`, `3.6`, `3.7`, and `3.8`. CI builds the checked-out UI with `yarn build`
+and serves `build/` through the static proxy on port 8400, with API and WebSocket
+requests forwarded to the backend provided by `setup-maas`. Measurements use the
+production bundle, not the Vite development server or the UI bundled in the MAAS
+snap.
+
+Branches matching `*sitespeed*` also trigger performance runs on push, using the
+main backend and the 26.04 dump.
+
+The backend follows the UI branch (`main` maps to backend `master`). The
+1,000-machine database dump is selected by Ubuntu base: `maasdb-24.04-master-1000.dump`
+for `3.6`/`3.7`, and `maasdb-26.04-master-1000.dump` for `main`/`3.8`.
+The master dumps' database-schema compatibility with release backends still
+needs confirmation; matching the Ubuntu base alone does not guarantee it.
 
 Sitespeed can also be run manually, though the tests expect a MAAS with a
 specific dataset. For best results a [local MAAS](#local-deployments) can be set
@@ -102,6 +129,20 @@ To run against a local UI you will also need to set the port:
 ```shell
 yarn sitespeed --browsertime.domain=[maas-ui.ip.or.hostname] --browsertime.port=8400
 ```
+
+#### Building the CI backend from source
+
+The **Version runs** workflow in GitHub Actions has an optional
+`build-from-source` checkbox for Cypress, Accessibility, and sitespeed.io. Use the
+workflow on `main`, select one of those workflows and a `version` (or `all`), then
+enable this option when the published MAAS snap is stale or unavailable.
+`setup-maas` clones and builds each selected backend branch on its runner; the UI
+under test comes from the matching branch in this repository.
+
+The option defaults to false. Push, PR, and scheduled runs continue to use
+published snaps, with no automatic source-build fallback. Source builds still
+need Snap Store access for `maas-test-db`, Snapcraft, LXD, and base snaps, so they
+do not provide an offline workaround for a complete Store outage.
 
 ### How to build the bundle
 

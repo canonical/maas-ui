@@ -1,0 +1,78 @@
+name: Version runs
+on:
+  workflow_dispatch:
+    inputs:
+      workflow:
+        type: choice
+        required: true
+        default: CI
+        options:
+          - CI
+          - Cypress
+          - Accessibility
+          - sitespeed.io
+          - Build upload
+      version:
+        type: choice
+        required: true
+        default: main
+        options:
+          - main
+          - "3.6"
+          - "3.7"
+          - "3.8"
+          - all
+      build-from-source:
+        type: boolean
+        default: false
+  schedule:
+    - cron: "0 3 * * *"   # daily at 03:00 UTC
+
+jobs:
+  ci:
+    name: CI
+    if: github.event_name == 'workflow_dispatch' && inputs.workflow == 'CI'
+    strategy: &version-matrix
+      fail-fast: false
+      matrix:
+        branch: ${{ fromJSON((github.event_name == 'schedule' || inputs.version == 'all') && '["main", "3.6", "3.7", "3.8"]' || format('["{0}"]', inputs.version || 'main')) }}
+    uses: ./.github/workflows/test.yml
+    with:
+      version: ${{ matrix.branch }}
+
+  cypress:
+    name: Cypress
+    if: github.event_name == 'schedule' || (github.event_name == 'workflow_dispatch' && inputs.workflow == 'Cypress')
+    strategy: *version-matrix
+    uses: ./.github/workflows/cypress.yml
+    with:
+      version: ${{ matrix.branch }}
+      build-from-source: ${{ inputs.build-from-source || false }}
+
+  accessibility:
+    name: Accessibility
+    if: github.event_name == 'workflow_dispatch' && inputs.workflow == 'Accessibility'
+    strategy: *version-matrix
+    uses: ./.github/workflows/accessibility.yml
+    with:
+      version: ${{ matrix.branch }}
+      build-from-source: ${{ inputs.build-from-source || false }}
+
+  sitespeed:
+    name: sitespeed.io
+    if: github.event_name == 'workflow_dispatch' && inputs.workflow == 'sitespeed.io'
+    strategy: *version-matrix
+    uses: ./.github/workflows/sitespeed.yml
+    with:
+      version: ${{ matrix.branch }}
+      build-from-source: ${{ inputs.build-from-source || false }}
+
+  upload:
+    name: Build upload
+    if: github.repository_owner == 'canonical' && github.event_name == 'workflow_dispatch' && inputs.workflow == 'Build upload'
+    strategy: *version-matrix
+    uses: ./.github/workflows/upload.yml
+    with:
+      version: ${{ matrix.branch }}
+    secrets:
+      UPLOAD_ASSETS_API_TOKEN: ${{ secrets.UPLOAD_ASSETS_API_TOKEN }}
