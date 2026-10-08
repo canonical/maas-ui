@@ -20,6 +20,9 @@ where applicable. Missing branches fail their jobs without cancelling other
 versions. The workflow branch selects the workflow definition; **version** selects
 the code being run.
 
+PR and push runs use non-matrix jobs. Version matrices are only used by manual
+and scheduled runs.
+
 Build upload remains restricted to Canonical repositories and names each package
 using the selected branch's checked-out commit SHA.
 

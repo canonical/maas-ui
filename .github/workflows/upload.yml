@@ -18,17 +18,13 @@ on:
           - all
 jobs:
   upload-build:
-    if: github.repository_owner == 'canonical'
+    if: github.repository_owner == 'canonical' && github.event_name != 'workflow_dispatch' && github.event_name != 'schedule'
     name: Upload build artifacts
     runs-on: ubuntu-24.04
-    strategy:
-      fail-fast: false
-      matrix:
-        branch: ${{ fromJSON(inputs.version == 'all' && '["main", "3.6", "3.7", "3.8"]' || format('["{0}"]', inputs.version || github.ref_name)) }}
-    steps:
+    steps: &upload-steps
       - uses: actions/checkout@v6
         with:
-          ref: ${{ github.event_name == 'workflow_dispatch' && format('refs/heads/{0}', matrix.branch) || github.sha }}
+          ref: ${{ matrix.branch && format('refs/heads/{0}', matrix.branch) || github.sha }}
       - name: Set build metadata
         run: |
           COMMIT_SHA=$(git rev-parse HEAD)
@@ -59,3 +55,13 @@ jobs:
         run: upload-assets --url-path ${{env.PACKAGE_NAME}} ${{env.PACKAGE_NAME}}
         env:
           UPLOAD_ASSETS_API_TOKEN: ${{secrets.UPLOAD_ASSETS_API_TOKEN}}
+
+  upload-build-versions:
+    if: github.repository_owner == 'canonical' && (github.event_name == 'workflow_dispatch' || github.event_name == 'schedule')
+    name: Upload build artifacts (versions)
+    runs-on: ubuntu-24.04
+    strategy:
+      fail-fast: false
+      matrix:
+        branch: ${{ fromJSON((github.event_name == 'schedule' || inputs.version == 'all') && '["main", "3.6", "3.7", "3.8"]' || format('["{0}"]', inputs.version || github.ref_name)) }}
+    steps: *upload-steps
