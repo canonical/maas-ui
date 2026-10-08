@@ -20,12 +20,14 @@ jobs:
     outputs:
       trusted: ${{ steps.permission.outputs.trusted }}
     steps:
-      - name: Check if PR author has write access to the repository
+      - name: Check if PR author is admin or has write access
         id: permission
         env:
           GH_TOKEN: ${{ github.token }}
           AUTHOR: ${{ github.event.pull_request.user.login }}
         run: |
+          # The API returns only the highest role (admin, write, read or none),
+          # so admins are reported as "admin", not "write".
           permission=$(gh api "repos/${{ github.repository }}/collaborators/${AUTHOR}/permission" --jq .permission || echo none)
           echo "${AUTHOR} has '${permission}' access"
           if [[ "$permission" == "admin" || "$permission" == "write" ]]; then
