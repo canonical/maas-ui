@@ -2,19 +2,30 @@ name: Build upload
 on:
   push:
     branches:
-      - "3.7"
+      - main
+      - "3.*"
+  workflow_call:
+    inputs:
+      version:
+        type: string
+        default: ""
+    secrets:
+      UPLOAD_ASSETS_API_TOKEN:
+        required: false
 jobs:
   upload-build:
     if: github.repository_owner == 'canonical'
     name: Upload build artifacts
     runs-on: ubuntu-24.04
-    env:
-      PACKAGE_NAME: maas_ui_${{ github.sha }}.tgz
-      VITE_APP_GIT_SHA: ${{ github.sha }}
     steps:
-      - uses: actions/checkout@v4
-      - name: Get branch name
-        uses: nelonoel/branch-name@v1.0.1
+      - uses: actions/checkout@v6
+        with:
+          ref: ${{ inputs.version && format('refs/heads/{0}', inputs.version) || github.sha }}
+      - name: Set build metadata
+        run: |
+          COMMIT_SHA=$(git rev-parse HEAD)
+          echo "PACKAGE_NAME=maas_ui_${COMMIT_SHA}.tgz" >> "$GITHUB_ENV"
+          echo "VITE_APP_GIT_SHA=$COMMIT_SHA" >> "$GITHUB_ENV"
       - name: Restore node_modules
         id: yarn-cache
         uses: actions/cache@v4
@@ -22,14 +33,14 @@ jobs:
           path: "**/node_modules"
           key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
       - name: Use Node.js from .nvmrc
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
-          node-version-file: '.nvmrc'
+          node-version-file: ".nvmrc"
       - name: Install
         if: steps.yarn-cache.outputs.cache-hit != 'true'
         run: CYPRESS_INSTALL_BINARY=0 yarn install
       - name: Build
-        run: VITE_APP_GIT_SHA=${{env.VITE_APP_GIT_SHA}} yarn build
+        run: yarn build
         env:
           CI: false
       - name: Compress
@@ -40,14 +51,3 @@ jobs:
         run: upload-assets --url-path ${{env.PACKAGE_NAME}} ${{env.PACKAGE_NAME}}
         env:
           UPLOAD_ASSETS_API_TOKEN: ${{secrets.UPLOAD_ASSETS_API_TOKEN}}
-      - name: Create issue on failure
-        if: failure()
-        uses: JasonEtco/create-an-issue@v2
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          REPO: ${{ github.repository }}
-          RUN_ID: ${{ github.run_id }}
-          WORKFLOW: ${{ github.workflow }}
-        with:
-          filename: .github/ISSUE_TEMPLATE/ci-failure.md
-          update_existing: true
