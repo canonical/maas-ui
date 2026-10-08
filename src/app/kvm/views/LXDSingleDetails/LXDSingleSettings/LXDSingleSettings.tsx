@@ -21,6 +21,7 @@ import podSelectors from "@/app/store/pod/selectors";
 import type { Pod } from "@/app/store/pod/types";
 import { isPodDetails } from "@/app/store/pod/utils";
 import type { RootState } from "@/app/store/root/types";
+import statusSelectors from "@/app/store/status/selectors";
 import { tagActions } from "@/app/store/tag";
 import tagSelectors from "@/app/store/tag/selectors";
 
@@ -34,6 +35,7 @@ export enum Label {
 }
 
 const LXDSingleSettings = ({ id }: Props): ReactElement => {
+  const isRBAC = useSelector(statusSelectors.isRBAC);
   const pod = useSelector((state: RootState) =>
     podSelectors.getById(state, id)
   );
@@ -47,7 +49,7 @@ const LXDSingleSettings = ({ id }: Props): ReactElement => {
 
   useFetchActions([tagActions.fetch]);
 
-  if (!entitlements.isPending && !canView) {
+  if (!isRBAC && !entitlements.isPending && !canView) {
     return (
       <Strip aria-label={Label.Title} className="u-no-padding--top" shallow>
         <h4>{Label.Permissions}</h4>

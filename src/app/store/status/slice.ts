@@ -4,6 +4,8 @@ import type { PayloadAction } from "@reduxjs/toolkit";
 import { StatusMeta } from "./types";
 import type { StatusState } from "./types";
 
+import type { PreLoginInfoResponse } from "@/app/apiclient";
+
 const statusSlice = createSlice({
   name: StatusMeta.MODEL,
   initialState: {
@@ -12,6 +14,7 @@ const statusSlice = createSlice({
     authenticated: false,
     authenticationError: null,
     externalAuthURL: null,
+    externalAuthType: null,
     externalLoginURL: null,
     connected: false,
     connecting: false,
@@ -19,6 +22,7 @@ const statusSlice = createSlice({
     connectedCount: 0,
     error: null,
     noUsers: false,
+    preLoginLoaded: false,
   } as StatusState,
   reducers: {
     checkAuthenticated: {
@@ -29,19 +33,19 @@ const statusSlice = createSlice({
     },
     checkAuthenticatedStart: (state: StatusState) => {
       state.authenticating = true;
+      state.preLoginLoaded = false;
     },
     checkAuthenticatedSuccess: (
       state: StatusState,
-      action: PayloadAction<{
-        external_legacy_login_url?: StatusState["externalAuthURL"];
-        is_authenticated: StatusState["authenticated"];
-        no_users: StatusState["noUsers"];
-      }>
+      action: PayloadAction<PreLoginInfoResponse>
     ) => {
       state.authenticating = false;
       state.authenticated = action.payload.is_authenticated;
-      state.externalAuthURL = action.payload.external_legacy_login_url || "";
+      state.externalAuthURL = action.payload.external_legacy_login?.url ?? "";
+      state.externalAuthType =
+        action.payload.external_legacy_login?.type ?? null;
       state.noUsers = action.payload.no_users;
+      state.preLoginLoaded = true;
     },
     login: {
       prepare: (params: { password: string; username: string }) => ({
@@ -107,6 +111,7 @@ const statusSlice = createSlice({
     ) => {
       state.authenticating = false;
       state.authenticated = false;
+      state.preLoginLoaded = false;
       state.error = action.payload;
     },
     websocketConnect: (state: StatusState) => {

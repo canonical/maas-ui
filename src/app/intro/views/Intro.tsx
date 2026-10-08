@@ -23,6 +23,7 @@ import {
 import type { SyncNavigateFunction } from "@/app/base/types";
 import urls from "@/app/base/urls";
 import configSelectors from "@/app/store/config/selectors";
+import statusSelectors from "@/app/store/status/selectors";
 import { getRelativeRoute } from "@/app/utils";
 
 const Intro = (): ReactElement => {
@@ -36,8 +37,11 @@ const Intro = (): ReactElement => {
 
   const user = useGetCurrentUser();
   const isSuperUser = useIsSuperUser();
+  const isRBAC = useSelector(statusSelectors.isRBAC);
 
-  const showIncomplete = !completedIntro && !completedUserIntro && !isSuperUser;
+  const canConfigure = isRBAC || isSuperUser;
+  const showIncomplete =
+    !completedIntro && !completedUserIntro && !canConfigure;
 
   useEffect(() => {
     if (!user.isLoading && !configLoading && !showIncomplete) {
@@ -70,7 +74,8 @@ const Intro = (): ReactElement => {
   if (user.isLoading || configLoading) {
     content = <PageContent header={<SectionHeader loading />} />;
   } else if (showIncomplete) {
-    // Prevent the user from reaching any of the intro urls if they are not an admin
+    // Prevent the user from reaching any of the intro urls if they are not an admin.
+    // RBAC authorization is deferred to the backend; other users still need admin entitlements.
     content = <IncompleteCard />;
   }
   if (content) {

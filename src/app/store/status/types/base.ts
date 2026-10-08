@@ -1,3 +1,4 @@
+import type { ExternalAuthType } from "@/app/apiclient";
 import type { APIError } from "@/app/base/types";
 
 export type StatusState = {
@@ -9,6 +10,8 @@ export type StatusState = {
   connectedCount: number;
   error: APIError;
   externalAuthURL: string | null;
+  externalAuthType: ExternalAuthType | null;
   externalLoginURL: string | null;
   noUsers: boolean;
+  preLoginLoaded: boolean;
 };

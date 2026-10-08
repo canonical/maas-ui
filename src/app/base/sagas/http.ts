@@ -2,6 +2,7 @@ import type { PayloadAction } from "@reduxjs/toolkit";
 import { call, put, takeEvery, takeLatest } from "typed-redux-saga";
 import type { SagaGenerator } from "typed-redux-saga/macro";
 
+import type { PreLoginInfoResponse } from "@/app/apiclient";
 import type { LicenseKeys } from "@/app/store/licensekeys/types";
 import type { Script } from "@/app/store/script/types";
 import { ScriptResultNames } from "@/app/store/scriptresult/types";
@@ -82,28 +83,14 @@ const scriptresultsDownload = (
 
 export const api = {
   auth: {
-    checkAuthenticated: (): Promise<{
-      is_authenticated: boolean;
-      no_users: boolean;
-      kind: string;
-    }> => {
+    checkAuthenticated: (): Promise<PreLoginInfoResponse> => {
       const access_token = getCookie(COOKIE_NAMES.LOCAL_JWT_TOKEN_NAME);
       const headers = access_token
         ? { Authorization: `Bearer ${access_token}` }
         : undefined;
-      return fetch(LOGIN_API, { headers }).then((response) => {
-        const status = response.status.toString();
-        if (status.startsWith("5")) {
-          // If a 5xx error is returned then the API server is down for
-          // some reason.
-          throw Error(response.statusText);
-        }
-        if (status.startsWith("4")) {
-          // We take a 4xx error to mean that the user is not authenticated.
-          return { authenticated: false };
-        }
-        return response.json();
-      });
+      return fetch(LOGIN_API, { headers })
+        .then(handleErrors)
+        .then<PreLoginInfoResponse>((response) => response.json());
     },
     externalLogin: (): Promise<XMLHttpRequest["response"]> => {
       return new Promise(async (resolve, reject) => {

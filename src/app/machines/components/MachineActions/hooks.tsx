@@ -15,6 +15,7 @@ import type { Machine } from "@/app/store/machine/types";
 import { FilterMachines } from "@/app/store/machine/utils";
 import { useSelectedMachinesActionsDispatch } from "@/app/store/machine/utils/hooks";
 import type { RootState } from "@/app/store/root/types";
+import statusSelectors from "@/app/store/status/selectors";
 import { NodeActions } from "@/app/store/types/node";
 import { canOpenActionForm } from "@/app/store/utils";
 import { hasEntitlementForPool, hasPermissions } from "@/app/utils/permissions";
@@ -532,6 +533,7 @@ export const useLifecycleActionEntitlements = (
   isViewingDetails: boolean,
   systemId?: Machine["system_id"]
 ): { actionsDisabled: boolean; deployDisabled: boolean } => {
+  const isRBAC = useSelector(statusSelectors.isRBAC);
   const selected = useSelector(machineSelectors.selected);
   const allMachines = useSelector(machineSelectors.all);
   const detailsMachine = useSelector((state: RootState) =>
@@ -541,7 +543,7 @@ export const useLifecycleActionEntitlements = (
 
   // Single-machine usage that is neither the details view nor a selection is
   // left ungated.
-  if (!isViewingDetails && !selected) {
+  if (isRBAC || (!isViewingDetails && !selected)) {
     return { actionsDisabled: false, deployDisabled: false };
   }
 

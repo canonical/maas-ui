@@ -61,6 +61,12 @@ const authenticationError = (state: RootState): APIError =>
 const externalAuthURL = (state: RootState): string | null =>
   state.status.externalAuthURL;
 
+const isRBAC = (state: RootState): boolean =>
+  state.status.externalAuthType === "RBAC";
+
+const preLoginLoaded = (state: RootState): boolean =>
+  state.status.preLoginLoaded;
+
 /**
  * Get the external login url.
  * @param {RootState} state - The redux state.
@@ -85,8 +91,10 @@ const status = {
   connectedCount,
   error,
   externalAuthURL,
+  isRBAC,
   externalLoginURL,
   noUsers,
+  preLoginLoaded,
 };
 
 export default status;

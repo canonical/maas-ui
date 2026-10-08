@@ -1,4 +1,4 @@
-import reducers from "./slice";
+import reducers, { actions } from "./slice";
 
 import * as factory from "@/testing/factories";
 
@@ -15,6 +15,7 @@ describe("status", () => {
         externalAuthURL: null,
         externalLoginURL: null,
         noUsers: false,
+        preLoginLoaded: false,
       })
     );
   });
@@ -172,35 +173,79 @@ describe("status", () => {
     ).toStrictEqual(
       factory.statusState({
         authenticating: true,
+        preLoginLoaded: false,
       })
     );
   });
 
-  it("should correctly reduce status/checkAuthenticatedSuccess", () => {
+  it("stores the external auth URL and replaces the previous auth type", () => {
     expect(
       reducers(
         factory.statusState({
           authenticating: true,
           authenticated: false,
           noUsers: false,
+          externalAuthType: "RBAC",
+          preLoginLoaded: false,
         }),
-        {
-          type: "status/checkAuthenticatedSuccess",
-          payload: {
-            is_authenticated: true,
-            external_legacy_login_url: "http://login.example.com",
-            no_users: true,
+        actions.checkAuthenticatedSuccess({
+          is_authenticated: true,
+          external_legacy_login: {
+            url: "http://login.example.com",
+            type: "CANDID",
           },
-        }
+          no_users: true,
+        })
       )
     ).toStrictEqual(
       factory.statusState({
         authenticating: false,
         authenticated: true,
         externalAuthURL: "http://login.example.com",
+        externalAuthType: "CANDID",
         noUsers: true,
       })
     );
+  });
+
+  it("clears the external auth URL and type when legacy login is absent", () => {
+    expect(
+      reducers(
+        factory.statusState({
+          authenticating: true,
+          authenticated: true,
+          externalAuthURL: "http://login.example.com",
+          externalAuthType: "RBAC",
+          noUsers: true,
+        }),
+        actions.checkAuthenticatedSuccess({
+          is_authenticated: false,
+          no_users: false,
+        })
+      )
+    ).toStrictEqual(
+      factory.statusState({
+        authenticating: false,
+        authenticated: false,
+        externalAuthURL: "",
+        noUsers: false,
+      })
+    );
+  });
+
+  it("retains the explicit RBAC type from pre-login", () => {
+    const state = reducers(
+      factory.statusState(),
+      actions.checkAuthenticatedSuccess({
+        is_authenticated: true,
+        no_users: false,
+        external_legacy_login: {
+          url: "http://login.example.com",
+          type: "RBAC",
+        },
+      })
+    );
+    expect(state.externalAuthType).toBe("RBAC");
   });
 
   it("should correctly reduce status/loginStart", () => {
@@ -350,6 +395,7 @@ describe("status", () => {
         authenticating: false,
         authenticated: false,
         error: "Gateway Timeout",
+        preLoginLoaded: false,
       })
     );
   });
