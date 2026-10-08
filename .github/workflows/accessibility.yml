@@ -4,19 +4,32 @@ on:
     branches:
       - main
       - "3.*"
+      - "*a11y*"
+  workflow_call:
+    inputs:
+      version:
+        type: string
+        default: ""
+      build-from-source:
+        type: boolean
+        default: false
 jobs:
   cypress-axe:
     name: cypress-axe
     runs-on: ubuntu-24.04
     env:
+      TARGET_BRANCH: ${{ inputs.version || github.ref_name }}
       MAAS_URL: http://localhost:5240
+      MAAS_UI_URL: http://localhost:8400
     steps:
       - uses: actions/checkout@main
-      - name: Get branch name
-        uses: nelonoel/branch-name@v1.0.1
+        with:
+          ref: ${{ inputs.version && format('refs/heads/{0}', inputs.version) || github.sha }}
       - name: Setup MAAS
         uses: canonical/setup-maas@main
         with:
+          branch: ${{ contains(env.TARGET_BRANCH, 'a11y') && 'main' || env.TARGET_BRANCH }}
+          build-from-source: ${{ inputs.build-from-source || false }}
           maas-url: ${{env.MAAS_URL}}/MAAS
       - name: Use Node.js from .nvmrc
         uses: actions/setup-node@v6
@@ -27,12 +40,18 @@ jobs:
         with:
           runTests: false
           install-command: yarn install
+          build: yarn build
       - name: Create MAAS admin
         run: lxc exec maas-backend -- maas createadmin --username=admin --password=test --email=fake@example.org
       - name: Run cypress-axe accessibility tests
         uses: cypress-io/github-action@v7.3.0
+        env:
+          NODE_ENV: production
+          STATIC_DEMO: "true"
         with:
-          config: baseUrl=${{env.MAAS_URL}},pageLoadTimeout=100000
+          config: baseUrl=${{env.MAAS_UI_URL}},pageLoadTimeout=100000
           install: false
+          start: node scripts/proxy.js
           spec: "cypress/e2e/accessibility/**/*.spec.ts"
-          wait-on: "${{env.MAAS_URL}}/MAAS/r/machines"
+          wait-on: "${{env.MAAS_UI_URL}}/MAAS/r/machines"
+          wait-on-timeout: 120

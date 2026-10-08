@@ -9,6 +9,18 @@
 [![Code Coverage](https://img.shields.io/badge/code--coverage-report-brightgreen.svg)](https://canonical.github.io/maas-ui/)
 [![Build upload](https://github.com/canonical/maas-ui/actions/workflows/upload.yml/badge.svg)](https://github.com/canonical/maas-ui/actions/workflows/upload.yml?query=branch%3Amain)
 
+<details>
+<summary>Version runs</summary>
+
+|        |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+|--------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `main` | [![CI](https://github.com/canonical/maas-ui/actions/workflows/test.yml/badge.svg?branch=main)](https://github.com/canonical/maas-ui/actions/workflows/test.yml?query=branch%3Amain) [![Accessibility](https://github.com/canonical/maas-ui/actions/workflows/accessibility.yml/badge.svg?branch=main)](https://github.com/canonical/maas-ui/actions/workflows/accessibility.yml?query=branch%3Amain) [![Cypress](https://github.com/canonical/maas-ui/actions/workflows/cypress.yml/badge.svg?branch=main)](https://github.com/canonical/maas-ui/actions/workflows/cypress.yml?query=branch%3Amain) [![sitespeed.io](https://github.com/canonical/maas-ui/actions/workflows/sitespeed.yml/badge.svg?branch=main)](https://github.com/canonical/maas-ui/actions/workflows/sitespeed.yml?query=branch%3Amain) [![Build upload](https://github.com/canonical/maas-ui/actions/workflows/upload.yml/badge.svg)](https://github.com/canonical/maas-ui/actions/workflows/upload.yml?query=branch%3Amain) |
+| `3.8`  | [![CI](https://github.com/canonical/maas-ui/actions/workflows/test.yml/badge.svg?branch=3.8)](https://github.com/canonical/maas-ui/actions/workflows/test.yml?query=branch%3A3.8) [![Accessibility](https://github.com/canonical/maas-ui/actions/workflows/accessibility.yml/badge.svg?branch=3.8)](https://github.com/canonical/maas-ui/actions/workflows/accessibility.yml?query=branch%3A3.8) [![Cypress](https://github.com/canonical/maas-ui/actions/workflows/cypress.yml/badge.svg?branch=3.8)](https://github.com/canonical/maas-ui/actions/workflows/cypress.yml?query=branch%3A3.8) [![sitespeed.io](https://github.com/canonical/maas-ui/actions/workflows/sitespeed.yml/badge.svg?branch=3.8)](https://github.com/canonical/maas-ui/actions/workflows/sitespeed.yml?query=branch%3A3.8) [![Build upload](https://github.com/canonical/maas-ui/actions/workflows/upload.yml/badge.svg)](https://github.com/canonical/maas-ui/actions/workflows/upload.yml?query=branch%3A3.8)          |
+| `3.7`  | [![CI](https://github.com/canonical/maas-ui/actions/workflows/test.yml/badge.svg?branch=3.7)](https://github.com/canonical/maas-ui/actions/workflows/test.yml?query=branch%3A3.7) [![Accessibility](https://github.com/canonical/maas-ui/actions/workflows/accessibility.yml/badge.svg?branch=3.7)](https://github.com/canonical/maas-ui/actions/workflows/accessibility.yml?query=branch%3A3.7) [![Cypress](https://github.com/canonical/maas-ui/actions/workflows/cypress.yml/badge.svg?branch=3.7)](https://github.com/canonical/maas-ui/actions/workflows/cypress.yml?query=branch%3A3.7) [![sitespeed.io](https://github.com/canonical/maas-ui/actions/workflows/sitespeed.yml/badge.svg?branch=3.7)](https://github.com/canonical/maas-ui/actions/workflows/sitespeed.yml?query=branch%3A3.7) [![Build upload](https://github.com/canonical/maas-ui/actions/workflows/upload.yml/badge.svg)](https://github.com/canonical/maas-ui/actions/workflows/upload.yml?query=branch%3A3.7)          |
+| `3.6`  | [![CI](https://github.com/canonical/maas-ui/actions/workflows/test.yml/badge.svg?branch=3.6)](https://github.com/canonical/maas-ui/actions/workflows/test.yml?query=branch%3A3.6) [![Accessibility](https://github.com/canonical/maas-ui/actions/workflows/accessibility.yml/badge.svg?branch=3.6)](https://github.com/canonical/maas-ui/actions/workflows/accessibility.yml?query=branch%3A3.6) [![Cypress](https://github.com/canonical/maas-ui/actions/workflows/cypress.yml/badge.svg?branch=3.6)](https://github.com/canonical/maas-ui/actions/workflows/cypress.yml?query=branch%3A3.6) [![sitespeed.io](https://github.com/canonical/maas-ui/actions/workflows/sitespeed.yml/badge.svg?branch=3.6)](https://github.com/canonical/maas-ui/actions/workflows/sitespeed.yml?query=branch%3A3.6) [![Build upload](https://github.com/canonical/maas-ui/actions/workflows/upload.yml/badge.svg)](https://github.com/canonical/maas-ui/actions/workflows/upload.yml?query=branch%3A3.6)          |
+
+</details>
+
 - [MAAS UI](#maas-ui)
 - [About](#about)
 - [MAAS UI Overview](#maas-ui-overview)
@@ -17,8 +29,8 @@
 - [Integration testing](#integration-testing)
 - [Release Process](#release-process)
 - [Related Projects](#related-projects)
-  - [MAAS](#maas)
-  - [LXD](#lxd)
+    - [MAAS](#maas)
+    - [LXD](#lxd)
 - [Built With](#built-with)
 - [Team Members](#team-members)
 - [Code of Conduct](#code-of-conduct)
@@ -26,7 +38,8 @@
 
 ## About
 
-MAAS is an open-source tool that lets you build a data centre from bare-metal servers. You can discover, commission, deploy, and dynamically reconfigure a large network of individual units.
+MAAS is an open-source tool that lets you build a data centre from bare-metal servers. You can discover, commission,
+deploy, and dynamically reconfigure a large network of individual units.
 
 ![screenshot of MAAS UI displaying 1000 machines](https://user-images.githubusercontent.com/7452681/234197707-a25b2231-1ca4-4d80-9e42-53d99c4e2cf1.png)
 
@@ -45,7 +58,9 @@ Community contributions are most welcome, and there are a number of ways to part
 - [Submit bugs for the MAAS website](https://github.com/canonical/maas.io)
 - [Contribute to MAAS documentation](https://maas.io/docs/how-to-contribute-to-maas-documentation)
 
-When submitting a PR, please take note that MAAS UI uses the [conventional commit](https://www.conventionalcommits.org/en/v1.0.0/) format. To help you conform to this, you can run `yarn commit` instead of `git commit` for an interactive prompt.
+When submitting a PR, please take note that MAAS UI uses
+the [conventional commit](https://www.conventionalcommits.org/en/v1.0.0/) format. To help you conform to this, you can
+run `yarn commit` instead of `git commit` for an interactive prompt.
 
 Please see [HACKING](/docs/HACKING.md) for details on setting up a MAAS UI development environment.
 
@@ -53,7 +68,7 @@ Please see [HACKING](/docs/HACKING.md) for details on setting up a MAAS UI devel
 
 - Ask a question about MAAS on [Discourse](https://discourse.maas.io/).
 - File a [MAAS issue](https://bugs.launchpad.net/maas/+filebug).
-  - If you think that the issue is related to the UI, please add a `ui` tag
+    - If you think that the issue is related to the UI, please add a `ui` tag
 
 ## Integration testing
 
@@ -71,7 +86,8 @@ MAAS server source and issue tracking [can be found on Launchpad](https://launch
 
 ### LXD
 
-[LXD](https://github.com/lxc/lxd) is a next generation system container and virtual machine manager, used extensively by MAAS.
+[LXD](https://github.com/lxc/lxd) is a next generation system container and virtual machine manager, used extensively by
+MAAS.
 
 ## Built With
 
@@ -81,7 +97,8 @@ MAAS server source and issue tracking [can be found on Launchpad](https://launch
 
 ## Team Members
 
-[MAAS Tribe](https://discourse.canonical.com/t/maas-tribe/272) and [Canonical Web & Design](https://github.com/orgs/canonical/teams/web-and-design/members)
+[MAAS Tribe](https://discourse.canonical.com/t/maas-tribe/272)
+and [Canonical Web & Design](https://github.com/orgs/canonical/teams/web-and-design/members)
 
 ## Code of Conduct
 
