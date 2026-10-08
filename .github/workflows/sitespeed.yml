@@ -2,73 +2,74 @@ name: sitespeed.io
 on:
   push:
     branches:
-      - "3.7"
+      - main
+      - "3.*"
+      - "*sitespeed*"
+  workflow_call:
+    inputs:
+      version:
+        type: string
+        default: ""
+      build-from-source:
+        type: boolean
+        default: false
 jobs:
   run-sitespeed:
     name: Run sitespeed.io
     runs-on: ubuntu-24.04
-    strategy:
-      fail-fast: false
     env:
+      TARGET_BRANCH: ${{ inputs.version || github.ref_name }}
       MAAS_DOMAIN: localhost
       MAAS_URL: http://localhost:5240
     steps:
       - uses: actions/checkout@main
+        with:
+          ref: ${{ inputs.version && format('refs/heads/{0}', inputs.version) || github.sha }}
+      - name: Use Node.js from .nvmrc
+        uses: actions/setup-node@v6
+        with:
+          node-version-file: ".nvmrc"
+      - name: Build production UI
+        run: yarn build
       - name: Setup MAAS
         uses: canonical/setup-maas@main
         with:
+          branch: ${{ contains(env.TARGET_BRANCH, 'sitespeed') && 'main' || env.TARGET_BRANCH }}
+          build-from-source: ${{ inputs.build-from-source || false }}
           maas-url: ${{ env.MAAS_URL }}/MAAS
           use-maasdb-dump: true
-          maasdb-dump-url: https://github.com/canonical/maas-ui-testing/raw/main/db/maasdb-24.04-master-1000.dump
+          maasdb-dump-url: https://github.com/canonical/maas-ui-testing/raw/main/db/maasdb-${{ (env.TARGET_BRANCH == '3.6' || env.TARGET_BRANCH == '3.7') && '24.04' || '26.04' }}-master-1000.dump
       - name: Create MAAS admin
-        run: sudo maas createadmin --username=admin --password=test --email=fake@example.org
-      - name: Wait for MAAS
-        uses: nev7n/wait_for_response@v1
-        with:
-          url: "http://${{env.MAAS_DOMAIN}}:5240/MAAS/r"
-          responseCode: 200
-          timeout: 200000
-          interval: 500
+        run: lxc exec maas-backend -- maas createadmin --username=admin --password=test --email=fake@example.org
       - name: Login MAAS admin
         run: |
-          # Retry admin login up to 5 times with 10s intervals to account for delays in MAAS becoming fully operational
-          for attempt in {1..5}; do
-            export API_KEY=$(sudo maas apikey --username=admin)
-            if maas login admin http://localhost:5240/MAAS $API_KEY; then
-              echo "Login successful."
-              break
-            else
-              echo "Login attempt $attempt failed. Retrying in 10 seconds..."
-              sleep 10
-            fi
-          done
+          API_KEY=$(lxc exec maas-backend -- maas apikey --username=admin)
+          lxc exec maas-backend -- maas login admin http://localhost:5240/MAAS "$API_KEY"
       - name: Wait for MAAS boot resources
         shell: bash
-        run: while [ $(maas admin boot-resources is-importing | cat) == "true" ]; do sleep 10; done; echo "syncing finished"
+        run: while [ $(lxc exec maas-backend -- maas admin boot-resources is-importing | cat) == "true" ]; do sleep 10; done; echo "syncing finished"
+      - name: Serve production UI
+        env:
+          NODE_ENV: production
+          STATIC_DEMO: "true"
+        run: node scripts/proxy.js > sitespeed.io/ui.log 2>&1 &
+      - name: Wait for production UI
+        run: yarn wait-on-ui --timeout 120000
       - name: Run sitespeed.io tests
-        run: yarn sitespeed:ci --browsertime.domain=${{env.MAAS_DOMAIN}}
+        run: yarn sitespeed:ci --browsertime.domain=${{env.MAAS_DOMAIN}} --browsertime.port=8400
       - name: Collect MAAS logs
         if: failure()
         shell: bash
-        run: journalctl -u snap.maas.pebble.service --since="1 hour ago" > sitespeed.io/maas_logs.txt
+        run: lxc exec maas-backend -- journalctl -u snap.maas.pebble.service --since="1 hour ago" > sitespeed.io/maas_logs.txt
       - uses: actions/upload-artifact@v4
         if: failure()
         with:
-          name: maas_logs
-          path: sitespeed.io/maas_logs.txt
+          name: ${{ inputs.version && format('maas_logs-{0}', inputs.version) || 'maas_logs' }}
+          path: |
+            sitespeed.io/maas_logs.txt
+            sitespeed.io/ui.log
       - name: Upload results
         uses: actions/upload-artifact@v4
         with:
-          name: sitespeed.io-results
+          name: ${{ inputs.version && format('sitespeed.io-results-{0}', inputs.version) || 'sitespeed.io-results' }}
           path: sitespeed.io/results
-      - name: Create issue on failure
-        if: failure()
-        uses: JasonEtco/create-an-issue@v2
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          REPO: ${{ github.repository }}
-          RUN_ID: ${{ github.run_id }}
-          WORKFLOW: ${{ github.workflow }}
-        with:
-          filename: .github/ISSUE_TEMPLATE/ci-failure.md
-          update_existing: true
