@@ -5,13 +5,20 @@ on:
       - main
       - "3.*"
   pull_request:
-    types: [opened, synchronize, reopened]
+    types: [ opened, synchronize, reopened ]
+  workflow_call:
+    inputs:
+      version:
+        type: string
+        default: ""
 jobs:
   lint:
     name: Lint
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v6
+        with:
+          ref: ${{ inputs.version && format('refs/heads/{0}', inputs.version) || github.sha }}
 
       - name: Restore node_modules
         id: yarn-cache
@@ -35,6 +42,8 @@ jobs:
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v6
+        with:
+          ref: ${{ inputs.version && format('refs/heads/{0}', inputs.version) || github.sha }}
       - name: Restore node_modules
         id: yarn-cache
         uses: actions/cache@v4
@@ -53,7 +62,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: test-timings
+          name: ${{ inputs.version && format('test-timings-{0}', inputs.version) || 'test-timings' }}
           path: test-timings.log
 
   build:
@@ -62,6 +71,8 @@ jobs:
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v6
+        with:
+          ref: ${{ inputs.version && format('refs/heads/{0}', inputs.version) || github.sha }}
       - name: Restore node_modules
         id: yarn-cache
         uses: actions/cache@v4
