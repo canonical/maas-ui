@@ -11,6 +11,9 @@ export const useSettingsNavItems = (): NavItem[] => {
     Entitlement.CAN_VIEW_CONFIGURATIONS,
   ]);
   const bootEntities = useHasEntitlements([Entitlement.CAN_VIEW_BOOT_ENTITIES]);
+  const globalEntities = useHasEntitlements([
+    Entitlement.CAN_VIEW_GLOBAL_ENTITIES,
+  ]);
 
   const disabledPaths = useMemo(() => {
     const paths: string[] = [];
@@ -26,12 +29,17 @@ export const useSettingsNavItems = (): NavItem[] => {
     if (!bootEntities.isPending && !bootEntities.allowed) {
       paths.push(settingsURLs.images.sources);
     }
+    if (!globalEntities.isPending && !globalEntities.allowed) {
+      paths.push(settingsURLs.security.trustedSshHostKeys);
+    }
     return paths;
   }, [
     configurations.allowed,
     configurations.isPending,
     bootEntities.allowed,
     bootEntities.isPending,
+    globalEntities.allowed,
+    globalEntities.isPending,
   ]);
 
   return useMemo(() => {

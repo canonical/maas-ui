@@ -40,6 +40,9 @@ it("does not disable any Images items with both entitlements", async () => {
     authResolvers.getMeEntitlements.handler([
       factory.entitlement({ entitlement: Entitlement.CAN_VIEW_CONFIGURATIONS }),
       factory.entitlement({ entitlement: Entitlement.CAN_VIEW_BOOT_ENTITIES }),
+      factory.entitlement({
+        entitlement: Entitlement.CAN_VIEW_GLOBAL_ENTITIES,
+      }),
     ])
   );
   const { result } = renderHookWithProviders(() => ({
@@ -58,6 +61,9 @@ it("disables the configurations-gated Security items without the entitlement", a
   mockServer.use(
     authResolvers.getMeEntitlements.handler([
       factory.entitlement({ entitlement: Entitlement.CAN_VIEW_BOOT_ENTITIES }),
+      factory.entitlement({
+        entitlement: Entitlement.CAN_VIEW_GLOBAL_ENTITIES,
+      }),
     ])
   );
   const { result } = renderHookWithProviders(() => useSettingsNavItems());
@@ -71,16 +77,33 @@ it("disables the configurations-gated Security items without the entitlement", a
   });
 });
 
-it("never disables Token expiration", async () => {
+it("disables Trusted SSH host keys without the global entities entitlement", async () => {
+  mockServer.use(
+    authResolvers.getMeEntitlements.handler([
+      factory.entitlement({ entitlement: Entitlement.CAN_VIEW_CONFIGURATIONS }),
+    ])
+  );
+  const { result } = renderHookWithProviders(() => useSettingsNavItems());
+
+  await waitFor(() => {
+    expect(getDisabledSecurityItems(result.current)).toEqual([
+      "Trusted SSH host keys",
+    ]);
+  });
+});
+
+it("never disables Token expiration or Hardening status", async () => {
   mockServer.use(authResolvers.getMeEntitlements.handler([]));
   const { result } = renderHookWithProviders(() => useSettingsNavItems());
 
   await waitFor(() => {
-    expect(getDisabledSecurityItems(result.current)).toHaveLength(3);
+    expect(getDisabledSecurityItems(result.current)).toEqual([
+      "Security protocols",
+      "Secret storage",
+      "IPMI settings",
+      "Trusted SSH host keys",
+    ]);
   });
-  expect(getDisabledSecurityItems(result.current)).not.toContain(
-    "Token expiration"
-  );
 });
 
 it("disables Windows and VMware without the configurations entitlement", async () => {

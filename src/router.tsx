@@ -844,9 +844,14 @@ export const router = createBrowserRouter(
                     urls.settings.index
                   ),
                   element: (
-                    <ErrorBoundary>
-                      <TrustedSSHHostKeys />
-                    </ErrorBoundary>
+                    <RequireEntitlements
+                      entitlements={[Entitlement.CAN_VIEW_GLOBAL_ENTITIES]}
+                      skeletonView="settings"
+                    >
+                      <ErrorBoundary>
+                        <TrustedSSHHostKeys />
+                      </ErrorBoundary>
+                    </RequireEntitlements>
                   ),
                 },
                 {
