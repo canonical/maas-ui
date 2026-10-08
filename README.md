@@ -12,22 +12,6 @@
 <details>
 <summary>Version runs</summary>
 
-Open **Version runs** in the Actions tab and select **Run workflow**. Choose `main`
-under **Use workflow from**, select the **workflow** (CI, Cypress, Accessibility,
-sitespeed.io, or Build upload), and select the **version**: `main`, `3.6`, `3.7`,
-`3.8`, or `all`. Each selected version checks
-out its branch from the current repository and uses the matching MAAS backend
-where applicable. Missing branches fail their jobs without cancelling other
-versions. The workflow branch selects the workflow definition; **version** selects
-the code being run.
-
-PR and push runs use the original, non-matrix workflows without version-only
-jobs. Manual matrices and the nightly Cypress matrix live in **Version runs**,
-which does not run on PRs or pushes.
-
-Build upload remains restricted to Canonical repositories and names each package
-using the selected branch's checked-out commit SHA.
-
 |        |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
 |--------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `main` | [![CI](https://github.com/canonical/maas-ui/actions/workflows/test.yml/badge.svg?branch=main)](https://github.com/canonical/maas-ui/actions/workflows/test.yml?query=branch%3Amain) [![Accessibility](https://github.com/canonical/maas-ui/actions/workflows/accessibility.yml/badge.svg?branch=main)](https://github.com/canonical/maas-ui/actions/workflows/accessibility.yml?query=branch%3Amain) [![Cypress](https://github.com/canonical/maas-ui/actions/workflows/cypress.yml/badge.svg?branch=main)](https://github.com/canonical/maas-ui/actions/workflows/cypress.yml?query=branch%3Amain) [![sitespeed.io](https://github.com/canonical/maas-ui/actions/workflows/sitespeed.yml/badge.svg?branch=main)](https://github.com/canonical/maas-ui/actions/workflows/sitespeed.yml?query=branch%3Amain) [![Build upload](https://github.com/canonical/maas-ui/actions/workflows/upload.yml/badge.svg)](https://github.com/canonical/maas-ui/actions/workflows/upload.yml?query=branch%3Amain) |
