@@ -4,29 +4,20 @@ on:
     branches:
       - main
       - "3.*"
-  workflow_dispatch:
+  workflow_call:
     inputs:
       version:
-        type: choice
-        required: true
-        default: main
-        options:
-          - main
-          - "3.6"
-          - "3.7"
-          - "3.8"
-          - all
+        type: string
+        default: ""
       build-from-source:
         type: boolean
         default: false
   pull_request:
     types: [ opened, synchronize, reopened ]
-  schedule:
-    - cron: "0 3 * * *"   # daily at 03:00 UTC
 
 env:
-  # PRs use their target branch; feature-branch runs use the main backend.
-  MAAS_BRANCH: ${{ startsWith(github.base_ref || github.ref_name, '3.') && (github.base_ref || github.ref_name) || 'main' }}
+  # Version runs pass a branch explicitly; PRs use their target branch.
+  MAAS_BRANCH: ${{ inputs.version || (startsWith(github.base_ref || github.ref_name, '3.') && (github.base_ref || github.ref_name) || 'main') }}
 
 jobs:
   # Detect changed app/ directories for PRs targeting main or 3.8 and resolve
@@ -38,7 +29,7 @@ jobs:
     runs-on: ubuntu-24.04
     outputs:
       spec_glob: ${{ steps.resolve.outputs.spec_glob }}
-      branches: ${{ (github.event_name == 'schedule' || inputs.version == 'all') && '["main", "3.6", "3.7", "3.8"]' || format('["{0}"]', inputs.version || env.MAAS_BRANCH) }}
+      maas_branch: ${{ env.MAAS_BRANCH }}
     steps:
       - uses: actions/checkout@main
         with:
@@ -79,10 +70,20 @@ jobs:
             zones
           )
 
-          # Collect the src/app/ directories touched by this PR.
-          # grep || true prevents exit code 1 under pipefail when nothing matches.
           BASE_SHA="${{ github.event.pull_request.base.sha }}"
           HEAD_SHA="${{ github.event.pull_request.head.sha }}"
+          CYPRESS_CONFIG_CHANGED=$(git diff --name-only "$BASE_SHA" "$HEAD_SHA" -- \
+            .github/workflows/cypress.yml .github/workflows/version-runs.yml \
+            cypress.config.ts scripts/proxy.js scripts/proxy-ready.js \
+            package.json yarn.lock)
+          if [ -n "$CYPRESS_CONFIG_CHANGED" ]; then
+            echo "Cypress infrastructure changed - running full suite"
+            echo "spec_glob=all" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          # Collect the src/app/ directories touched by this PR.
+          # grep || true prevents exit code 1 under pipefail when nothing matches.
           CHANGED_APP=$(git diff --name-only "$BASE_SHA" "$HEAD_SHA" | \
                         (grep '^src/app/' || true) | \
                         awk -F'/' '{print $3}' | \
@@ -174,23 +175,21 @@ jobs:
 
   cypress-no-users:
     name: Cypress (no-users)
-    if: github.event_name != 'workflow_dispatch' && github.event_name != 'schedule'
     needs: detect-changes
     runs-on: ubuntu-24.04
     env: &cypress-env
-      TARGET_BRANCH: ${{ matrix.branch || env.MAAS_BRANCH }}
       # The 3.6/3.7 UI proxies only support HTTP.
-      USE_TLS: ${{ (matrix.branch || env.MAAS_BRANCH) != '3.6' && (matrix.branch || env.MAAS_BRANCH) != '3.7' }}
-      MAAS_URL: ${{ ((matrix.branch || env.MAAS_BRANCH) == '3.6' || (matrix.branch || env.MAAS_BRANCH) == '3.7') && 'http://localhost:5240' || 'https://localhost:5443' }}
-      MAAS_UI_URL: ${{ ((matrix.branch || env.MAAS_BRANCH) == '3.6' || (matrix.branch || env.MAAS_BRANCH) == '3.7') && 'http://localhost:8400' || 'https://localhost:8400' }}
-    steps: &cypress-no-users-steps
+      USE_TLS: ${{ needs.detect-changes.outputs.maas_branch != '3.6' && needs.detect-changes.outputs.maas_branch != '3.7' }}
+      MAAS_URL: ${{ (needs.detect-changes.outputs.maas_branch == '3.6' || needs.detect-changes.outputs.maas_branch == '3.7') && 'http://localhost:5240' || 'https://localhost:5443' }}
+      MAAS_UI_URL: ${{ (needs.detect-changes.outputs.maas_branch == '3.6' || needs.detect-changes.outputs.maas_branch == '3.7') && 'http://localhost:8400' || 'https://localhost:8400' }}
+    steps:
       - uses: actions/checkout@main
         with:
-          ref: ${{ matrix.branch && format('refs/heads/{0}', matrix.branch) || github.sha }}
+          ref: ${{ inputs.version && format('refs/heads/{0}', inputs.version) || github.sha }}
       - name: Setup MAAS
         uses: canonical/setup-maas@main
         with:
-          branch: ${{ env.TARGET_BRANCH }}
+          branch: ${{ env.MAAS_BRANCH }}
           build-from-source: ${{ inputs.build-from-source || false }}
           maas-url: http://localhost:5240/MAAS
       - name: Use Node.js from .nvmrc
@@ -257,7 +256,7 @@ jobs:
       - uses: actions/upload-artifact@v4
         if: failure()
         with:
-          name: cypress-screenshots-no-users-${{ env.TARGET_BRANCH }}
+          name: cypress-screenshots-no-users-${{ env.MAAS_BRANCH }}
           path: cypress/screenshots
       - name: Collect MAAS logs
         if: failure()
@@ -266,24 +265,24 @@ jobs:
       - uses: actions/upload-artifact@v4
         if: failure()
         with:
-          name: maas_logs-no-users-${{ env.TARGET_BRANCH }}
+          name: maas_logs-no-users-${{ env.MAAS_BRANCH }}
           path: cypress/maas_logs.txt
 
   cypress-with-users:
     name: Cypress (with-users)
     needs: detect-changes
     # Skip filtered PRs when no relevant app/ or features/ files were changed.
-    if: github.event_name != 'workflow_dispatch' && github.event_name != 'schedule' && needs.detect-changes.outputs.spec_glob != 'none'
+    if: needs.detect-changes.outputs.spec_glob != 'none'
     runs-on: ubuntu-24.04
     env: *cypress-env
-    steps: &cypress-with-users-steps
+    steps:
       - uses: actions/checkout@main
         with:
-          ref: ${{ matrix.branch && format('refs/heads/{0}', matrix.branch) || github.sha }}
+          ref: ${{ inputs.version && format('refs/heads/{0}', inputs.version) || github.sha }}
       - name: Setup MAAS
         uses: canonical/setup-maas@main
         with:
-          branch: ${{ env.TARGET_BRANCH }}
+          branch: ${{ env.MAAS_BRANCH }}
           build-from-source: ${{ inputs.build-from-source || false }}
           maas-url: http://localhost:5240/MAAS
       - name: Setup Keycloak for SSO tests
@@ -477,7 +476,7 @@ jobs:
       - uses: actions/upload-artifact@v4
         if: failure()
         with:
-          name: cypress-screenshots-with-users-${{ env.TARGET_BRANCH }}
+          name: cypress-screenshots-with-users-${{ env.MAAS_BRANCH }}
           path: cypress/screenshots
       - name: Collect MAAS logs
         if: failure()
@@ -486,26 +485,5 @@ jobs:
       - uses: actions/upload-artifact@v4
         if: failure()
         with:
-          name: maas_logs-with-users-${{ env.TARGET_BRANCH }}
+          name: maas_logs-with-users-${{ env.MAAS_BRANCH }}
           path: cypress/maas_logs.txt
-
-  cypress-no-users-versions:
-    name: Cypress (no-users, versions)
-    if: github.event_name == 'workflow_dispatch' || github.event_name == 'schedule'
-    needs: detect-changes
-    runs-on: ubuntu-24.04
-    strategy: &cypress-matrix
-      fail-fast: false
-      matrix:
-        branch: ${{ fromJSON(needs.detect-changes.outputs.branches) }}
-    env: *cypress-env
-    steps: *cypress-no-users-steps
-
-  cypress-with-users-versions:
-    name: Cypress (with-users, versions)
-    if: (github.event_name == 'workflow_dispatch' || github.event_name == 'schedule') && needs.detect-changes.outputs.spec_glob != 'none'
-    needs: detect-changes
-    runs-on: ubuntu-24.04
-    strategy: *cypress-matrix
-    env: *cypress-env
-    steps: *cypress-with-users-steps

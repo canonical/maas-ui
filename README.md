@@ -12,16 +12,18 @@
 <details>
 <summary>Version runs</summary>
 
-CI, Cypress, Accessibility, sitespeed.io, and Build upload support manual runs from
-the Actions tab. Select **Run workflow**, choose `main` under **Use workflow from**, and select
-the **version**: `main`, `3.6`, `3.7`, `3.8`, or `all`. Each selected version checks
+Open **Version runs** in the Actions tab and select **Run workflow**. Choose `main`
+under **Use workflow from**, select the **workflow** (CI, Cypress, Accessibility,
+sitespeed.io, or Build upload), and select the **version**: `main`, `3.6`, `3.7`,
+`3.8`, or `all`. Each selected version checks
 out its branch from the current repository and uses the matching MAAS backend
 where applicable. Missing branches fail their jobs without cancelling other
 versions. The workflow branch selects the workflow definition; **version** selects
 the code being run.
 
-PR and push runs use non-matrix jobs. Version matrices are only used by manual
-and scheduled runs.
+PR and push runs use the original, non-matrix workflows without version-only
+jobs. Manual matrices and the nightly Cypress matrix live in **Version runs**,
+which does not run on PRs or pushes.
 
 Build upload remains restricted to Canonical repositories and names each package
 using the selected branch's checked-out commit SHA.

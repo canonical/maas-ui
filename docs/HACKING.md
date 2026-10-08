@@ -86,9 +86,11 @@ Scheduled Cypress runs exercise both the no-users and with-users suites on
 MAAS backend. The `3.6`/`3.7` entries use HTTP without the newer SSO setup;
 `main`/`3.8` use HTTPS and Keycloak. PR and push runs keep a single backend target
 and test the triggering UI revision. Domain-based spec selection applies only to
-PRs targeting `main` or `3.8`; other targets run the full suite. Manual runs select
-`main`, `3.6`, `3.7`, `3.8`, or `all` using the `version` input and check out each
-selected UI branch against its matching backend.
+PRs targeting `main` or `3.8`; other targets run the full suite. Changes to the
+Cypress workflow, version-run dispatcher, configuration, proxy, or dependencies
+also select the full suite. For manual runs, open **Version runs**, select
+**Cypress**, and choose `main`, `3.6`, `3.7`, `3.8`, or `all` using the `version`
+input. Each selected UI branch runs against its matching backend.
 
 Branches matching `*cypress*` or `*a11y*` also trigger their respective
 workflows on push. Accessibility feature-branch runs use the main backend.
@@ -129,12 +131,12 @@ yarn sitespeed --browsertime.domain=[maas-ui.ip.or.hostname] --browsertime.port=
 
 #### Building the CI backend from source
 
-Cypress, Accessibility, and sitespeed.io support **Run workflow** in GitHub
-Actions with an optional `build-from-source` checkbox. Use the workflow on `main`,
-choose a `version` (or `all`), then enable this option when the published MAAS snap
-is stale or unavailable. `setup-maas` clones and builds each selected backend
-branch on its runner; the UI under test comes from the matching branch in this
-repository.
+The **Version runs** workflow in GitHub Actions has an optional
+`build-from-source` checkbox for Cypress, Accessibility, and sitespeed.io. Use the
+workflow on `main`, select one of those workflows and a `version` (or `all`), then
+enable this option when the published MAAS snap is stale or unavailable.
+`setup-maas` clones and builds each selected backend branch on its runner; the UI
+under test comes from the matching branch in this repository.
 
 The option defaults to false. Push, PR, and scheduled runs continue to use
 published snaps, with no automatic source-build fallback. Source builds still

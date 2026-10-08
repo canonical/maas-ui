@@ -5,34 +5,26 @@ on:
       - main
       - "3.*"
       - "*sitespeed*"
-  workflow_dispatch:
+  workflow_call:
     inputs:
       version:
-        type: choice
-        required: true
-        default: main
-        options:
-          - main
-          - "3.6"
-          - "3.7"
-          - "3.8"
-          - all
+        type: string
+        default: ""
       build-from-source:
         type: boolean
         default: false
 jobs:
   run-sitespeed:
     name: Run sitespeed.io
-    if: github.event_name != 'workflow_dispatch' && github.event_name != 'schedule'
     runs-on: ubuntu-24.04
-    env: &sitespeed-env
-      TARGET_BRANCH: ${{ matrix.branch || github.ref_name }}
+    env:
+      TARGET_BRANCH: ${{ inputs.version || github.ref_name }}
       MAAS_DOMAIN: localhost
       MAAS_URL: http://localhost:5240
-    steps: &sitespeed-steps
+    steps:
       - uses: actions/checkout@main
         with:
-          ref: ${{ matrix.branch && format('refs/heads/{0}', matrix.branch) || github.sha }}
+          ref: ${{ inputs.version && format('refs/heads/{0}', inputs.version) || github.sha }}
       - name: Use Node.js from .nvmrc
         uses: actions/setup-node@v6
         with:
@@ -72,23 +64,12 @@ jobs:
       - uses: actions/upload-artifact@v4
         if: failure()
         with:
-          name: ${{ matrix.branch && format('maas_logs-{0}', matrix.branch) || 'maas_logs' }}
+          name: ${{ inputs.version && format('maas_logs-{0}', inputs.version) || 'maas_logs' }}
           path: |
             sitespeed.io/maas_logs.txt
             sitespeed.io/ui.log
       - name: Upload results
         uses: actions/upload-artifact@v4
         with:
-          name: ${{ matrix.branch && format('sitespeed.io-results-{0}', matrix.branch) || 'sitespeed.io-results' }}
+          name: ${{ inputs.version && format('sitespeed.io-results-{0}', inputs.version) || 'sitespeed.io-results' }}
           path: sitespeed.io/results
-
-  run-sitespeed-versions:
-    name: Run sitespeed.io (versions)
-    if: github.event_name == 'workflow_dispatch' || github.event_name == 'schedule'
-    runs-on: ubuntu-24.04
-    strategy:
-      fail-fast: false
-      matrix:
-        branch: ${{ fromJSON((github.event_name == 'schedule' || inputs.version == 'all') && '["main", "3.6", "3.7", "3.8"]' || format('["{0}"]', inputs.version || github.ref_name)) }}
-    env: *sitespeed-env
-    steps: *sitespeed-steps

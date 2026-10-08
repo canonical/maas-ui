@@ -4,8 +4,9 @@
 
 - Whenever changes are pushed to `main` or `3.x` branch, a new JavaScript bundle is automatically created and pushed to the [Ubuntu assets server](https://assets.ubuntu.com/manager?tag=auto-upload&q=maas&type=tar.gz). This process is managed by the [upload.yml](https://github.com/canonical/maas-ui/blob/main/.github/workflows/upload.yml) GitHub Action.
 
-- Build upload can also be run manually from the Actions tab using the workflow
-  on `main`. Choose `main`, `3.6`, `3.7`, `3.8`, or `all` as the version. Each job
+- To upload manually, open **Version runs** in the Actions tab and use the
+  workflow on `main`. Select **Build upload** as the workflow and choose `main`,
+  `3.6`, `3.7`, `3.8`, or `all` as the version. Each job
   checks out that branch from the current repository and publishes
   `maas_ui_<checked-out-commit-sha>.tgz`, with the same SHA embedded in the build.
   Missing branches fail their jobs without cancelling other versions. Publishing

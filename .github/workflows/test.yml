@@ -6,27 +6,19 @@ on:
       - "3.*"
   pull_request:
     types: [ opened, synchronize, reopened ]
-  workflow_dispatch:
+  workflow_call:
     inputs:
       version:
-        type: choice
-        required: true
-        default: main
-        options:
-          - main
-          - "3.6"
-          - "3.7"
-          - "3.8"
-          - all
+        type: string
+        default: ""
 jobs:
   lint:
     name: Lint
-    if: github.event_name != 'workflow_dispatch' && github.event_name != 'schedule'
     runs-on: ubuntu-24.04
-    steps: &lint-steps
+    steps:
       - uses: actions/checkout@v6
         with:
-          ref: ${{ matrix.branch && format('refs/heads/{0}', matrix.branch) || github.sha }}
+          ref: ${{ inputs.version && format('refs/heads/{0}', inputs.version) || github.sha }}
 
       - name: Restore node_modules
         id: yarn-cache
@@ -47,12 +39,11 @@ jobs:
 
   test:
     name: Test
-    if: github.event_name != 'workflow_dispatch' && github.event_name != 'schedule'
     runs-on: ubuntu-24.04
-    steps: &test-steps
+    steps:
       - uses: actions/checkout@v6
         with:
-          ref: ${{ matrix.branch && format('refs/heads/{0}', matrix.branch) || github.sha }}
+          ref: ${{ inputs.version && format('refs/heads/{0}', inputs.version) || github.sha }}
       - name: Restore node_modules
         id: yarn-cache
         uses: actions/cache@v4
@@ -71,18 +62,17 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: ${{ matrix.branch && format('test-timings-{0}', matrix.branch) || 'test-timings' }}
+          name: ${{ inputs.version && format('test-timings-{0}', inputs.version) || 'test-timings' }}
           path: test-timings.log
 
   build:
     name: Build
-    if: github.event_name != 'workflow_dispatch' && github.event_name != 'schedule'
     timeout-minutes: 15
     runs-on: ubuntu-24.04
-    steps: &build-steps
+    steps:
       - uses: actions/checkout@v6
         with:
-          ref: ${{ matrix.branch && format('refs/heads/{0}', matrix.branch) || github.sha }}
+          ref: ${{ inputs.version && format('refs/heads/{0}', inputs.version) || github.sha }}
       - name: Restore node_modules
         id: yarn-cache
         uses: actions/cache@v4
@@ -102,28 +92,3 @@ jobs:
         run: yarn serve --host --port=8400 --base=/ &
       - name: Wait for UI to be ready
         run: yarn wait-on-ui
-
-  lint-versions:
-    name: Lint (versions)
-    if: github.event_name == 'workflow_dispatch' || github.event_name == 'schedule'
-    runs-on: ubuntu-24.04
-    strategy: &version-matrix
-      fail-fast: false
-      matrix:
-        branch: ${{ fromJSON((github.event_name == 'schedule' || inputs.version == 'all') && '["main", "3.6", "3.7", "3.8"]' || format('["{0}"]', inputs.version || github.ref_name)) }}
-    steps: *lint-steps
-
-  test-versions:
-    name: Test (versions)
-    if: github.event_name == 'workflow_dispatch' || github.event_name == 'schedule'
-    runs-on: ubuntu-24.04
-    strategy: *version-matrix
-    steps: *test-steps
-
-  build-versions:
-    name: Build (versions)
-    if: github.event_name == 'workflow_dispatch' || github.event_name == 'schedule'
-    timeout-minutes: 15
-    runs-on: ubuntu-24.04
-    strategy: *version-matrix
-    steps: *build-steps

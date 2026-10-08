@@ -5,34 +5,26 @@ on:
       - main
       - "3.*"
       - "*a11y*"
-  workflow_dispatch:
+  workflow_call:
     inputs:
       version:
-        type: choice
-        required: true
-        default: main
-        options:
-          - main
-          - "3.6"
-          - "3.7"
-          - "3.8"
-          - all
+        type: string
+        default: ""
       build-from-source:
         type: boolean
         default: false
 jobs:
   cypress-axe:
     name: cypress-axe
-    if: github.event_name != 'workflow_dispatch' && github.event_name != 'schedule'
     runs-on: ubuntu-24.04
-    env: &accessibility-env
-      TARGET_BRANCH: ${{ matrix.branch || github.ref_name }}
+    env:
+      TARGET_BRANCH: ${{ inputs.version || github.ref_name }}
       MAAS_URL: http://localhost:5240
       MAAS_UI_URL: http://localhost:8400
-    steps: &accessibility-steps
+    steps:
       - uses: actions/checkout@main
         with:
-          ref: ${{ matrix.branch && format('refs/heads/{0}', matrix.branch) || github.sha }}
+          ref: ${{ inputs.version && format('refs/heads/{0}', inputs.version) || github.sha }}
       - name: Setup MAAS
         uses: canonical/setup-maas@main
         with:
@@ -63,14 +55,3 @@ jobs:
           spec: "cypress/e2e/accessibility/**/*.spec.ts"
           wait-on: "${{env.MAAS_UI_URL}}/MAAS/r/machines"
           wait-on-timeout: 120
-
-  cypress-axe-versions:
-    name: cypress-axe (versions)
-    if: github.event_name == 'workflow_dispatch' || github.event_name == 'schedule'
-    runs-on: ubuntu-24.04
-    strategy:
-      fail-fast: false
-      matrix:
-        branch: ${{ fromJSON((github.event_name == 'schedule' || inputs.version == 'all') && '["main", "3.6", "3.7", "3.8"]' || format('["{0}"]', inputs.version || github.ref_name)) }}
-    env: *accessibility-env
-    steps: *accessibility-steps
