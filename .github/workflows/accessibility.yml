@@ -7,23 +7,38 @@ on:
       - "*a11y*"
   workflow_dispatch:
     inputs:
+      version:
+        type: choice
+        required: true
+        default: main
+        options:
+          - main
+          - "3.6"
+          - "3.7"
+          - "3.8"
+          - all
       build-from-source:
-        description: "Build the MAAS backend from source instead of installing its published snap"
         type: boolean
         default: false
 jobs:
   cypress-axe:
     name: cypress-axe
     runs-on: ubuntu-24.04
+    strategy:
+      fail-fast: false
+      matrix:
+        branch: ${{ fromJSON(inputs.version == 'all' && '["main", "3.6", "3.7", "3.8"]' || format('["{0}"]', inputs.version || github.ref_name)) }}
     env:
       MAAS_URL: http://localhost:5240
       MAAS_UI_URL: http://localhost:8400
     steps:
       - uses: actions/checkout@main
+        with:
+          ref: ${{ github.event_name == 'workflow_dispatch' && format('refs/heads/{0}', matrix.branch) || github.sha }}
       - name: Setup MAAS
         uses: canonical/setup-maas@main
         with:
-          branch: ${{ contains(github.ref_name, 'a11y') && 'main' || github.ref_name }}
+          branch: ${{ contains(matrix.branch, 'a11y') && 'main' || matrix.branch }}
           build-from-source: ${{ inputs.build-from-source || false }}
           maas-url: ${{env.MAAS_URL}}/MAAS
       - name: Use Node.js from .nvmrc

@@ -6,8 +6,17 @@ on:
       - "3.*"
   workflow_dispatch:
     inputs:
+      version:
+        type: choice
+        required: true
+        default: main
+        options:
+          - main
+          - "3.6"
+          - "3.7"
+          - "3.8"
+          - all
       build-from-source:
-        description: "Build the MAAS backend from source instead of installing its published snap"
         type: boolean
         default: false
   pull_request:
@@ -20,8 +29,8 @@ env:
   MAAS_BRANCH: ${{ startsWith(github.base_ref || github.ref_name, '3.') && (github.base_ref || github.ref_name) || 'main' }}
 
 jobs:
-  # Detect which app/ directories changed (PR only) and resolve the matching
-  # features/ subdirectories that exist on disk.
+  # Detect changed app/ directories for PRs targeting main or 3.8 and resolve
+  # the matching features/ subdirectories that exist on disk.
   # On a scheduled run this job emits spec_glob="all" so the cypress job knows
   # to run the full suite.
   detect-changes:
@@ -29,7 +38,7 @@ jobs:
     runs-on: ubuntu-24.04
     outputs:
       spec_glob: ${{ steps.resolve.outputs.spec_glob }}
-      branches: ${{ github.event_name == 'schedule' && '["main", "3.6", "3.7", "3.8"]' || format('["{0}"]', env.MAAS_BRANCH) }}
+      branches: ${{ (github.event_name == 'schedule' || inputs.version == 'all') && '["main", "3.6", "3.7", "3.8"]' || format('["{0}"]', inputs.version || env.MAAS_BRANCH) }}
     steps:
       - uses: actions/checkout@main
         with:
@@ -38,9 +47,11 @@ jobs:
       - name: Resolve spec glob
         id: resolve
         shell: bash
+        env:
+          FILTER_SPECS: ${{ github.event_name == 'pull_request' && (github.base_ref == 'main' || github.base_ref == '3.8') }}
         run: |
-          # Run the full suite on everything except PRs, where we can diff.
-          if [ "${{ github.event_name }}" != "pull_request" ]; then
+          # Older branches use a different spec layout and need the full suite.
+          if [ "$FILTER_SPECS" != "true" ]; then
             echo "spec_glob=all" >> "$GITHUB_OUTPUT"
             exit 0
           fi
@@ -177,7 +188,7 @@ jobs:
     steps:
       - uses: actions/checkout@main
         with:
-          ref: ${{ github.event_name == 'schedule' && matrix.branch || github.sha }}
+          ref: ${{ (github.event_name == 'schedule' || github.event_name == 'workflow_dispatch') && format('refs/heads/{0}', matrix.branch) || github.sha }}
       - name: Setup MAAS
         uses: canonical/setup-maas@main
         with:
@@ -279,7 +290,7 @@ jobs:
     steps:
       - uses: actions/checkout@main
         with:
-          ref: ${{ github.event_name == 'schedule' && matrix.branch || github.sha }}
+          ref: ${{ (github.event_name == 'schedule' || github.event_name == 'workflow_dispatch') && format('refs/heads/{0}', matrix.branch) || github.sha }}
       - name: Setup MAAS
         uses: canonical/setup-maas@main
         with:

@@ -7,19 +7,34 @@ on:
       - "*sitespeed*"
   workflow_dispatch:
     inputs:
+      version:
+        type: choice
+        required: true
+        default: main
+        options:
+          - main
+          - "3.6"
+          - "3.7"
+          - "3.8"
+          - all
       build-from-source:
-        description: "Build the MAAS backend from source instead of installing its published snap"
         type: boolean
         default: false
 jobs:
   run-sitespeed:
     name: Run sitespeed.io
     runs-on: ubuntu-24.04
+    strategy:
+      fail-fast: false
+      matrix:
+        branch: ${{ fromJSON(inputs.version == 'all' && '["main", "3.6", "3.7", "3.8"]' || format('["{0}"]', inputs.version || github.ref_name)) }}
     env:
       MAAS_DOMAIN: localhost
       MAAS_URL: http://localhost:5240
     steps:
       - uses: actions/checkout@main
+        with:
+          ref: ${{ github.event_name == 'workflow_dispatch' && format('refs/heads/{0}', matrix.branch) || github.sha }}
       - name: Use Node.js from .nvmrc
         uses: actions/setup-node@v6
         with:
@@ -29,11 +44,11 @@ jobs:
       - name: Setup MAAS
         uses: canonical/setup-maas@main
         with:
-          branch: ${{ contains(github.ref_name, 'sitespeed') && 'main' || github.ref_name }}
+          branch: ${{ contains(matrix.branch, 'sitespeed') && 'main' || matrix.branch }}
           build-from-source: ${{ inputs.build-from-source || false }}
           maas-url: ${{ env.MAAS_URL }}/MAAS
           use-maasdb-dump: true
-          maasdb-dump-url: https://github.com/canonical/maas-ui-testing/raw/main/db/maasdb-${{ (github.ref_name == '3.6' || github.ref_name == '3.7') && '24.04' || '26.04' }}-master-1000.dump
+          maasdb-dump-url: https://github.com/canonical/maas-ui-testing/raw/main/db/maasdb-${{ (matrix.branch == '3.6' || matrix.branch == '3.7') && '24.04' || '26.04' }}-master-1000.dump
       - name: Create MAAS admin
         run: lxc exec maas-backend -- maas createadmin --username=admin --password=test --email=fake@example.org
       - name: Login MAAS admin
@@ -59,12 +74,12 @@ jobs:
       - uses: actions/upload-artifact@v4
         if: failure()
         with:
-          name: maas_logs
+          name: ${{ github.event_name == 'workflow_dispatch' && format('maas_logs-{0}', matrix.branch) || 'maas_logs' }}
           path: |
             sitespeed.io/maas_logs.txt
             sitespeed.io/ui.log
       - name: Upload results
         uses: actions/upload-artifact@v4
         with:
-          name: sitespeed.io-results
+          name: ${{ github.event_name == 'workflow_dispatch' && format('sitespeed.io-results-{0}', matrix.branch) || 'sitespeed.io-results' }}
           path: sitespeed.io/results
