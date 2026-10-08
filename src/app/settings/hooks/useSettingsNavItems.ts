@@ -15,7 +15,13 @@ export const useSettingsNavItems = (): NavItem[] => {
   const disabledPaths = useMemo(() => {
     const paths: string[] = [];
     if (!configurations.isPending && !configurations.allowed) {
-      paths.push(settingsURLs.images.windows, settingsURLs.images.vmware);
+      paths.push(
+        settingsURLs.images.windows,
+        settingsURLs.images.vmware,
+        settingsURLs.security.securityProtocols,
+        settingsURLs.security.secretStorage,
+        settingsURLs.security.ipmiSettings
+      );
     }
     if (!bootEntities.isPending && !bootEntities.allowed) {
       paths.push(settingsURLs.images.sources);
