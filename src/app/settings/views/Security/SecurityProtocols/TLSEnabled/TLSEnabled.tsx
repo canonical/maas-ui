@@ -102,7 +102,7 @@ const TLSEnabled = (): React.ReactElement | null => {
         cleanup={configActions.cleanup}
         editable={canEdit}
         initialValues={{
-          notificationEnabled: (notificationEnabled as boolean) || false,
+          notificationEnabled: !!notificationEnabled,
           notificationInterval: notificationInterval
             ? `${notificationInterval}`
             : "30",
