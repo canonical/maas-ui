@@ -6,12 +6,18 @@ import { Entitlement } from "../../../UserManagement/views/Groups/constants";
 
 import TLSEnabledFields from "./TLSEnabledFields";
 
+import { useConfigurations } from "@/app/api/query/configurations";
+import type { PublicConfigName } from "@/app/apiclient";
 import CertificateMetadata from "@/app/base/components/CertificateMetadata";
 import FormikForm from "@/app/base/components/FormikForm";
 import { useHasEntitlements } from "@/app/base/hooks";
+import { getConfigsFromResponse } from "@/app/settings/utils";
 import { configActions } from "@/app/store/config";
 import configSelectors from "@/app/store/config/selectors";
-import { TLSExpiryNotificationInterval } from "@/app/store/config/types";
+import {
+  ConfigNames,
+  TLSExpiryNotificationInterval,
+} from "@/app/store/config/types";
 import { tlsCertificate as tlsCertificateSelectors } from "@/app/store/general/selectors";
 
 export type TLSEnabledValues = {
@@ -41,15 +47,20 @@ const TLSEnabledSchema = Yup.object()
   })
   .defined();
 
+export const tlsConfigNames = [
+  ConfigNames.TLS_CERT_EXPIRATION_NOTIFICATION_ENABLED,
+  ConfigNames.TLS_CERT_EXPIRATION_NOTIFICATION_INTERVAL,
+] as PublicConfigName[];
+
 const TLSEnabled = (): React.ReactElement | null => {
   const dispatch = useDispatch();
-  const notificationEnabled = useSelector(
-    configSelectors.tlsCertExpirationNotificationEnabled
-  );
-  const notificationInterval = useSelector(
-    configSelectors.tlsCertExpirationNotificationInterval
-  );
-  const configLoading = useSelector(configSelectors.loading);
+  const { data, isPending } = useConfigurations({
+    query: { name: tlsConfigNames },
+  });
+  const {
+    tls_cert_expiration_notification_enabled: notificationEnabled,
+    tls_cert_expiration_notification_interval: notificationInterval,
+  } = getConfigsFromResponse(data?.items || [], tlsConfigNames);
   const tlsCertificateLoading = useSelector(tlsCertificateSelectors.loading);
   const tlsCertificate = useSelector(tlsCertificateSelectors.get);
   const saved = useSelector(configSelectors.saved);
@@ -58,7 +69,7 @@ const TLSEnabled = (): React.ReactElement | null => {
     Entitlement.CAN_EDIT_CONFIGURATIONS,
   ]);
 
-  if (configLoading || tlsCertificateLoading) {
+  if (isPending || tlsCertificateLoading) {
     return <Spinner aria-label={Labels.Loading} />;
   }
 
@@ -91,7 +102,7 @@ const TLSEnabled = (): React.ReactElement | null => {
         cleanup={configActions.cleanup}
         editable={canEdit}
         initialValues={{
-          notificationEnabled: notificationEnabled || false,
+          notificationEnabled: !!notificationEnabled,
           notificationInterval: notificationInterval
             ? `${notificationInterval}`
             : "30",

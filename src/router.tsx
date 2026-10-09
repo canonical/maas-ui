@@ -785,9 +785,14 @@ export const router = createBrowserRouter(
                     urls.settings.index
                   ),
                   element: (
-                    <ErrorBoundary>
-                      <SecurityProtocols />
-                    </ErrorBoundary>
+                    <RequireEntitlements
+                      entitlements={[Entitlement.CAN_VIEW_CONFIGURATIONS]}
+                      skeletonView="settings"
+                    >
+                      <ErrorBoundary>
+                        <SecurityProtocols />
+                      </ErrorBoundary>
+                    </RequireEntitlements>
                   ),
                 },
                 {
@@ -796,9 +801,14 @@ export const router = createBrowserRouter(
                     urls.settings.index
                   ),
                   element: (
-                    <ErrorBoundary>
-                      <SecretStorage />
-                    </ErrorBoundary>
+                    <RequireEntitlements
+                      entitlements={[Entitlement.CAN_VIEW_CONFIGURATIONS]}
+                      skeletonView="settings"
+                    >
+                      <ErrorBoundary>
+                        <SecretStorage />
+                      </ErrorBoundary>
+                    </RequireEntitlements>
                   ),
                 },
                 {
@@ -818,9 +828,14 @@ export const router = createBrowserRouter(
                     urls.settings.index
                   ),
                   element: (
-                    <ErrorBoundary>
-                      <IpmiSettings />
-                    </ErrorBoundary>
+                    <RequireEntitlements
+                      entitlements={[Entitlement.CAN_VIEW_CONFIGURATIONS]}
+                      skeletonView="settings"
+                    >
+                      <ErrorBoundary>
+                        <IpmiSettings />
+                      </ErrorBoundary>
+                    </RequireEntitlements>
                   ),
                 },
                 {
@@ -829,9 +844,14 @@ export const router = createBrowserRouter(
                     urls.settings.index
                   ),
                   element: (
-                    <ErrorBoundary>
-                      <TrustedSSHHostKeys />
-                    </ErrorBoundary>
+                    <RequireEntitlements
+                      entitlements={[Entitlement.CAN_VIEW_GLOBAL_ENTITIES]}
+                      skeletonView="settings"
+                    >
+                      <ErrorBoundary>
+                        <TrustedSSHHostKeys />
+                      </ErrorBoundary>
+                    </RequireEntitlements>
                   ),
                 },
                 {
