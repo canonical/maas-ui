@@ -17,11 +17,17 @@ const mockServer = setupMockServer(
   authResolvers.getMeEntitlements.handler()
 );
 
-const getDisabledImagesItems = (items: NavItem[]) =>
+const getDisabledItems = (items: NavItem[], group: string) =>
   items
-    .find((group) => group.label === "Images")
+    .find((item) => item.label === group)
     ?.items?.filter((item) => item.disabled)
     .map((item) => item.label);
+
+const getDisabledImagesItems = (items: NavItem[]) =>
+  getDisabledItems(items, "Images");
+
+const getDisabledSecurityItems = (items: NavItem[]) =>
+  getDisabledItems(items, "Security");
 
 it("returns base nav items while entitlements are pending", () => {
   const { result } = renderHookWithProviders(() => useSettingsNavItems());
@@ -34,6 +40,9 @@ it("does not disable any Images items with both entitlements", async () => {
     authResolvers.getMeEntitlements.handler([
       factory.entitlement({ entitlement: Entitlement.CAN_VIEW_CONFIGURATIONS }),
       factory.entitlement({ entitlement: Entitlement.CAN_VIEW_BOOT_ENTITIES }),
+      factory.entitlement({
+        entitlement: Entitlement.CAN_VIEW_GLOBAL_ENTITIES,
+      }),
     ])
   );
   const { result } = renderHookWithProviders(() => ({
@@ -45,6 +54,56 @@ it("does not disable any Images items with both entitlements", async () => {
     expect(result.current.entitlements.isPending).toBe(false);
   });
   expect(getDisabledImagesItems(result.current.items)).toEqual([]);
+  expect(getDisabledSecurityItems(result.current.items)).toEqual([]);
+});
+
+it("disables the configurations-gated Security items without the entitlement", async () => {
+  mockServer.use(
+    authResolvers.getMeEntitlements.handler([
+      factory.entitlement({ entitlement: Entitlement.CAN_VIEW_BOOT_ENTITIES }),
+      factory.entitlement({
+        entitlement: Entitlement.CAN_VIEW_GLOBAL_ENTITIES,
+      }),
+    ])
+  );
+  const { result } = renderHookWithProviders(() => useSettingsNavItems());
+
+  await waitFor(() => {
+    expect(getDisabledSecurityItems(result.current)).toEqual([
+      "Security protocols",
+      "Secret storage",
+      "IPMI settings",
+    ]);
+  });
+});
+
+it("disables Trusted SSH host keys without the global entities entitlement", async () => {
+  mockServer.use(
+    authResolvers.getMeEntitlements.handler([
+      factory.entitlement({ entitlement: Entitlement.CAN_VIEW_CONFIGURATIONS }),
+    ])
+  );
+  const { result } = renderHookWithProviders(() => useSettingsNavItems());
+
+  await waitFor(() => {
+    expect(getDisabledSecurityItems(result.current)).toEqual([
+      "Trusted SSH host keys",
+    ]);
+  });
+});
+
+it("never disables Token expiration or Hardening status", async () => {
+  mockServer.use(authResolvers.getMeEntitlements.handler([]));
+  const { result } = renderHookWithProviders(() => useSettingsNavItems());
+
+  await waitFor(() => {
+    expect(getDisabledSecurityItems(result.current)).toEqual([
+      "Security protocols",
+      "Secret storage",
+      "IPMI settings",
+      "Trusted SSH host keys",
+    ]);
+  });
 });
 
 it("disables Windows and VMware without the configurations entitlement", async () => {
