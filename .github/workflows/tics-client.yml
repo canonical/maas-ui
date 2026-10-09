@@ -1,0 +1,98 @@
+name: TiCS PR Analysis
+# pull_request_target (instead of pull_request) is needed so that PRs from
+# forks get access to the TiCS secret. It runs this file as it is on main,
+# not the version from the PR.
+on:
+  pull_request_target:
+    types: [opened, synchronize, reopened]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: tics-client-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  check-author:
+    name: Check PR author access
+    runs-on: ubuntu-latest
+    outputs:
+      trusted: ${{ steps.permission.outputs.trusted }}
+    steps:
+      - name: Check if PR author is admin or has write access
+        id: permission
+        env:
+          GH_TOKEN: ${{ github.token }}
+          AUTHOR: ${{ github.event.pull_request.user.login }}
+        run: |
+          # The API returns only the highest role (admin, write, read or none),
+          # so admins are reported as "admin", not "write".
+          permission=$(gh api "repos/${{ github.repository }}/collaborators/${AUTHOR}/permission" --jq .permission || echo none)
+          echo "${AUTHOR} has '${permission}' access"
+          if [[ "$permission" == "admin" || "$permission" == "write" ]]; then
+            echo "trusted=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "trusted=false" >> "$GITHUB_OUTPUT"
+          fi
+
+  approve:
+    name: Approve TiCS run
+    # PRs from authors without write access run untrusted code with the TiCS
+    # secret, so a reviewer of the "tics" environment has to approve them first.
+    needs: check-author
+    if: needs.check-author.outputs.trusted != 'true'
+    runs-on: ubuntu-latest
+    environment: tics
+    steps:
+      - run: echo "TiCS run approved"
+
+  tics-client:
+    name: TiCS client analysis
+    needs: [check-author, approve]
+    if: >-
+      always() &&
+      needs.check-author.result == 'success' &&
+      (needs.approve.result == 'success' || needs.approve.result == 'skipped')
+    runs-on: [ self-hosted, reactive, linux, amd64, large-tiobe, jammy ]
+    timeout-minutes: 120
+    permissions:
+      contents: read
+      pull-requests: write # post the TiCS summary and annotations on the PR
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          # pull_request_target checks out main by default
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 0  # Important for TICS to analyze history
+          persist-credentials: false
+
+      - name: Setup Node.js from .nvmrc
+        uses: actions/setup-node@v6
+        with:
+          node-version-file: ".nvmrc"
+          cache: 'yarn'
+
+      - name: Install packages
+        run: CYPRESS_INSTALL_BINARY=0 yarn install --frozen-lockfile
+
+      - name: Run tests with coverage
+        run: yarn test-coverage
+
+      - name: Run TICS Analyzer
+        uses: tiobe/tics-github-action@v3
+        with:
+          mode: client
+          project: maas-ui
+          viewerUrl: https://canonical.tiobe.com/tiobeweb/TICS/api/cfg?name=default
+          ticsAuthToken: ${{ secrets.TICSAUTHTOKEN }}
+          installTics: true
+          tmpdir: /tmp/tics
+
+      - name: Upload TICS Report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: tics-client-report
+          path: /tmp/tics
+          retention-days: 7
