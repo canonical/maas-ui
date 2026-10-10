@@ -197,7 +197,7 @@ jobs:
         with:
           node-version-file: ".nvmrc"
       - name: Install Cypress
-        uses: cypress-io/github-action@v7.3.0
+        uses: cypress-io/github-action@v7.4.6
         with:
           runTests: false
           install-command: yarn install
@@ -241,7 +241,7 @@ jobs:
           NODE_EXTRA_CA_CERTS: /tmp/maas-certs/cert.pem
         run: yarn wait-on --timeout 120000 https-get://localhost:5443/MAAS/api/2.0/version/
       - name: Run Cypress tests
-        uses: cypress-io/github-action@v7.3.0
+        uses: cypress-io/github-action@v7.4.6
         env:
           HTTPS_CERT: ${{ env.USE_TLS == 'true' && '/tmp/maas-certs/cert.pem' || '' }}
           HTTPS_KEY: ${{ env.USE_TLS == 'true' && '/tmp/maas-certs/key.pem' || '' }}
@@ -370,7 +370,7 @@ jobs:
         with:
           node-version-file: ".nvmrc"
       - name: Install Cypress
-        uses: cypress-io/github-action@v7.3.0
+        uses: cypress-io/github-action@v7.4.6
         with:
           runTests: false
           install-command: yarn install
@@ -456,7 +456,7 @@ jobs:
             echo "pattern=${{ needs.detect-changes.outputs.spec_glob }}" >> "$GITHUB_OUTPUT"
           fi
       - name: Run Cypress tests
-        uses: cypress-io/github-action@v7.3.0
+        uses: cypress-io/github-action@v7.4.6
         env:
           HTTPS_CERT: ${{ env.USE_TLS == 'true' && '/tmp/maas-certs/cert.pem' || '' }}
           HTTPS_KEY: ${{ env.USE_TLS == 'true' && '/tmp/maas-certs/key.pem' || '' }}
