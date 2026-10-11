@@ -184,7 +184,7 @@ export const router = createBrowserRouter(
               path: urls.machines.index,
               element: (
                 <RequireEntitlements
-                  entitlements={[Entitlement.CAN_VIEW_MACHINES]}
+                  entitlements={[Entitlement.CAN_VIEW_AVAILABLE_MACHINES]}
                 >
                   <ErrorBoundary>
                     <Machines />
@@ -404,7 +404,7 @@ export const router = createBrowserRouter(
               path: urls.machines.machine.index(null),
               element: (
                 <RequireEntitlements
-                  entitlements={[Entitlement.CAN_VIEW_MACHINES]}
+                  entitlements={[Entitlement.CAN_VIEW_AVAILABLE_MACHINES]}
                 >
                   <ErrorBoundary>
                     <MachineDetails />
