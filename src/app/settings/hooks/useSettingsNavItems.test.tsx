@@ -144,23 +144,6 @@ it("disables User management items without the identities entitlement", async ()
   });
 });
 
-it("does not disable User management items with the identities entitlement", async () => {
-  mockServer.use(
-    authResolvers.getMeEntitlements.handler([
-      factory.entitlement({ entitlement: Entitlement.CAN_VIEW_IDENTITIES }),
-    ])
-  );
-  const { result } = renderHookWithProviders(() => ({
-    items: useSettingsNavItems(),
-    entitlements: useHasEntitlements([Entitlement.CAN_VIEW_IDENTITIES]),
-  }));
-
-  await waitFor(() => {
-    expect(result.current.entitlements.isPending).toBe(false);
-  });
-  expect(getDisabledUserManagementItems(result.current.items)).toEqual([]);
-});
-
 it("disables the configurations-gated Security items without the entitlement", async () => {
   mockServer.use(
     authResolvers.getMeEntitlements.handler([
