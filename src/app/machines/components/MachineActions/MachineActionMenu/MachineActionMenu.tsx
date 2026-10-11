@@ -9,16 +9,12 @@ import type {
 import { ContextualMenu } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 
-import {
-  useMachineActionMenus,
-  useLifecycleActionEntitlements,
-} from "../hooks";
+import { useMachineActionMenus, useIsMachineActionDisabled } from "../hooks";
 import type { MachineActionsProps } from "../types";
 
 import type { DataTestElement } from "@/app/base/types";
 import machineSelectors from "@/app/store/machine/selectors";
 import type { RootState } from "@/app/store/root/types";
-import { NodeActions } from "@/app/store/types/node";
 import { canOpenActionForm } from "@/app/store/utils";
 import "./_index.scss";
 
@@ -47,8 +43,10 @@ const MachineActionMenu = ({
     machineSelectors.getById(state, systemId)
   );
 
-  const { actionsDisabled, deployDisabled } =
-    useLifecycleActionEntitlements(isViewingDetails);
+  const isActionDisabled = useIsMachineActionDisabled(
+    isViewingDetails,
+    systemId
+  );
 
   return (
     <ContextualMenu
@@ -74,14 +72,10 @@ const MachineActionMenu = ({
             return actions;
           }
 
-          const isGated =
-            item.action === NodeActions.DEPLOY
-              ? deployDisabled
-              : actionsDisabled;
-
           actions.push({
             children: <span>{item.label}...</span>,
-            disabled: isDisabledAction || isGated || undefined,
+            disabled:
+              isDisabledAction || isActionDisabled(item.action) || undefined,
             onClick: item.onClick,
           });
 

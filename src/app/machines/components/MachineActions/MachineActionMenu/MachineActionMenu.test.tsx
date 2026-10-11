@@ -1,6 +1,5 @@
 import MachineActionMenu from "./MachineActionMenu";
 
-import { Entitlement } from "@/app/settings/views/UserManagement/views/Groups/constants";
 import type { RootState } from "@/app/store/root/types";
 import { NodeActions } from "@/app/store/types/node";
 import { getNodeActionTitle } from "@/app/store/utils";
@@ -294,7 +293,7 @@ describe("MachineActionMenu", async () => {
   });
 });
 
-describe("MachineActionMenu entitlements gating", () => {
+describe("MachineActionMenu list selection actions", () => {
   let state: RootState;
 
   const openMenu = async () => {
@@ -307,12 +306,14 @@ describe("MachineActionMenu entitlements gating", () => {
     });
 
   beforeEach(() => {
+    mockServer.use(authResolvers.getMeEntitlements.handler([]));
     state = factory.rootState({
       machine: factory.machineState({
         items: [
           factory.machine({
             system_id: "abc123",
             pool: factory.modelRef({ id: 2, name: "pool-2" }),
+            actions: [NodeActions.RELEASE],
           }),
         ],
         selected: { items: ["abc123"] },
@@ -320,53 +321,11 @@ describe("MachineActionMenu entitlements gating", () => {
     });
   });
 
-  it("enables Deploy with only an edit entitlement (edit implies deploy)", async () => {
-    mockServer.use(
-      authResolvers.getMeEntitlements.handler([
-        factory.entitlement({
-          entitlement: Entitlement.CAN_EDIT_MACHINES,
-          resource_type: "pool",
-          resource_id: 2,
-        }),
-      ])
-    );
+  it("enables an action a selected machine allows without an edit entitlement", async () => {
     renderWithProviders(<MachineActionMenu />, { state });
 
     await openMenu();
 
-    await waitFor(() => {
-      expect(getActionButton(NodeActions.DEPLOY)).not.toBeAriaDisabled();
-    });
-  });
-
-  it("enables Deploy but disables other actions for a deploy-only user", async () => {
-    mockServer.use(
-      authResolvers.getMeEntitlements.handler([
-        factory.entitlement({
-          entitlement: Entitlement.CAN_DEPLOY_MACHINES,
-          resource_type: "pool",
-          resource_id: 2,
-        }),
-      ])
-    );
-    renderWithProviders(<MachineActionMenu />, { state });
-
-    await openMenu();
-
-    await waitFor(() => {
-      expect(getActionButton(NodeActions.DEPLOY)).not.toBeAriaDisabled();
-    });
-    expect(getActionButton(NodeActions.RELEASE)).toBeAriaDisabled();
-  });
-
-  it("disables Deploy without an edit or deploy entitlement", async () => {
-    mockServer.use(authResolvers.getMeEntitlements.handler([]));
-    renderWithProviders(<MachineActionMenu />, { state });
-
-    await openMenu();
-
-    await waitFor(() => {
-      expect(getActionButton(NodeActions.DEPLOY)).toBeAriaDisabled();
-    });
+    expect(getActionButton(NodeActions.RELEASE)).not.toBeAriaDisabled();
   });
 });

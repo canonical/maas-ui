@@ -24,7 +24,26 @@ import {
 import type { RootState } from "@/app/store/root/types";
 import { NodeActions } from "@/app/store/types/node";
 import { canOpenActionForm } from "@/app/store/utils";
-import { hasEntitlementForPool, hasPermissions } from "@/app/utils/permissions";
+import { hasPermissions } from "@/app/utils/permissions";
+
+// Allowed for the machine owner (or on unowned machines) as well as with
+// can_edit_machines; every other action requires can_edit_machines.
+const LIFECYCLE_ACTIONS = [
+  NodeActions.ACQUIRE,
+  NodeActions.DEPLOY,
+  NodeActions.ON,
+  NodeActions.OFF,
+  NodeActions.SOFT_OFF,
+  NodeActions.RELEASE,
+  NodeActions.MARK_BROKEN,
+  NodeActions.LOCK,
+  NodeActions.UNLOCK,
+];
+
+// Soft power off isn't listed separately in a machine's actions; it is
+// available whenever power off is.
+const getAvailabilityAction = (action: NodeActions): NodeActions =>
+  action === NodeActions.SOFT_OFF ? NodeActions.OFF : action;
 
 const CommissionForm = lazyLoadSidePanel(
   () => import("../MachineForms/MachineActionFormWrapper/CommissionForm")
@@ -570,11 +589,7 @@ export const useMachineActions = (
 
   const links = actions.reduce<ButtonProps[]>((links, action) => {
     const item = items.find((item) => item.action === action);
-    // Soft power off isn't listed separately in the machine's actions; it is
-    // available whenever power off is.
-    const availabilityAction =
-      action === NodeActions.SOFT_OFF ? NodeActions.OFF : action;
-    if (!item || !canOpenActionForm(machine, availabilityAction)) {
+    if (!item || !canOpenActionForm(machine, getAvailabilityAction(action))) {
       return links;
     }
     const label = `${item.label}...`;
@@ -595,79 +610,50 @@ export const useMachineActions = (
 };
 
 /**
- * Computes the disabled state of the machine list action controls, based on
- * the current user's resource-pool entitlements.
+ * Returns whether a machine action control should be disabled for the machine
+ * being viewed or the current machine list selection.
  */
-export const useLifecycleActionEntitlements = (
-  isViewingDetails: boolean
-): { actionsDisabled: boolean; deployDisabled: boolean } => {
+export const useIsMachineActionDisabled = (
+  isViewingDetails: boolean,
+  systemId?: Machine["system_id"]
+): ((action: NodeActions) => boolean) => {
   const selected = useSelector(machineSelectors.selected);
   const allMachines = useSelector(machineSelectors.all);
+  const detailsMachine = useSelector((state: RootState) =>
+    machineSelectors.getById(state, systemId)
+  );
   const { data: userEntitlements } = useGetUserEntitlements();
 
-  // In the details view the machine's backend actions list is already
-  // filtered by permission, ownership and lock state.
-  if (isViewingDetails || !selected) {
-    return { actionsDisabled: false, deployDisabled: false };
+  // A machine's backend actions list is already filtered by permission,
+  // ownership and lock state.
+  if (isViewingDetails) {
+    return (action) =>
+      !!detailsMachine &&
+      !canOpenActionForm(detailsMachine, getAvailabilityAction(action));
+  }
+  if (!selected) {
+    return () => false;
   }
 
-  // Resolve the resource pool ids being acted on. Returns null when the pools
-  // can't be determined (filter/group selection or unresolved machines),
-  // signalling a fallback to the global entitlement check.
-  const getPoolIds = (): number[] | null => {
-    if ("filter" in selected) {
-      return null;
-    }
-    if ((selected.groups ?? []).length > 0) {
-      return null;
-    }
-    const items = selected.items ?? [];
-    if (items.length === 0) {
-      return null;
-    }
-    const poolIds: number[] = [];
-    for (const id of items) {
-      const machine = allMachines.find((m) => m.system_id === id);
-      if (!machine) {
-        return null;
-      }
-      poolIds.push(machine.pool.id);
-    }
-    return Array.from(new Set(poolIds));
-  };
+  const items =
+    "filter" in selected || (selected.groups ?? []).length > 0
+      ? []
+      : (selected.items ?? []);
+  const selectedMachines = allMachines.filter((machine) =>
+    items.includes(machine.system_id)
+  );
+  if (items.length > 0 && selectedMachines.length === items.length) {
+    // The backend applies bulk actions per machine and reports the failures.
+    return (action) =>
+      !selectedMachines.some((machine) =>
+        canOpenActionForm(machine, getAvailabilityAction(action))
+      );
+  }
 
-  const poolIds = getPoolIds();
-
-  const canEdit =
-    poolIds === null
-      ? hasPermissions(userEntitlements, [Entitlement.CAN_EDIT_MACHINES])
-      : poolIds.every((poolId) =>
-          hasEntitlementForPool(
-            userEntitlements,
-            Entitlement.CAN_EDIT_MACHINES,
-            poolId
-          )
-        );
-
-  // Per the OpenFGA model, can_deploy_machines is granted by either a deploy or
-  // an edit entitlement (can_edit_machines implies deploy), scoped per pool.
-  const canDeploy =
-    poolIds === null
-      ? hasPermissions(userEntitlements, [Entitlement.CAN_EDIT_MACHINES]) ||
-        hasPermissions(userEntitlements, [Entitlement.CAN_DEPLOY_MACHINES])
-      : poolIds.every(
-          (poolId) =>
-            hasEntitlementForPool(
-              userEntitlements,
-              Entitlement.CAN_EDIT_MACHINES,
-              poolId
-            ) ||
-            hasEntitlementForPool(
-              userEntitlements,
-              Entitlement.CAN_DEPLOY_MACHINES,
-              poolId
-            )
-        );
-
-  return { actionsDisabled: !canEdit, deployDisabled: !canDeploy };
+  // Without the selected machines, only rule out admin actions that the user
+  // can't perform in any pool. Lifecycle actions may be allowed by ownership.
+  const canEditAnywhere = hasPermissions(userEntitlements, [
+    Entitlement.CAN_EDIT_MACHINES,
+  ]);
+  return (action) => !canEditAnywhere && !LIFECYCLE_ACTIONS.includes(action);
 };
