@@ -85,7 +85,7 @@ describe("node utils", () => {
         status: NodeStatus.NEW,
       });
       expect(canOpenActionForm(machine1, NodeActions.CLONE)).toBe(true);
-      expect(canOpenActionForm(machine2, NodeActions.CLONE)).toBe(true);
+      expect(canOpenActionForm(machine2, NodeActions.CLONE)).toBe(false);
       expect(canOpenActionForm(machine3, NodeActions.CLONE)).toBe(false);
       expect(canOpenActionForm(machine4, NodeActions.CLONE)).toBe(false);
     });

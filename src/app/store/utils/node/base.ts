@@ -228,7 +228,10 @@ export const canOpenActionForm = (
     // select the destination machines first then when the form is open we
     // select the machine to actually perform the clone action. The destination
     // machines can only be in a subset of statuses.
-    return [NodeStatus.READY, NodeStatus.FAILED_TESTING].includes(node.status);
+    return (
+      [NodeStatus.READY, NodeStatus.FAILED_TESTING].includes(node.status) &&
+      node.actions.includes(NodeActions.CLONE)
+    );
   }
 
   if (nodeIsMachine(node) && actionName === NodeActions.CHECK_POWER) {

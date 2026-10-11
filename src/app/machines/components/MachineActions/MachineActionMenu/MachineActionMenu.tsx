@@ -47,10 +47,8 @@ const MachineActionMenu = ({
     machineSelectors.getById(state, systemId)
   );
 
-  const { actionsDisabled, deployDisabled } = useLifecycleActionEntitlements(
-    isViewingDetails,
-    systemId
-  );
+  const { actionsDisabled, deployDisabled } =
+    useLifecycleActionEntitlements(isViewingDetails);
 
   return (
     <ContextualMenu

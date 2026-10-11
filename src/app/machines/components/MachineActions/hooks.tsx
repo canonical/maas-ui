@@ -566,10 +566,6 @@ export const useMachineActions = (
   const actionMenus = useMachineActionMenus(false, systemId, {
     singleMachine: true,
   });
-  const { actionsDisabled, deployDisabled } = useLifecycleActionEntitlements(
-    true,
-    systemId
-  );
   const items = actionMenus.flatMap((menu) => menu.items);
 
   const links = actions.reduce<ButtonProps[]>((links, action) => {
@@ -581,12 +577,9 @@ export const useMachineActions = (
     if (!item || !canOpenActionForm(machine, availabilityAction)) {
       return links;
     }
-    const isGated =
-      action === NodeActions.DEPLOY ? deployDisabled : actionsDisabled;
     const label = `${item.label}...`;
     links.push({
       children: renderLabel ? renderLabel(action, label) : label,
-      disabled: isGated || undefined,
       onClick: () => {
         dispatch(machineActions.setSelected({ items: [systemId] }));
         item.onClick();
@@ -602,23 +595,19 @@ export const useMachineActions = (
 };
 
 /**
- * Computes the disabled state of the machine action controls, based on the
- * current user's resource-pool entitlements.
+ * Computes the disabled state of the machine list action controls, based on
+ * the current user's resource-pool entitlements.
  */
 export const useLifecycleActionEntitlements = (
-  isViewingDetails: boolean,
-  systemId?: Machine["system_id"]
+  isViewingDetails: boolean
 ): { actionsDisabled: boolean; deployDisabled: boolean } => {
   const selected = useSelector(machineSelectors.selected);
   const allMachines = useSelector(machineSelectors.all);
-  const detailsMachine = useSelector((state: RootState) =>
-    machineSelectors.getById(state, systemId)
-  );
   const { data: userEntitlements } = useGetUserEntitlements();
 
-  // Single-machine usage that is neither the details view nor a selection is
-  // left ungated.
-  if (!isViewingDetails && !selected) {
+  // In the details view the machine's backend actions list is already
+  // filtered by permission, ownership and lock state.
+  if (isViewingDetails || !selected) {
     return { actionsDisabled: false, deployDisabled: false };
   }
 
@@ -626,10 +615,7 @@ export const useLifecycleActionEntitlements = (
   // can't be determined (filter/group selection or unresolved machines),
   // signalling a fallback to the global entitlement check.
   const getPoolIds = (): number[] | null => {
-    if (isViewingDetails) {
-      return detailsMachine ? [detailsMachine.pool.id] : null;
-    }
-    if (!selected || "filter" in selected) {
+    if ("filter" in selected) {
       return null;
     }
     if ((selected.groups ?? []).length > 0) {
