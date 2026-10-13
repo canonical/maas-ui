@@ -7,11 +7,11 @@ import {
   setupMockServer,
   waitFor,
   renderWithProviders,
-  mockSidePanel,
+  mockModal,
 } from "@/testing/utils";
 
 setupMockServer(sslKeyResolvers.deleteSslKey.handler());
-const { mockClose } = await mockSidePanel();
+const { mockClose } = await mockModal();
 
 describe("DeleteSSLKey", () => {
   it("can show a delete confirmation", () => {
@@ -22,7 +22,7 @@ describe("DeleteSSLKey", () => {
     ).toBeInTheDocument();
   });
 
-  it("calls closeSidePanel on cancel click", async () => {
+  it("calls closeModal on cancel click", async () => {
     renderWithProviders(<DeleteSSLKey id={1} />);
 
     await userEvent.click(screen.getByRole("button", { name: "Cancel" }));

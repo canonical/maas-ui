@@ -1,5 +1,3 @@
-import DeleteSSLKey from "../DeleteSSLKey";
-
 import { AddSSLKey } from "./AddSSLKey";
 
 import { sslKeyResolvers } from "@/testing/resolvers/sslKeys";
@@ -24,7 +22,7 @@ describe("AddSSLKey", () => {
   });
 
   it("calls closeSidePanel on cancel click", async () => {
-    renderWithProviders(<DeleteSSLKey id={1} />);
+    renderWithProviders(<AddSSLKey />);
 
     await userEvent.click(screen.getByRole("button", { name: "Cancel" }));
     expect(mockClose).toHaveBeenCalled();

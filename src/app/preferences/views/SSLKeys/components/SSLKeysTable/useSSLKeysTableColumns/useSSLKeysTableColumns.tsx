@@ -1,16 +1,16 @@
 import { useMemo } from "react";
 
-import { useSidePanel } from "@canonical/maas-react-components";
 import type { ColumnDef } from "@tanstack/react-table";
 
 import type { SslKeyResponse } from "@/app/apiclient";
 import TableActions from "@/app/base/components/TableActions";
+import { useModal } from "@/app/base/modal-context";
 import { DeleteSSLKey } from "@/app/preferences/views/SSLKeys/components";
 
 type SSLKeysColumnDef = ColumnDef<SslKeyResponse, Partial<SslKeyResponse>>;
 
 const useSSLKeysTableColumns = (): SSLKeysColumnDef[] => {
-  const { openSidePanel } = useSidePanel();
+  const { openModal } = useModal();
   return useMemo(
     () =>
       [
@@ -43,7 +43,7 @@ const useSSLKeysTableColumns = (): SSLKeysColumnDef[] => {
               <TableActions
                 data-testid="ssh-key-actions"
                 onDelete={() => {
-                  openSidePanel({
+                  openModal({
                     component: DeleteSSLKey,
                     title: "Delete SSL key",
                     props: { id },
@@ -54,7 +54,7 @@ const useSSLKeysTableColumns = (): SSLKeysColumnDef[] => {
           },
         },
       ] as SSLKeysColumnDef[],
-    [openSidePanel]
+    [openModal]
   );
 };
 

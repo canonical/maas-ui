@@ -1,16 +1,15 @@
 import type { ReactElement } from "react";
 
-import { useSidePanel } from "@canonical/maas-react-components";
-
 import { useDeleteSshKey } from "@/app/api/query/sshKeys";
 import ModelActionForm from "@/app/base/components/ModelActionForm";
+import { useModal } from "@/app/base/modal-context";
 
 type DeleteSSHKeyProps = {
   ids: number[];
 };
 
 const DeleteSSHKey = ({ ids }: DeleteSSHKeyProps): ReactElement => {
-  const { closeSidePanel } = useSidePanel();
+  const { closeModal } = useModal();
   const deleteSshKey = useDeleteSshKey();
 
   return (
@@ -22,13 +21,13 @@ const DeleteSSHKey = ({ ids }: DeleteSSHKeyProps): ReactElement => {
         ids.length > 1 ? "these SSH keys" : "this SSH key"
       }?`}
       modelType="SSH key"
-      onCancel={closeSidePanel}
+      onCancel={closeModal}
       onSubmit={() => {
         ids.forEach((id) => {
           deleteSshKey.mutate({ path: { id } });
         });
       }}
-      onSuccess={closeSidePanel}
+      onSuccess={closeModal}
       saved={deleteSshKey.isSuccess}
       saving={deleteSshKey.isPending}
     />

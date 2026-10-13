@@ -1,16 +1,15 @@
 import type { ReactElement } from "react";
 
-import { useSidePanel } from "@canonical/maas-react-components";
-
 import { useDeleteSslKey } from "@/app/api/query/sslKeys";
 import ModelActionForm from "@/app/base/components/ModelActionForm";
+import { useModal } from "@/app/base/modal-context";
 
 type DeleteSSLKeyProps = {
   id: number;
 };
 
 const DeleteSSLKey = ({ id }: DeleteSSLKeyProps): ReactElement => {
-  const { closeSidePanel } = useSidePanel();
+  const { closeModal } = useModal();
   const deleteSSLKey = useDeleteSslKey();
 
   return (
@@ -20,11 +19,11 @@ const DeleteSSLKey = ({ id }: DeleteSSLKeyProps): ReactElement => {
       initialValues={{}}
       message="Are you sure you want to delete this SSL key?"
       modelType="SSL key"
-      onCancel={closeSidePanel}
+      onCancel={closeModal}
       onSubmit={() => {
         deleteSSLKey.mutate({ path: { sslkey_id: id } });
       }}
-      onSuccess={closeSidePanel}
+      onSuccess={closeModal}
       saved={deleteSSLKey.isSuccess}
       saving={deleteSSLKey.isPending}
     />
