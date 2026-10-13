@@ -1,8 +1,10 @@
 import { waitFor } from "@testing-library/react";
 
+import DeleteSSHKey from "@/app/preferences/views/SSHKeys/components/DeleteSSHKey";
 import SSHKeysList from "@/app/preferences/views/SSHKeys/views/SSHKeysList";
 import { sshKeyResolvers } from "@/testing/resolvers/sshKeys";
 import {
+  mockModal,
   renderWithProviders,
   screen,
   userEvent,
@@ -10,6 +12,7 @@ import {
 } from "@/testing/utils";
 
 setupMockServer(sshKeyResolvers.listSshKeys.handler());
+const { mockOpen: mockOpenModal } = await mockModal();
 
 describe("SSHKeysList", () => {
   it("renders AddSSHKey", async () => {
@@ -28,9 +31,12 @@ describe("SSHKeysList", () => {
       expect(screen.getAllByRole("button", { name: "Delete" }));
     });
     await userEvent.click(screen.getAllByRole("button", { name: "Delete" })[0]);
-    expect(
-      screen.getByRole("complementary", { name: "Delete SSH keys" })
-    ).toBeInTheDocument();
+    expect(mockOpenModal).toHaveBeenCalledWith(
+      expect.objectContaining({
+        component: DeleteSSHKey,
+        title: "Delete SSH keys",
+      })
+    );
   });
 
   it("closes side panel form when canceled", async () => {

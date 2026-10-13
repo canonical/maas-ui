@@ -10,16 +10,18 @@ import {
 import * as factory from "@/testing/factories";
 import { sslKeyResolvers } from "@/testing/resolvers/sslKeys";
 import {
+  mockIsPending,
+  mockModal,
+  mockSidePanel,
   renderWithProviders,
   screen,
-  waitFor,
   setupMockServer,
-  mockIsPending,
-  mockSidePanel,
+  waitFor,
 } from "@/testing/utils";
 
 const mockServer = setupMockServer(sslKeyResolvers.listSslKeys.handler());
 const { mockOpen } = await mockSidePanel();
+const { mockOpen: mockOpenModal } = await mockModal();
 
 describe("SSLKeysTable", () => {
   describe("display", () => {
@@ -76,7 +78,7 @@ describe("SSLKeysTable", () => {
       });
     });
 
-    it("opens delete SSL key side panel form", async () => {
+    it("opens delete SSL key modal", async () => {
       mockServer.use(
         sslKeyResolvers.listSslKeys.handler({
           items: [
@@ -98,7 +100,7 @@ describe("SSLKeysTable", () => {
 
       await userEvent.click(screen.getByRole("button", { name: "Delete" }));
 
-      expect(mockOpen).toHaveBeenCalledWith({
+      expect(mockOpenModal).toHaveBeenCalledWith({
         component: DeleteSSLKey,
         title: "Delete SSL key",
         props: { id: 1 },

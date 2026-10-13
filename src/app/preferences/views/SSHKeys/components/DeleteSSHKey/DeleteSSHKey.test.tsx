@@ -1,7 +1,7 @@
 import DeleteSSHKey from "@/app/preferences/views/SSHKeys/components/DeleteSSHKey/DeleteSSHKey";
 import { sshKeyResolvers } from "@/testing/resolvers/sshKeys";
 import {
-  mockSidePanel,
+  mockModal,
   renderWithProviders,
   screen,
   setupMockServer,
@@ -10,7 +10,7 @@ import {
 } from "@/testing/utils";
 
 const mockServer = setupMockServer(sshKeyResolvers.deleteSshKey.handler());
-const { mockClose } = await mockSidePanel();
+const { mockClose } = await mockModal();
 
 describe("DeleteSSHKey", () => {
   it("renders", () => {
@@ -23,7 +23,7 @@ describe("DeleteSSHKey", () => {
     ).toBeInTheDocument();
   });
 
-  it("calls closeSidePanel on cancel click", async () => {
+  it("calls closeModal on cancel click", async () => {
     renderWithProviders(<DeleteSSHKey ids={[2]} />);
 
     await userEvent.click(screen.getByRole("button", { name: "Cancel" }));

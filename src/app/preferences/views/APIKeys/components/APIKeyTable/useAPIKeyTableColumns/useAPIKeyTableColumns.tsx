@@ -7,6 +7,7 @@ import APIKeyDelete from "../../APIKeyDelete";
 import APIKeyEdit from "../../APIKeyEdit";
 
 import TableActions from "@/app/base/components/TableActions";
+import { useModal } from "@/app/base/modal-context";
 import type { Token } from "@/app/store/token/types";
 
 export type TokenRowData = {
@@ -25,6 +26,7 @@ export const formatToken = (
 
 const useAPIKeyTableColumns = (): APIKeyColumnDef[] => {
   const { openSidePanel } = useSidePanel();
+  const { openModal } = useModal();
 
   return useMemo(
     (): APIKeyColumnDef[] => [
@@ -53,7 +55,7 @@ const useAPIKeyTableColumns = (): APIKeyColumnDef[] => {
           <TableActions
             copyValue={key}
             onDelete={() => {
-              openSidePanel({
+              openModal({
                 component: APIKeyDelete,
                 props: { id },
                 title: "Delete API key",
@@ -70,7 +72,7 @@ const useAPIKeyTableColumns = (): APIKeyColumnDef[] => {
         ),
       },
     ],
-    [openSidePanel]
+    [openModal, openSidePanel]
   );
 };
 

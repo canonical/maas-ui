@@ -10,16 +10,18 @@ import {
 import * as factory from "@/testing/factories";
 import { sshKeyResolvers } from "@/testing/resolvers/sshKeys";
 import {
+  mockIsPending,
+  mockModal,
+  mockSidePanel,
   renderWithProviders,
   screen,
-  waitFor,
   setupMockServer,
-  mockIsPending,
-  mockSidePanel,
+  waitFor,
 } from "@/testing/utils";
 
 const mockServer = setupMockServer(sshKeyResolvers.listSshKeys.handler());
 const { mockOpen } = await mockSidePanel();
+const { mockOpen: mockOpenModal } = await mockModal();
 
 describe("SSHKeysTable", () => {
   describe("display", () => {
@@ -82,7 +84,7 @@ describe("SSHKeysTable", () => {
       });
     });
 
-    it("opens delete SSH key side panel form", async () => {
+    it("opens delete SSH key modal", async () => {
       mockServer.use(
         sshKeyResolvers.listSshKeys.handler({
           items: [
@@ -107,7 +109,7 @@ describe("SSHKeysTable", () => {
 
       await userEvent.click(screen.getByRole("button", { name: "Delete" }));
 
-      expect(mockOpen).toHaveBeenCalledWith({
+      expect(mockOpenModal).toHaveBeenCalledWith({
         component: DeleteSSHKey,
         title: "Delete SSH keys",
         props: { ids: [1, 2] },

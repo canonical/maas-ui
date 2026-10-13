@@ -1,8 +1,16 @@
 import APIKeyList from "./APIKeyList";
 
+import APIKeyDelete from "@/app/preferences/views/APIKeys/components/APIKeyDelete";
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
-import { renderWithProviders, screen, userEvent } from "@/testing/utils";
+import {
+  mockModal,
+  renderWithProviders,
+  screen,
+  userEvent,
+} from "@/testing/utils";
+
+const { mockOpen: mockOpenModal } = await mockModal();
 
 describe("APIKeyList", () => {
   let state: RootState;
@@ -50,8 +58,11 @@ describe("APIKeyList", () => {
 
     await userEvent.click(screen.getByRole("button", { name: "Delete" }));
 
-    expect(
-      screen.getByRole("complementary", { name: "Delete API key" })
-    ).toBeInTheDocument();
+    expect(mockOpenModal).toHaveBeenCalledWith(
+      expect.objectContaining({
+        component: APIKeyDelete,
+        title: "Delete API key",
+      })
+    );
   });
 });
