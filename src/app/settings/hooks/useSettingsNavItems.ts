@@ -14,6 +14,8 @@ export const useSettingsNavItems = (): NavItem[] => {
   const globalEntities = useHasEntitlements([
     Entitlement.CAN_VIEW_GLOBAL_ENTITIES,
   ]);
+  const identities = useHasEntitlements([Entitlement.CAN_VIEW_IDENTITIES]);
+  const licenseKeys = useHasEntitlements([Entitlement.CAN_VIEW_LICENSE_KEYS]);
 
   const disabledPaths = useMemo(() => {
     const paths: string[] = [];
@@ -30,7 +32,24 @@ export const useSettingsNavItems = (): NavItem[] => {
       paths.push(settingsURLs.images.sources);
     }
     if (!globalEntities.isPending && !globalEntities.allowed) {
-      paths.push(settingsURLs.security.trustedSshHostKeys);
+      paths.push(
+        settingsURLs.security.trustedSshHostKeys,
+        settingsURLs.scripts.commissioning.index,
+        settingsURLs.scripts.deploying.index,
+        settingsURLs.scripts.testing.index,
+        settingsURLs.dhcp.index,
+        settingsURLs.repositories.index
+      );
+    }
+    if (!identities.isPending && !identities.allowed) {
+      paths.push(
+        settingsURLs.userManagement.users,
+        settingsURLs.userManagement.groups,
+        settingsURLs.userManagement.singleSignOn
+      );
+    }
+    if (!licenseKeys.isPending && !licenseKeys.allowed) {
+      paths.push(settingsURLs.licenseKeys.index);
     }
     return paths;
   }, [
@@ -40,6 +59,10 @@ export const useSettingsNavItems = (): NavItem[] => {
     bootEntities.isPending,
     globalEntities.allowed,
     globalEntities.isPending,
+    identities.allowed,
+    identities.isPending,
+    licenseKeys.allowed,
+    licenseKeys.isPending,
   ]);
 
   return useMemo(() => {
@@ -47,17 +70,16 @@ export const useSettingsNavItems = (): NavItem[] => {
       return settingsNavItems;
     }
 
-    return settingsNavItems.map((group) =>
-      group.items
-        ? {
-            ...group,
-            items: group.items.map((item) =>
-              item.path && disabledPaths.includes(item.path)
-                ? { ...item, disabled: true }
-                : item
-            ),
-          }
-        : group
-    );
+    const applyDisabled = (item: NavItem): NavItem => {
+      const updated =
+        item.path && disabledPaths.includes(item.path)
+          ? { ...item, disabled: true }
+          : item;
+      return updated.items
+        ? { ...updated, items: updated.items.map(applyDisabled) }
+        : updated;
+    };
+
+    return settingsNavItems.map(applyDisabled);
   }, [disabledPaths]);
 };

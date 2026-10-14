@@ -1145,11 +1145,16 @@ export const router = createBrowserRouter(
                     urls.settings.index
                   ),
                   element: (
-                    <ErrorBoundary>
-                      <PageContent>
-                        <DhcpList />
-                      </PageContent>
-                    </ErrorBoundary>
+                    <RequireEntitlements
+                      entitlements={[Entitlement.CAN_VIEW_GLOBAL_ENTITIES]}
+                      skeletonView="settings"
+                    >
+                      <ErrorBoundary>
+                        <PageContent>
+                          <DhcpList />
+                        </PageContent>
+                      </ErrorBoundary>
+                    </RequireEntitlements>
                   ),
                 },
 
@@ -1159,9 +1164,14 @@ export const router = createBrowserRouter(
                     urls.settings.index
                   ),
                   element: (
-                    <ErrorBoundary>
-                      <RepositoriesList />
-                    </ErrorBoundary>
+                    <RequireEntitlements
+                      entitlements={[Entitlement.CAN_VIEW_GLOBAL_ENTITIES]}
+                      skeletonView="settings"
+                    >
+                      <ErrorBoundary>
+                        <RepositoriesList />
+                      </ErrorBoundary>
+                    </RequireEntitlements>
                   ),
                 },
                 {
