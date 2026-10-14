@@ -70,6 +70,12 @@ When("the user selects the first machine in the grid", () => {
   });
 });
 
+// Selecting by filter enables actions from entitlements rather than the
+// machine's status-dependent actions list.
+When("the user selects all machines in the grid", () => {
+  cy.findByRole("checkbox", { name: "All machines" }).click({ force: true });
+});
+
 When(
   "the user opens the {string} form from the {string} menu",
   (action: string, group: string) => {

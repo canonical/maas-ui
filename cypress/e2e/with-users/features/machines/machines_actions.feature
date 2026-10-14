@@ -8,7 +8,7 @@ Feature: Machine listing - actions
     And the machines table is loaded
 
   Scenario: Displays the correct actions in the action menu
-    When the user selects the first machine in the grid
+    When the user selects all machines in the grid
     Then the following action groups should be available:
       | group         | actions                                                     |
       | Actions       | Commission, Allocate, Deploy, Release, Abort, Clone from   |
@@ -19,7 +19,7 @@ Feature: Machine listing - actions
     And the "Delete" action should be enabled
 
   Scenario Outline: Loads machine action form
-    When the user selects the first machine in the grid
+    When the user selects all machines in the grid
     And the user opens the "<action>" form from the "<group>" menu
     Then the "<action>" <container> should be visible
     When the user cancels the "<action>" form in the <container>
@@ -72,7 +72,7 @@ Feature: Machine listing - actions
     Then the new tag should be visible in the machines grid
 
   Scenario: Can open a soft power off form
-    When the user selects the first machine in the grid
+    When the user selects all machines in the grid
     And the user opens the "Soft power off" form from the "Power" menu
     Then the "Soft power off" modal should be visible
     And the heading matching "Soft power off" text should exist
