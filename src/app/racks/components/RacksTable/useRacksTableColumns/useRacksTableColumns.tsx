@@ -12,6 +12,7 @@ import RemoveControllers from "../../RemoveControllers";
 
 import type { RackWithSummaryResponse } from "@/app/apiclient";
 import TableMenu from "@/app/base/components/TableMenu";
+import { useModal } from "@/app/base/modal-context";
 import urls from "@/app/base/urls";
 import { FilterControllers } from "@/app/store/controller/utils";
 
@@ -33,6 +34,7 @@ const getControllersLabel = (row: Row<RackWithSummaryResponse>) => {
 
 const useRacksTableColumns = (): RacksColumnDef[] => {
   const { openSidePanel } = useSidePanel();
+  const { openModal } = useModal();
   return useMemo(
     () => [
       {
@@ -73,7 +75,7 @@ const useRacksTableColumns = (): RacksColumnDef[] => {
                 {
                   children: "Delete rack...",
                   onClick: () => {
-                    openSidePanel({
+                    openModal({
                       component: DeleteRack,
                       title: "Delete rack",
                       props: {
@@ -114,7 +116,7 @@ const useRacksTableColumns = (): RacksColumnDef[] => {
         },
       },
     ],
-    [openSidePanel]
+    [openModal, openSidePanel]
   );
 };
 

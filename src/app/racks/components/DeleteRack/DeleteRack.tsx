@@ -1,6 +1,5 @@
 import type { ReactElement } from "react";
 
-import { useSidePanel } from "@canonical/maas-react-components";
 import {
   Notification as NotificationBanner,
   Spinner,
@@ -8,12 +7,13 @@ import {
 
 import { useDeleteRack, useGetRack } from "@/app/api/query/racks";
 import ModelActionForm from "@/app/base/components/ModelActionForm";
+import { useModal } from "@/app/base/modal-context";
 
 type DeleteRackProps = {
   id: number;
 };
 const DeleteRack = ({ id }: DeleteRackProps): ReactElement => {
-  const { closeSidePanel } = useSidePanel();
+  const { closeModal } = useModal();
   const rack = useGetRack({ path: { rack_id: id } });
   const eTag = rack.data?.headers?.get("ETag");
   const deleteRack = useDeleteRack();
@@ -32,7 +32,7 @@ const DeleteRack = ({ id }: DeleteRackProps): ReactElement => {
           errors={deleteRack.error}
           initialValues={{}}
           modelType="rack"
-          onCancel={closeSidePanel}
+          onCancel={closeModal}
           onSubmit={() => {
             deleteRack.mutate({
               headers: { ETag: eTag },
@@ -40,7 +40,7 @@ const DeleteRack = ({ id }: DeleteRackProps): ReactElement => {
             });
           }}
           onSuccess={() => {
-            closeSidePanel();
+            closeModal();
           }}
           saved={deleteRack.isSuccess}
           saving={deleteRack.isPending}

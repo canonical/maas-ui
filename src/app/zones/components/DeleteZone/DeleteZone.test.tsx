@@ -7,7 +7,7 @@ import {
   setupMockServer,
   waitFor,
   renderWithProviders,
-  mockSidePanel,
+  mockModal,
   waitForLoading,
 } from "@/testing/utils";
 
@@ -15,10 +15,10 @@ const mockServer = setupMockServer(
   zoneResolvers.getZone.handler(),
   zoneResolvers.deleteZone.handler()
 );
-const { mockClose } = await mockSidePanel();
+const { mockClose } = await mockModal();
 
 describe("DeleteZone", () => {
-  it("calls closeSidePanel on cancel click", async () => {
+  it("calls closeModal on cancel click", async () => {
     renderWithProviders(<DeleteZone id={2} />);
     await waitForLoading();
     await userEvent.click(screen.getByRole("button", { name: "Cancel" }));
