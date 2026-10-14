@@ -89,5 +89,10 @@ describe("node utils", () => {
       expect(canOpenActionForm(machine3, NodeActions.CLONE)).toBe(false);
       expect(canOpenActionForm(machine4, NodeActions.CLONE)).toBe(false);
     });
+
+    it("allows soft power off when a machine can be powered off", () => {
+      const machine = factory.machine({ actions: [NodeActions.OFF] });
+      expect(canOpenActionForm(machine, NodeActions.SOFT_OFF)).toBe(true);
+    });
   });
 });

@@ -40,11 +40,6 @@ const LIFECYCLE_ACTIONS = [
   NodeActions.UNLOCK,
 ];
 
-// Soft power off isn't listed separately in a machine's actions; it is
-// available whenever power off is.
-const getAvailabilityAction = (action: NodeActions): NodeActions =>
-  action === NodeActions.SOFT_OFF ? NodeActions.OFF : action;
-
 const CommissionForm = lazyLoadSidePanel(
   () => import("../MachineForms/MachineActionFormWrapper/CommissionForm")
 );
@@ -589,7 +584,7 @@ export const useMachineActions = (
 
   const links = actions.reduce<ButtonProps[]>((links, action) => {
     const item = items.find((item) => item.action === action);
-    if (!item || !canOpenActionForm(machine, getAvailabilityAction(action))) {
+    if (!item || !canOpenActionForm(machine, action)) {
       return links;
     }
     const label = `${item.label}...`;
@@ -628,8 +623,7 @@ export const useIsMachineActionDisabled = (
   // ownership and lock state.
   if (isViewingDetails) {
     return (action) =>
-      !!detailsMachine &&
-      !canOpenActionForm(detailsMachine, getAvailabilityAction(action));
+      !!detailsMachine && !canOpenActionForm(detailsMachine, action);
   }
   if (!selected) {
     return () => false;
@@ -645,9 +639,7 @@ export const useIsMachineActionDisabled = (
   if (items.length > 0 && selectedMachines.length === items.length) {
     // The backend applies bulk actions per machine and reports the failures.
     return (action) =>
-      !selectedMachines.some((machine) =>
-        canOpenActionForm(machine, getAvailabilityAction(action))
-      );
+      !selectedMachines.some((machine) => canOpenActionForm(machine, action));
   }
 
   // Without the selected machines, only rule out admin actions that the user

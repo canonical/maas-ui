@@ -238,5 +238,10 @@ export const canOpenActionForm = (
     // "Check power" is always shown for machines, even though it's not listed in node.actions.
     return true;
   }
+
+  if (nodeIsMachine(node) && actionName === NodeActions.SOFT_OFF) {
+    // Soft power off isn't listed in node.actions; it's available whenever power off is.
+    return node.actions.includes(NodeActions.OFF);
+  }
   return node.actions.some((nodeAction) => nodeAction === actionName);
 };
