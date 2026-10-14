@@ -1,5 +1,4 @@
 import {
-  Before,
   DataTable,
   Given,
   Then,
@@ -11,7 +10,6 @@ import { generateName } from "../../../e2e/utils";
 let machineName = "";
 let newPoolName = "";
 let newTagName = "";
-let doesMachineExist = false;
 
 type ActionFormContainer = "modal" | "side panel";
 
@@ -36,13 +34,9 @@ const openMachineActionForm = (groupLabel: string, action: string) => {
   });
 };
 
-Before({ tags: "@machine-actions" }, () => {
-  if (!doesMachineExist) {
-    machineName = generateName("machine");
-    cy.login();
-    cy.addMachine(machineName);
-    doesMachineExist = true;
-  }
+Given("a machine has been added", () => {
+  machineName = generateName("machine");
+  cy.addMachine(machineName);
 });
 
 Given("the machines table is loaded", () => {
@@ -58,16 +52,6 @@ Given("the user selects that machine", () => {
   cy.findByRole("checkbox", {
     name: `${machineName}.maas`,
   }).click({ force: true });
-});
-
-When("the user selects the first machine in the grid", () => {
-  cy.findByRole("grid", { name: /Machines/i }).within(() => {
-    cy.findAllByRole("gridcell", { name: /FQDN/i })
-      .first()
-      .within(() => {
-        cy.findByRole("checkbox").click({ force: true });
-      });
-  });
 });
 
 // Selecting by filter enables actions from entitlements rather than the

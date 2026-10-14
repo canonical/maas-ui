@@ -49,14 +49,18 @@ Feature: Machine listing - actions
       | Lock          | Unlock                  | modal      |
 
   Scenario: Loads machine Delete form
-    When the user selects the first machine in the grid
-    And the user clicks the button matching "Delete"
+    Given a machine has been added
+    And the user filters the machine list by the generated machine
+    And the user selects that machine
+    When the user clicks the button matching "Delete"
     Then the "Delete" modal should be visible
     When the user cancels the "Delete" form in the modal
     Then the "Delete" modal should not exist
 
   Scenario: Can create and set the pool of a machine
-    When the user selects the first machine in the grid
+    Given a machine has been added
+    And the user filters the machine list by the generated machine
+    And the user selects that machine
     When the user opens the "Set pool" form from the "Categorise" menu
     And the user creates a new pool
     And the user clicks the button matching "Set pool for machine"
@@ -64,7 +68,9 @@ Feature: Machine listing - actions
     And the new pool name should be visible in the machines grid
 
   Scenario: Can create and add a tag to a machine
-    When the user selects the first machine in the grid
+    Given a machine has been added
+    And the user filters the machine list by the generated machine
+    And the user selects that machine
     When the user opens the "Tag" form from the "Categorise" menu
     And the user creates a new tag
     Then the "Tag changes" table should contain the new tag marked "To be added"
