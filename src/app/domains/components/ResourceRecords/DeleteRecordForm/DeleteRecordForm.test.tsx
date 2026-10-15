@@ -8,10 +8,10 @@ import {
   userEvent,
   screen,
   renderWithProviders,
-  mockSidePanel,
+  mockModal,
 } from "@/testing/utils";
 
-const { mockClose } = await mockSidePanel();
+const { mockClose } = await mockModal();
 
 describe("DeleteRecordForm", () => {
   it("closes the form when Cancel button is clicked", async () => {

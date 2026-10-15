@@ -1,6 +1,5 @@
 import type { Dispatch, ReactElement, SetStateAction } from "react";
 
-import { useSidePanel } from "@canonical/maas-react-components";
 import {
   Icon,
   Notification as NotificationBanner,
@@ -17,6 +16,7 @@ import {
   useImages,
 } from "@/app/api/query/images";
 import ModelActionForm from "@/app/base/components/ModelActionForm";
+import { useModal } from "@/app/base/modal-context";
 import { ConfigNames } from "@/app/store/config/types";
 
 type DeleteImagesProps = {
@@ -36,7 +36,7 @@ const DeleteImages = ({
       path: { name: ConfigNames.COMMISSIONING_DISTRO_SERIES },
     }).data?.value as string) ?? "";
 
-  const { closeSidePanel } = useSidePanel();
+  const { closeModal } = useModal();
 
   const deleteSelections = useDeleteSelections();
   const deleteCustomImages = useDeleteCustomImages();
@@ -105,7 +105,7 @@ const DeleteImages = ({
           </>
         }
         modelType="image"
-        onCancel={closeSidePanel}
+        onCancel={closeModal}
         onSubmit={() => {
           const selectionIds = Object.keys(rowSelection)
             .filter((id) => id.endsWith("-selection"))
@@ -134,7 +134,7 @@ const DeleteImages = ({
           if (setRowSelection) {
             setRowSelection({});
           }
-          closeSidePanel();
+          closeModal();
         }}
         saved={deleteSelections.isSuccess || deleteCustomImages.isSuccess}
         saving={deleteSelections.isPending || deleteCustomImages.isPending}
