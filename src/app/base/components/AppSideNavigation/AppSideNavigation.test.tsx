@@ -227,7 +227,7 @@ describe("GlobalSideNav", () => {
     });
     const currentMenuItem = screen.getAllByRole("link", { current: "page" })[0];
     expect(currentMenuItem).toBeInTheDocument();
-    expect(currentMenuItem).toHaveTextContent("Networks");
+    expect(currentMenuItem).toHaveTextContent("Subnets");
   });
 
   it("highlights sub-urls", async () => {
