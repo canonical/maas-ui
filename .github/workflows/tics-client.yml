@@ -66,6 +66,8 @@ jobs:
           ref: ${{ github.event.pull_request.head.sha }}
           fetch-depth: 0  # Important for TICS to analyze history
           persist-credentials: false
+          # Safe because untrusted authors must be approved in the "approve" job first
+          allow-unsafe-pr-checkout: true
 
       - name: Setup Node.js from .nvmrc
         uses: actions/setup-node@v6
