@@ -2,7 +2,7 @@ import DeleteSwitch from "./DeleteSwitch";
 
 import { switchResolvers } from "@/testing/resolvers/switches";
 import {
-  mockSidePanel,
+  mockModal,
   renderWithProviders,
   screen,
   setupMockServer,
@@ -15,7 +15,7 @@ const mockServer = setupMockServer(
   switchResolvers.getSwitch.handler(),
   switchResolvers.deleteSwitch.handler()
 );
-const { mockClose } = await mockSidePanel();
+const { mockClose } = await mockModal();
 
 describe("DeleteSwitch", () => {
   it("calls closeForm on cancel click", async () => {

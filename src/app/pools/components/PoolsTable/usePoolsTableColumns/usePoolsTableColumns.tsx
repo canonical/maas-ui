@@ -7,6 +7,7 @@ import { Link } from "react-router";
 import type { ResourcePoolStatisticsResponse } from "@/app/apiclient";
 import TableActions from "@/app/base/components/TableActions";
 import { useHasEntitlements } from "@/app/base/hooks";
+import { useModal } from "@/app/base/modal-context";
 import urls from "@/app/base/urls";
 import { DeletePool, EditPool } from "@/app/pools/components";
 import { Entitlement } from "@/app/settings/views/UserManagement/views/Groups/constants";
@@ -33,6 +34,7 @@ export type PoolsColumnDef = ColumnDef<
 
 const usePoolsTableColumns = (): PoolsColumnDef[] => {
   const { openSidePanel } = useSidePanel();
+  const { openModal } = useModal();
   const { allowed: canEdit } = useHasEntitlements([
     Entitlement.CAN_EDIT_GLOBAL_ENTITIES,
   ]);
@@ -86,7 +88,7 @@ const usePoolsTableColumns = (): PoolsColumnDef[] => {
                   !canEdit || !row.original.permissions.includes("edit")
                 }
                 onDelete={() => {
-                  openSidePanel({
+                  openModal({
                     component: DeletePool,
                     title: "Delete pool",
                     props: {
@@ -106,7 +108,7 @@ const usePoolsTableColumns = (): PoolsColumnDef[] => {
           },
         },
       ] as PoolsColumnDef[],
-    [canEdit, openSidePanel]
+    [canEdit, openModal, openSidePanel]
   );
 };
 

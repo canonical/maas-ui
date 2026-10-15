@@ -9,6 +9,7 @@ import type { SwitchResponse } from "@/app/apiclient";
 import DoubleRow from "@/app/base/components/DoubleRow";
 import TableActions from "@/app/base/components/TableActions";
 import { useHasEntitlements } from "@/app/base/hooks";
+import { useModal } from "@/app/base/modal-context";
 import { Entitlement } from "@/app/settings/views/UserManagement/views/Groups/constants";
 import DeleteSwitch from "@/app/switches/components/DeleteSwitch";
 import EditSwitch from "@/app/switches/components/EditSwitch";
@@ -17,6 +18,7 @@ type SwitchColumnDef = ColumnDef<SwitchResponse>;
 
 const useSwitchesTableColumns = (): SwitchColumnDef[] => {
   const { openSidePanel } = useSidePanel();
+  const { openModal } = useModal();
   const { allowed: canEdit } = useHasEntitlements([
     Entitlement.CAN_EDIT_GLOBAL_ENTITIES,
   ]);
@@ -91,7 +93,7 @@ const useSwitchesTableColumns = (): SwitchColumnDef[] => {
             deleteDisabled={!canEdit}
             editDisabled={!canEdit}
             onDelete={() => {
-              openSidePanel({
+              openModal({
                 component: DeleteSwitch,
                 title: "Delete switch",
                 props: { id },
@@ -108,7 +110,7 @@ const useSwitchesTableColumns = (): SwitchColumnDef[] => {
         ),
       },
     ],
-    [canEdit, openSidePanel]
+    [canEdit, openModal, openSidePanel]
   );
 };
 

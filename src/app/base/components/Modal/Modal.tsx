@@ -13,7 +13,12 @@ const Modal = (): ReactElement | null => {
   }
 
   return (
-    <LibModal close={closeModal} closeOnOutsideClick title={title}>
+    <LibModal
+      className="maas-modal"
+      close={closeModal}
+      closeOnOutsideClick
+      title={title}
+    >
       <Component {...props} />
     </LibModal>
   );
