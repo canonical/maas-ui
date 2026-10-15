@@ -1,0 +1,6 @@
+@mixin Modal {
+  .maas-modal .p-modal__dialog {
+    min-height: 14rem;
+    min-width: 32rem;
+  }
+}

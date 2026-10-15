@@ -97,6 +97,7 @@
 @import "@/app/base/components/LabelledList";
 @import "@/app/base/components/MachineSelectTable";
 @import "@/app/base/components/ListDisplayCount";
+@import "@/app/base/components/Modal";
 @import "@/app/base/components/node/HardwareCard";
 @import "@/app/base/components/node/networking/NetworkTable";
 @import "@/app/base/components/node/NodeLogs/DownloadMenu";
@@ -130,6 +131,7 @@
 @include HardwareCard;
 @include LabelledList;
 @include MachineSelectTable;
+@include Modal;
 @include NetworkCardTable;
 @include NetworkTable;
 @include NodeName;

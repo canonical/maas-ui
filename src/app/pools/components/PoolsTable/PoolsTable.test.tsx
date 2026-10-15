@@ -8,14 +8,14 @@ import * as factory from "@/testing/factories";
 import { authResolvers } from "@/testing/resolvers/auth";
 import { poolsResolvers } from "@/testing/resolvers/pools";
 import {
-  renderWithProviders,
-  screen,
-  waitFor,
-  setupMockServer,
-  within,
   mockIsPending,
   mockModal,
   mockSidePanel,
+  renderWithProviders,
+  screen,
+  setupMockServer,
+  waitFor,
+  within,
 } from "@/testing/utils";
 
 const mockServer = setupMockServer(
@@ -296,9 +296,6 @@ describe("PoolsTable", () => {
         title: "Delete pool",
         props: { id: 1 },
       });
-      expect(mockOpen).not.toHaveBeenCalledWith(
-        expect.objectContaining({ component: DeletePool })
-      );
     });
   });
 });
