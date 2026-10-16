@@ -1,5 +1,6 @@
 import MachineActionMenuBar from "./MachineActionMenuBar";
 
+import RequireEntitlements from "@/app/base/components/RequireEntitlements";
 import { Entitlement } from "@/app/settings/views/UserManagement/views/Groups/constants";
 import type { RootState } from "@/app/store/root/types";
 import { NodeActions, NodeStatus } from "@/app/store/types/node";
@@ -11,7 +12,6 @@ import {
   screen,
   setupMockServer,
   userEvent,
-  waitFor,
   within,
 } from "@/testing/utils";
 
@@ -253,391 +253,123 @@ describe("MachineActionMenuBar", () => {
   });
 });
 
-describe("MachineActionMenuBar entitlements check", () => {
+describe("MachineActionMenuBar list selection actions", () => {
   let state: RootState;
 
-  const editPoolEntitlement = (poolId: number) =>
-    factory.entitlement({
-      entitlement: Entitlement.CAN_EDIT_MACHINES,
-      resource_type: "pool",
-      resource_id: poolId,
-    });
-
-  const deployPoolEntitlement = (poolId: number) =>
-    factory.entitlement({
-      entitlement: Entitlement.CAN_DEPLOY_MACHINES,
-      resource_type: "pool",
-      resource_id: poolId,
-    });
-
   beforeEach(() => {
+    mockServer.use(authResolvers.getMeEntitlements.handler([]));
     state = factory.rootState({
       machine: factory.machineState({
         items: [
           factory.machine({
             system_id: "abc123",
             pool: factory.modelRef({ id: 2, name: "pool-2" }),
+            actions: [NodeActions.RELEASE],
           }),
           factory.machine({
             system_id: "def456",
             pool: factory.modelRef({ id: 3, name: "pool-3" }),
+            actions: [],
           }),
         ],
-        selected: { items: ["abc123"] },
+        selected: { items: ["abc123", "def456"] },
       }),
     });
   });
 
-  it("disables the Actions dropdown without a machine edit entitlement for the selected pool", async () => {
-    mockServer.use(authResolvers.getMeEntitlements.handler([]));
+  it("enables an action when any selected machine allows it", async () => {
     renderWithProviders(<MachineActionMenuBar isViewingDetails={false} />, {
       state,
     });
 
-    await waitFor(() => {
-      expect(
-        screen.getByRole("button", { name: "Actions" })
-      ).toBeAriaDisabled();
-    });
-  });
+    await userEvent.click(screen.getByRole("button", { name: "Actions" }));
 
-  it("disables every dropdown and the Delete button without a machine edit entitlement for the selected pool", async () => {
-    mockServer.use(authResolvers.getMeEntitlements.handler([]));
-    renderWithProviders(<MachineActionMenuBar isViewingDetails={false} />, {
-      state,
-    });
-
-    await waitFor(() => {
-      expect(
-        screen.getByRole("button", { name: "Actions" })
-      ).toBeAriaDisabled();
-    });
-    ["Power", "Troubleshoot", "Categorise", "Lock", "Delete"].forEach(
-      (name) => {
-        expect(screen.getByRole("button", { name })).toBeAriaDisabled();
-      }
-    );
-  });
-
-  it("enables the Actions dropdown with a machine edit entitlement for the selected pool", async () => {
-    mockServer.use(
-      authResolvers.getMeEntitlements.handler([editPoolEntitlement(2)])
-    );
-    renderWithProviders(<MachineActionMenuBar isViewingDetails={false} />, {
-      state,
-    });
-
-    await waitFor(() => {
-      expect(
-        screen.getByRole("button", { name: "Actions" })
-      ).not.toBeAriaDisabled();
-    });
-  });
-
-  it("enables every dropdown and the Delete button with a machine edit entitlement for the selected pool", async () => {
-    mockServer.use(
-      authResolvers.getMeEntitlements.handler([editPoolEntitlement(2)])
-    );
-    renderWithProviders(<MachineActionMenuBar isViewingDetails={false} />, {
-      state,
-    });
-
-    await waitFor(() => {
-      expect(
-        screen.getByRole("button", { name: "Actions" })
-      ).not.toBeAriaDisabled();
-    });
-    ["Power", "Troubleshoot", "Categorise", "Lock", "Delete"].forEach(
-      (name) => {
-        expect(screen.getByRole("button", { name })).not.toBeAriaDisabled();
-      }
-    );
-  });
-
-  it("disables the Actions dropdown when the edit entitlement is for a different pool", async () => {
-    mockServer.use(
-      authResolvers.getMeEntitlements.handler([editPoolEntitlement(999)])
-    );
-    renderWithProviders(<MachineActionMenuBar isViewingDetails={false} />, {
-      state,
-    });
-
-    await waitFor(() => {
-      expect(
-        screen.getByRole("button", { name: "Actions" })
-      ).toBeAriaDisabled();
-    });
-  });
-
-  it("disables the Actions dropdown unless the user can edit every selected pool", async () => {
-    state.machine.selected = { items: ["abc123", "def456"] };
-    mockServer.use(
-      authResolvers.getMeEntitlements.handler([editPoolEntitlement(2)])
-    );
-    renderWithProviders(<MachineActionMenuBar isViewingDetails={false} />, {
-      state,
-    });
-
-    await waitFor(() => {
-      expect(
-        screen.getByRole("button", { name: "Actions" })
-      ).toBeAriaDisabled();
-    });
-  });
-
-  it("enables the Actions dropdown when the user can edit every selected pool", async () => {
-    state.machine.selected = { items: ["abc123", "def456"] };
-    mockServer.use(
-      authResolvers.getMeEntitlements.handler([
-        editPoolEntitlement(2),
-        editPoolEntitlement(3),
-      ])
-    );
-    renderWithProviders(<MachineActionMenuBar isViewingDetails={false} />, {
-      state,
-    });
-
-    await waitFor(() => {
-      expect(
-        screen.getByRole("button", { name: "Actions" })
-      ).not.toBeAriaDisabled();
-    });
-  });
-
-  it("enables the Deploy option with only an edit entitlement (edit implies deploy)", async () => {
-    mockServer.use(
-      authResolvers.getMeEntitlements.handler([editPoolEntitlement(2)])
-    );
-    renderWithProviders(<MachineActionMenuBar isViewingDetails={false} />, {
-      state,
-    });
-
-    const actionsToggle = screen.getByRole("button", { name: "Actions" });
-    await waitFor(() => {
-      expect(actionsToggle).not.toBeAriaDisabled();
-    });
-    await userEvent.click(actionsToggle);
-
-    const actionsMenu = screen.getByLabelText("Actions submenu");
     expect(
-      within(actionsMenu).getByRole("menuitem", {
-        name: RegExp(getNodeActionTitle(NodeActions.DEPLOY)),
-      })
-    ).not.toBeAriaDisabled();
-  });
-
-  it("disables the Deploy option without an edit or deploy entitlement for the selected pool", async () => {
-    mockServer.use(
-      authResolvers.getMeEntitlements.handler([deployPoolEntitlement(999)])
-    );
-    renderWithProviders(<MachineActionMenuBar isViewingDetails={false} />, {
-      state,
-    });
-
-    const actionsToggle = screen.getByRole("button", { name: "Actions" });
-    await waitFor(() => {
-      expect(actionsToggle).toBeAriaDisabled();
-    });
-  });
-
-  it("enables the Deploy option with a deploy entitlement for the selected pool", async () => {
-    mockServer.use(
-      authResolvers.getMeEntitlements.handler([
-        editPoolEntitlement(2),
-        deployPoolEntitlement(2),
-      ])
-    );
-    renderWithProviders(<MachineActionMenuBar isViewingDetails={false} />, {
-      state,
-    });
-
-    const actionsToggle = screen.getByRole("button", { name: "Actions" });
-    await waitFor(() => {
-      expect(actionsToggle).not.toBeAriaDisabled();
-    });
-    await userEvent.click(actionsToggle);
-
-    const actionsMenu = screen.getByLabelText("Actions submenu");
-    expect(
-      within(actionsMenu).getByRole("menuitem", {
-        name: RegExp(getNodeActionTitle(NodeActions.DEPLOY)),
-      })
-    ).not.toBeAriaDisabled();
-  });
-
-  it("keeps the Actions submenu available for a deploy-only user with Deploy enabled and other actions disabled", async () => {
-    mockServer.use(
-      authResolvers.getMeEntitlements.handler([deployPoolEntitlement(2)])
-    );
-    renderWithProviders(<MachineActionMenuBar isViewingDetails={false} />, {
-      state,
-    });
-
-    const actionsToggle = screen.getByRole("button", { name: "Actions" });
-    await waitFor(() => {
-      expect(actionsToggle).not.toBeAriaDisabled();
-    });
-    // Other submenus that require edit remain disabled.
-    ["Power", "Troubleshoot", "Categorise", "Lock", "Delete"].forEach(
-      (name) => {
-        expect(screen.getByRole("button", { name })).toBeAriaDisabled();
-      }
-    );
-
-    await userEvent.click(actionsToggle);
-
-    const actionsMenu = screen.getByLabelText("Actions submenu");
-    expect(
-      within(actionsMenu).getByRole("menuitem", {
-        name: RegExp(getNodeActionTitle(NodeActions.DEPLOY)),
-      })
-    ).not.toBeAriaDisabled();
-    expect(
-      within(actionsMenu).getByRole("menuitem", {
+      within(screen.getByLabelText("Actions submenu")).getByRole("menuitem", {
         name: RegExp(getNodeActionTitle(NodeActions.RELEASE)),
       })
-    ).toBeAriaDisabled();
+    ).not.toBeAriaDisabled();
   });
 
-  it("falls back to the global edit entitlement for group selections", async () => {
+  it("enables lifecycle actions for a group selection without an edit entitlement", async () => {
     state.machine.selected = { groups: ["admin"], grouping: null };
-    mockServer.use(authResolvers.getMeEntitlements.handler([]));
     renderWithProviders(<MachineActionMenuBar isViewingDetails={false} />, {
       state,
     });
 
-    await waitFor(() => {
-      expect(
-        screen.getByRole("button", { name: "Actions" })
-      ).toBeAriaDisabled();
+    ["Actions", "Power", "Lock"].forEach((name) => {
+      expect(screen.getByRole("button", { name })).not.toBeAriaDisabled();
     });
+    await userEvent.click(screen.getByRole("button", { name: "Actions" }));
+    expect(
+      within(screen.getByLabelText("Actions submenu")).getByRole("menuitem", {
+        name: RegExp(getNodeActionTitle(NodeActions.DEPLOY)),
+      })
+    ).not.toBeAriaDisabled();
   });
 
-  it("enables the Actions dropdown for group selections with a global edit entitlement", async () => {
+  it("disables admin actions for a group selection without an edit entitlement", async () => {
     state.machine.selected = { groups: ["admin"], grouping: null };
-    mockServer.use(
-      authResolvers.getMeEntitlements.handler([
-        factory.entitlement({
-          entitlement: Entitlement.CAN_EDIT_MACHINES,
-          resource_type: "maas",
-          resource_id: 0,
-        }),
-      ])
+    // RequireEntitlements only renders its children once entitlements load.
+    renderWithProviders(
+      <RequireEntitlements entitlements={[]}>
+        <MachineActionMenuBar isViewingDetails={false} />
+      </RequireEntitlements>,
+      { state }
     );
-    renderWithProviders(<MachineActionMenuBar isViewingDetails={false} />, {
-      state,
-    });
 
-    await waitFor(() => {
-      expect(
-        screen.getByRole("button", { name: "Actions" })
-      ).not.toBeAriaDisabled();
-    });
+    expect(
+      await screen.findByRole("button", { name: "Categorise" })
+    ).toBeAriaDisabled();
+    expect(screen.getByRole("button", { name: "Delete" })).toBeAriaDisabled();
   });
 });
 
-describe("MachineActionMenuBar details view entitlements gating", () => {
+describe("MachineActionMenuBar details view actions", () => {
   let state: RootState;
 
-  const editPoolEntitlement = (poolId: number) =>
-    factory.entitlement({
-      entitlement: Entitlement.CAN_EDIT_MACHINES,
-      resource_type: "pool",
-      resource_id: poolId,
-    });
-
   beforeEach(() => {
+    mockServer.use(authResolvers.getMeEntitlements.handler([]));
     state = factory.rootState({
       machine: factory.machineState({
         items: [
           factory.machine({
             system_id: "abc123",
             pool: factory.modelRef({ id: 2, name: "pool-2" }),
-            actions: Object.values(NodeActions).filter(
-              (action) => action !== NodeActions.IMPORT_IMAGES
-            ),
           }),
         ],
       }),
     });
   });
 
-  it("disables every dropdown and the Delete button without an edit entitlement for the viewed machine's pool", async () => {
-    mockServer.use(authResolvers.getMeEntitlements.handler([]));
+  it("enables the lifecycle actions the backend allows for a user without an edit entitlement", async () => {
+    state.machine.items[0].actions = [
+      NodeActions.RELEASE,
+      NodeActions.ON,
+      NodeActions.LOCK,
+    ];
     renderWithProviders(
       <MachineActionMenuBar isViewingDetails systemId="abc123" />,
       { state }
     );
 
-    await waitFor(() => {
-      expect(
-        screen.getByRole("button", { name: "Actions" })
-      ).toBeAriaDisabled();
-    });
-    ["Power", "Troubleshoot", "Categorise", "Delete"].forEach((name) => {
-      expect(screen.getByRole("button", { name })).toBeAriaDisabled();
-    });
-  });
-
-  it("enables every dropdown and the Delete button with an edit entitlement for the viewed machine's pool", async () => {
-    mockServer.use(
-      authResolvers.getMeEntitlements.handler([editPoolEntitlement(2)])
-    );
-    renderWithProviders(
-      <MachineActionMenuBar isViewingDetails systemId="abc123" />,
-      { state }
-    );
-
-    await waitFor(() => {
-      expect(
-        screen.getByRole("button", { name: "Actions" })
-      ).not.toBeAriaDisabled();
-    });
-    ["Power", "Troubleshoot", "Categorise", "Delete"].forEach((name) => {
-      expect(screen.getByRole("button", { name })).not.toBeAriaDisabled();
-    });
-  });
-
-  it("disables every dropdown when the edit entitlement is for a different pool", async () => {
-    mockServer.use(
-      authResolvers.getMeEntitlements.handler([editPoolEntitlement(999)])
-    );
-    renderWithProviders(
-      <MachineActionMenuBar isViewingDetails systemId="abc123" />,
-      { state }
-    );
-
-    await waitFor(() => {
-      expect(
-        screen.getByRole("button", { name: "Actions" })
-      ).toBeAriaDisabled();
-    });
-  });
-
-  it("enables the Deploy option with only an edit entitlement for the viewed machine's pool (edit implies deploy)", async () => {
-    mockServer.use(
-      authResolvers.getMeEntitlements.handler([editPoolEntitlement(2)])
-    );
-    renderWithProviders(
-      <MachineActionMenuBar isViewingDetails systemId="abc123" />,
-      { state }
-    );
-
-    const actionsToggle = screen.getByRole("button", { name: "Actions" });
-    await waitFor(() => {
-      expect(actionsToggle).not.toBeAriaDisabled();
-    });
-    await userEvent.click(actionsToggle);
-
-    const actionsMenu = screen.getByLabelText("Actions submenu");
+    await userEvent.click(screen.getByRole("button", { name: "Actions" }));
     expect(
-      within(actionsMenu).getByRole("menuitem", {
-        name: RegExp(getNodeActionTitle(NodeActions.DEPLOY)),
+      within(screen.getByLabelText("Actions submenu")).getByRole("menuitem", {
+        name: RegExp(getNodeActionTitle(NodeActions.RELEASE)),
       })
     ).not.toBeAriaDisabled();
+
+    await userEvent.click(screen.getByRole("button", { name: "Power" }));
+    expect(
+      within(screen.getByLabelText("Power submenu")).getByRole("menuitem", {
+        name: RegExp(getNodeActionTitle(NodeActions.ON)),
+      })
+    ).not.toBeAriaDisabled();
+    expect(screen.getByRole("switch", { name: "Lock" })).toBeInTheDocument();
   });
 
-  it("keeps the Actions submenu available for a deploy-only user with Deploy enabled and other actions disabled", async () => {
+  it("enables Deploy for a deploy-only user when the backend allows it", async () => {
     mockServer.use(
       authResolvers.getMeEntitlements.handler([
         factory.entitlement({
@@ -647,31 +379,40 @@ describe("MachineActionMenuBar details view entitlements gating", () => {
         }),
       ])
     );
+    state.machine.items[0].actions = [NodeActions.DEPLOY];
     renderWithProviders(
       <MachineActionMenuBar isViewingDetails systemId="abc123" />,
       { state }
     );
 
-    const actionsToggle = screen.getByRole("button", { name: "Actions" });
-    await waitFor(() => {
-      expect(actionsToggle).not.toBeAriaDisabled();
-    });
-    ["Power", "Troubleshoot", "Categorise", "Delete"].forEach((name) => {
-      expect(screen.getByRole("button", { name })).toBeAriaDisabled();
-    });
+    await userEvent.click(screen.getByRole("button", { name: "Actions" }));
 
-    await userEvent.click(actionsToggle);
-
-    const actionsMenu = screen.getByLabelText("Actions submenu");
     expect(
-      within(actionsMenu).getByRole("menuitem", {
+      within(screen.getByLabelText("Actions submenu")).getByRole("menuitem", {
         name: RegExp(getNodeActionTitle(NodeActions.DEPLOY)),
       })
     ).not.toBeAriaDisabled();
-    expect(
-      within(actionsMenu).getByRole("menuitem", {
-        name: RegExp(getNodeActionTitle(NodeActions.RELEASE)),
-      })
-    ).toBeAriaDisabled();
+  });
+
+  it("only allows unlocking a locked machine, even with an edit entitlement", async () => {
+    mockServer.use(
+      authResolvers.getMeEntitlements.handler([
+        factory.entitlement({ entitlement: Entitlement.CAN_EDIT_MACHINES }),
+      ])
+    );
+    state.machine.items[0].locked = true;
+    state.machine.items[0].actions = [NodeActions.UNLOCK];
+    // RequireEntitlements only renders its children once entitlements load.
+    renderWithProviders(
+      <RequireEntitlements entitlements={[]}>
+        <MachineActionMenuBar isViewingDetails systemId="abc123" />
+      </RequireEntitlements>,
+      { state }
+    );
+
+    expect(await screen.findByRole("switch", { name: "Lock" })).toBeChecked();
+    ["Actions", "Troubleshoot", "Categorise", "Delete"].forEach((name) => {
+      expect(screen.getByRole("button", { name })).toBeAriaDisabled();
+    });
   });
 });
