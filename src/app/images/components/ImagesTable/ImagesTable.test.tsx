@@ -23,7 +23,7 @@ import {
   setupMockServer,
   within,
   mockIsPending,
-  mockSidePanel,
+  mockModal,
   waitForLoading,
   expectTooltipOnHover,
 } from "@/testing/utils";
@@ -61,7 +61,7 @@ const mockServer = setupMockServer(
   authResolvers.getCurrentUser.handler(),
   authResolvers.getMeEntitlements.handler()
 );
-const { mockOpen } = await mockSidePanel();
+const { mockOpen } = await mockModal();
 
 describe("ImagesTable", () => {
   beforeEach(() => {
@@ -493,7 +493,7 @@ describe("ImagesTable", () => {
       });
     });
 
-    it("opens delete image side panel form", async () => {
+    it("opens delete image modal", async () => {
       mockServer.use(
         imageResolvers.listSelections.handler({
           items: [

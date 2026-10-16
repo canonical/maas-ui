@@ -1,6 +1,5 @@
 import { type Dispatch, type SetStateAction, useMemo } from "react";
 
-import { useSidePanel } from "@canonical/maas-react-components";
 import {
   Button,
   Icon,
@@ -26,6 +25,7 @@ import {
 } from "@/app/api/query/images";
 import DoubleRow from "@/app/base/components/DoubleRow/DoubleRow";
 import { useHasEntitlements } from "@/app/base/hooks";
+import { useModal } from "@/app/base/modal-context";
 import DeleteImages from "@/app/images/components/DeleteImages";
 import ImageSourceMenu from "@/app/images/components/ImageSourceMenu";
 import ReleaseTitleCell from "@/app/images/components/ReleaseTitleCell";
@@ -77,7 +77,7 @@ const useImageTableColumns = ({
   isStatusLoading: boolean;
   isStatisticsLoading: boolean;
 }): ImageColumnDef[] => {
-  const { openSidePanel } = useSidePanel();
+  const { openModal } = useModal();
   const { failure } = useToastNotification();
   const startSync = useStartImageSync();
   const stopSync = useStopImageSync();
@@ -535,7 +535,7 @@ const useImageTableColumns = ({
                         if (!getIsSelected()) {
                           toggleSelected();
                         }
-                        openSidePanel({
+                        openModal({
                           component: DeleteImages,
                           title: `Delete ${selectedImageCount > 1 ? `${selectedImageCount} ` : ""}${pluralize("image", selectedImageCount)}`,
                           props: {
@@ -567,7 +567,7 @@ const useImageTableColumns = ({
       startSync,
       stopSync,
       failure,
-      openSidePanel,
+      openModal,
       setSelectedRows,
       canEdit,
     ]

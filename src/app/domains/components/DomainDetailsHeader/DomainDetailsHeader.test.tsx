@@ -8,10 +8,10 @@ import {
   screen,
   userEvent,
   renderWithProviders,
-  mockSidePanel,
+  mockModal,
 } from "@/testing/utils";
 
-const { mockOpen } = await mockSidePanel();
+const { mockOpen } = await mockModal();
 
 describe("DomainDetailsHeader", () => {
   it("shows a spinner if domain details has not loaded yet", () => {
@@ -155,7 +155,7 @@ describe("DomainDetailsHeader", () => {
     ).not.toBeInTheDocument();
   });
 
-  it("calls a function to open the side panel when the 'Delete domain' button is clicked", async () => {
+  it("calls a function to open the modal when the 'Delete domain' button is clicked", async () => {
     const state = factory.rootState({
       domain: factory.domainState({
         loaded: true,

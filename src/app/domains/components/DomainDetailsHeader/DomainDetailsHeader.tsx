@@ -1,6 +1,5 @@
 import { useEffect } from "react";
 
-import { useSidePanel } from "@canonical/maas-react-components";
 import { Button } from "@canonical/react-components";
 import pluralize from "pluralize";
 import { useDispatch, useSelector } from "react-redux";
@@ -8,6 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import DeleteDomainForm from "./DeleteDomainForm";
 
 import SectionHeader from "@/app/base/components/SectionHeader";
+import { useModal } from "@/app/base/modal-context";
 import { domainActions } from "@/app/store/domain";
 import domainSelectors from "@/app/store/domain/selectors";
 import type { Domain } from "@/app/store/domain/types";
@@ -35,7 +35,7 @@ export enum Labels {
 }
 
 const DomainDetailsHeader = ({ id }: Props): React.ReactElement | null => {
-  const { openSidePanel } = useSidePanel();
+  const { openModal } = useModal();
   const domain = useSelector((state: RootState) =>
     domainSelectors.getById(state, id)
   );
@@ -57,7 +57,7 @@ const DomainDetailsHeader = ({ id }: Props): React.ReactElement | null => {
         data-testid="delete-domain"
         key="delete-domain"
         onClick={() => {
-          openSidePanel({
+          openModal({
             component: DeleteDomainForm,
             title: "Delete domain",
             props: {
