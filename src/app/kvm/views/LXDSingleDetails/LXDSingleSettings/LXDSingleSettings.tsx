@@ -6,7 +6,6 @@ import { useSelector } from "react-redux";
 import AuthenticationCard from "./AuthenticationCard";
 import DangerZoneCard from "./DangerZoneCard";
 
-import { useGetUserEntitlements } from "@/app/api/query/auth";
 import { usePools } from "@/app/api/query/pools";
 import { useZones } from "@/app/api/query/zones";
 import {
@@ -21,7 +20,6 @@ import podSelectors from "@/app/store/pod/selectors";
 import type { Pod } from "@/app/store/pod/types";
 import { isPodDetails } from "@/app/store/pod/utils";
 import type { RootState } from "@/app/store/root/types";
-import statusSelectors from "@/app/store/status/selectors";
 import { tagActions } from "@/app/store/tag";
 import tagSelectors from "@/app/store/tag/selectors";
 
@@ -35,12 +33,11 @@ export enum Label {
 }
 
 const LXDSingleSettings = ({ id }: Props): ReactElement => {
-  const isRBAC = useSelector(statusSelectors.isRBAC);
   const pod = useSelector((state: RootState) =>
     podSelectors.getById(state, id)
   );
-  const canView = useHasEntitlements([Entitlement.CAN_VIEW_GLOBAL_ENTITIES]);
-  const entitlements = useGetUserEntitlements();
+  const { allowed: canView, isPending: entitlementsPending } =
+    useHasEntitlements([Entitlement.CAN_VIEW_GLOBAL_ENTITIES]);
   const resourcePools = usePools();
   const tagsLoaded = useSelector(tagSelectors.loaded);
   const zones = useZones();
@@ -49,7 +46,7 @@ const LXDSingleSettings = ({ id }: Props): ReactElement => {
 
   useFetchActions([tagActions.fetch]);
 
-  if (!isRBAC && !entitlements.isPending && !canView) {
+  if (!entitlementsPending && !canView) {
     return (
       <Strip aria-label={Label.Title} className="u-no-padding--top" shallow>
         <h4>{Label.Permissions}</h4>

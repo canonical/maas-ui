@@ -1,9 +1,8 @@
 import type { ReactElement } from "react";
 import { useEffect } from "react";
 
-import { ContentSection } from "@canonical/maas-react-components";
+import { ContentSection, Layout } from "@canonical/maas-react-components";
 import {
-  Spinner,
   Select,
   Notification as NotificationBanner,
 } from "@canonical/react-components";
@@ -50,7 +49,9 @@ const DnsForm = (): ReactElement => {
   const { dnssec_validation, dns_trusted_acl, upstream_dns } =
     getConfigsFromResponse(data?.items || [], names);
   const dnssecOptions = useSelector(configSelectors.dnssecOptions);
-  const canEdit = useHasEntitlements([Entitlement.CAN_EDIT_CONFIGURATIONS]);
+  const { allowed: canEdit } = useHasEntitlements([
+    Entitlement.CAN_EDIT_CONFIGURATIONS,
+  ]);
 
   const updateConfig = useBulkSetConfigurations();
 
@@ -62,6 +63,10 @@ const DnsForm = (): ReactElement => {
     }
   }, [dispatch, isSuccess]);
 
+  if (isPending) {
+    return <Layout.Skeleton view="settings" />;
+  }
+
   return (
     <PageContent>
       <ContentSection variant="narrow">
@@ -69,7 +74,6 @@ const DnsForm = (): ReactElement => {
           DNS
         </ContentSection.Title>
         <ContentSection.Content>
-          {isPending && <Spinner text="Loading..." />}
           {error && (
             <NotificationBanner
               severity="negative"

@@ -22,7 +22,9 @@ const UsersTable = () => {
   const [searchText, setSearchText] = useState("");
   const { page, debouncedPage, size, handlePageSizeChange, setPage } =
     usePagination();
-  const canEdit = useHasEntitlements([Entitlement.CAN_EDIT_IDENTITIES]);
+  const { allowed: canEdit } = useHasEntitlements([
+    Entitlement.CAN_EDIT_IDENTITIES,
+  ]);
   const users = useUsers({
     query: { page: debouncedPage, size, username_or_email: searchText },
   });

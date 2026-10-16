@@ -1,24 +1,25 @@
 import { useEffect } from "react";
 
-import { ContentSection } from "@canonical/maas-react-components";
-import { Spinner } from "@canonical/react-components";
+import { ContentSection, Layout } from "@canonical/maas-react-components";
+import { Notification } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 
-import KernelParametersForm from "../KernelParametersForm";
+import KernelParametersForm, {
+  kernelParametersConfigsOptions,
+} from "../KernelParametersForm/KernelParametersForm";
 
+import { useConfigurations } from "@/app/api/query/configurations";
 import PageContent from "@/app/base/components/PageContent";
 import { useWindowTitle } from "@/app/base/hooks";
 import { configActions } from "@/app/store/config";
 import configSelectors from "@/app/store/config/selectors";
 
-export enum Labels {
-  Loading = "Loading...",
-}
-
 const KernelParameters = (): React.ReactElement => {
   const loaded = useSelector(configSelectors.loaded);
-  const loading = useSelector(configSelectors.loading);
   const dispatch = useDispatch();
+  const { isPending, error, isSuccess } = useConfigurations(
+    kernelParametersConfigsOptions
+  );
 
   useWindowTitle("Kernel parameters");
 
@@ -28,6 +29,10 @@ const KernelParameters = (): React.ReactElement => {
     }
   }, [dispatch, loaded]);
 
+  if (isPending) {
+    return <Layout.Skeleton view="settings" />;
+  }
+
   return (
     <PageContent>
       <ContentSection variant="narrow">
@@ -35,8 +40,15 @@ const KernelParameters = (): React.ReactElement => {
           Kernel parameters
         </ContentSection.Title>
         <ContentSection.Content>
-          {loading && <Spinner text={Labels.Loading} />}
-          {loaded && <KernelParametersForm />}
+          {error && (
+            <Notification
+              severity="negative"
+              title="Error while fetching kernel parameters configurations"
+            >
+              {error.message}
+            </Notification>
+          )}
+          {isSuccess && <KernelParametersForm />}
         </ContentSection.Content>
       </ContentSection>
     </PageContent>

@@ -18,7 +18,9 @@ import { Entitlement } from "@/app/settings/views/UserManagement/views/Groups/co
 
 const TrustedSSHHostKeysTable = (): ReactElement => {
   const { openSidePanel } = useSidePanel();
-  const canEdit = useHasEntitlements([Entitlement.CAN_EDIT_CONFIGURATIONS]);
+  const { allowed: canEdit } = useHasEntitlements([
+    Entitlement.CAN_EDIT_CONFIGURATIONS,
+  ]);
   const { page, debouncedPage, size, handlePageSizeChange, setPage } =
     usePagination();
 

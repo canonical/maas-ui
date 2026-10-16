@@ -28,7 +28,9 @@ export const useLXDClusterHostsTableColumns = ({
 }): LxdKVMClusterHostColumnDef[] => {
   const { openSidePanel } = useSidePanel();
   const location = useLocation();
-  const canEdit = useHasEntitlements([Entitlement.CAN_EDIT_MACHINES]);
+  const { allowed: canEdit } = useHasEntitlements([
+    Entitlement.CAN_EDIT_MACHINES,
+  ]);
 
   return useMemo(
     () =>

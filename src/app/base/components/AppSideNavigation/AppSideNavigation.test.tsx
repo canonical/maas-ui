@@ -80,13 +80,11 @@ describe("GlobalSideNav", () => {
       mockServer.use(authResolvers.getMeEntitlements.handler([]));
       renderWithProviders(<AppSideNavigation />, { state });
 
-      for (const name of ["Machines", "Settings"]) {
-        const link = await screen.findByRole("link", { name });
-        expect(link).toHaveAttribute(
-          "aria-disabled",
-          externalAuthType === "RBAC" ? "false" : "true"
-        );
-      }
+      const link = await screen.findByRole("link", { name: "Machines" });
+      expect(link).toHaveAttribute(
+        "aria-disabled",
+        externalAuthType === "RBAC" ? "false" : "true"
+      );
     }
   );
 

@@ -20,7 +20,9 @@ export type DomainsColumnDef = ColumnDef<Domain, Partial<Domain>>;
 const useDomainsTableColumns = (): DomainsColumnDef[] => {
   const dispatch = useDispatch();
   const { openSidePanel } = useSidePanel();
-  const canEdit = useHasEntitlements([Entitlement.CAN_EDIT_GLOBAL_ENTITIES]);
+  const { allowed: canEdit } = useHasEntitlements([
+    Entitlement.CAN_EDIT_GLOBAL_ENTITIES,
+  ]);
 
   return useMemo(
     (): DomainsColumnDef[] => [

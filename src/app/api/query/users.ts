@@ -42,6 +42,9 @@ import {
 } from "@/app/apiclient";
 import {
   getUserQueryKey,
+  listGroupMembersQueryKey,
+  listGroupsQueryKey,
+  listGroupsStatisticsQueryKey,
   listUsersQueryKey,
   listUsersStatisticsQueryKey,
 } from "@/app/apiclient/@tanstack/react-query.gen";
@@ -141,10 +144,20 @@ export const useCreateUser = (mutationOptions?: Options<CreateUserData>) => {
       CreateUserErrors,
       CreateUserData
     >(mutationOptions, createUser),
-    onSuccess: () => {
-      return queryClient.invalidateQueries({
-        queryKey: listUsersQueryKey(),
-      });
+    onSuccess: async (_data, variables) => {
+      await Promise.all([
+        queryClient.invalidateQueries({ queryKey: listUsersQueryKey() }),
+        queryClient.invalidateQueries({ queryKey: listGroupsQueryKey() }),
+        queryClient.invalidateQueries({
+          queryKey: listGroupsStatisticsQueryKey(),
+        }),
+        // Invalidate the member lists for each group the new user belongs to.
+        ...(variables.body?.groups ?? []).map((group_id) =>
+          queryClient.invalidateQueries({
+            queryKey: listGroupMembersQueryKey({ path: { group_id } }),
+          })
+        ),
+      ]);
     },
   });
 };

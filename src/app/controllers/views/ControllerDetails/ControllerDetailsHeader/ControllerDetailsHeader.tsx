@@ -34,7 +34,9 @@ const ControllerDetailsHeader = ({ systemId }: Props): React.ReactElement => {
   const [isEditing, setIsEditing] = useState(false);
   const sendAnalytics = useSendAnalytics();
   const { openSidePanel } = useSidePanel();
-  const canEdit = useHasEntitlements([Entitlement.CAN_EDIT_CONTROLLERS]);
+  const { allowed: canEdit } = useHasEntitlements([
+    Entitlement.CAN_EDIT_CONTROLLERS,
+  ]);
 
   if (!controller) {
     return <SectionHeader loading />;

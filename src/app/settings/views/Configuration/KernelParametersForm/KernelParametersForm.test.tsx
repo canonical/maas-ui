@@ -7,6 +7,7 @@ import { ConfigNames } from "@/app/store/config/types";
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
 import { authResolvers } from "@/testing/resolvers/auth";
+import { configurationsResolvers } from "@/testing/resolvers/configurations";
 import {
   screen,
   renderWithProviders,
@@ -15,9 +16,15 @@ import {
   waitFor,
 } from "@/testing/utils";
 
+const configItems = [
+  { name: ConfigNames.KERNEL_OPTS, value: "foo" },
+  { name: ConfigNames.ENABLE_KERNEL_CRASH_DUMP, value: false },
+];
+
 const mockServer = setupMockServer(
   authResolvers.getCurrentUser.handler(),
-  authResolvers.getMeEntitlements.handler()
+  authResolvers.getMeEntitlements.handler(),
+  configurationsResolvers.listConfigurations.handler({ items: configItems })
 );
 
 describe("KernelParametersForm", () => {
@@ -25,40 +32,36 @@ describe("KernelParametersForm", () => {
 
   beforeEach(() => {
     state = factory.rootState({
-      config: factory.configState({
-        items: [
-          {
-            name: ConfigNames.KERNEL_OPTS,
-            value: "foo",
-          },
-          {
-            name: ConfigNames.ENABLE_KERNEL_CRASH_DUMP,
-            value: false,
-          },
-        ],
-      }),
+      config: factory.configState({ items: configItems }),
     });
   });
 
-  it("sets kernel_opts value", () => {
+  it("sets kernel_opts value", async () => {
     renderWithProviders(<KernelParametersForm />, { state });
-    expect(
-      screen.getByRole("textbox", {
-        name: FormLabels.GlobalBootParams,
-      })
-    ).toHaveValue("foo");
+
+    await waitFor(() => {
+      expect(
+        screen.getByRole("textbox", {
+          name: FormLabels.GlobalBootParams,
+        })
+      ).toHaveValue("foo");
+    });
   });
 
-  it("sets enable_kernel_crash_dump value", () => {
-    state.config.items = [
-      { name: ConfigNames.ENABLE_KERNEL_CRASH_DUMP, value: true },
-    ];
+  it("sets enable_kernel_crash_dump value", async () => {
+    mockServer.use(
+      configurationsResolvers.listConfigurations.handler({
+        items: [{ name: ConfigNames.ENABLE_KERNEL_CRASH_DUMP, value: true }],
+      })
+    );
 
     renderWithProviders(<KernelParametersForm />, { state });
 
-    expect(
-      screen.getByRole("checkbox", { name: FormLabels.KernelCrashDump })
-    ).toBeChecked();
+    await waitFor(() => {
+      expect(
+        screen.getByRole("checkbox", { name: FormLabels.KernelCrashDump })
+      ).toBeChecked();
+    });
   });
 
   it("dispatches an action to update kernel parameters", async () => {

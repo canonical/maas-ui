@@ -34,7 +34,9 @@ const StaticRoutes = ({ subnetId }: StaticRoutesProps): ReactElement | null => {
     (staticRoute) => staticRoute.source === subnetId
   );
   const subnetsLoading = useSelector(subnetSelectors.loading);
-  const canEdit = useHasEntitlements([Entitlement.CAN_EDIT_GLOBAL_ENTITIES]);
+  const { allowed: canEdit } = useHasEntitlements([
+    Entitlement.CAN_EDIT_GLOBAL_ENTITIES,
+  ]);
 
   useFetchActions([staticRouteActions.fetch, subnetActions.fetch]);
 
