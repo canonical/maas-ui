@@ -64,7 +64,9 @@ describe("GlobalSideNav", () => {
       state,
     });
 
-    expect(screen.getByRole("navigation")).toBeInTheDocument();
+    // one "navigation" landmark for the scrollable nav groups, one for the
+    // pinned footer (account/logout)
+    expect(screen.getAllByRole("navigation")).toHaveLength(2);
   });
 
   it("can handle a logged out user", () => {

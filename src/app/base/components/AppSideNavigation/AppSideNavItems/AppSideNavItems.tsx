@@ -1,30 +1,22 @@
 import { useMemo, useState } from "react";
 
 import { Navigation } from "@canonical/maas-react-components";
-import { Button, Icon } from "@canonical/react-components";
+import { Icon } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 
 import AppSideNavItem from "../AppSideNavItem";
 import type { SideNavigationProps } from "../AppSideNavigation";
-import LogoutConfirm from "../LogoutConfirm";
 import type { NavGroup } from "../types";
 import { isSelected } from "../utils";
 
-import {
-  useGetUserEntitlements,
-  type CurrentUserInfo,
-} from "@/app/api/query/auth";
+import { useGetUserEntitlements } from "@/app/api/query/auth";
 import type { EntitlementResponse } from "@/app/apiclient";
-import { useModal } from "@/app/base/modal-context";
 import urls from "@/app/base/urls";
 import configSelectors from "@/app/store/config/selectors";
 import { hasPermissions } from "@/app/utils/permissions";
 
 type Props = {
-  authUser: CurrentUserInfo | undefined;
   groups: NavGroup[];
-  isAuthenticated: boolean;
-  logout: () => void;
   path: string;
   setIsCollapsed: SideNavigationProps["setIsCollapsed"];
   showLinks: boolean;
@@ -111,75 +103,40 @@ const AppSideNavItemGroup = ({
 };
 
 export const AppSideNavItems = ({
-  authUser,
   groups,
-  isAuthenticated,
-  logout,
   path,
   setIsCollapsed,
   showLinks,
   vaultIncomplete,
-}: Props): React.ReactElement => {
+}: Props): React.ReactElement | null => {
   const { data: userEntitlements } = useGetUserEntitlements();
-  const { openModal } = useModal();
+
+  if (!showLinks) {
+    return null;
+  }
+
   return (
     <>
-      {showLinks
-        ? groups.map((group, i) => (
-            <Navigation.List key={`${i}-${group.groupTitle ?? "group"}`}>
-              <AppSideNavItemGroup
-                entitlements={userEntitlements}
-                group={group}
-                path={path}
-                setIsCollapsed={setIsCollapsed}
-                vaultIncomplete={vaultIncomplete}
-              />
-            </Navigation.List>
-          ))
-        : null}
-      {isAuthenticated ? (
-        <>
-          {showLinks ? (
-            <Navigation.List>
-              <AppSideNavItem
-                disabled={false}
-                icon="settings"
-                navLink={{ label: "Settings", url: urls.settings.index }}
-                path={path}
-                setIsCollapsed={setIsCollapsed}
-              />
-            </Navigation.List>
-          ) : null}
-          <Navigation.List>
-            <AppSideNavItem
-              disabled={false}
-              icon="profile"
-              navLink={{
-                label: `${authUser?.username}`,
-                url: urls.preferences.index,
-              }}
-              path={path}
-              setIsCollapsed={setIsCollapsed}
-            />
-            <Navigation.Item>
-              <Navigation.Link
-                appearance="link"
-                as={Button}
-                onClick={() => {
-                  openModal({
-                    component: LogoutConfirm,
-                    title: "Log out",
-                    props: { logout },
-                  });
-                }}
-              >
-                <Navigation.Icon name="log-out" />
-                <Navigation.Label>Log out</Navigation.Label>
-              </Navigation.Link>
-            </Navigation.Item>
-          </Navigation.List>
-        </>
-      ) : null}
+      {groups.map((group, i) => (
+        <Navigation.List key={`${i}-${group.groupTitle ?? "group"}`}>
+          <AppSideNavItemGroup
+            entitlements={userEntitlements}
+            group={group}
+            path={path}
+            setIsCollapsed={setIsCollapsed}
+            vaultIncomplete={vaultIncomplete}
+          />
+        </Navigation.List>
+      ))}
+      <Navigation.List>
+        <AppSideNavItem
+          disabled={false}
+          icon="settings"
+          navLink={{ label: "Settings", url: urls.settings.index }}
+          path={path}
+          setIsCollapsed={setIsCollapsed}
+        />
+      </Navigation.List>
     </>
   );
 };
