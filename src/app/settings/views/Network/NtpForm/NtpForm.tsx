@@ -1,10 +1,7 @@
 import type { ReactElement } from "react";
 
-import { ContentSection } from "@canonical/maas-react-components";
-import {
-  Notification as NotificationBanner,
-  Spinner,
-} from "@canonical/react-components";
+import { ContentSection, Layout } from "@canonical/maas-react-components";
+import { Notification as NotificationBanner } from "@canonical/react-components";
 import * as Yup from "yup";
 
 import { Entitlement } from "../../UserManagement/views/Groups/constants";
@@ -32,12 +29,14 @@ const NtpForm = (): ReactElement => {
   });
   const eTag = data?.headers?.get("ETag");
   const updateConfig = useBulkSetConfigurations();
-  const canEdit = useHasEntitlements([Entitlement.CAN_EDIT_CONFIGURATIONS]);
+  const { allowed: canEdit } = useHasEntitlements([
+    Entitlement.CAN_EDIT_CONFIGURATIONS,
+  ]);
 
   useWindowTitle("NTP");
 
   if (isPending) {
-    return <Spinner text="Loading..." />;
+    return <Layout.Skeleton view="settings" />;
   }
 
   if (isError) {

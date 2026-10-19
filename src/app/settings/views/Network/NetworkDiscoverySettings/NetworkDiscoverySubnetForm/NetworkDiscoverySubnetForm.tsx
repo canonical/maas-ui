@@ -36,7 +36,9 @@ const NetworkDiscoverySubnetForm = (): ReactElement => {
   const saving = useSelector(subnetSelectors.saving);
   const networkDiscovery = useSelector(configSelectors.networkDiscovery);
   const discoveryDisabled = networkDiscovery === NetworkDiscovery.DISABLED;
-  const canEdit = useHasEntitlements([Entitlement.CAN_EDIT_CONFIGURATIONS]);
+  const { allowed: canEdit } = useHasEntitlements([
+    Entitlement.CAN_EDIT_CONFIGURATIONS,
+  ]);
 
   useFetchActions([subnetActions.fetch, fabricActions.fetch]);
 

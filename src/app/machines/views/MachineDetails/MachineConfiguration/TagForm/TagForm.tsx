@@ -26,7 +26,7 @@ const TagForm = ({ systemId }: Props): React.ReactElement | null => {
   const tagsLoading = useSelector(tagSelectors.loading);
 
   const canEdit = useCanEdit(machine, true);
-  const canEditMachine = useCanEditMachine(systemId);
+  const { allowed: canEditMachine } = useCanEditMachine(systemId);
 
   useFetchActions([tagActions.fetch]);
 

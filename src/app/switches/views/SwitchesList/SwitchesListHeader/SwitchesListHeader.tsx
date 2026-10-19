@@ -17,7 +17,9 @@ type Props = {
 const SwitchesListHeader = ({ searchFilter, setSearchFilter }: Props) => {
   const { openSidePanel } = useSidePanel();
   const [searchText, setSearchText] = useState(searchFilter);
-  const canEdit = useHasEntitlements([Entitlement.CAN_EDIT_GLOBAL_ENTITIES]);
+  const { allowed: canEdit } = useHasEntitlements([
+    Entitlement.CAN_EDIT_GLOBAL_ENTITIES,
+  ]);
 
   useEffect(() => {
     setSearchText(searchFilter);

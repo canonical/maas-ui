@@ -24,7 +24,9 @@ const KVMListHeader = ({ title }: Props): ReactElement => {
   const kvms = useSelector(podSelectors.kvms);
   const podsLoaded = useSelector(podSelectors.loaded);
   const lxdTabActive = location.pathname.endsWith(urls.kvm.lxd.index);
-  const canEdit = useHasEntitlements([Entitlement.CAN_EDIT_MACHINES]);
+  const { allowed: canEdit } = useHasEntitlements([
+    Entitlement.CAN_EDIT_MACHINES,
+  ]);
 
   useFetchActions([podActions.fetch]);
 

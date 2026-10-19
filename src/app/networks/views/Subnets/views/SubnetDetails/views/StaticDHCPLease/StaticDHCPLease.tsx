@@ -25,7 +25,9 @@ const StaticDHCPLease = ({ subnetId }: StaticDHCPLeaseProps): ReactElement => {
   const loading = useSelector((state: RootState) =>
     reservedIpSelectors.loading(state)
   );
-  const canEdit = useHasEntitlements([Entitlement.CAN_EDIT_GLOBAL_ENTITIES]);
+  const { allowed: canEdit } = useHasEntitlements([
+    Entitlement.CAN_EDIT_GLOBAL_ENTITIES,
+  ]);
 
   return (
     <>

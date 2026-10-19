@@ -51,7 +51,9 @@ const ControllerConfigurationForm = ({
   const saving = useSelector(controllerSelectors.saving);
   const cleanup = useCallback(() => machineActions.cleanup(), []);
   const canEdit = useCanEdit(node, true);
-  const canEditUser = useHasEntitlements([Entitlement.CAN_EDIT_CONTROLLERS]);
+  const { allowed: canEditUser } = useHasEntitlements([
+    Entitlement.CAN_EDIT_CONTROLLERS,
+  ]);
 
   useFetchActions([tagActions.fetch]);
 

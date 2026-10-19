@@ -33,7 +33,9 @@ const ScriptsList = ({ type = "commissioning" }: Props): React.ReactElement => {
   const dispatch = useDispatch();
   const { openSidePanel } = useSidePanel();
   const [searchText, setSearchText] = useState("");
-  const canEdit = useHasEntitlements([Entitlement.CAN_EDIT_GLOBAL_ENTITIES]);
+  const { allowed: canEdit } = useHasEntitlements([
+    Entitlement.CAN_EDIT_GLOBAL_ENTITIES,
+  ]);
 
   const scriptsLoading = useSelector(scriptSelectors.loading);
   const scriptsLoaded = useSelector(scriptSelectors.loaded);
