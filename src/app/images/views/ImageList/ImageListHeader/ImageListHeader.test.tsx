@@ -10,17 +10,19 @@ import { authResolvers } from "@/testing/resolvers/auth";
 import { imageSourceResolvers } from "@/testing/resolvers/imageSources";
 import { imageResolvers } from "@/testing/resolvers/images";
 import {
-  userEvent,
-  screen,
-  within,
-  renderWithProviders,
+  mockModal,
   mockSidePanel,
+  renderWithProviders,
+  screen,
   setupMockServer,
+  userEvent,
   waitFor,
   waitForLoading,
+  within,
 } from "@/testing/utils";
 
 const { mockOpen } = await mockSidePanel();
+const { mockOpen: mockOpenModal } = await mockModal();
 const mockServer = setupMockServer(
   imageSourceResolvers.listImageSources.handler(),
   imageResolvers.listSelectionStatuses.handler(),
@@ -112,7 +114,7 @@ describe("Delete", () => {
     expect(screen.getByRole("button", { name: "Delete" })).toBeAriaDisabled();
   });
 
-  it("can trigger delete images side panel form", async () => {
+  it("can trigger delete images modal", async () => {
     renderWithProviders(
       <ImageListHeader selectedRows={{ 1: true }} setSelectedRows={vi.fn} />
     );
@@ -124,7 +126,7 @@ describe("Delete", () => {
     });
     await userEvent.click(screen.getByRole("button", { name: "Delete" }));
 
-    expect(mockOpen).toHaveBeenCalledWith({
+    expect(mockOpenModal).toHaveBeenCalledWith({
       component: DeleteImages,
       props: {
         rowSelection: { 1: true },
