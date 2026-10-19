@@ -18,6 +18,7 @@ jobs:
         with:
           scopes: |
             base
+            ci
             controllers
             deps
             devices

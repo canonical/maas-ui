@@ -72,7 +72,11 @@ jobs:
 
           BASE_SHA="${{ github.event.pull_request.base.sha }}"
           HEAD_SHA="${{ github.event.pull_request.head.sha }}"
-          CYPRESS_CONFIG_CHANGED=$(git diff --name-only "$BASE_SHA" "$HEAD_SHA" -- \
+          # Three-dot diff compares HEAD against the merge-base, so commits that
+          # landed on the base branch after the PR branched off are not counted
+          # as changes made by this PR.
+          DIFF_RANGE="$BASE_SHA...$HEAD_SHA"
+          CYPRESS_CONFIG_CHANGED=$(git diff --name-only "$DIFF_RANGE" -- \
             .github/workflows/cypress.yml .github/workflows/version-runs.yml \
             cypress.config.ts scripts/proxy.js scripts/proxy-ready.js \
             package.json yarn.lock)
@@ -84,13 +88,13 @@ jobs:
 
           # Collect the src/app/ directories touched by this PR.
           # grep || true prevents exit code 1 under pipefail when nothing matches.
-          CHANGED_APP=$(git diff --name-only "$BASE_SHA" "$HEAD_SHA" | \
+          CHANGED_APP=$(git diff --name-only "$DIFF_RANGE" | \
                         (grep '^src/app/' || true) | \
                         awk -F'/' '{print $3}' | \
                         sort -u)
 
           # Collect the features/ subdirectories directly touched by this PR.
-          CHANGED_FEATURE=$(git diff --name-only "$BASE_SHA" "$HEAD_SHA" | \
+          CHANGED_FEATURE=$(git diff --name-only "$DIFF_RANGE" | \
                             (grep '^cypress/e2e/with-users/features/' || true) | \
                             awk -F'/' '{print $5}' | \
                             sort -u)
@@ -99,7 +103,7 @@ jobs:
           # These live alongside the features/ dirs and back their step
           # implementations, so a change here affects tests without the
           # feature files themselves changing.
-          CHANGED_STEP_DEFS=$(git diff --name-only "$BASE_SHA" "$HEAD_SHA" | \
+          CHANGED_STEP_DEFS=$(git diff --name-only "$DIFF_RANGE" | \
                               (grep '^cypress/support/step_definitions/' || true) | \
                               awk -F'/' '{print $4}' | \
                               sort -u)
@@ -108,7 +112,7 @@ jobs:
           # register global custom commands used by every spec via Cypress's
           # default supportFile - a change here can affect any test, so treat
           # it the same as a shared step_definitions/common change.
-          GLOBAL_SUPPORT_CHANGED=$(git diff --name-only "$BASE_SHA" "$HEAD_SHA" | \
+          GLOBAL_SUPPORT_CHANGED=$(git diff --name-only "$DIFF_RANGE" | \
                                     grep -qx -e "cypress/support/commands.ts" -e "cypress/support/e2e.ts" && echo yes || true)
 
           echo "Changed app/ directories:"
