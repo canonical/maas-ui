@@ -3,39 +3,22 @@ import { captureCIFailureDiagnostics } from "../../../support/diagnostics";
 import { generateMAASURL, generateName } from "../../utils";
 
 context("Machine listing", () => {
-  let stopDiagnostics: (() => void) | undefined;
+  let diagnostics: ReturnType<typeof captureCIFailureDiagnostics> | undefined;
 
   beforeEach(() => {
-    if (
-      Cypress.currentTest.title ===
-      "displays machine counts with active filters"
-    ) {
-      stopDiagnostics = captureCIFailureDiagnostics({
-        methods: ["machine.action", "machine.list", "machine.count"],
-        model: "machine",
-        snapshot: (document) => ({
-          searchFilter: document.querySelector<HTMLInputElement>(
-            'input[type="search"]'
-          )?.value,
-          groups: Array.from(
-            document.querySelectorAll(".machine-list__group")
-          ).map((row) => row.textContent),
-          machines: Array.from(
-            document.querySelectorAll(".machine-list__machine")
-          ).map((row) => ({
-            name: row.querySelector('[aria-label="FQDN"]')?.textContent,
-            status: row.querySelector('[aria-label="Status"]')?.textContent,
-          })),
-        }),
-      });
-    }
     cy.login();
     cy.visit(generateMAASURL("/machines"));
   });
 
-  afterEach(() => {
-    stopDiagnostics?.();
-    stopDiagnostics = undefined;
+  afterEach(function () {
+    if (this.currentTest?.state === "failed" && diagnostics) {
+      cy.task(
+        "log",
+        `CI diagnostics (${this.currentTest.title}):\n${JSON.stringify(diagnostics.report(), null, 2)}`
+      );
+    }
+    diagnostics?.stop();
+    diagnostics = undefined;
     cy.window()
       // reset grouping to default
       .then((win) => win.localStorage.removeItem("grouping"));
@@ -73,6 +56,24 @@ context("Machine listing", () => {
   });
 
   it("displays machine counts with active filters", () => {
+    diagnostics = captureCIFailureDiagnostics({
+      methods: ["machine.action", "machine.list", "machine.count"],
+      model: "machine",
+      snapshot: (document) => ({
+        searchFilter: document.querySelector<HTMLInputElement>(
+          'input[type="search"]'
+        )?.value,
+        groups: Array.from(
+          document.querySelectorAll(".machine-list__group")
+        ).map((row) => row.textContent),
+        machines: Array.from(
+          document.querySelectorAll(".machine-list__machine")
+        ).map((row) => ({
+          name: row.querySelector('[aria-label="FQDN"]')?.textContent,
+          status: row.querySelector('[aria-label="Status"]')?.textContent,
+        })),
+      }),
+    });
     const name = generateName();
     const searchFilter = `status:(=commissioning) hostname:(${name})`;
     const machines = [`${name}-1`, `${name}-2`];

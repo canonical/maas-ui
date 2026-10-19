@@ -3,10 +3,10 @@ import { captureCIFailureDiagnostics } from "../../../support/diagnostics";
 import { generateMAASURL } from "../../utils";
 
 context("Static Routes", () => {
-  let stopDiagnostics: (() => void) | undefined;
+  let diagnostics: ReturnType<typeof captureCIFailureDiagnostics> | undefined;
 
   beforeEach(() => {
-    stopDiagnostics = captureCIFailureDiagnostics({
+    diagnostics = captureCIFailureDiagnostics({
       methods: ["subnet.list", "subnet.get", "subnet.set_active"],
       model: "subnet",
       snapshot: (document) => {
@@ -35,9 +35,15 @@ context("Static Routes", () => {
     cy.viewport("macbook-11");
   });
 
-  afterEach(() => {
-    stopDiagnostics?.();
-    stopDiagnostics = undefined;
+  afterEach(function () {
+    if (this.currentTest?.state === "failed" && diagnostics) {
+      cy.task(
+        "log",
+        `CI diagnostics (${this.currentTest.title}):\n${JSON.stringify(diagnostics.report(), null, 2)}`
+      );
+    }
+    diagnostics?.stop();
+    diagnostics = undefined;
   });
 
   it("allows adding, editing, and deleting a static route", () => {

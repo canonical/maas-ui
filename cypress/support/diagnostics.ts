@@ -6,6 +6,11 @@ type Options = {
   snapshot: (document: Document) => DiagnosticRecord;
 };
 
+type Diagnostics = {
+  report: () => DiagnosticRecord;
+  stop: () => void;
+};
+
 const MAX_EVENTS = 100;
 
 const isRecord = (value: unknown): value is DiagnosticRecord =>
@@ -62,7 +67,7 @@ export const captureCIFailureDiagnostics = ({
   methods,
   model,
   snapshot,
-}: Options): (() => void) => {
+}: Options): Diagnostics => {
   const startedAt = Date.now();
   const events: DiagnosticRecord[] = [];
   const cleanup: (() => void)[] = [];
@@ -200,9 +205,10 @@ export const captureCIFailureDiagnostics = ({
     });
   });
 
-  cy.on("fail", (error) => {
-    const report = {
+  return {
+    report: () => ({
       model,
+      elapsedMs: Date.now() - startedAt,
       droppedEvents,
       events,
       pathname: currentWindow?.location.pathname,
@@ -210,13 +216,9 @@ export const captureCIFailureDiagnostics = ({
       ui: currentWindow
         ? snapshot(currentWindow.document)
         : "No application window was captured",
-    };
-    // Cypress commands cannot be queued here; attach evidence to the original failure.
-    error.message = `CI diagnostics:\n${JSON.stringify(report, null, 2)}\n\n${error.message}`;
-    throw error;
-  });
-
-  return () => {
-    cleanup.forEach((restore) => restore());
+    }),
+    stop: () => {
+      cleanup.forEach((restore) => restore());
+    },
   };
 };
