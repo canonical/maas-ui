@@ -1,5 +1,4 @@
 import { LONG_TIMEOUT } from "../../../constants";
-import { captureCIFailureDiagnostics } from "../../../support/diagnostics";
 import { generateMAASURL, generateName } from "../../utils";
 
 context("Static Routes", () => {
@@ -12,7 +11,6 @@ context("Static Routes", () => {
   let destinationName: string;
   let fabricCreated = false;
   let createdSubnets: string[] = [];
-  let diagnostics: ReturnType<typeof captureCIFailureDiagnostics> | undefined;
 
   beforeEach(() => {
     fabricName = generateName("static-route-fabric");
@@ -21,29 +19,6 @@ context("Static Routes", () => {
     const vlanName = generateName("static-route-vlan");
     fabricCreated = false;
     createdSubnets = [];
-    diagnostics = captureCIFailureDiagnostics({
-      methods: ["subnet.list", "subnet.get", "subnet.set_active"],
-      model: "subnet",
-      snapshot: (document) => {
-        const destination = document.querySelector<HTMLSelectElement>(
-          'select[name="destination"]'
-        );
-        return {
-          sourceHeading: document.querySelector("h1")?.textContent,
-          destinationPresent: !!destination,
-          destinationValue: destination?.value,
-          destinationDisabled: destination?.disabled,
-          destinationOptions: destination
-            ? Array.from(destination.options).map((option) => ({
-                label: option.text,
-                value: option.value,
-                disabled: option.disabled,
-                selected: option.selected,
-              }))
-            : null,
-        };
-      },
-    });
     cy.login();
     cy.visit(generateMAASURL("/networks?by=fabric"));
     cy.waitForPageToLoad();
@@ -102,16 +77,7 @@ context("Static Routes", () => {
     });
   });
 
-  afterEach(function () {
-    if (this.currentTest?.state === "failed" && diagnostics) {
-      cy.task(
-        "log",
-        `CI diagnostics (${this.currentTest.title}):\n${JSON.stringify(diagnostics.report(), null, 2)}`
-      );
-    }
-    diagnostics?.stop();
-    diagnostics = undefined;
-
+  afterEach(() => {
     createdSubnets.forEach((name) => {
       cy.visit(generateMAASURL("/networks?by=fabric"));
       cy.findByRole("link", {
