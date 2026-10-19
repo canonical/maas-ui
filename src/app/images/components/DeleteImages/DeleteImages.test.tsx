@@ -7,7 +7,7 @@ import { imageResolvers } from "@/testing/resolvers/images";
 import {
   userEvent,
   screen,
-  mockSidePanel,
+  mockModal,
   renderWithProviders,
   setupMockServer,
   waitForLoading,
@@ -15,7 +15,7 @@ import {
   within,
 } from "@/testing/utils";
 
-const { mockClose } = await mockSidePanel();
+const { mockClose } = await mockModal();
 const mockServer = setupMockServer(
   imageResolvers.listSelections.handler(),
   imageResolvers.listCustomImages.handler({

@@ -1,6 +1,5 @@
 import { useMemo } from "react";
 
-import { useSidePanel } from "@canonical/maas-react-components";
 import { ContextualMenu } from "@canonical/react-components";
 import type { ColumnDef } from "@tanstack/react-table";
 import { useDispatch } from "react-redux";
@@ -9,6 +8,7 @@ import { Link } from "react-router";
 import { Labels } from "../DomainsTable";
 
 import { useHasEntitlements } from "@/app/base/hooks";
+import { useModal } from "@/app/base/modal-context";
 import urls from "@/app/base/urls";
 import { SetDefaultForm } from "@/app/domains/components";
 import { Entitlement } from "@/app/settings/views/UserManagement/views/Groups/constants";
@@ -19,7 +19,7 @@ export type DomainsColumnDef = ColumnDef<Domain, Partial<Domain>>;
 
 const useDomainsTableColumns = (): DomainsColumnDef[] => {
   const dispatch = useDispatch();
-  const { openSidePanel } = useSidePanel();
+  const { openModal } = useModal();
   const { allowed: canEdit } = useHasEntitlements([
     Entitlement.CAN_EDIT_GLOBAL_ENTITIES,
   ]);
@@ -79,7 +79,7 @@ const useDomainsTableColumns = (): DomainsColumnDef[] => {
                 children: Labels.SetDefault,
                 onClick: () => {
                   dispatch(domainActions.cleanup());
-                  openSidePanel({
+                  openModal({
                     component: SetDefaultForm,
                     title: "Set default",
                     props: { id: domain.id },
@@ -94,7 +94,7 @@ const useDomainsTableColumns = (): DomainsColumnDef[] => {
         ),
       },
     ],
-    [canEdit, dispatch, openSidePanel]
+    [canEdit, dispatch, openModal]
   );
 };
 
