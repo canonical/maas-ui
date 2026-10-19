@@ -9,33 +9,57 @@ import type { RootState } from "@/app/store/root/types";
 import statusSelectors from "@/app/store/status/selectors";
 import { hasEntitlementForPool, hasPermissions } from "@/app/utils/permissions";
 
-export const useHasEntitlements = (requiredEntitlements: Entitlement[]) => {
+type Permissions = {
+  allowed: boolean;
+  // True until the user's entitlements have been fetched. While pending,
+  // `allowed` is always false and should not be treated as a denial.
+  isPending: boolean;
+};
+
+// The entitlements query is disabled for RBAC, so it never leaves pending.
+const RBAC_PERMISSIONS: Permissions = { allowed: true, isPending: false };
+
+export const useHasEntitlements = (
+  requiredEntitlements: Entitlement[]
+): Permissions => {
   const isRBAC = useSelector(statusSelectors.isRBAC);
-  const { data: userEntitlements } = useGetUserEntitlements();
-  return isRBAC || hasPermissions(userEntitlements || [], requiredEntitlements);
+  const { data: userEntitlements, isPending } = useGetUserEntitlements();
+  if (isRBAC) {
+    return RBAC_PERMISSIONS;
+  }
+  return {
+    allowed: hasPermissions(userEntitlements || [], requiredEntitlements),
+    isPending,
+  };
 };
 
 export const useCanEditMachine = (
   systemId?: Machine["system_id"] | null
-): boolean => {
+): Permissions => {
   const isRBAC = useSelector(statusSelectors.isRBAC);
-  const { data: userEntitlements } = useGetUserEntitlements();
+  const { data: userEntitlements, isPending } = useGetUserEntitlements();
   const machine = useSelector((state: RootState) =>
     machineSelectors.getById(state, systemId)
   );
   if (isRBAC) {
-    return true;
+    return RBAC_PERMISSIONS;
   }
   if (!machine) {
-    return hasPermissions(userEntitlements || [], [
-      Entitlement.CAN_EDIT_MACHINES,
-    ]);
+    return {
+      allowed: hasPermissions(userEntitlements || [], [
+        Entitlement.CAN_EDIT_MACHINES,
+      ]),
+      isPending,
+    };
   }
-  return hasEntitlementForPool(
-    userEntitlements,
-    Entitlement.CAN_EDIT_MACHINES,
-    machine.pool.id
-  );
+  return {
+    allowed: hasEntitlementForPool(
+      userEntitlements,
+      Entitlement.CAN_EDIT_MACHINES,
+      machine.pool.id
+    ),
+    isPending,
+  };
 };
 
 export const useCanEditVMHost = (hostId?: Pod["id"] | null): boolean => {
@@ -74,9 +98,15 @@ const SUPERUSER_ENTITLEMENTS = [
   Entitlement.CAN_EDIT_NOTIFICATIONS,
 ];
 
-export const useIsSuperUser = () => {
+export const useIsSuperUser = (): Permissions => {
   const isRBAC = useSelector(statusSelectors.isRBAC);
-  const { data: userEntitlements } = useGetUserEntitlements();
+  const { data: userEntitlements, isPending } = useGetUserEntitlements();
   // Bypassing UI gates does not establish superuser status for RBAC users.
-  return !isRBAC && hasPermissions(userEntitlements, SUPERUSER_ENTITLEMENTS);
+  if (isRBAC) {
+    return { allowed: false, isPending: false };
+  }
+  return {
+    allowed: hasPermissions(userEntitlements, SUPERUSER_ENTITLEMENTS),
+    isPending,
+  };
 };

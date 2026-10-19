@@ -19,7 +19,9 @@ const DomainListHeader = (): React.ReactElement => {
   const domainsLoaded = useSelector(domainSelectors.loaded);
 
   const { openSidePanel } = useSidePanel();
-  const canEdit = useHasEntitlements([Entitlement.CAN_EDIT_GLOBAL_ENTITIES]);
+  const { allowed: canEdit } = useHasEntitlements([
+    Entitlement.CAN_EDIT_GLOBAL_ENTITIES,
+  ]);
 
   useFetchActions([domainActions.fetch]);
 

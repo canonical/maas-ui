@@ -50,7 +50,7 @@ const MachineForm = ({ systemId }: Props): React.ReactElement | null => {
   const saving = useSelector(machineSelectors.saving);
   const cleanup = useCallback(() => machineActions.cleanup(), []);
   const canEdit = useCanEdit(machine, true);
-  const canEditMachine = useCanEditMachine(systemId);
+  const { allowed: canEditMachine } = useCanEditMachine(systemId);
 
   if (!isMachineDetails(machine)) {
     return <Spinner text="Loading..." />;

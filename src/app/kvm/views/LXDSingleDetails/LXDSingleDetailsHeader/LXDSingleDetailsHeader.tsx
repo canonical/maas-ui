@@ -32,7 +32,7 @@ const LXDSingleDetailsHeader = ({ id }: Props): ReactElement => {
     podSelectors.getById(state, id)
   );
   const canEdit = useCanEditVMHost(id);
-  const canViewSettings = useHasEntitlements([
+  const { allowed: canViewSettings } = useHasEntitlements([
     Entitlement.CAN_VIEW_GLOBAL_ENTITIES,
   ]);
   // id will be of a known pod, so we can safely assume that pod will be defined

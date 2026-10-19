@@ -30,7 +30,9 @@ const LXDClusterDetailsHeader = ({ clusterId }: Props): React.ReactElement => {
   // eslint-disable-next-line @typescript-eslint/no-non-null-asserted-optional-chain
   const zone = useGetZone({ path: { zone_id: cluster?.availability_zone! } });
   const location = useLocation();
-  const canEdit = useHasEntitlements([Entitlement.CAN_EDIT_MACHINES]);
+  const { allowed: canEdit } = useHasEntitlements([
+    Entitlement.CAN_EDIT_MACHINES,
+  ]);
   const canRefresh = !!cluster?.hosts.length && canEdit;
 
   let title: ReactNode = <Spinner text="Loading..." />;
