@@ -80,6 +80,19 @@ context("Machine listing", () => {
     cy.addMachines(machines);
     cy.findByRole("combobox", { name: "Group by" }).select("Group by status");
     cy.findByRole("searchbox").type(searchFilter);
+    cy.location("search", { timeout: LONG_TIMEOUT }).should((search) => {
+      const params = new URLSearchParams(search);
+      expect(params.get("status")).to.equal("=commissioning");
+      expect(params.get("hostname")).to.equal(name);
+    });
+    cy.findByRole("grid", { name: /Machines/ }).within(() => {
+      machines.forEach((hostname) => {
+        cy.findByRole("checkbox", {
+          name: new RegExp(`^${hostname}\\.`),
+          timeout: LONG_TIMEOUT,
+        }).should("exist");
+      });
+    });
     cy.findByText(/Showing 2 out of 2 machines/).should("exist");
     cy.findByRole("grid", { name: /Machines/ }).within(() =>
       cy
