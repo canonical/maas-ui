@@ -1,10 +1,10 @@
 import { useMemo } from "react";
 
-import { useSidePanel } from "@canonical/maas-react-components";
 import type { ColumnDef, Row } from "@tanstack/react-table";
 
 import TableMenu from "@/app/base/components/TableMenu";
 import DeleteCacheSet from "@/app/base/components/node/StorageTables/AvailableStorageTable/DeleteCacheSet";
+import { useModal } from "@/app/base/modal-context";
 import type { Disk, Node } from "@/app/store/types/node";
 import { formatSize } from "@/app/store/utils";
 
@@ -21,7 +21,7 @@ const useCacheSetsColumns = ({
   canEditStorage,
   systemId,
 }: Props): CacheSetsColumnDef[] => {
-  const { openSidePanel } = useSidePanel();
+  const { openModal } = useModal();
 
   return useMemo<CacheSetsColumnDef[]>(
     () => [
@@ -55,7 +55,7 @@ const useCacheSetsColumns = ({
                     {
                       children: "Remove cache set...",
                       onClick: () => {
-                        openSidePanel({
+                        openModal({
                           component: DeleteCacheSet,
                           title: "Remove cache set",
                           props: {
@@ -74,7 +74,7 @@ const useCacheSetsColumns = ({
           ]
         : []),
     ],
-    [canEditStorage, isMachine, openSidePanel, systemId]
+    [canEditStorage, isMachine, openModal, systemId]
   );
 };
 

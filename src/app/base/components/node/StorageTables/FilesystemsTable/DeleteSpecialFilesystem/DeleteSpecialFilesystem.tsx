@@ -1,9 +1,9 @@
 import type { ReactElement } from "react";
 
-import { useSidePanel } from "@canonical/maas-react-components";
 import { useDispatch } from "react-redux";
 
 import ModelActionForm from "@/app/base/components/ModelActionForm";
+import { useModal } from "@/app/base/modal-context";
 import { machineActions } from "@/app/store/machine";
 import type { Machine } from "@/app/store/machine/types";
 import type { Filesystem } from "@/app/store/types/node";
@@ -18,14 +18,14 @@ const DeleteSpecialFilesystem = ({
   mountPoint,
 }: DeleteSpecialFilesystemProps): ReactElement => {
   const dispatch = useDispatch();
-  const { closeSidePanel } = useSidePanel();
+  const { closeModal } = useModal();
   return (
     <ModelActionForm
       aria-label="Delete special filesystem"
       initialValues={{}}
       message={<>Are you sure you want to remove this special filesystem?</>}
       modelType="special filesystem"
-      onCancel={closeSidePanel}
+      onCancel={closeModal}
       onSaveAnalytics={{
         action: "Unmount special filesystem",
         category: "Machine storage",
@@ -39,7 +39,7 @@ const DeleteSpecialFilesystem = ({
             systemId,
           })
         );
-        closeSidePanel();
+        closeModal();
       }}
       submitAppearance="negative"
       submitLabel="Remove"

@@ -1,9 +1,9 @@
 import type { ReactElement } from "react";
 
-import { useSidePanel } from "@canonical/maas-react-components";
 import { useDispatch } from "react-redux";
 
 import ModelActionForm from "@/app/base/components/ModelActionForm";
+import { useModal } from "@/app/base/modal-context";
 import { machineActions } from "@/app/store/machine";
 import type { Machine } from "@/app/store/machine/types";
 import type { Disk, Partition } from "@/app/store/types/node";
@@ -20,7 +20,7 @@ const CreateCacheSet = ({
   partitionId,
 }: CreateCacheSetProps): ReactElement => {
   const dispatch = useDispatch();
-  const { closeSidePanel } = useSidePanel();
+  const { closeModal } = useModal();
   const isDiskCacheSet = !!diskId;
   return (
     <ModelActionForm
@@ -28,7 +28,7 @@ const CreateCacheSet = ({
       initialValues={{}}
       message={<>Are you sure you want to create a cache set?</>}
       modelType="cache set"
-      onCancel={closeSidePanel}
+      onCancel={closeModal}
       onSaveAnalytics={{
         action: `Create cache set from ${
           isDiskCacheSet ? "disk" : "partition"
@@ -44,7 +44,7 @@ const CreateCacheSet = ({
             systemId: systemId,
           })
         );
-        closeSidePanel();
+        closeModal();
       }}
       submitAppearance="positive"
       submitLabel="Create cache set"

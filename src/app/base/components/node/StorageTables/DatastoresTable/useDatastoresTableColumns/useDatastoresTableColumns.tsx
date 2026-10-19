@@ -1,11 +1,11 @@
 import { useMemo } from "react";
 
-import { useSidePanel } from "@canonical/maas-react-components";
 import type { ColumnDef, Row } from "@tanstack/react-table";
 
 import TableMenu from "@/app/base/components/TableMenu";
 import type { DatastoreRow } from "@/app/base/components/node/StorageTables/DatastoresTable/DatastoresTable";
 import RemoveDatastore from "@/app/base/components/node/StorageTables/DatastoresTable/RemoveDatastore";
+import { useModal } from "@/app/base/modal-context";
 import { formatSize } from "@/app/store/utils";
 
 export type DatastoresColumnDef = ColumnDef<
@@ -17,7 +17,7 @@ const useDatastoresTableColumns = (
   canEditStorage: boolean,
   isMachine: boolean
 ): DatastoresColumnDef[] => {
-  const { openSidePanel } = useSidePanel();
+  const { openModal } = useModal();
 
   return useMemo(
     () =>
@@ -73,7 +73,7 @@ const useDatastoresTableColumns = (
                       {
                         children: "Remove datastore...",
                         onClick: () => {
-                          openSidePanel({
+                          openModal({
                             component: RemoveDatastore,
                             title: "Remove datastore",
                             props: {
@@ -92,7 +92,7 @@ const useDatastoresTableColumns = (
             ]
           : []),
       ] as DatastoresColumnDef[],
-    [canEditStorage, isMachine, openSidePanel]
+    [canEditStorage, isMachine, openModal]
   );
 };
 

@@ -11,6 +11,7 @@ import MacAddressDisplay from "@/app/base/components/MacAddressDisplay";
 import TableActions from "@/app/base/components/TableActions";
 import SubnetColumn from "@/app/base/components/node/networking/SubnetColumn";
 import { useCanEdit } from "@/app/base/hooks";
+import { useModal } from "@/app/base/modal-context";
 import deviceSelectors from "@/app/store/device/selectors";
 import type { Device, DeviceMeta } from "@/app/store/device/types";
 import type { RootState } from "@/app/store/root/types";
@@ -41,6 +42,7 @@ const useDeviceNetworkTableColumns = ({
   systemId: Device[DeviceMeta.PK];
 }): DeviceNetworkTableColumnDef[] => {
   const { openSidePanel } = useSidePanel();
+  const { openModal } = useModal();
   const device = useSelector((state: RootState) =>
     deviceSelectors.getById(state, systemId)
   );
@@ -95,7 +97,7 @@ const useDeviceNetworkTableColumns = ({
             deleteDisabled={isAllNetworkingDisabled || !canEdit}
             editDisabled={isAllNetworkingDisabled || !canEdit}
             onDelete={() => {
-              openSidePanel({
+              openModal({
                 component: RemoveInterface,
                 title: "Remove interface",
                 props: {
@@ -119,7 +121,7 @@ const useDeviceNetworkTableColumns = ({
         ),
       },
     ],
-    [canEdit, isAllNetworkingDisabled, openSidePanel, systemId]
+    [canEdit, isAllNetworkingDisabled, openModal, openSidePanel, systemId]
   );
 };
 

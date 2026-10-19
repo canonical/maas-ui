@@ -15,6 +15,7 @@ import type {
 } from "@/app/base/components/node/networking/types";
 import { useIsAllNetworkingDisabled } from "@/app/base/hooks";
 import { useCanEditMachine } from "@/app/base/hooks/permissions";
+import { lazyLoadModal, useModal } from "@/app/base/modal-context";
 import { ConnectionState } from "@/app/machines/views/MachineDetails/MachineNetwork/MarkConnectedForm/MarkConnectedForm";
 import machineSelectors from "@/app/store/machine/selectors";
 import type { Machine } from "@/app/store/machine/types";
@@ -37,11 +38,11 @@ const AddAliasOrVlan = lazyLoadSidePanel(
   () =>
     import("@/app/machines/views/MachineDetails/MachineNetwork/AddAliasOrVlan")
 );
-const MarkConnectedForm = lazyLoadSidePanel(
+const MarkConnectedForm = lazyLoadModal(
   () =>
     import("@/app/machines/views/MachineDetails/MachineNetwork/MarkConnectedForm")
 );
-const RemovePhysicalForm = lazyLoadSidePanel(
+const RemovePhysicalForm = lazyLoadModal(
   () =>
     import("@/app/machines/views/MachineDetails/MachineNetwork/RemovePhysicalForm")
 );
@@ -62,6 +63,7 @@ const NetworkTableActions = ({
   systemId,
 }: NetworkTableActionsProps): ReactElement | null => {
   const { openSidePanel } = useSidePanel();
+  const { openModal } = useModal();
   const machine = useSelector((state: RootState) =>
     machineSelectors.getById(state, systemId)
   );
@@ -86,7 +88,7 @@ const NetworkTableActions = ({
       actions.push({
         children: "Mark as connected...",
         onClick: () => {
-          openSidePanel({
+          openModal({
             component: MarkConnectedForm,
             title: "Mark as connected",
             props: {
@@ -103,7 +105,7 @@ const NetworkTableActions = ({
       actions.push({
         children: "Mark as disconnected...",
         onClick: () => {
-          openSidePanel({
+          openModal({
             component: MarkConnectedForm,
             title: "Mark as disconnected",
             props: {
@@ -187,7 +189,7 @@ const NetworkTableActions = ({
       children: `Edit ${getInterfaceTypeText(machine, nic, link)}...`,
       onClick: () => {
         if (showDisconnectedWarning) {
-          openSidePanel({
+          openModal({
             component: MarkConnectedForm,
             title: "Mark as connected",
             props: {
@@ -217,7 +219,7 @@ const NetworkTableActions = ({
       actions.push({
         children: `Remove ${getInterfaceTypeText(machine, nic, link)}...`,
         onClick: () => {
-          openSidePanel({
+          openModal({
             component: RemovePhysicalForm,
             title: `Remove ${getInterfaceTypeText(machine, nic, link)}`,
             props: {

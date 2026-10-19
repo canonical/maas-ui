@@ -1,10 +1,10 @@
 import type { ReactElement } from "react";
 
-import { useSidePanel } from "@canonical/maas-react-components";
 import { Icon } from "@canonical/react-components";
 import { useDispatch } from "react-redux";
 
 import FormikForm from "@/app/base/components/FormikForm";
+import { useModal } from "@/app/base/modal-context";
 import type { EmptyObject } from "@/app/base/types";
 import { useMachineDetailsForm } from "@/app/machines/hooks";
 import { machineActions } from "@/app/store/machine";
@@ -23,7 +23,7 @@ export const ChangeStorageLayout = ({
   selectedLayout,
 }: ChangeStorageLayoutProps): ReactElement => {
   const dispatch = useDispatch();
-  const { closeSidePanel } = useSidePanel();
+  const { closeModal } = useModal();
   const { errors, saved, saving } = useMachineDetailsForm(
     systemId,
     "applyingStorageLayout",
@@ -35,7 +35,7 @@ export const ChangeStorageLayout = ({
       cleanup={machineActions.cleanup}
       errors={errors}
       initialValues={{}}
-      onCancel={closeSidePanel}
+      onCancel={closeModal}
       onSaveAnalytics={{
         action: `Change storage layout${
           selectedLayout ? ` to ${selectedLayout?.sentenceLabel}` : ""
@@ -51,7 +51,7 @@ export const ChangeStorageLayout = ({
             storageLayout: selectedLayout.value,
           })
         );
-        closeSidePanel();
+        closeModal();
       }}
       saved={saved}
       saving={saving}
