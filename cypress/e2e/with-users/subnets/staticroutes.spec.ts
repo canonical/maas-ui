@@ -1,13 +1,45 @@
 import { LONG_TIMEOUT } from "../../../constants";
+import { captureCIFailureDiagnostics } from "../../../support/diagnostics";
 import { generateMAASURL } from "../../utils";
 
 context("Static Routes", () => {
+  let stopDiagnostics: (() => void) | undefined;
+
   beforeEach(() => {
+    stopDiagnostics = captureCIFailureDiagnostics({
+      methods: ["subnet.list", "subnet.get", "subnet.set_active"],
+      model: "subnet",
+      snapshot: (document) => {
+        const destination = document.querySelector<HTMLSelectElement>(
+          'select[name="destination"]'
+        );
+        return {
+          sourceHeading: document.querySelector("h1")?.textContent,
+          destinationPresent: !!destination,
+          destinationValue: destination?.value,
+          destinationDisabled: destination?.disabled,
+          destinationOptions: destination
+            ? Array.from(destination.options).map((option) => ({
+                label: option.text,
+                value: option.value,
+                disabled: option.disabled,
+                selected: option.selected,
+              }))
+            : null,
+        };
+      },
+    });
     cy.login();
     cy.visit(generateMAASURL("/networks?by=fabric"));
     cy.waitForPageToLoad();
     cy.viewport("macbook-11");
   });
+
+  afterEach(() => {
+    stopDiagnostics?.();
+    stopDiagnostics = undefined;
+  });
+
   it("allows adding, editing, and deleting a static route", () => {
     // Add static route
     cy.findByRole("grid", { name: "Subnets by Fabric" }).within(() => {
