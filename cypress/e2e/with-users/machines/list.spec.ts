@@ -12,13 +12,13 @@ context("Machine listing", () => {
       .then((win) => win.localStorage.removeItem("grouping"));
   });
 
-  it.skip("renders the correct heading", () => {
+  it("renders the correct heading", () => {
     cy.findByRole("heading", {
       name: /[0-9]+ machine[s]? in [0-9]+ pool[s]?/i,
     }).should("exist");
   });
 
-  it.skip("can group machines by all supported keys", () => {
+  it("can group machines by all supported keys", () => {
     const GROUP_BY_OPTIONS = [
       "No grouping",
       "Group by status",
@@ -43,7 +43,7 @@ context("Machine listing", () => {
     });
   });
 
-  it.skip("displays machine counts with active filters", () => {
+  it("displays machine counts with active filters", () => {
     const name = generateName();
     const searchFilter = `status:(=commissioning) hostname:(${name})`;
     const machines = [`${name}-1`, `${name}-2`];
@@ -73,7 +73,14 @@ context("Machine listing", () => {
 
     cy.findByRole("link", { name: /[0-9]+ pool[s]?/i }).should("exist");
 
-    cy.findByRole("button", { name: /Filters/i }).click();
+    cy.findByRole("button", { name: /Filters/i })
+      .should("not.have.attr", "aria-disabled", "true")
+      .click();
+    cy.findByRole("button", { name: /Filters/i }).should(
+      "have.attr",
+      "aria-expanded",
+      "true"
+    );
 
     cy.findByLabelText("submenu").within(() => cy.findByText("Status").click());
     cy.findByLabelText("submenu").within(() =>
@@ -103,12 +110,12 @@ context("Machine listing", () => {
     expectMachineFilters();
   });
 
-  it.skip("can load filters from the URL", () => {
+  it("can load filters from the URL", () => {
     cy.visit(generateMAASURL("/machines?status=%3Dnew"));
     cy.findByRole("searchbox").should("have.value", "status:(=new)");
   });
 
-  it.skip("can hide machine table columns", () => {
+  it("can hide machine table columns", () => {
     const allHeadersCount = 11;
     cy.viewport("macbook-15");
 
@@ -160,7 +167,14 @@ context("Machine listing", () => {
   it("can filter machine list by deployment target", () => {
     cy.findByRole("link", { name: /[0-9]+ pool[s]?/i }).should("exist");
 
-    cy.findByRole("button", { name: /filters/i }).click();
+    cy.findByRole("button", { name: /filters/i })
+      .should("not.have.attr", "aria-disabled", "true")
+      .click();
+    cy.findByRole("button", { name: /filters/i }).should(
+      "have.attr",
+      "aria-expanded",
+      "true"
+    );
     cy.findByRole("tab", { name: /deployment target/i })
       .should("exist")
       .click();
