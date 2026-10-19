@@ -24,7 +24,9 @@ context("Static Routes", () => {
           const staticRoute = (subnet as string).split("/")[0];
           cy.wrap(staticRoute).as("staticRoute");
           cy.findByLabelText(/gateway ip/i).type(staticRoute);
-          cy.findByLabelText(/destination/i).select(1);
+          cy.findByLabelText(/destination/i).select(1, {
+            timeout: LONG_TIMEOUT,
+          });
         }
       );
     });

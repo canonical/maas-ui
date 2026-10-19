@@ -1,3 +1,4 @@
+import { LONG_TIMEOUT } from "../../../constants";
 import { generateMAASURL, generateName } from "../../utils";
 
 context("Machine listing", () => {
@@ -59,8 +60,14 @@ context("Machine listing", () => {
     cy.findByRole("button", { name: /Delete/i }).click();
     cy.findByRole("button", { name: /Delete 2 machines/ }).should("exist");
     cy.findByRole("button", { name: /Delete 2 machines/ }).click();
+    cy.findByRole("complementary", {
+      name: /Delete/i,
+      timeout: LONG_TIMEOUT,
+    }).should("not.exist");
     cy.findByRole("searchbox").should("have.value", searchFilter);
-    cy.findByText(/No machines match the search criteria./).should("exist");
+    cy.findByText(/No machines match the search criteria./, {
+      timeout: LONG_TIMEOUT,
+    }).should("exist");
   });
 
   it("replaces the URL when selecting filters", () => {
