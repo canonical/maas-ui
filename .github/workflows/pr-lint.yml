@@ -19,6 +19,7 @@ jobs:
           scopes: |
             api
             base
+            ci
             controllers
             deps
             deps-dev
