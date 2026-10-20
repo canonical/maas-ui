@@ -392,6 +392,18 @@ describe("GlobalSideNav", () => {
     ).not.toBeAriaDisabled();
   });
 
+  it("enables the Devices link without any entitlements", async () => {
+    mockServer.use(authResolvers.getMeEntitlements.handler([]));
+    renderWithProviders(<AppSideNavigation />, { state });
+
+    await waitFor(() => {
+      expect(authResolvers.getMeEntitlements.resolved).toBe(true);
+    });
+    expect(
+      await screen.findByRole("link", { name: "Devices" })
+    ).not.toBeAriaDisabled();
+  });
+
   it("is collapsed by default", () => {
     renderWithProviders(<AppSideNavigation />, {
       initialEntries: ["/"],

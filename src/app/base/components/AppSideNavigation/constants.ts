@@ -17,7 +17,6 @@ const navGroups: NavGroup[] = [
         highlight: [urls.devices.index, urls.devices.device.index(null)],
         icon: "pods",
         label: "Devices",
-        requiredEntitlements: [Entitlement.CAN_VIEW_DEVICES],
         url: urls.devices.index,
       },
       {
