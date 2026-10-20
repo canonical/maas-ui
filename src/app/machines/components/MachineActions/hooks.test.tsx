@@ -339,27 +339,7 @@ describe("useMachineActions", () => {
     ).toBeInTheDocument();
   });
 
-  it("disables actions with an edit entitlement for a different pool only", async () => {
-    mockServer.use(
-      authResolvers.getMeEntitlements.handler([
-        poolEntitlement(Entitlement.CAN_EDIT_MACHINES, 999),
-        // Enables Deploy, signalling that entitlements have loaded.
-        poolEntitlement(Entitlement.CAN_DEPLOY_MACHINES, 2),
-      ])
-    );
-    state.machine.items[0].actions = [NodeActions.RELEASE, NodeActions.DEPLOY];
-    renderWithProviders(
-      <RowActions actions={[NodeActions.RELEASE, NodeActions.DEPLOY]} />,
-      { state }
-    );
-
-    await waitForEnabled("Deploy...");
-    expect(
-      screen.getByRole("button", { name: "Release..." })
-    ).toBeAriaDisabled();
-  });
-
-  it("disables all actions without any entitlements", async () => {
+  it("enables the actions the backend allows without an edit entitlement", async () => {
     mockServer.use(authResolvers.getMeEntitlements.handler([]));
     state.machine.items[0].actions = [NodeActions.RELEASE, NodeActions.DEPLOY];
     renderWithProviders(
@@ -367,31 +347,7 @@ describe("useMachineActions", () => {
       { state }
     );
 
-    await waitFor(() => {
-      expect(
-        screen.getByRole("button", { name: "Release..." })
-      ).toBeAriaDisabled();
-    });
-    expect(
-      screen.getByRole("button", { name: "Deploy..." })
-    ).toBeAriaDisabled();
-  });
-
-  it("allows only deploy with a deploy entitlement for the machine's pool", async () => {
-    mockServer.use(
-      authResolvers.getMeEntitlements.handler([
-        poolEntitlement(Entitlement.CAN_DEPLOY_MACHINES, 2),
-      ])
-    );
-    state.machine.items[0].actions = [NodeActions.RELEASE, NodeActions.DEPLOY];
-    renderWithProviders(
-      <RowActions actions={[NodeActions.RELEASE, NodeActions.DEPLOY]} />,
-      { state }
-    );
-
+    await waitForEnabled("Release...");
     await waitForEnabled("Deploy...");
-    expect(
-      screen.getByRole("button", { name: "Release..." })
-    ).toBeAriaDisabled();
   });
 });

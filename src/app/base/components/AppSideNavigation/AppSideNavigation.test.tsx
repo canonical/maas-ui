@@ -2,6 +2,7 @@ import AppSideNavigation from "./AppSideNavigation";
 import LogoutConfirm from "./LogoutConfirm";
 
 import urls from "@/app/base/urls";
+import { Entitlement } from "@/app/settings/views/UserManagement/views/Groups/constants";
 import { ConfigNames } from "@/app/store/config/types";
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
@@ -367,6 +368,26 @@ describe("GlobalSideNav", () => {
     await waitFor(() => {
       expect(router.state.location.pathname).toBe(urls.intro.images);
     });
+  });
+
+  it("enables the Machines link with only can_view_available_machines", async () => {
+    mockServer.use(
+      authResolvers.getMeEntitlements.handler([
+        factory.entitlement({
+          entitlement: Entitlement.CAN_VIEW_AVAILABLE_MACHINES,
+          resource_type: "pool",
+          resource_id: 2,
+        }),
+      ])
+    );
+    renderWithProviders(<AppSideNavigation />, { state });
+
+    await waitFor(() => {
+      expect(authResolvers.getMeEntitlements.resolved).toBe(true);
+    });
+    expect(
+      await screen.findByRole("link", { name: "Machines" })
+    ).not.toBeAriaDisabled();
   });
 
   it("is collapsed by default", () => {
