@@ -88,7 +88,6 @@ const navGroups: NavGroup[] = [
     navLinks: [
       {
         highlight: [
-          urls.networks.index,
           urls.networks.subnets.index,
           urls.networks.subnet.index(null),
         ],
