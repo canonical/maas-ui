@@ -1,15 +1,12 @@
 import type { ReactElement } from "react";
 
-import {
-  lazyLoadSidePanel,
-  useSidePanel,
-} from "@canonical/maas-react-components";
 import { ContextualMenu } from "@canonical/react-components";
 
+import { lazyLoadModal, useModal } from "@/app/base/modal-context";
 import type { Machine, StorageLayoutOption } from "@/app/store/machine/types";
 import { StorageLayout } from "@/app/store/types/enum";
 
-const ChangeStorageLayout = lazyLoadSidePanel(
+const ChangeStorageLayout = lazyLoadModal(
   () =>
     import("@/app/machines/views/MachineDetails/MachineStorage/ChangeStorageLayout")
 );
@@ -53,7 +50,7 @@ type ChangeStorageLayoutMenuProps = {
 const ChangeStorageLayoutMenu = ({
   systemId,
 }: ChangeStorageLayoutMenuProps): ReactElement => {
-  const { openSidePanel } = useSidePanel();
+  const { openModal } = useModal();
   return (
     <div className="u-align--right">
       <ContextualMenu
@@ -62,7 +59,7 @@ const ChangeStorageLayoutMenu = ({
           group.map((option) => ({
             children: option.label,
             onClick: () => {
-              openSidePanel({
+              openModal({
                 component: ChangeStorageLayout,
                 title: "Change storage layout",
                 props: {

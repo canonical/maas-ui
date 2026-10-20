@@ -1,9 +1,9 @@
 import type { ReactElement } from "react";
 
-import { useSidePanel } from "@canonical/maas-react-components";
 import { useDispatch } from "react-redux";
 
 import ModelActionForm from "@/app/base/components/ModelActionForm";
+import { useModal } from "@/app/base/modal-context";
 import { machineActions } from "@/app/store/machine";
 import type { Machine } from "@/app/store/machine/types";
 import type { Disk } from "@/app/store/types/node";
@@ -15,14 +15,14 @@ type SetBootDiskProps = {
 
 const SetBootDisk = ({ systemId, diskId }: SetBootDiskProps): ReactElement => {
   const dispatch = useDispatch();
-  const { closeSidePanel } = useSidePanel();
+  const { closeModal } = useModal();
   return (
     <ModelActionForm
       aria-label="Set boot disk"
       initialValues={{}}
       message={<>Are you sure you want to set boot disk?</>}
       modelType="boot disk"
-      onCancel={closeSidePanel}
+      onCancel={closeModal}
       onSaveAnalytics={{
         action: "Set boot disk",
         category: "Machine storage",
@@ -36,7 +36,7 @@ const SetBootDisk = ({ systemId, diskId }: SetBootDiskProps): ReactElement => {
             systemId: systemId,
           })
         );
-        closeSidePanel();
+        closeModal();
       }}
       submitAppearance="positive"
       submitLabel="Set boot disk"

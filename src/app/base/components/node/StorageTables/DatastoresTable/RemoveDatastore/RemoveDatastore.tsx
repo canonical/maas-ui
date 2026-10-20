@@ -1,9 +1,9 @@
 import type { ReactElement } from "react";
 
-import { useSidePanel } from "@canonical/maas-react-components";
 import { useDispatch } from "react-redux";
 
 import ModelActionForm from "@/app/base/components/ModelActionForm";
+import { useModal } from "@/app/base/modal-context";
 import { machineActions } from "@/app/store/machine";
 import type { Machine } from "@/app/store/machine/types";
 import type { Disk } from "@/app/store/types/node";
@@ -18,7 +18,7 @@ const RemoveDatastore = ({
   diskId,
 }: RemoveDatastoreProps): ReactElement => {
   const dispatch = useDispatch();
-  const { closeSidePanel } = useSidePanel();
+  const { closeModal } = useModal();
 
   return (
     <ModelActionForm
@@ -31,7 +31,7 @@ const RemoveDatastore = ({
         </>
       }
       modelType="datastore"
-      onCancel={closeSidePanel}
+      onCancel={closeModal}
       onSaveAnalytics={{
         action: "Delete datastore",
         category: "Machine storage",
@@ -46,7 +46,7 @@ const RemoveDatastore = ({
           })
         );
       }}
-      onSuccess={closeSidePanel}
+      onSuccess={closeModal}
       submitAppearance="negative"
       submitLabel="Remove"
     />

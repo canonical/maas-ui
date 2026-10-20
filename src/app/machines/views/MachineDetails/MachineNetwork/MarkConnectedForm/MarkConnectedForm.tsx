@@ -1,10 +1,10 @@
 import type { ReactElement, ReactNode } from "react";
 import { useState } from "react";
 
-import { useSidePanel } from "@canonical/maas-react-components";
 import { useDispatch, useSelector } from "react-redux";
 
 import ModelActionForm from "@/app/base/components/ModelActionForm";
+import { useModal } from "@/app/base/modal-context";
 import { machineActions } from "@/app/store/machine";
 import machineSelectors from "@/app/store/machine/selectors";
 import type { MachineDetails } from "@/app/store/machine/types";
@@ -32,7 +32,7 @@ const MarkConnectedForm = ({
   connectionState,
 }: MarkConnectedProps): ReactElement | null => {
   const dispatch = useDispatch();
-  const { closeSidePanel } = useSidePanel();
+  const { closeModal } = useModal();
   const machine = useSelector((state: RootState) =>
     machineSelectors.getById(state, systemId)
   );
@@ -94,14 +94,14 @@ const MarkConnectedForm = ({
       initialValues={{}}
       message={message}
       modelType="interface"
-      onCancel={closeSidePanel}
+      onCancel={closeModal}
       onSaveAnalytics={{
         action: `Mark interface as ${event}`,
         category: "Machine network",
         label: "Update",
       }}
       onSubmit={updateConnection}
-      onSuccess={closeSidePanel}
+      onSuccess={closeModal}
       saved={saved}
       submitAppearance={markConnected ? "positive" : "negative"}
       submitLabel={`Mark as ${event}`}

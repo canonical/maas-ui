@@ -1,9 +1,9 @@
 import type { ReactElement } from "react";
 
-import { useSidePanel } from "@canonical/maas-react-components";
 import { useDispatch, useSelector } from "react-redux";
 
 import ModelActionForm from "@/app/base/components/ModelActionForm";
+import { useModal } from "@/app/base/modal-context";
 import { useMachineDetailsForm } from "@/app/machines/hooks";
 import { machineActions } from "@/app/store/machine";
 import machineSelectors from "@/app/store/machine/selectors";
@@ -28,7 +28,7 @@ const RemovePhysicalForm = ({
   systemId,
 }: RemovePhysicalProps): ReactElement | null => {
   const dispatch = useDispatch();
-  const { closeSidePanel } = useSidePanel();
+  const { closeModal } = useModal();
   const machine = useSelector((state: RootState) =>
     machineSelectors.getById(state, systemId)
   );
@@ -38,12 +38,12 @@ const RemovePhysicalForm = ({
       "deletingInterface",
       "deleteInterface",
       () => {
-        closeSidePanel();
+        closeModal();
       }
     );
   const { saved: unlinkedSubnet, saving: unlinkingSubnet } =
     useMachineDetailsForm(systemId, "unlinkingSubnet", "unlinkSubnet", () => {
-      closeSidePanel();
+      closeModal();
     });
   if (machine && link && !nic) {
     [nic] = getLinkInterface(machine, link);
@@ -60,7 +60,7 @@ const RemovePhysicalForm = ({
       initialValues={{}}
       message={<>Are you sure you want to remove this {removeTypeText}?</>}
       modelType={removeTypeText || ""}
-      onCancel={closeSidePanel}
+      onCancel={closeModal}
       onSaveAnalytics={{
         action: `Remove ${removeTypeText}`,
         category: "Machine network",
@@ -87,7 +87,7 @@ const RemovePhysicalForm = ({
           );
         }
       }}
-      onSuccess={closeSidePanel}
+      onSuccess={closeModal}
       saved={deletedInterface || unlinkedSubnet}
       saving={deletingInterface || unlinkingSubnet}
       submitLabel="Remove"
