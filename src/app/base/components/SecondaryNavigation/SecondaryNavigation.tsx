@@ -131,9 +131,12 @@ export const SecondaryNavigation = ({
             </ul>
           ))
         ) : (
+          // Items are rendered as nested-style links (not `--title` items) so
+          // they match the regular link weight used for leaf items in the
+          // grouped settings navigation, rather than the bold heading weight.
           <ul className="p-side-navigation__list">
             {items.map((item) => (
-              <SideNavigationItem item={item} key={item.label} />
+              <SubNavItem item={item} key={item.path || item.label} />
             ))}
           </ul>
         )}
