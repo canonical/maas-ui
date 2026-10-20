@@ -11,7 +11,7 @@ import { callId, enableCallIdMocks } from "@/testing/callId-mock";
 import * as factory from "@/testing/factories";
 import { networkDiscoveryResolvers } from "@/testing/resolvers/networkDiscovery";
 import {
-  mockSidePanel,
+  mockModal,
   renderWithProviders,
   screen,
   setupMockServer,
@@ -25,7 +25,7 @@ const mockServer = setupMockServer(
   networkDiscoveryResolvers.clearNetworkDiscoveries.handler()
 );
 
-const { mockClose } = await mockSidePanel();
+const { mockClose } = await mockModal();
 
 describe("DiscoveryDeleteForm", () => {
   let state: RootState;
@@ -115,7 +115,7 @@ describe("DiscoveryDeleteForm", () => {
     vi.restoreAllMocks();
   });
 
-  it("calls closeSidePanel on cancel click", async () => {
+  it("calls closeModal on cancel click", async () => {
     renderWithProviders(<DiscoveryDeleteForm discovery={discovery} />, {
       state,
     });

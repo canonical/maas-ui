@@ -1,6 +1,6 @@
 import type { ReactElement } from "react";
 
-import { ExternalLink, useSidePanel } from "@canonical/maas-react-components";
+import { ExternalLink } from "@canonical/maas-react-components";
 import {
   Notification as NotificationBanner,
   NotificationSeverity,
@@ -12,6 +12,7 @@ import { useClearNetworkDiscoveries } from "@/app/api/query/networkDiscovery";
 import type { ClearAllDiscoveriesWithOptionalIpAndMacError } from "@/app/apiclient";
 import FormikForm from "@/app/base/components/FormikForm";
 import docsUrls from "@/app/base/docsUrls";
+import { useModal } from "@/app/base/modal-context";
 import type { EmptyObject } from "@/app/base/types";
 import configSelectors from "@/app/store/config/selectors";
 import { NetworkDiscovery } from "@/app/store/config/types";
@@ -21,7 +22,7 @@ export enum Labels {
 }
 
 const ClearAllForm = (): ReactElement => {
-  const { closeSidePanel } = useSidePanel();
+  const { closeModal } = useModal();
 
   const { info } = useToastNotification();
   const networkDiscovery = useSelector(configSelectors.networkDiscovery);
@@ -61,7 +62,7 @@ const ClearAllForm = (): ReactElement => {
       aria-label="Clear all discoveries"
       errors={clearDiscovery.error}
       initialValues={{}}
-      onCancel={closeSidePanel}
+      onCancel={closeModal}
       onSaveAnalytics={{
         action: "Network discovery",
         category: "Clear network discoveries",
@@ -72,7 +73,7 @@ const ClearAllForm = (): ReactElement => {
       }}
       onSuccess={() => {
         info("All discoveries cleared.");
-        closeSidePanel();
+        closeModal();
       }}
       saved={clearDiscovery.isSuccess}
       saving={clearDiscovery.isPending}

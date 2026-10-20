@@ -1,9 +1,9 @@
 import type { ReactElement } from "react";
 
-import { useSidePanel } from "@canonical/maas-react-components";
 import { useDispatch, useSelector } from "react-redux";
 
 import ModelActionForm from "@/app/base/components/ModelActionForm";
+import { useModal } from "@/app/base/modal-context";
 import { staticRouteActions } from "@/app/store/staticroute";
 import staticRouteSelectors from "@/app/store/staticroute/selectors";
 import type {
@@ -18,7 +18,7 @@ type DeleteStaticRouteFormProps = {
 const DeleteStaticRouteForm = ({
   staticRouteId,
 }: DeleteStaticRouteFormProps): ReactElement | null => {
-  const { closeSidePanel } = useSidePanel();
+  const { closeModal } = useModal();
   const dispatch = useDispatch();
   const saved = useSelector(staticRouteSelectors.saved);
   const saving = useSelector(staticRouteSelectors.saving);
@@ -31,11 +31,11 @@ const DeleteStaticRouteForm = ({
       aria-label="Confirm static route deletion"
       initialValues={{}}
       modelType="static route"
-      onCancel={closeSidePanel}
+      onCancel={closeModal}
       onSubmit={() => {
         dispatch(staticRouteActions.delete(staticRouteId));
       }}
-      onSuccess={closeSidePanel}
+      onSuccess={closeModal}
       saved={saved}
       saving={saving}
     />

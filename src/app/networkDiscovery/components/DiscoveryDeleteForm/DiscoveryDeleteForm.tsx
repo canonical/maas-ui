@@ -1,17 +1,16 @@
 import type { ReactElement } from "react";
 
-import { useSidePanel } from "@canonical/maas-react-components";
-
 import { useClearNetworkDiscoveries } from "@/app/api/query/networkDiscovery";
 import type { DiscoveryResponse } from "@/app/apiclient";
 import ModelActionForm from "@/app/base/components/ModelActionForm";
+import { useModal } from "@/app/base/modal-context";
 
 type Props = {
   discovery: DiscoveryResponse;
 };
 
 const DiscoveryDeleteForm = ({ discovery }: Props): ReactElement => {
-  const { closeSidePanel } = useSidePanel();
+  const { closeModal } = useModal();
   const clearDiscovery = useClearNetworkDiscoveries();
 
   return (
@@ -23,13 +22,13 @@ const DiscoveryDeleteForm = ({ discovery }: Props): ReactElement => {
         discovery.hostname || "Unknown"
       }"?`}
       modelType="discovery"
-      onCancel={closeSidePanel}
+      onCancel={closeModal}
       onSubmit={() => {
         clearDiscovery.mutate({
           query: { ip: discovery.ip, mac: discovery.mac_address },
         });
       }}
-      onSuccess={closeSidePanel}
+      onSuccess={closeModal}
       saved={clearDiscovery.isSuccess}
       saving={clearDiscovery.isPending}
     />

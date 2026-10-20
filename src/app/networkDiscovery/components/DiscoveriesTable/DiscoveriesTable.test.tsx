@@ -12,12 +12,13 @@ import { discovery } from "@/testing/factories";
 import { authResolvers } from "@/testing/resolvers/auth";
 import { networkDiscoveryResolvers } from "@/testing/resolvers/networkDiscovery";
 import {
+  mockIsPending,
+  mockModal,
+  mockSidePanel,
   renderWithProviders,
   screen,
-  waitFor,
   setupMockServer,
-  mockIsPending,
-  mockSidePanel,
+  waitFor,
 } from "@/testing/utils";
 
 const mockServer = setupMockServer(
@@ -26,6 +27,7 @@ const mockServer = setupMockServer(
   authResolvers.getMeEntitlements.handler()
 );
 const { mockOpen } = await mockSidePanel();
+const { mockOpen: mockOpenModal } = await mockModal();
 
 describe("DiscoveriesTable", () => {
   describe("display", () => {
@@ -144,7 +146,7 @@ describe("DiscoveriesTable", () => {
       });
     });
 
-    it("opens delete discovery side panel form", async () => {
+    it("opens delete discovery modal", async () => {
       const mockDiscovery = discovery({ id: 1 });
       mockServer.use(
         networkDiscoveryResolvers.listNetworkDiscoveries.handler({
@@ -170,7 +172,7 @@ describe("DiscoveriesTable", () => {
       );
 
       await waitFor(() => {
-        expect(mockOpen).toHaveBeenCalledWith({
+        expect(mockOpenModal).toHaveBeenCalledWith({
           component: DiscoveryDeleteForm,
           title: "Delete discovery",
           props: { discovery: mockDiscovery },

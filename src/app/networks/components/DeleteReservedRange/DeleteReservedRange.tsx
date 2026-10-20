@@ -1,9 +1,9 @@
 import type { ReactElement } from "react";
 
-import { useSidePanel } from "@canonical/maas-react-components";
 import { useDispatch, useSelector } from "react-redux";
 
 import ModelActionForm from "@/app/base/components/ModelActionForm";
+import { useModal } from "@/app/base/modal-context";
 import { ipRangeActions } from "@/app/store/iprange";
 import ipRangeSelectors from "@/app/store/iprange/selectors";
 
@@ -15,7 +15,7 @@ const DeleteReservedRange = ({
   ipRangeId,
 }: ReservedRangeDeleteFormProps): ReactElement => {
   const dispatch = useDispatch();
-  const { closeSidePanel } = useSidePanel();
+  const { closeModal } = useModal();
   const saved = useSelector(ipRangeSelectors.saved);
   const saving = useSelector(ipRangeSelectors.saving);
 
@@ -29,11 +29,11 @@ const DeleteReservedRange = ({
       initialValues={{}}
       message="Ensure all in-use IP addresses are registered in MAAS before releasing this range to avoid potential collisions. Are you sure you want to remove this IP range?"
       modelType="IP range"
-      onCancel={closeSidePanel}
+      onCancel={closeModal}
       onSubmit={() => {
         dispatch(ipRangeActions.delete(ipRangeId));
       }}
-      onSuccess={closeSidePanel}
+      onSuccess={closeModal}
       saved={saved}
       saving={saving}
     />

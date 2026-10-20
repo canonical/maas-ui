@@ -6,6 +6,7 @@ import StaticDHCPTable from "./StaticDHCPTable";
 import { reservedIp } from "@/testing/factories/reservedip";
 import { authResolvers } from "@/testing/resolvers/auth";
 import {
+  mockModal,
   mockSidePanel,
   renderWithProviders,
   screen,
@@ -19,6 +20,7 @@ const mockServer = setupMockServer(
   authResolvers.getMeEntitlements.handler()
 );
 const { mockOpen } = await mockSidePanel();
+const { mockOpen: mockOpenModal } = await mockModal();
 
 describe("StaticDHCPTable", () => {
   it("renders a loading component if table items are loading", async () => {
@@ -85,7 +87,7 @@ describe("StaticDHCPTable", () => {
     });
   });
 
-  it("opens the side panel with the correct view when the delete button is clicked", async () => {
+  it("opens the modal with the correct view when the delete button is clicked", async () => {
     const reservedIps = [reservedIp()];
     renderWithProviders(
       <StaticDHCPTable loading={false} reservedIps={reservedIps} subnetId={0} />
@@ -98,7 +100,7 @@ describe("StaticDHCPTable", () => {
     });
     await userEvent.click(screen.getByRole("button", { name: "Delete" }));
 
-    expect(mockOpen).toHaveBeenCalledWith({
+    expect(mockOpenModal).toHaveBeenCalledWith({
       component: DeleteDHCPLease,
       title: "Delete DHCP lease",
       props: {

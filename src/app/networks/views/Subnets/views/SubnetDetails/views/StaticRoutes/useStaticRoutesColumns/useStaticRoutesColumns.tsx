@@ -9,6 +9,7 @@ import EditStaticRouteForm from "../EditStaticRouteForm";
 import SubnetLink from "@/app/base/components/SubnetLink";
 import TableActions from "@/app/base/components/TableActions";
 import { useHasEntitlements } from "@/app/base/hooks";
+import { useModal } from "@/app/base/modal-context";
 import { Entitlement } from "@/app/settings/views/UserManagement/views/Groups/constants";
 import type { StaticRoute } from "@/app/store/staticroute/types";
 
@@ -16,6 +17,7 @@ export type StaticRouteColumnDef = ColumnDef<StaticRoute, Partial<StaticRoute>>;
 
 const useStaticRoutesColumns = (): StaticRouteColumnDef[] => {
   const { openSidePanel } = useSidePanel();
+  const { openModal } = useModal();
   const { allowed: canEdit } = useHasEntitlements([
     Entitlement.CAN_EDIT_GLOBAL_ENTITIES,
   ]);
@@ -62,7 +64,7 @@ const useStaticRoutesColumns = (): StaticRouteColumnDef[] => {
             deleteDisabled={!canEdit}
             editDisabled={!canEdit}
             onDelete={() => {
-              openSidePanel({
+              openModal({
                 component: DeleteStaticRouteForm,
                 title: "Delete static route",
                 props: {
@@ -83,7 +85,7 @@ const useStaticRoutesColumns = (): StaticRouteColumnDef[] => {
         ),
       },
     ],
-    [canEdit, openSidePanel]
+    [canEdit, openModal, openSidePanel]
   );
 };
 
