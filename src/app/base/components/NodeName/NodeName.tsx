@@ -12,7 +12,7 @@ import { useCanEdit } from "@/app/base/hooks";
 import { hostnameValidation } from "@/app/base/validation";
 import type { Domain, DomainMeta } from "@/app/store/domain/types";
 import type { Node, SimpleNode } from "@/app/store/types/node";
-import { nodeIsController } from "@/app/store/utils";
+import { nodeIsController, nodeIsDevice } from "@/app/store/utils";
 
 export type Props = {
   editingName: boolean;
@@ -48,7 +48,9 @@ const NodeName = ({
   const [hostnameError, setHostnameError] = useState<
     FormikErrors<FormValues>["hostname"] | null
   >(null);
-  const canEdit = useCanEdit(node);
+  // Devices are gated solely on the "edit" permission (device ownership), so
+  // the rack controller connection is irrelevant for them.
+  const canEdit = useCanEdit(node, nodeIsDevice(node));
   const previousSaving = usePrevious(saving);
   const canEditHostname = !nodeIsController(node);
 
