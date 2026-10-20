@@ -3,7 +3,7 @@ import DeviceDetailsHeader from "./DeviceDetailsHeader";
 import type { RootState } from "@/app/store/root/types";
 import { NodeActions } from "@/app/store/types/node";
 import * as factory from "@/testing/factories";
-import { screen, renderWithProviders } from "@/testing/utils";
+import { screen, renderWithProviders, userEvent } from "@/testing/utils";
 
 describe("DeviceDetailsHeader", () => {
   let state: RootState;
@@ -62,9 +62,13 @@ describe("DeviceDetailsHeader", () => {
     );
   });
 
-  it("disables the Take action menu when no actions are available", () => {
+  it("disables the Take action menu when the device lacks the edit permission", () => {
     state.device.items = [
-      factory.deviceDetails({ actions: [], system_id: "abc123" }),
+      factory.deviceDetails({
+        actions: [NodeActions.DELETE, NodeActions.SET_ZONE],
+        permissions: [],
+        system_id: "abc123",
+      }),
     ];
 
     renderWithProviders(<DeviceDetailsHeader systemId="abc123" />, { state });
@@ -74,18 +78,25 @@ describe("DeviceDetailsHeader", () => {
     ).toBeAriaDisabled();
   });
 
-  it("enables the Take action menu when actions are available", () => {
+  it("enables the Take action menu when the device has the edit permission", async () => {
     state.device.items = [
       factory.deviceDetails({
-        actions: [NodeActions.SET_ZONE],
+        actions: [],
+        permissions: ["edit"],
         system_id: "abc123",
       }),
     ];
 
     renderWithProviders(<DeviceDetailsHeader systemId="abc123" />, { state });
 
+    const menuButton = screen.getByRole("button", { name: "Take action" });
+    expect(menuButton).not.toBeAriaDisabled();
+    await userEvent.click(menuButton);
     expect(
-      screen.getByRole("button", { name: "Take action" })
-    ).not.toBeAriaDisabled();
+      screen.getByRole("menuitem", { name: /Delete/ })
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole("menuitem", { name: /Set zone/ })
+    ).toBeInTheDocument();
   });
 });

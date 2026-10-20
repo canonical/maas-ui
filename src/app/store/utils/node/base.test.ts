@@ -62,9 +62,24 @@ describe("node utils", () => {
     });
 
     it("handles whether a node can open an action form", () => {
-      const node = factory.device({ actions: [NodeActions.SET_ZONE] });
+      const node = factory.machine({ actions: [NodeActions.SET_ZONE] });
       expect(canOpenActionForm(node, NodeActions.SET_ZONE)).toBe(true);
       expect(canOpenActionForm(node, NodeActions.DELETE)).toBe(false);
+    });
+
+    it("allows device delete and set zone with the edit permission", () => {
+      const device = factory.device({ actions: [], permissions: ["edit"] });
+      expect(canOpenActionForm(device, NodeActions.DELETE)).toBe(true);
+      expect(canOpenActionForm(device, NodeActions.SET_ZONE)).toBe(true);
+    });
+
+    it("prevents device delete and set zone without the edit permission", () => {
+      const device = factory.device({
+        actions: [NodeActions.DELETE, NodeActions.SET_ZONE],
+        permissions: [],
+      });
+      expect(canOpenActionForm(device, NodeActions.DELETE)).toBe(false);
+      expect(canOpenActionForm(device, NodeActions.SET_ZONE)).toBe(false);
     });
 
     it("handles whether a machine can open the clone action form", () => {
