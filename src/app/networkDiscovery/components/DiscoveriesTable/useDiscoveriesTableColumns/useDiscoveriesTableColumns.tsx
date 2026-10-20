@@ -9,6 +9,7 @@ import DoubleRow from "@/app/base/components/DoubleRow/DoubleRow";
 import MacAddressDisplay from "@/app/base/components/MacAddressDisplay";
 import TooltipButton from "@/app/base/components/TooltipButton";
 import { useHasEntitlements } from "@/app/base/hooks";
+import { useModal } from "@/app/base/modal-context";
 import {
   DiscoveryAddForm,
   DiscoveryDeleteForm,
@@ -25,6 +26,7 @@ export type DiscoveryColumnDef = ColumnDef<
 
 const useDiscoveriesTableColumns = (): DiscoveryColumnDef[] => {
   const { openSidePanel } = useSidePanel();
+  const { openModal } = useModal();
   const { allowed: canEdit } = useHasEntitlements([
     Entitlement.CAN_EDIT_GLOBAL_ENTITIES,
   ]);
@@ -125,7 +127,7 @@ const useDiscoveriesTableColumns = (): DiscoveryColumnDef[] => {
                   children: "Delete discovery...",
                   "data-testid": "delete-discovery-link",
                   onClick: () => {
-                    openSidePanel({
+                    openModal({
                       component: DiscoveryDeleteForm,
                       title: "Delete discovery",
                       props: { discovery: original },
@@ -141,7 +143,7 @@ const useDiscoveriesTableColumns = (): DiscoveryColumnDef[] => {
         },
       },
     ],
-    [canEdit, openSidePanel]
+    [canEdit, openModal, openSidePanel]
   );
 };
 

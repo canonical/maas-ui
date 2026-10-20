@@ -1,9 +1,9 @@
 import type { ReactElement } from "react";
 
-import { useSidePanel } from "@canonical/maas-react-components";
 import { useDispatch, useSelector } from "react-redux";
 
 import ModelActionForm from "@/app/base/components/ModelActionForm";
+import { useModal } from "@/app/base/modal-context";
 import { reservedIpActions } from "@/app/store/reservedip";
 import reservedIpSelectors from "@/app/store/reservedip/selectors";
 import type { RootState } from "@/app/store/root/types";
@@ -14,7 +14,7 @@ type DeleteDHCPLeaseProps = {
 const DeleteDHCPLease = ({
   reservedIpId,
 }: DeleteDHCPLeaseProps): ReactElement => {
-  const { closeSidePanel } = useSidePanel();
+  const { closeModal } = useModal();
   const dispatch = useDispatch();
   const errors = useSelector(reservedIpSelectors.errors);
   const saving = useSelector(reservedIpSelectors.saving);
@@ -32,14 +32,14 @@ const DeleteDHCPLease = ({
       initialValues={{}}
       message={`Are you sure you want to delete ${reservedIp?.ip}? This action is permanent and cannot be undone.`}
       modelType="static IP"
-      onCancel={closeSidePanel}
+      onCancel={closeModal}
       onSubmit={() => {
         reservedIp &&
           dispatch(
             reservedIpActions.delete({ id: reservedIp.id, ip: reservedIp.ip })
           );
       }}
-      onSuccess={closeSidePanel}
+      onSuccess={closeModal}
       saved={saved}
       saving={saving}
     />

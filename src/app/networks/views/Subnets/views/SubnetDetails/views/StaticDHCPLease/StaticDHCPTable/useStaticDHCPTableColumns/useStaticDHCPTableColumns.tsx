@@ -9,6 +9,7 @@ import ReserveDHCPLease from "../../ReserveDHCPLease";
 
 import TableActions from "@/app/base/components/TableActions";
 import { useHasEntitlements } from "@/app/base/hooks";
+import { useModal } from "@/app/base/modal-context";
 import { Entitlement } from "@/app/settings/views/UserManagement/views/Groups/constants";
 import type { ReservedIpNodeSummary } from "@/app/store/reservedip/types/base";
 import { getNodeUrl } from "@/app/store/reservedip/utils";
@@ -36,6 +37,7 @@ const useStaticDHCPTableColumns = ({
   subnetId: number;
 }): StaticDHCPColumnDef[] => {
   const { openSidePanel } = useSidePanel();
+  const { openModal } = useModal();
   const { allowed: canEdit } = useHasEntitlements([
     Entitlement.CAN_EDIT_GLOBAL_ENTITIES,
   ]);
@@ -120,7 +122,7 @@ const useStaticDHCPTableColumns = ({
             deleteDisabled={!canEdit}
             editDisabled={!canEdit}
             onDelete={() => {
-              openSidePanel({
+              openModal({
                 component: DeleteDHCPLease,
                 title: "Delete DHCP lease",
                 props: {
@@ -142,7 +144,7 @@ const useStaticDHCPTableColumns = ({
         ),
       },
     ],
-    [canEdit, openSidePanel, subnetId]
+    [canEdit, openModal, openSidePanel, subnetId]
   );
 };
 

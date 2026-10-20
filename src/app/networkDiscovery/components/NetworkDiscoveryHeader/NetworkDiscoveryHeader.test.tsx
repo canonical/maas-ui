@@ -10,7 +10,7 @@ import {
   renderWithProviders,
   userEvent,
   setupMockServer,
-  mockSidePanel,
+  mockModal,
   waitFor,
 } from "@/testing/utils";
 
@@ -19,7 +19,7 @@ const mockServer = setupMockServer(
   authResolvers.getCurrentUser.handler(),
   authResolvers.getMeEntitlements.handler()
 );
-const { mockOpen } = await mockSidePanel();
+const { mockOpen } = await mockModal();
 
 describe("NetworkDiscoveryHeader", () => {
   it("has a button to clear discoveries", () => {
@@ -31,7 +31,7 @@ describe("NetworkDiscoveryHeader", () => {
     ).toBeInTheDocument();
   });
 
-  it("opens the side panel when the 'Clear all discoveries' button is clicked", async () => {
+  it("opens the modal when the 'Clear all discoveries' button is clicked", async () => {
     renderWithProviders(<NetworkDiscoveryHeader />);
 
     await waitFor(() => {
