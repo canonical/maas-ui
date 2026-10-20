@@ -17,14 +17,16 @@ const mockServer = setupMockServer(
   authResolvers.getMeEntitlements.handler()
 );
 
+const getGroupItems = (items: NavItem[], group: string) =>
+  items.find((item) => item.label === group)?.items;
+
 const getDisabledItems = (items: NavItem[], group: string) =>
-  items
-    .find((item) => item.label === group)
-    ?.items?.filter((item) => item.disabled)
+  getGroupItems(items, group)
+    ?.filter((item) => item.disabled)
     .map((item) => item.label);
 
 const getDisabledImagesItems = (items: NavItem[]) =>
-  getDisabledItems(items, "Images");
+  getDisabledItems(items, "Images & operating systems");
 
 const getDisabledSecurityItems = (items: NavItem[]) =>
   getDisabledItems(items, "Security");
@@ -32,14 +34,17 @@ const getDisabledSecurityItems = (items: NavItem[]) =>
 const getDisabledUserManagementItems = (items: NavItem[]) =>
   getDisabledItems(items, "User management");
 
+const getGroupItem = (items: NavItem[], group: string, label: string) =>
+  getGroupItems(items, group)?.find((item) => item.label === label);
+
 const getLicenseKeysItem = (items: NavItem[]) =>
-  items.find((item) => item.label === "License keys");
+  getGroupItem(items, "Images & operating systems", "License keys");
 
 const getDisabledScriptsItems = (items: NavItem[]) =>
   getDisabledItems(items, "Scripts");
 
-const isTopLevelItemDisabled = (items: NavItem[], label: string) =>
-  items.find((item) => item.label === label)?.disabled;
+const isGroupItemDisabled = (items: NavItem[], group: string, label: string) =>
+  getGroupItem(items, group, label)?.disabled;
 
 it("returns base nav items while entitlements are pending", () => {
   const { result } = renderHookWithProviders(() => useSettingsNavItems());
@@ -73,10 +78,14 @@ it("does not disable any Images items with both entitlements", async () => {
   expect(getLicenseKeysItem(result.current.items)?.disabled).toBeFalsy();
   expect(getDisabledScriptsItems(result.current.items)).toEqual([]);
   expect(
-    isTopLevelItemDisabled(result.current.items, "DHCP snippets")
+    isGroupItemDisabled(result.current.items, "Networking", "DHCP snippets")
   ).toBeFalsy();
   expect(
-    isTopLevelItemDisabled(result.current.items, "Package repos")
+    isGroupItemDisabled(
+      result.current.items,
+      "Images & operating systems",
+      "Package repos"
+    )
   ).toBeFalsy();
 });
 
@@ -95,8 +104,16 @@ it("disables Scripts, DHCP snippets and Package repos without the global entitie
       "Testing scripts",
     ]);
   });
-  expect(isTopLevelItemDisabled(result.current, "DHCP snippets")).toBe(true);
-  expect(isTopLevelItemDisabled(result.current, "Package repos")).toBe(true);
+  expect(
+    isGroupItemDisabled(result.current, "Networking", "DHCP snippets")
+  ).toBe(true);
+  expect(
+    isGroupItemDisabled(
+      result.current,
+      "Images & operating systems",
+      "Package repos"
+    )
+  ).toBe(true);
 });
 
 it("never disables Storage", async () => {
@@ -110,7 +127,7 @@ it("never disables Storage", async () => {
     expect(result.current.entitlements.isPending).toBe(false);
   });
   expect(
-    result.current.items.find((item) => item.label === "Storage")?.disabled
+    getGroupItem(result.current.items, "Configuration", "Storage")?.disabled
   ).toBeFalsy();
 });
 
@@ -197,6 +214,10 @@ it("disables Windows and VMware without the configurations entitlement", async (
   mockServer.use(
     authResolvers.getMeEntitlements.handler([
       factory.entitlement({ entitlement: Entitlement.CAN_VIEW_BOOT_ENTITIES }),
+      factory.entitlement({
+        entitlement: Entitlement.CAN_VIEW_GLOBAL_ENTITIES,
+      }),
+      factory.entitlement({ entitlement: Entitlement.CAN_VIEW_LICENSE_KEYS }),
     ])
   );
   const { result } = renderHookWithProviders(() => useSettingsNavItems());
@@ -213,6 +234,10 @@ it("disables Sources without the boot entities entitlement", async () => {
   mockServer.use(
     authResolvers.getMeEntitlements.handler([
       factory.entitlement({ entitlement: Entitlement.CAN_VIEW_CONFIGURATIONS }),
+      factory.entitlement({
+        entitlement: Entitlement.CAN_VIEW_GLOBAL_ENTITIES,
+      }),
+      factory.entitlement({ entitlement: Entitlement.CAN_VIEW_LICENSE_KEYS }),
     ])
   );
   const { result } = renderHookWithProviders(() => useSettingsNavItems());

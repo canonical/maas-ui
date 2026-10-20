@@ -1,12 +1,6 @@
 import type { ReactElement } from "react";
 
 import { Navigation, NavigationBar } from "@canonical/maas-react-components";
-import {
-  Button,
-  ButtonAppearance,
-  Icon,
-  Tooltip,
-} from "@canonical/react-components";
 import { useSelector } from "react-redux";
 import { useLocation } from "react-router";
 import { useStorageState } from "react-storage-hooks";
@@ -14,6 +8,7 @@ import { useStorageState } from "react-storage-hooks";
 import { useLogout } from "../../hooks/logout";
 import useDarkMode from "../../hooks/useDarkMode/useDarkMode";
 
+import AppSideNavFooterItems from "./AppSideNavFooterItems";
 import AppSideNavItems from "./AppSideNavItems";
 import NavigationBanner from "./NavigationBanner";
 import { navGroups } from "./constants";
@@ -97,32 +92,26 @@ export const AppSideNavigation = ({
         </Navigation.Header>
         <Navigation.Content>
           <AppSideNavItems
-            authUser={authUser}
             groups={groups}
-            isAuthenticated={isAuthenticated}
-            logout={logout}
             path={path}
             setIsCollapsed={setIsCollapsed}
             showLinks={showLinks}
             vaultIncomplete={vaultIncomplete}
           />
         </Navigation.Content>
-        <div className="u-flex--grow"></div>
-        <Tooltip
-          className="dark-mode-toggle"
-          message={`${isDarkMode ? "Disable" : "Enable"} dark mode`}
-          position="right"
-        >
-          <Button
-            appearance={ButtonAppearance.BASE}
-            hasIcon
-            onClick={() => {
-              toggleDarkMode(isDarkMode);
-            }}
-          >
-            <Icon name={isDarkMode ? "highlight-on" : "highlight-off"} />
-          </Button>
-        </Tooltip>
+        <Navigation.Footer>
+          <Navigation.Content>
+            <AppSideNavFooterItems
+              authUser={authUser}
+              isAuthenticated={isAuthenticated}
+              isDarkMode={isDarkMode}
+              logout={logout}
+              path={path}
+              setIsCollapsed={setIsCollapsed}
+              toggleDarkMode={toggleDarkMode}
+            />
+          </Navigation.Content>
+        </Navigation.Footer>
       </Navigation.Drawer>
     </Navigation>
   </>

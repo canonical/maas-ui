@@ -15,6 +15,7 @@ export const settingsNavItems: NavItem[] = [
         path: settingsURLs.configuration.kernelParameters,
         label: "Kernel parameters",
       },
+      { path: settingsURLs.storage, label: "Storage" },
     ],
   },
   {
@@ -64,25 +65,19 @@ export const settingsNavItems: NavItem[] = [
     ],
   },
   {
-    label: "Images",
+    label: "Images & operating systems",
     items: [
       { path: settingsURLs.images.ubuntu, label: "Ubuntu" },
       { path: settingsURLs.images.windows, label: "Windows" },
       { path: settingsURLs.images.vmware, label: "VMware" },
+      { path: settingsURLs.licenseKeys.index, label: "License keys" },
       { path: settingsURLs.images.sources, label: "Sources" },
       { path: settingsURLs.images.sync, label: "Synchronization" },
+      { path: settingsURLs.repositories.index, label: "Package repos" },
     ],
   },
   {
-    path: settingsURLs.licenseKeys.index,
-    label: "License keys",
-  },
-  {
-    path: settingsURLs.storage,
-    label: "Storage",
-  },
-  {
-    label: "Network",
+    label: "Networking",
     items: [
       { path: settingsURLs.network.proxy, label: "Proxy" },
       { path: settingsURLs.network.dns, label: "DNS" },
@@ -92,6 +87,7 @@ export const settingsNavItems: NavItem[] = [
         path: settingsURLs.network.networkDiscovery,
         label: "Network discovery",
       },
+      { path: settingsURLs.dhcp.index, label: "DHCP snippets" },
     ],
   },
   {
@@ -110,13 +106,5 @@ export const settingsNavItems: NavItem[] = [
         label: "Testing scripts",
       },
     ],
-  },
-  {
-    path: settingsURLs.dhcp.index,
-    label: "DHCP snippets",
-  },
-  {
-    path: settingsURLs.repositories.index,
-    label: "Package repos",
   },
 ];

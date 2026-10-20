@@ -1,18 +1,18 @@
 Feature: Subnets
 
-Background: 
-    Given the user is logged in 
+Background:
+    Given the user is logged in
     And the user navigates to the subnets page
     And the viewport is "macbook-11"
 
 Scenario: The correct heading is rendered
-    Then the heading should be "Networks"
+    Then the heading should be "Subnets"
 
 Scenario: The main networking view is being displayed correctly
     Then correct headers exist
 
 Scenario: If no group parameter has been set then the URL gets updated to default grouping
-    Given the user navigates to the networks page 
+    Given the user navigates to the networks page
     And no group parameter has been set
     Then the URL gets updated to default grouping
 

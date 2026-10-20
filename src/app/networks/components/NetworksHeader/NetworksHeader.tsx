@@ -2,7 +2,7 @@ import type { ReactElement } from "react";
 
 import { useSidePanel } from "@canonical/maas-react-components";
 import { ContextualMenu } from "@canonical/react-components";
-import { Link, useLocation } from "react-router";
+import { useLocation } from "react-router";
 
 import AddFabric from "../AddFabric";
 import AddSpace from "../AddSpace";
@@ -11,11 +11,27 @@ import AddVlan from "../AddVlan";
 
 import SectionHeader from "@/app/base/components/SectionHeader";
 import { useHasEntitlements } from "@/app/base/hooks";
-import urls from "@/app/base/urls";
+import urls from "@/app/networks/urls";
 import { Entitlement } from "@/app/settings/views/UserManagement/views/Groups/constants";
 
 type Props = {
   controls?: ReactElement;
+};
+
+const getTitle = (pathname: string): string => {
+  if (pathname.startsWith(urls.vlans.index)) {
+    return "VLANs";
+  }
+  if (pathname.startsWith(urls.fabrics.index)) {
+    return "Fabrics";
+  }
+  if (pathname.startsWith(urls.spaces.index)) {
+    return "Spaces";
+  }
+  if (pathname.startsWith(urls.subnets.index)) {
+    return "Subnets";
+  }
+  return "Networks";
 };
 
 const NetworksHeader = ({ controls }: Props) => {
@@ -65,33 +81,7 @@ const NetworksHeader = ({ controls }: Props) => {
           />
         </>
       )}
-      tabLinks={[
-        {
-          label: "Subnets",
-          to: urls.networks.subnets.index,
-          active: pathname.startsWith(urls.networks.subnets.index),
-          component: Link,
-        },
-        {
-          label: "VLANs",
-          to: urls.networks.vlans.index,
-          active: pathname.startsWith(urls.networks.vlans.index),
-          component: Link,
-        },
-        {
-          label: "Fabrics",
-          to: urls.networks.fabrics.index,
-          active: pathname.startsWith(urls.networks.fabrics.index),
-          component: Link,
-        },
-        {
-          label: "Spaces",
-          to: urls.networks.spaces.index,
-          active: pathname.startsWith(urls.networks.spaces.index),
-          component: Link,
-        },
-      ]}
-      title="Networks"
+      title={getTitle(pathname)}
     />
   );
 };

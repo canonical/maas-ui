@@ -21,22 +21,6 @@ const mockServer = setupMockServer(
 const { mockOpen } = await mockSidePanel();
 
 describe("NetworksHeader", () => {
-  describe("navigation", () => {
-    ["Subnets", "VLANs", "Spaces", "Fabrics"].forEach((view) => {
-      it(`navigates to the ${view} list when the ${view} tab is clicked`, async () => {
-        const { router } = renderWithProviders(<NetworksHeader />);
-
-        await userEvent.click(screen.getByRole("link", { name: view }));
-
-        await waitFor(() => {
-          expect(router.state.location.pathname).toBe(
-            `/networks/${view.toLowerCase()}`
-          );
-        });
-      });
-    });
-  });
-
   describe("display", () => {
     it("renders controls passed in as a prop", () => {
       renderWithProviders(
@@ -46,6 +30,24 @@ describe("NetworksHeader", () => {
       expect(
         screen.getByRole("textbox", { name: "search" })
       ).toBeInTheDocument();
+    });
+
+    [
+      { pathname: "/networks/subnets", title: "Subnets" },
+      { pathname: "/networks/vlans", title: "VLANs" },
+      { pathname: "/networks/fabrics", title: "Fabrics" },
+      { pathname: "/networks/spaces", title: "Spaces" },
+      { pathname: "/networks", title: "Networks" },
+    ].forEach(({ pathname, title }) => {
+      it(`shows the "${title}" title at ${pathname}`, () => {
+        renderWithProviders(<NetworksHeader />, {
+          initialEntries: [pathname],
+        });
+
+        expect(
+          screen.getByRole("heading", { name: title })
+        ).toBeInTheDocument();
+      });
     });
   });
 
