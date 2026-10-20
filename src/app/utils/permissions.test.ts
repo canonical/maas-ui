@@ -51,6 +51,33 @@ describe("hasPermissions", () => {
       false
     );
   });
+
+  it("treats can_view_machines as satisfying can_view_available_machines", () => {
+    const current = [
+      factory.entitlement({ entitlement: Entitlement.CAN_VIEW_MACHINES }),
+    ];
+    expect(
+      hasPermissions(current, [Entitlement.CAN_VIEW_AVAILABLE_MACHINES])
+    ).toBe(true);
+  });
+
+  it("treats can_edit_machines as satisfying can_view_available_machines", () => {
+    const current = [
+      factory.entitlement({ entitlement: Entitlement.CAN_EDIT_MACHINES }),
+    ];
+    expect(
+      hasPermissions(current, [Entitlement.CAN_VIEW_AVAILABLE_MACHINES])
+    ).toBe(true);
+  });
+
+  it("treats can_edit_machines as satisfying can_deploy_machines", () => {
+    const current = [
+      factory.entitlement({ entitlement: Entitlement.CAN_EDIT_MACHINES }),
+    ];
+    expect(hasPermissions(current, [Entitlement.CAN_DEPLOY_MACHINES])).toBe(
+      true
+    );
+  });
 });
 
 describe("hasEntitlementForPool", () => {
@@ -112,6 +139,22 @@ describe("hasEntitlementForPool", () => {
     ];
     expect(
       hasEntitlementForPool(current, Entitlement.CAN_VIEW_MACHINES, 2)
+    ).toBe(true);
+  });
+
+  it("applies implied entitlements within a pool", () => {
+    const current = [
+      factory.entitlement({
+        entitlement: Entitlement.CAN_EDIT_MACHINES,
+        resource_type: "pool",
+        resource_id: 2,
+      }),
+    ];
+    expect(
+      hasEntitlementForPool(current, Entitlement.CAN_DEPLOY_MACHINES, 2)
+    ).toBe(true);
+    expect(
+      hasEntitlementForPool(current, Entitlement.CAN_VIEW_AVAILABLE_MACHINES, 2)
     ).toBe(true);
   });
 });

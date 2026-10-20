@@ -1,4 +1,4 @@
-import { useLifecycleActionEntitlements, useMachineActionMenus } from "./hooks";
+import { useIsMachineActionDisabled, useMachineActionMenus } from "./hooks";
 
 import type { ExternalAuthType } from "@/app/apiclient";
 import { NodeActions } from "@/app/store/types/node";
@@ -8,14 +8,14 @@ import { renderHookWithProviders, setupMockServer } from "@/testing/utils";
 
 setupMockServer(authResolvers.getMeEntitlements.handler([]));
 
-describe("useLifecycleActionEntitlements", () => {
+describe("useIsMachineActionDisabled", () => {
   it.each<ExternalAuthType | null>(["RBAC", "CANDID", null])(
-    "only bypasses lifecycle entitlements for RBAC (mode %s)",
+    "uses backend actions for loaded machines in auth mode %s",
     (externalAuthType) => {
       const { result } = renderHookWithProviders(
         () => ({
-          details: useLifecycleActionEntitlements(true, "abc123"),
-          bulk: useLifecycleActionEntitlements(false),
+          details: useIsMachineActionDisabled(true, "abc123"),
+          bulk: useIsMachineActionDisabled(false),
         }),
         {
           state: factory.rootState({
@@ -24,11 +24,11 @@ describe("useLifecycleActionEntitlements", () => {
               items: [
                 factory.machine({
                   system_id: "abc123",
-                  pool: factory.modelRef({ id: 2 }),
+                  actions: [NodeActions.DEPLOY],
                 }),
                 factory.machine({
                   system_id: "def456",
-                  pool: factory.modelRef({ id: 3 }),
+                  actions: [NodeActions.COMMISSION],
                 }),
               ],
               selected: { items: ["abc123", "def456"] },
@@ -36,12 +36,40 @@ describe("useLifecycleActionEntitlements", () => {
           }),
         }
       );
-      const disabled = externalAuthType !== "RBAC";
-      expect(result.current.details).toEqual({
-        actionsDisabled: disabled,
-        deployDisabled: disabled,
+      expect(result.current.details(NodeActions.DEPLOY)).toBe(false);
+      expect(result.current.details(NodeActions.COMMISSION)).toBe(true);
+      expect(result.current.bulk(NodeActions.DEPLOY)).toBe(false);
+      expect(result.current.bulk(NodeActions.COMMISSION)).toBe(false);
+      expect(result.current.bulk(NodeActions.DELETE)).toBe(true);
+    }
+  );
+
+  describe.each<ExternalAuthType | null>(["RBAC", "CANDID", null])(
+    "unresolved selections in auth mode %s",
+    (externalAuthType) => {
+      it.each([
+        { filter: {} },
+        { groups: ["admin"], grouping: null },
+        { items: ["unloaded"] },
+      ])("only bypasses entitlement checks for RBAC (%j)", (selected) => {
+        const { result } = renderHookWithProviders(
+          () => useIsMachineActionDisabled(false),
+          {
+            state: factory.rootState({
+              status: factory.statusState({ externalAuthType }),
+              machine: factory.machineState({ selected }),
+            }),
+          }
+        );
+
+        expect(result.current(NodeActions.DEPLOY)).toBe(false);
+        expect(result.current(NodeActions.DELETE)).toBe(
+          externalAuthType !== "RBAC"
+        );
+        expect(result.current(NodeActions.COMMISSION)).toBe(
+          externalAuthType !== "RBAC"
+        );
       });
-      expect(result.current.bulk).toEqual(result.current.details);
     }
   );
 });
