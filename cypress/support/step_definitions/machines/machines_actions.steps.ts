@@ -31,7 +31,14 @@ Before({ tags: "@machine-actions" }, () => {
     machineName = generateName("machine");
     cy.login();
     cy.addMachine(machineName);
-    doesMachineExist = true;
+    cy.findByRole("searchbox", { name: "Search" }).type(machineName);
+    cy.findByRole("checkbox", {
+      name: `${machineName}.maas`,
+      timeout: LONG_TIMEOUT,
+    }).should("exist");
+    cy.then(() => {
+      doesMachineExist = true;
+    });
   }
 });
 
