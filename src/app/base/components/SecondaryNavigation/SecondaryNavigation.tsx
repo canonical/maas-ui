@@ -89,7 +89,7 @@ const SideNavigationItem = ({ item }: ItemProps) => {
       {item.path ? (
         <SideNavigationLink item={item} />
       ) : (
-        <span className="p-side-navigation__text p-side-navigation__item">
+        <span className="p-muted-heading u-text--muted p-side-navigation__text p-side-navigation__item">
           {item.label}
         </span>
       )}
@@ -124,11 +124,19 @@ export const SecondaryNavigation = ({
         >
           {title}
         </h2>
-        <ul className="p-side-navigation__list">
-          {items.map((item) => (
-            <SideNavigationItem item={item} key={item.label} />
-          ))}
-        </ul>
+        {items.some((item) => item.items) ? (
+          items.map((item) => (
+            <ul className="p-side-navigation__list" key={item.label}>
+              <SideNavigationItem item={item} />
+            </ul>
+          ))
+        ) : (
+          <ul className="p-side-navigation__list">
+            {items.map((item) => (
+              <SideNavigationItem item={item} key={item.label} />
+            ))}
+          </ul>
+        )}
       </nav>
     </div>
   );
