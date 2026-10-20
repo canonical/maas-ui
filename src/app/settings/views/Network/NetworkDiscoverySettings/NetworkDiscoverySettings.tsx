@@ -1,7 +1,7 @@
 import type { ReactElement } from "react";
 
 import { ContentSection, MainToolbar } from "@canonical/maas-react-components";
-import { Notification as NotificationBanner } from "@canonical/react-components";
+import { Icon } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 
 import PageContent from "@/app/base/components/PageContent";
@@ -31,9 +31,9 @@ const NetworkDiscoverySettings = (): ReactElement => {
       <ContentSection variant="narrow">
         <ContentSection.Content>
           {networkDiscovery === "disabled" && (
-            <NotificationBanner severity="caution">
-              {Label.Disabled}
-            </NotificationBanner>
+            <p>
+              <Icon name="warning" /> {Label.Disabled}
+            </p>
           )}
           <div aria-label={Label.Title}>
             <NetworkDiscoveryForm />
