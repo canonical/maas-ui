@@ -1,11 +1,11 @@
 import { useEffect } from "react";
 
-import { useSidePanel } from "@canonical/maas-react-components";
 import { Notification as NotificationBanner } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 
 import ModelActionForm from "@/app/base/components/ModelActionForm";
 import { useCycled, useSendAnalyticsWhen } from "@/app/base/hooks";
+import { useModal } from "@/app/base/modal-context";
 import { deviceActions } from "@/app/store/device";
 import deviceSelectors from "@/app/store/device/selectors";
 import type {
@@ -22,7 +22,7 @@ type Props = {
 };
 
 const RemoveInterface = ({ nicId, systemId }: Props): React.ReactElement => {
-  const { closeSidePanel } = useSidePanel();
+  const { closeModal } = useModal();
   const dispatch = useDispatch();
   const deletingInterface = useSelector((state: RootState) =>
     deviceSelectors.getStatusForDevice(state, systemId, "deletingInterface")
@@ -41,9 +41,9 @@ const RemoveInterface = ({ nicId, systemId }: Props): React.ReactElement => {
   );
   useEffect(() => {
     if (deletedInterface) {
-      closeSidePanel();
+      closeModal();
     }
-  }, [closeSidePanel, deletedInterface]);
+  }, [closeModal, deletedInterface]);
 
   return (
     <>
@@ -58,7 +58,7 @@ const RemoveInterface = ({ nicId, systemId }: Props): React.ReactElement => {
         aria-label="Remove interface"
         initialValues={{}}
         modelType="interface"
-        onCancel={closeSidePanel}
+        onCancel={closeModal}
         onSubmit={() => {
           dispatch(deviceActions.cleanup());
           dispatch(

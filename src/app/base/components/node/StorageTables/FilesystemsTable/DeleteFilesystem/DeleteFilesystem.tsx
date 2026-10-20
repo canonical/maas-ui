@@ -1,9 +1,9 @@
 import type { ReactElement } from "react";
 
-import { useSidePanel } from "@canonical/maas-react-components";
 import { useDispatch } from "react-redux";
 
 import ModelActionForm from "@/app/base/components/ModelActionForm";
+import { useModal } from "@/app/base/modal-context";
 import { machineActions } from "@/app/store/machine";
 import type { Machine } from "@/app/store/machine/types";
 import type { Disk, Partition } from "@/app/store/types/node";
@@ -19,7 +19,7 @@ const DeleteFilesystem = ({
   storageDevice,
 }: DeleteFilesystemProps): ReactElement => {
   const dispatch = useDispatch();
-  const { closeSidePanel } = useSidePanel();
+  const { closeModal } = useModal();
   const deviceIsDisk = isDisk(storageDevice);
   const storageFs = storageDevice.filesystem;
   const isDiskFsDelete = deviceIsDisk && isMounted(storageFs);
@@ -30,7 +30,7 @@ const DeleteFilesystem = ({
       initialValues={{}}
       message={<>Are you sure you want to remove this filesystem?</>}
       modelType="filesystem"
-      onCancel={closeSidePanel}
+      onCancel={closeModal}
       onSaveAnalytics={{
         action: `Delete ${isDiskFsDelete ? "disk" : "partition"} filesystem`,
         category: "Machine storage",
@@ -54,7 +54,7 @@ const DeleteFilesystem = ({
             })
           );
         }
-        closeSidePanel();
+        closeModal();
       }}
       submitAppearance="negative"
       submitLabel="Remove"

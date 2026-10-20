@@ -1,6 +1,5 @@
 import type { ReactElement } from "react";
 
-import { useSidePanel } from "@canonical/maas-react-components";
 import {
   Notification as NotificationBanner,
   Spinner,
@@ -10,13 +9,14 @@ import { useQueryClient } from "@tanstack/react-query";
 import { useDeletePool, useGetPool } from "@/app/api/query/pools";
 import { listResourcePoolsStatisticsQueryKey } from "@/app/apiclient/@tanstack/react-query.gen";
 import ModelActionForm from "@/app/base/components/ModelActionForm";
+import { useModal } from "@/app/base/modal-context";
 
 type DeletePoolProps = {
   id: number;
 };
 
 const DeletePool = ({ id }: DeletePoolProps): ReactElement => {
-  const { closeSidePanel } = useSidePanel();
+  const { closeModal } = useModal();
   const queryClient = useQueryClient();
   const pool = useGetPool({ path: { resource_pool_id: id } });
 
@@ -37,7 +37,7 @@ const DeletePool = ({ id }: DeletePoolProps): ReactElement => {
           errors={deletePool.error}
           initialValues={{}}
           modelType="resource pool"
-          onCancel={closeSidePanel}
+          onCancel={closeModal}
           onSubmit={() => {
             deletePool.mutate({
               headers: { ETag: eTag },
@@ -49,7 +49,7 @@ const DeletePool = ({ id }: DeletePoolProps): ReactElement => {
               .invalidateQueries({
                 queryKey: listResourcePoolsStatisticsQueryKey(),
               })
-              .then(closeSidePanel);
+              .then(closeModal);
           }}
           saved={deletePool.isSuccess}
           saving={deletePool.isPending}

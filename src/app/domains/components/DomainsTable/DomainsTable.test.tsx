@@ -10,7 +10,7 @@ import {
   userEvent,
   screen,
   within,
-  mockSidePanel,
+  mockModal,
   renderWithProviders,
   setupMockServer,
   waitFor,
@@ -20,7 +20,7 @@ const mockServer = setupMockServer(
   authResolvers.getCurrentUser.handler(),
   authResolvers.getMeEntitlements.handler()
 );
-const { mockOpen } = await mockSidePanel();
+const { mockOpen } = await mockModal();
 
 describe("DomainsTable", () => {
   let state: RootState;
@@ -94,7 +94,7 @@ describe("DomainsTable", () => {
   });
 
   describe("actions", () => {
-    it("triggers the setDefault sidepanel if set default is clicked", async () => {
+    it("triggers the setDefault modal if set default is clicked", async () => {
       renderWithProviders(<DomainsTable />, { state });
 
       const row = screen.getByRole("row", { name: /^a/ });

@@ -10,6 +10,7 @@ import * as factory from "@/testing/factories";
 import { authResolvers } from "@/testing/resolvers/auth";
 import {
   expectTooltipOnHover,
+  mockModal,
   mockSidePanel,
   renderWithProviders,
   screen,
@@ -25,6 +26,7 @@ const mockServer = setupMockServer(
 );
 
 const { mockOpen } = await mockSidePanel();
+const { mockOpen: mockOpenModal } = await mockModal();
 
 const openMenu = async () => {
   const button = screen.getByRole("button", { name: "Take action:" });
@@ -195,7 +197,7 @@ describe("NetworkTableActions", () => {
     });
     expect(editPhysicalButton).toBeInTheDocument();
     await userEvent.click(editPhysicalButton);
-    expect(mockOpen).toHaveBeenCalledWith(
+    expect(mockOpenModal).toHaveBeenCalledWith(
       expect.objectContaining({
         component: expect.any(Function),
         title: "Mark as connected",

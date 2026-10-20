@@ -6,11 +6,11 @@ import * as factory from "@/testing/factories";
 import {
   userEvent,
   screen,
-  mockSidePanel,
+  mockModal,
   renderWithProviders,
 } from "@/testing/utils";
 
-const { mockClose } = await mockSidePanel();
+const { mockClose } = await mockModal();
 
 describe("DeleteDomainForm", () => {
   it("calls closeForm on cancel click", async () => {

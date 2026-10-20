@@ -2,7 +2,7 @@ import DeletePool from "./DeletePool";
 
 import { poolsResolvers } from "@/testing/resolvers/pools";
 import {
-  mockSidePanel,
+  mockModal,
   renderWithProviders,
   screen,
   setupMockServer,
@@ -15,7 +15,7 @@ const mockServer = setupMockServer(
   poolsResolvers.getPool.handler(),
   poolsResolvers.deletePool.handler()
 );
-const { mockClose } = await mockSidePanel();
+const { mockClose } = await mockModal();
 
 describe("DeletePool", () => {
   it("calls closeForm on cancel click", async () => {

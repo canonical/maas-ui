@@ -1,9 +1,9 @@
 import type { ReactElement } from "react";
 
-import { useSidePanel } from "@canonical/maas-react-components";
 import { useDispatch } from "react-redux";
 
 import ModelActionForm from "@/app/base/components/ModelActionForm";
+import { useModal } from "@/app/base/modal-context";
 import { machineActions } from "@/app/store/machine";
 import type { Machine } from "@/app/store/machine/types";
 import type { Disk } from "@/app/store/types/node";
@@ -18,14 +18,14 @@ const DeleteCacheSet = ({
   disk,
 }: DeleteCacheSetProps): ReactElement => {
   const dispatch = useDispatch();
-  const { closeSidePanel } = useSidePanel();
+  const { closeModal } = useModal();
   return (
     <ModelActionForm
       aria-label="Delete cache set"
       initialValues={{}}
       message={<>Are you sure you want to remove this cache set?</>}
       modelType={"cache set"}
-      onCancel={closeSidePanel}
+      onCancel={closeModal}
       onSaveAnalytics={{
         action: "Delete cache set",
         category: "Machine storage",
@@ -39,7 +39,7 @@ const DeleteCacheSet = ({
             systemId: systemId,
           })
         );
-        closeSidePanel();
+        closeModal();
       }}
       submitAppearance="negative"
       submitLabel={"Remove cache set"}

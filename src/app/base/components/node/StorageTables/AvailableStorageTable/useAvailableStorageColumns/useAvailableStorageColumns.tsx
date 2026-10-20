@@ -21,6 +21,7 @@ import SetBootDisk from "../SetBootDisk";
 import DoubleRow from "@/app/base/components/DoubleRow";
 import TableMenu from "@/app/base/components/TableMenu";
 import TagLinks from "@/app/base/components/TagLinks";
+import { useModal } from "@/app/base/modal-context";
 import urls from "@/app/base/urls";
 import { FilterControllers } from "@/app/store/controller/utils";
 import machineSelectors from "@/app/store/machine/selectors";
@@ -54,6 +55,7 @@ const useAvailableStorageColumns = ({
   systemId: Node["system_id"];
 }): AvailableStorageColumnDef[] => {
   const { openSidePanel } = useSidePanel();
+  const { openModal } = useModal();
   const machine = useSelector((state: RootState) =>
     machineSelectors.getById(state, systemId)
   );
@@ -256,7 +258,7 @@ const useAvailableStorageColumns = ({
                     links.push({
                       children: "Create cache set...",
                       onClick: () => {
-                        openSidePanel({
+                        openModal({
                           component: CreateCacheSet,
                           title: "Create cache set",
                           props: {
@@ -272,7 +274,7 @@ const useAvailableStorageColumns = ({
                     links.push({
                       children: "Set boot disk...",
                       onClick: () => {
-                        openSidePanel({
+                        openModal({
                           component: SetBootDisk,
                           title: "Set boot disk",
                           props: {
@@ -302,7 +304,7 @@ const useAvailableStorageColumns = ({
                     links.push({
                       children: "Remove volume group...",
                       onClick: () => {
-                        openSidePanel({
+                        openModal({
                           component: DeleteVolumeGroup,
                           title: "Remove volume group",
                           props: {
@@ -317,7 +319,7 @@ const useAvailableStorageColumns = ({
                     links.push({
                       children: `Remove ${formatType(disk, true)}...`,
                       onClick: () => {
-                        openSidePanel({
+                        openModal({
                           component: DeleteDisk,
                           title: `Remove ${formatType(disk, true)}`,
                           props: {
@@ -364,7 +366,7 @@ const useAvailableStorageColumns = ({
                     links.push({
                       children: "Create cache set...",
                       onClick: () => {
-                        openSidePanel({
+                        openModal({
                           component: CreateCacheSet,
                           title: "Create cache set",
                           props: {
@@ -379,7 +381,7 @@ const useAvailableStorageColumns = ({
                   links.push({
                     children: "Remove partition...",
                     onClick: () => {
-                      openSidePanel({
+                      openModal({
                         component: DeletePartition,
                         title: "Remove partition",
                         props: {
@@ -404,7 +406,7 @@ const useAvailableStorageColumns = ({
           ]
         : []),
     ],
-    [actionsDisabled, isMachine, openSidePanel, systemId, machine]
+    [actionsDisabled, isMachine, openModal, openSidePanel, systemId, machine]
   );
 };
 

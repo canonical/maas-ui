@@ -2,7 +2,7 @@ import DeleteRack from "./DeleteRack";
 
 import { rackResolvers } from "@/testing/resolvers/racks";
 import {
-  mockSidePanel,
+  mockModal,
   renderWithProviders,
   setupMockServer,
   userEvent,
@@ -15,7 +15,7 @@ const mockServer = setupMockServer(
   rackResolvers.getRack.handler(),
   rackResolvers.deleteRack.handler()
 );
-const { mockClose } = await mockSidePanel();
+const { mockClose } = await mockModal();
 
 describe("DeleteRack", () => {
   it("calls closeForm on cancel click", async () => {

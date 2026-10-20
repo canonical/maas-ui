@@ -7,6 +7,7 @@ import { Link } from "react-router";
 import type { ZoneResponse, ZoneWithStatisticsResponse } from "@/app/apiclient";
 import TableActions from "@/app/base/components/TableActions";
 import { useHasEntitlements } from "@/app/base/hooks";
+import { useModal } from "@/app/base/modal-context";
 import urls from "@/app/base/urls";
 import { Entitlement } from "@/app/settings/views/UserManagement/views/Groups/constants";
 import { FilterDevices } from "@/app/store/device/utils";
@@ -34,6 +35,7 @@ const machinesFilter = (name: string) =>
 
 const useZonesTableColumns = (): ZoneColumnDef[] => {
   const { openSidePanel } = useSidePanel();
+  const { openModal } = useModal();
   const { allowed: canEdit } = useHasEntitlements([
     Entitlement.CAN_EDIT_GLOBAL_ENTITIES,
   ]);
@@ -124,7 +126,7 @@ const useZonesTableColumns = (): ZoneColumnDef[] => {
               }
               editDisabled={!canEdit}
               onDelete={() => {
-                openSidePanel({
+                openModal({
                   component: DeleteZone,
                   title: "Delete AZ",
                   props: {
@@ -144,7 +146,7 @@ const useZonesTableColumns = (): ZoneColumnDef[] => {
         },
       },
     ],
-    [canEdit, openSidePanel]
+    [canEdit, openModal, openSidePanel]
   );
 };
 

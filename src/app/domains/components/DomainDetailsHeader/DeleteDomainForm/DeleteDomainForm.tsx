@@ -1,10 +1,10 @@
 import { useCallback } from "react";
 
-import { useSidePanel } from "@canonical/maas-react-components";
 import { Icon } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 
 import FormikForm from "@/app/base/components/FormikForm";
+import { useModal } from "@/app/base/modal-context";
 import type { EmptyObject } from "@/app/base/types";
 import urls from "@/app/base/urls";
 import { domainActions } from "@/app/store/domain";
@@ -23,7 +23,7 @@ export enum Labels {
 }
 
 const DeleteDomainForm = ({ id }: Props): React.ReactElement | null => {
-  const { closeSidePanel } = useSidePanel();
+  const { closeModal } = useModal();
   const dispatch = useDispatch();
   const domain = useSelector((state: RootState) =>
     domainSelectors.getById(state, id)
@@ -48,11 +48,12 @@ const DeleteDomainForm = ({ id }: Props): React.ReactElement | null => {
       cleanup={cleanup}
       errors={errors}
       initialValues={{}}
-      onCancel={closeSidePanel}
+      onCancel={closeModal}
       onSubmit={() => {
         dispatch(cleanup());
         dispatch(domainActions.delete(id));
       }}
+      onSuccess={closeModal}
       saved={saved}
       savedRedirect={urls.domains.index}
       saving={saving}

@@ -1,7 +1,9 @@
+import DeletePool from "@/app/pools/components/DeletePool";
 import PoolsList from "@/app/pools/views/PoolsList";
 import { authResolvers } from "@/testing/resolvers/auth";
 import { poolsResolvers } from "@/testing/resolvers/pools";
 import {
+  mockModal,
   renderWithProviders,
   screen,
   userEvent,
@@ -15,6 +17,7 @@ setupMockServer(
   authResolvers.getCurrentUser.handler(),
   authResolvers.getMeEntitlements.handler()
 );
+const { mockOpen: mockOpenModal } = await mockModal();
 
 describe("PoolsList", () => {
   it("renders AddPool", async () => {
@@ -51,9 +54,12 @@ describe("PoolsList", () => {
       ).not.toBeAriaDisabled();
     });
     await userEvent.click(screen.getAllByRole("button", { name: "Delete" })[2]);
-    expect(
-      screen.getByRole("complementary", { name: "Delete pool" })
-    ).toBeInTheDocument();
+    expect(mockOpenModal).toHaveBeenCalledWith(
+      expect.objectContaining({
+        component: DeletePool,
+        title: "Delete pool",
+      })
+    );
   });
 
   it("closes side panel form when canceled", async () => {

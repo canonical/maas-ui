@@ -8,13 +8,14 @@ import * as factory from "@/testing/factories";
 import { authResolvers } from "@/testing/resolvers/auth";
 import { zoneResolvers } from "@/testing/resolvers/zones";
 import {
+  mockIsPending,
+  mockModal,
+  mockSidePanel,
   renderWithProviders,
   screen,
-  waitFor,
   setupMockServer,
+  waitFor,
   within,
-  mockIsPending,
-  mockSidePanel,
 } from "@/testing/utils";
 
 const mockServer = setupMockServer(
@@ -25,6 +26,7 @@ const mockServer = setupMockServer(
   authResolvers.getMeEntitlements.handler()
 );
 const { mockOpen } = await mockSidePanel();
+const { mockOpen: mockOpenModal } = await mockModal();
 
 describe("ZonesTable", () => {
   describe("display", () => {
@@ -217,6 +219,7 @@ describe("ZonesTable", () => {
       await userEvent.click(screen.getByRole("button", { name: "Edit" }));
       await userEvent.click(screen.getByRole("button", { name: "Delete" }));
       expect(mockOpen).not.toHaveBeenCalled();
+      expect(mockOpenModal).not.toHaveBeenCalled();
     });
 
     it("disables the delete button for default zones", async () => {
@@ -269,7 +272,7 @@ describe("ZonesTable", () => {
       });
     });
 
-    it("opens delete zone side panel form", async () => {
+    it("opens delete zone modal", async () => {
       mockServer.use(
         zoneResolvers.listZones.handler({
           items: [
@@ -291,7 +294,7 @@ describe("ZonesTable", () => {
 
       await userEvent.click(screen.getByRole("button", { name: "Delete" }));
 
-      expect(mockOpen).toHaveBeenCalledWith({
+      expect(mockOpenModal).toHaveBeenCalledWith({
         component: DeleteZone,
         title: "Delete AZ",
         props: { id: 2 },

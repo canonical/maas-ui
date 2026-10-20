@@ -8,6 +8,7 @@ import type { RootState } from "@/app/store/root/types";
 import { NetworkInterfaceTypes } from "@/app/store/types/enum";
 import * as factory from "@/testing/factories";
 import {
+  mockModal,
   mockSidePanel,
   renderWithProviders,
   screen,
@@ -17,6 +18,7 @@ import {
 } from "@/testing/utils";
 
 const { mockOpen } = await mockSidePanel();
+const { mockOpen: mockOpenModal } = await mockModal();
 
 describe("DeviceNetworkTable", () => {
   let state: RootState;
@@ -217,7 +219,7 @@ describe("DeviceNetworkTable", () => {
       });
     });
 
-    it("opens the delete interface side panel", async () => {
+    it("opens the delete interface modal", async () => {
       renderWithProviders(<DeviceNetworkTable systemId="abc123" />, {
         state,
       });
@@ -225,7 +227,7 @@ describe("DeviceNetworkTable", () => {
       await userEvent.click(screen.getByRole("button", { name: "Delete" }));
 
       await waitFor(() => {
-        expect(mockOpen).toHaveBeenCalledWith({
+        expect(mockOpenModal).toHaveBeenCalledWith({
           component: RemoveInterface,
           title: "Remove interface",
           props: {

@@ -9,6 +9,7 @@ import { useImageSources } from "@/app/api/query/imageSources";
 import { useSelectionStatuses } from "@/app/api/query/images";
 import type { BootSourceResponse } from "@/app/apiclient";
 import { useHasEntitlements } from "@/app/base/hooks";
+import { useModal } from "@/app/base/modal-context";
 import DeleteImages from "@/app/images/components/DeleteImages";
 import SelectUpstreamImages from "@/app/images/components/SelectUpstreamImages";
 import UploadCustomImage from "@/app/images/components/UploadCustomImage";
@@ -38,6 +39,7 @@ const ImageListHeader = ({
   setSelectedRows,
 }: ImageListHeaderProps): ReactElement => {
   const { openSidePanel } = useSidePanel();
+  const { openModal } = useModal();
 
   const sources = useImageSources();
   const selectionsStatuses = useSelectionStatuses();
@@ -66,7 +68,7 @@ const ImageListHeader = ({
             disabled={!canEdit || isDeleteDisabled}
             hasIcon
             onClick={() => {
-              openSidePanel({
+              openModal({
                 component: DeleteImages,
                 title: `Delete ${selectedImageCount > 1 ? `${selectedImageCount} ` : ""}${pluralize("image", selectedImageCount)}`,
                 props: {

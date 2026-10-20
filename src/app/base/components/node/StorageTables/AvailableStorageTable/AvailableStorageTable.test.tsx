@@ -12,6 +12,7 @@ import { MIN_PARTITION_SIZE } from "@/app/store/machine/constants";
 import { DiskTypes } from "@/app/store/types/enum";
 import * as factory from "@/testing/factories";
 import {
+  mockModal,
   mockSidePanel,
   renderWithProviders,
   screen,
@@ -28,6 +29,7 @@ const getAvailableDisk = (name = "available-disk") =>
   });
 
 const { mockOpen } = await mockSidePanel();
+const { mockOpen: mockOpenModal } = await mockModal();
 
 describe("AvailableStorageTable", () => {
   describe("display", () => {
@@ -422,7 +424,7 @@ describe("AvailableStorageTable", () => {
         screen.getByRole("menuitem", { name: /Create cache set/ })
       );
 
-      expect(mockOpen).toHaveBeenCalledWith(
+      expect(mockOpenModal).toHaveBeenCalledWith(
         expect.objectContaining({
           component: CreateCacheSet,
         })
@@ -459,7 +461,7 @@ describe("AvailableStorageTable", () => {
         screen.getByRole("menuitem", { name: /Remove volume group/ })
       );
 
-      expect(mockOpen).toHaveBeenCalledWith(
+      expect(mockOpenModal).toHaveBeenCalledWith(
         expect.objectContaining({
           component: DeleteVolumeGroup,
         })
@@ -498,7 +500,7 @@ describe("AvailableStorageTable", () => {
         screen.getByRole("menuitem", { name: /Remove partition/ })
       );
 
-      expect(mockOpen).toHaveBeenCalledWith(
+      expect(mockOpenModal).toHaveBeenCalledWith(
         expect.objectContaining({
           component: DeletePartition,
         })

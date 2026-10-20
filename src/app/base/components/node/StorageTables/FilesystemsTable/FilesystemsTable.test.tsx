@@ -13,13 +13,13 @@ import type { Disk, Filesystem, Partition } from "@/app/store/types/node";
 import * as factory from "@/testing/factories";
 import {
   mockIsPending,
-  mockSidePanel,
+  mockModal,
   renderWithProviders,
   screen,
   waitFor,
 } from "@/testing/utils";
 
-const { mockOpen } = await mockSidePanel();
+const { mockOpen } = await mockModal();
 
 describe("FilesystemsTable", () => {
   let state: RootState;

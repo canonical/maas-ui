@@ -1,6 +1,5 @@
 import { useMemo } from "react";
 
-import { useSidePanel } from "@canonical/maas-react-components";
 import type { ColumnDef, Row } from "@tanstack/react-table";
 
 import TableMenu from "@/app/base/components/TableMenu";
@@ -8,6 +7,7 @@ import DeleteFilesystem from "@/app/base/components/node/StorageTables/Filesyste
 import DeleteSpecialFilesystem from "@/app/base/components/node/StorageTables/FilesystemsTable/DeleteSpecialFilesystem";
 import type { FilesystemRow } from "@/app/base/components/node/StorageTables/FilesystemsTable/FilesystemsTable";
 import UnmountFilesystem from "@/app/base/components/node/StorageTables/FilesystemsTable/UnmountFilesystem";
+import { useModal } from "@/app/base/modal-context";
 import { formatSize, usesStorage } from "@/app/store/utils";
 
 export type FilesystemsColumnDef = ColumnDef<
@@ -19,7 +19,7 @@ const useFileSystemsTableColumns = (
   canEditStorage: boolean,
   isMachine: boolean
 ): FilesystemsColumnDef[] => {
-  const { openSidePanel } = useSidePanel();
+  const { openModal } = useModal();
   return useMemo(
     () =>
       [
@@ -86,7 +86,7 @@ const useFileSystemsTableColumns = (
                     links.push({
                       children: "Unmount filesystem...",
                       onClick: () => {
-                        openSidePanel({
+                        openModal({
                           component: UnmountFilesystem,
                           title: "Unmount filesystem",
                           props: {
@@ -101,7 +101,7 @@ const useFileSystemsTableColumns = (
                     children: "Remove filesystem...",
                     onClick: () => {
                       if (node.special_filesystems && !storage) {
-                        openSidePanel({
+                        openModal({
                           component: DeleteSpecialFilesystem,
                           title: "Remove special filesystem",
                           props: {
@@ -110,7 +110,7 @@ const useFileSystemsTableColumns = (
                           },
                         });
                       } else if (storage) {
-                        openSidePanel({
+                        openModal({
                           component: DeleteFilesystem,
                           title: "Remove filesystem",
                           props: {
@@ -134,7 +134,7 @@ const useFileSystemsTableColumns = (
             ]
           : []),
       ] as FilesystemsColumnDef[],
-    [canEditStorage, isMachine, openSidePanel]
+    [canEditStorage, isMachine, openModal]
   );
 };
 

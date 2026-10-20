@@ -6,6 +6,7 @@ import type { ColumnDef } from "@tanstack/react-table";
 import { Link } from "react-router";
 
 import { useHasEntitlements } from "@/app/base/hooks";
+import { useModal } from "@/app/base/modal-context";
 import urls from "@/app/base/urls";
 import DeleteRecordForm from "@/app/domains/components/ResourceRecords/DeleteRecordForm";
 import EditRecordForm from "@/app/domains/components/ResourceRecords/EditRecordForm";
@@ -35,6 +36,7 @@ const useResourceRecordsColumns = ({
   id,
 }: Props): ResourceRecordsColumnDef[] => {
   const { openSidePanel } = useSidePanel();
+  const { openModal } = useModal();
   const { allowed: canEditGlobalEntities } = useHasEntitlements([
     Entitlement.CAN_EDIT_GLOBAL_ENTITIES,
   ]);
@@ -125,7 +127,7 @@ const useResourceRecordsColumns = ({
                   {
                     children: "Remove record...",
                     onClick: () => {
-                      openSidePanel({
+                      openModal({
                         component: DeleteRecordForm,
                         title: "Remove record",
                         props: {
@@ -145,7 +147,7 @@ const useResourceRecordsColumns = ({
         },
       },
     ],
-    [id, canEditGlobalEntities, openSidePanel]
+    [id, canEditGlobalEntities, openModal, openSidePanel]
   );
 };
 

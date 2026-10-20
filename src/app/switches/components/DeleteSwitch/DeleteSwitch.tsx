@@ -1,6 +1,5 @@
 import type { ReactElement } from "react";
 
-import { useSidePanel } from "@canonical/maas-react-components";
 import {
   Notification as NotificationBanner,
   Spinner,
@@ -8,6 +7,7 @@ import {
 
 import { useDeleteSwitch, useGetSwitch } from "@/app/api/query/switches";
 import ModelActionForm from "@/app/base/components/ModelActionForm";
+import { useModal } from "@/app/base/modal-context";
 import { getSwitchErrorMessage } from "@/app/switches/utils";
 
 type DeleteSwitchProps = {
@@ -15,7 +15,7 @@ type DeleteSwitchProps = {
 };
 
 const DeleteSwitch = ({ id }: DeleteSwitchProps): ReactElement => {
-  const { closeSidePanel } = useSidePanel();
+  const { closeModal } = useModal();
   const switchDetails = useGetSwitch({ path: { switch_id: id } });
 
   const eTag = switchDetails.data?.headers?.get("ETag");
@@ -35,14 +35,14 @@ const DeleteSwitch = ({ id }: DeleteSwitchProps): ReactElement => {
           errors={getSwitchErrorMessage(deleteSwitch.error)}
           initialValues={{}}
           modelType="switch"
-          onCancel={closeSidePanel}
+          onCancel={closeModal}
           onSubmit={() => {
             deleteSwitch.mutate({
               headers: { ETag: eTag },
               path: { switch_id: id },
             });
           }}
-          onSuccess={closeSidePanel}
+          onSuccess={closeModal}
           saved={deleteSwitch.isSuccess}
           saving={deleteSwitch.isPending}
         />

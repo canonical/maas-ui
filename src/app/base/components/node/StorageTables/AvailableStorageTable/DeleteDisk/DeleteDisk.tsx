@@ -1,9 +1,9 @@
 import type { ReactElement } from "react";
 
-import { useSidePanel } from "@canonical/maas-react-components";
 import { useDispatch } from "react-redux";
 
 import ModelActionForm from "@/app/base/components/ModelActionForm";
+import { useModal } from "@/app/base/modal-context";
 import { machineActions } from "@/app/store/machine";
 import type { Machine } from "@/app/store/machine/types";
 import type { Disk } from "@/app/store/types/node";
@@ -16,7 +16,7 @@ type DeleteDiskProps = {
 
 const DeleteDisk = ({ systemId, disk }: DeleteDiskProps): ReactElement => {
   const dispatch = useDispatch();
-  const { closeSidePanel } = useSidePanel();
+  const { closeModal } = useModal();
   const diskType = formatType(disk, true);
   return (
     <ModelActionForm
@@ -24,7 +24,7 @@ const DeleteDisk = ({ systemId, disk }: DeleteDiskProps): ReactElement => {
       initialValues={{}}
       message={<>Are you sure you want to remove this {diskType}?</>}
       modelType={diskType}
-      onCancel={closeSidePanel}
+      onCancel={closeModal}
       onSaveAnalytics={{
         action: `Delete ${diskType}`,
         category: "Machine storage",
@@ -38,7 +38,7 @@ const DeleteDisk = ({ systemId, disk }: DeleteDiskProps): ReactElement => {
             systemId: systemId,
           })
         );
-        closeSidePanel();
+        closeModal();
       }}
       submitAppearance="negative"
       submitLabel={`Remove ${diskType}`}

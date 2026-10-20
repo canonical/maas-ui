@@ -14,10 +14,10 @@ import {
   mockIsPending,
   renderWithProviders,
   waitFor,
-  mockSidePanel,
+  mockModal,
 } from "@/testing/utils";
 
-const { mockOpen } = await mockSidePanel();
+const { mockOpen } = await mockModal();
 
 describe("DatastoresTable", () => {
   let state: RootState;

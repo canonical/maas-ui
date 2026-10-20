@@ -4,14 +4,14 @@ import DeleteCacheSet from "@/app/base/components/node/StorageTables/AvailableSt
 import { DiskTypes } from "@/app/store/types/enum";
 import * as factory from "@/testing/factories";
 import {
-  mockSidePanel,
+  mockModal,
   renderWithProviders,
   screen,
   userEvent,
   within,
 } from "@/testing/utils";
 
-const { mockOpen } = await mockSidePanel();
+const { mockOpen } = await mockModal();
 
 describe("CacheSetsTable", () => {
   it("only shows disks that are cache sets", () => {
@@ -96,7 +96,7 @@ describe("CacheSetsTable", () => {
     ).toBeInTheDocument();
   });
 
-  it("can open the side panel to delete a cache set if node is a machine", async () => {
+  it("can open the modal to delete a cache set if node is a machine", async () => {
     const disk = factory.nodeDisk({
       type: DiskTypes.CACHE_SET,
     });

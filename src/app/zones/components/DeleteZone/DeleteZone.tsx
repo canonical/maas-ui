@@ -1,6 +1,5 @@
 import React from "react";
 
-import { useSidePanel } from "@canonical/maas-react-components";
 import {
   Notification as NotificationBanner,
   Spinner,
@@ -13,13 +12,14 @@ import {
   listZonesWithStatisticsQueryKey,
 } from "@/app/apiclient/@tanstack/react-query.gen";
 import ModelActionForm from "@/app/base/components/ModelActionForm";
+import { useModal } from "@/app/base/modal-context";
 
 type DeleteZoneProps = {
   id: number;
 };
 
 const DeleteZone: React.FC<DeleteZoneProps> = ({ id }) => {
-  const { closeSidePanel } = useSidePanel();
+  const { closeModal } = useModal();
   const queryClient = useQueryClient();
   const zone = useGetZone({ path: { zone_id: id } });
   const eTag = zone.data?.headers?.get("ETag");
@@ -40,7 +40,7 @@ const DeleteZone: React.FC<DeleteZoneProps> = ({ id }) => {
           initialValues={{}}
           message="Are you sure you want to delete this AZ?"
           modelType="zone"
-          onCancel={closeSidePanel}
+          onCancel={closeModal}
           onSubmit={() => {
             deleteZone.mutate({
               headers: { ETag: eTag },
@@ -54,7 +54,7 @@ const DeleteZone: React.FC<DeleteZoneProps> = ({ id }) => {
             await queryClient.invalidateQueries({
               queryKey: listZonesQueryKey(),
             });
-            closeSidePanel();
+            closeModal();
           }}
           saved={deleteZone.isSuccess}
           saving={deleteZone.isPending}

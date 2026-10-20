@@ -8,13 +8,14 @@ import * as factory from "@/testing/factories";
 import { authResolvers } from "@/testing/resolvers/auth";
 import { poolsResolvers } from "@/testing/resolvers/pools";
 import {
+  mockIsPending,
+  mockModal,
+  mockSidePanel,
   renderWithProviders,
   screen,
-  waitFor,
   setupMockServer,
+  waitFor,
   within,
-  mockIsPending,
-  mockSidePanel,
 } from "@/testing/utils";
 
 const mockServer = setupMockServer(
@@ -24,6 +25,7 @@ const mockServer = setupMockServer(
   authResolvers.getMeEntitlements.handler()
 );
 const { mockOpen } = await mockSidePanel();
+const { mockOpen: mockOpenModal } = await mockModal();
 
 describe("PoolsTable", () => {
   describe("display", () => {
@@ -183,6 +185,7 @@ describe("PoolsTable", () => {
       await userEvent.click(screen.getByRole("button", { name: "Edit" }));
       await userEvent.click(screen.getByRole("button", { name: "Delete" }));
       expect(mockOpen).not.toHaveBeenCalled();
+      expect(mockOpenModal).not.toHaveBeenCalled();
     });
 
     it("disables the delete button for default pools", async () => {
@@ -263,7 +266,7 @@ describe("PoolsTable", () => {
       });
     });
 
-    it("opens delete pool side panel form", async () => {
+    it("opens delete pool modal", async () => {
       mockServer.use(
         poolsResolvers.listPools.handler({
           items: [
@@ -288,7 +291,7 @@ describe("PoolsTable", () => {
 
       await userEvent.click(screen.getByRole("button", { name: "Delete" }));
 
-      expect(mockOpen).toHaveBeenCalledWith({
+      expect(mockOpenModal).toHaveBeenCalledWith({
         component: DeletePool,
         title: "Delete pool",
         props: { id: 1 },
