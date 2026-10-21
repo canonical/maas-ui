@@ -230,9 +230,9 @@ describe("NodeActionMenu", () => {
       />
     );
 
-    await userEvent.click(screen.getByRole("button"));
+    await userEvent.hover(screen.getByRole("button"));
     expect(
-      screen.getByRole("tooltip", {
+      await screen.findByRole("tooltip", {
         name: "Select foobars below to perform an action.",
       })
     ).toBeInTheDocument();
