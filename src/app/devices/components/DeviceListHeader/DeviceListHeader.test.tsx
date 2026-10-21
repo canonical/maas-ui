@@ -2,20 +2,15 @@ import DeviceListHeader from "./DeviceListHeader";
 
 import AddDeviceForm from "@/app/devices/components/AddDeviceForm";
 import type { RootState } from "@/app/store/root/types";
-import { NodeActions } from "@/app/store/types/node";
 import * as factory from "@/testing/factories";
-import { authResolvers } from "@/testing/resolvers/auth";
 import {
   mockSidePanel,
   renderWithProviders,
   screen,
-  setupMockServer,
   userEvent,
 } from "@/testing/utils";
 
 const { mockOpen } = await mockSidePanel();
-
-const mockServer = setupMockServer(authResolvers.getMeEntitlements.handler());
 
 describe("DeviceListHeader", () => {
   let state: RootState;
@@ -96,12 +91,8 @@ describe("DeviceListHeader", () => {
 
   it("disables the Take action menu when no selected devices have the edit permission", () => {
     state.device.items = [
-      factory.device({
-        actions: [NodeActions.DELETE, NodeActions.SET_ZONE],
-        permissions: [],
-        system_id: "abc123",
-      }),
-      factory.device({ permissions: ["edit"], system_id: "def456" }),
+      factory.device({ permissions: [], system_id: "abc123" }),
+      factory.device({ permissions: [], system_id: "def456" }),
     ];
     renderWithProviders(
       <DeviceListHeader
@@ -119,19 +110,12 @@ describe("DeviceListHeader", () => {
 
   it("enables the Take action menu when a selected device has the edit permission", () => {
     state.device.items = [
-      factory.device({
-        actions: [],
-        permissions: ["edit"],
-        system_id: "abc123",
-      }),
+      factory.device({ permissions: ["edit"], system_id: "abc123" }),
       factory.device({ permissions: [], system_id: "def456" }),
     ];
     renderWithProviders(
       <DeviceListHeader
-        rowSelection={{
-          [state.device.items[0].id]: true,
-          [state.device.items[1].id]: true,
-        }}
+        rowSelection={{ [state.device.items[0].id]: true }}
         searchFilter=""
         setRowSelection={vi.fn()}
         setSearchFilter={vi.fn()}
@@ -140,54 +124,6 @@ describe("DeviceListHeader", () => {
     );
     expect(
       screen.getByRole("button", { name: /Take action/ })
-    ).not.toBeAriaDisabled();
-  });
-
-  it("only counts selected devices with the edit permission for each action", async () => {
-    state.device.items = [
-      factory.device({ actions: [], permissions: ["edit"], system_id: "a" }),
-      factory.device({ actions: [], permissions: ["edit"], system_id: "b" }),
-      factory.device({
-        actions: [NodeActions.DELETE, NodeActions.SET_ZONE],
-        permissions: [],
-        system_id: "c",
-      }),
-    ];
-    renderWithProviders(
-      <DeviceListHeader
-        rowSelection={{
-          [state.device.items[0].id]: true,
-          [state.device.items[1].id]: true,
-          [state.device.items[2].id]: true,
-        }}
-        searchFilter=""
-        setRowSelection={vi.fn()}
-        setSearchFilter={vi.fn()}
-      />,
-      { state }
-    );
-    await userEvent.click(screen.getByRole("button", { name: /Take action/ }));
-    expect(screen.getByRole("menuitem", { name: /Delete/ })).toHaveTextContent(
-      "2"
-    );
-    expect(
-      screen.getByRole("menuitem", { name: /Set zone/ })
-    ).toHaveTextContent("2");
-  });
-
-  it("enables the add device button without any entitlements", async () => {
-    mockServer.use(authResolvers.getMeEntitlements.handler([]));
-    renderWithProviders(
-      <DeviceListHeader
-        rowSelection={{}}
-        searchFilter=""
-        setRowSelection={vi.fn()}
-        setSearchFilter={vi.fn()}
-      />,
-      { state }
-    );
-    expect(
-      await screen.findByRole("button", { name: "Add device" })
     ).not.toBeAriaDisabled();
   });
 

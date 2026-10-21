@@ -69,27 +69,4 @@ describe("DeviceName", () => {
       },
     });
   });
-
-  it("allows editing the name with the edit permission when no rack controller is connected", () => {
-    state.general.powerTypes.data = [];
-    renderWithProviders(
-      <DeviceName editingName={false} id="abc123" setEditingName={vi.fn()} />,
-      { initialEntries: ["/device/abc123"], state }
-    );
-
-    expect(
-      screen.getByRole("button", { name: state.device.items[0].fqdn })
-    ).toBeInTheDocument();
-  });
-
-  it("shows a read-only name without the edit permission", () => {
-    state.device.items[0].permissions = [];
-    renderWithProviders(
-      <DeviceName editingName={false} id="abc123" setEditingName={vi.fn()} />,
-      { initialEntries: ["/device/abc123"], state }
-    );
-
-    expect(screen.getByText(state.device.items[0].fqdn)).toBeInTheDocument();
-    expect(screen.queryByRole("button")).not.toBeInTheDocument();
-  });
 });

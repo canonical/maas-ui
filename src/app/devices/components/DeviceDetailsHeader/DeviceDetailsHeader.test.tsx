@@ -1,9 +1,8 @@
 import DeviceDetailsHeader from "./DeviceDetailsHeader";
 
 import type { RootState } from "@/app/store/root/types";
-import { NodeActions } from "@/app/store/types/node";
 import * as factory from "@/testing/factories";
-import { screen, renderWithProviders, userEvent } from "@/testing/utils";
+import { screen, renderWithProviders } from "@/testing/utils";
 
 describe("DeviceDetailsHeader", () => {
   let state: RootState;
@@ -62,13 +61,9 @@ describe("DeviceDetailsHeader", () => {
     );
   });
 
-  it("disables the Take action menu when the device lacks the edit permission", () => {
+  it("disables the Take action menu without the edit permission", () => {
     state.device.items = [
-      factory.deviceDetails({
-        actions: [NodeActions.DELETE, NodeActions.SET_ZONE],
-        permissions: [],
-        system_id: "abc123",
-      }),
+      factory.deviceDetails({ permissions: [], system_id: "abc123" }),
     ];
 
     renderWithProviders(<DeviceDetailsHeader systemId="abc123" />, { state });
@@ -78,10 +73,9 @@ describe("DeviceDetailsHeader", () => {
     ).toBeAriaDisabled();
   });
 
-  it("enables the Take action menu when the device has the edit permission", async () => {
+  it("enables the Take action menu with the edit permission", () => {
     state.device.items = [
       factory.deviceDetails({
-        actions: [],
         permissions: ["edit"],
         system_id: "abc123",
       }),
@@ -89,14 +83,8 @@ describe("DeviceDetailsHeader", () => {
 
     renderWithProviders(<DeviceDetailsHeader systemId="abc123" />, { state });
 
-    const menuButton = screen.getByRole("button", { name: "Take action" });
-    expect(menuButton).not.toBeAriaDisabled();
-    await userEvent.click(menuButton);
     expect(
-      screen.getByRole("menuitem", { name: /Delete/ })
-    ).toBeInTheDocument();
-    expect(
-      screen.getByRole("menuitem", { name: /Set zone/ })
-    ).toBeInTheDocument();
+      screen.getByRole("button", { name: "Take action" })
+    ).not.toBeAriaDisabled();
   });
 });

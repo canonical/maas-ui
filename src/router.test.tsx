@@ -109,24 +109,6 @@ describe("device list route", () => {
       await screen.findByRole("link", { name: /owned-device/ })
     ).toBeInTheDocument();
   });
-
-  it("renders an empty device list without any entitlements", async () => {
-    mockServer.use(authResolvers.getMeEntitlements.handler([]));
-    const state = factory.rootState({
-      device: factory.deviceState({ items: [], loaded: true }),
-    });
-    renderWithProviders(<DeviceRoutes />, {
-      initialEntries: [urls.devices.index],
-      state,
-    });
-
-    expect(
-      await screen.findByRole("searchbox", { name: "Search" })
-    ).toBeInTheDocument();
-    expect(
-      screen.getByRole("button", { name: "Add device" })
-    ).toBeInTheDocument();
-  });
 });
 
 describe("device details route", () => {

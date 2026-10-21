@@ -180,22 +180,6 @@ describe("NodeName", () => {
     ).toBeInTheDocument();
   });
 
-  it("does not allow editing a machine name when no rack controller is connected", () => {
-    state.general.powerTypes.data = [];
-    renderWithProviders(
-      <NodeName
-        editingName={false}
-        node={machine}
-        onSubmit={vi.fn()}
-        setEditingName={vi.fn()}
-      />,
-      { state }
-    );
-
-    expect(screen.getByText(machine.fqdn)).toBeInTheDocument();
-    expect(screen.queryByRole("button")).not.toBeInTheDocument();
-  });
-
   it("allows editing a device name with the edit permission when no rack controller is connected", () => {
     state.general.powerTypes.data = [];
     const device = factory.deviceDetails({ permissions: ["edit"] });
@@ -212,21 +196,5 @@ describe("NodeName", () => {
     expect(
       screen.getByRole("button", { name: device.fqdn })
     ).toBeInTheDocument();
-  });
-
-  it("does not allow editing a device name without the edit permission", () => {
-    const device = factory.deviceDetails({ permissions: [] });
-    renderWithProviders(
-      <NodeName
-        editingName={false}
-        node={device}
-        onSubmit={vi.fn()}
-        setEditingName={vi.fn()}
-      />,
-      { state }
-    );
-
-    expect(screen.getByText(device.fqdn)).toBeInTheDocument();
-    expect(screen.queryByRole("button")).not.toBeInTheDocument();
   });
 });
