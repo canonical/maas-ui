@@ -57,12 +57,12 @@ context("Login page", () => {
     cy.get("button[type='submit']").click();
     cy.location("pathname").should("eq", generateMAASURL("/intro"));
 
-    // Log out.
-    cy.getMainNavigation().within(() =>
-      cy.findByRole("button", { name: /Log out/i }).click()
-    );
+    // Log out. Clear the session cookies directly rather than using the UI
+    // logout, which doesn't reliably end the session against MAAS 3.6 in CI.
+    cy.clearCookies();
     // Set cookie to skip setup intro.
     cy.setCookie("skipsetupintro", "true");
+    cy.visit(generateMAASURL("/"));
 
     // Log in again - should go straight to user intro.
     cy.get("input[name='username']").type(Cypress.env("username"));
