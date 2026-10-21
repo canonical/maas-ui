@@ -22,6 +22,12 @@ type ImagesTableProps = {
   variant?: "full-height" | "regular";
 };
 
+const GROUP_BY = ["os"];
+const PIN_GROUP = [
+  { value: "ubuntu", isTop: true },
+  { value: "other", isTop: false },
+];
+
 const ImagesTable = ({
   selectedRows,
   setSelectedRows,
@@ -78,13 +84,10 @@ const ImagesTable = ({
       data={images.data.items}
       filterCells={filterCells}
       filterHeaders={filterHeaders}
-      groupBy={["os"]}
+      groupBy={GROUP_BY}
       isLoading={images.stages.images.isLoading || isRestoring}
       noData="No images have been selected to sync."
-      pinGroup={[
-        { value: "ubuntu", isTop: true },
-        { value: "other", isTop: false },
-      ]}
+      pinGroup={PIN_GROUP}
       selection={{
         rowSelection: selectedRows,
         setRowSelection: setSelectedRows,
