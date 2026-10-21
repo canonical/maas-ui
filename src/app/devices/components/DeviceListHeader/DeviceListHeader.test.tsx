@@ -41,7 +41,7 @@ describe("DeviceListHeader", () => {
     expect(screen.getByText(/loading/i)).toBeInTheDocument();
   });
 
-  it("displays a devices count if devices have loaded", () => {
+  it("displays a devices count if all devices have loaded", () => {
     state.device.loaded = true;
     renderWithProviders(
       <DeviceListHeader
