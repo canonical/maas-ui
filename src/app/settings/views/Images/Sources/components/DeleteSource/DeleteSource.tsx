@@ -1,6 +1,7 @@
 import type { ReactElement } from "react";
 
 import {
+  Icon,
   Notification as NotificationBanner,
   Spinner,
 } from "@canonical/react-components";
@@ -34,14 +35,10 @@ const DeleteSource = ({ id }: DeleteSourceProps): ReactElement => {
       )}
       {source.isSuccess && source.data && (
         <>
-          <NotificationBanner
-            className="u-no-margin--bottom"
-            severity="caution"
-            title="Images will be affected"
-          >
-            Removing a source will remove all images that were pulled from the
-            source.
-          </NotificationBanner>
+          <p>
+            <Icon name="warning" /> Removing a source will remove all images
+            that were pulled from the source.
+          </p>
           <ModelActionForm
             aria-label="Confirm custom source deletion"
             errors={deleteSource.error}
