@@ -31,17 +31,24 @@ Before({ tags: "@machine-actions" }, () => {
     machineName = generateName("machine");
     cy.login();
     cy.addMachine(machineName);
-    doesMachineExist = true;
+    cy.findByRole("searchbox", { name: "Search" }).type(machineName);
+    cy.findByRole("checkbox", {
+      name: `${machineName}.maas`,
+      timeout: LONG_TIMEOUT,
+    }).should("exist");
+    cy.then(() => {
+      doesMachineExist = true;
+    });
   }
 });
 
 Given("the machines table is loaded", () => {
-  cy.waitForTableToLoad({ name: /Machines/i });
+  cy.waitForTableToLoad({ name: /^Machines/ });
 });
 
 Given("the user filters the machine list by the generated machine", () => {
   cy.findByRole("searchbox", { name: "Search" }).type(machineName);
-  cy.waitForTableToLoad({ name: /Machines/i });
+  cy.waitForTableToLoad({ name: /^Machines/ });
 });
 
 Given("the user selects that machine", () => {
@@ -51,8 +58,8 @@ Given("the user selects that machine", () => {
 });
 
 When("the user selects the first machine in the grid", () => {
-  cy.findByRole("grid", { name: /Machines/i }).within(() => {
-    cy.findAllByRole("gridcell", { name: /FQDN/i })
+  cy.findByRole("grid", { name: /^Machines/ }).within(() => {
+    cy.findAllByRole("gridcell", { name: /FQDN/i, timeout: LONG_TIMEOUT })
       .first()
       .within(() => {
         cy.findByRole("checkbox").click({ force: true });
@@ -138,7 +145,7 @@ Then("the {string} side panel should not exist", (panelName: string) => {
 });
 
 Then("the new pool name should be visible in the machines grid", () => {
-  cy.findByRole("grid", { name: /Machines/i }).within(() => {
+  cy.findByRole("grid", { name: /^Machines/ }).within(() => {
     cy.findByText(newPoolName, { timeout: LONG_TIMEOUT }).should("exist");
   });
 });
@@ -160,7 +167,7 @@ Then(
 );
 
 Then("the new tag should be visible in the machines grid", () => {
-  cy.findByRole("grid", { name: /Machines/i }).within(() => {
+  cy.findByRole("grid", { name: /^Machines/ }).within(() => {
     cy.findByText(newTagName).should("exist");
   });
 });
