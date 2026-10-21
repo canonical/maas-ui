@@ -66,12 +66,10 @@ When("the user deletes the static route", () => {
 });
 
 Then("the static route should not exist", () => {
-  cy.findByRole("complementary", { name: /Delete static route/i }).within(
-    () => {
-      cy.findByRole("button", { name: /delete/i }).click();
-    }
-  );
-  cy.findByRole("complementary", {
+  cy.findByRole("dialog", { name: /Delete static route/i }).within(() => {
+    cy.findByRole("button", { name: /delete/i }).click();
+  });
+  cy.findByRole("dialog", {
     name: /Delete static route/i,
   }).should("not.exist", {
     timeout: LONG_TIMEOUT,

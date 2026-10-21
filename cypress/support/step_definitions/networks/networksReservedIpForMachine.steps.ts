@@ -119,11 +119,11 @@ When("the user deletes the static DHCP lease", function () {
       .click();
   });
 
-  cy.findByRole("complementary", { name: /delete/i }).within(() => {
+  cy.findByRole("dialog", { name: /delete dhcp lease/i }).within(() => {
     cy.findByRole("button", { name: /delete/i }).click();
   });
 
-  cy.findByRole("complementary", { name: /delete/i }).should("not.exist", {
+  cy.findByRole("dialog", { name: /delete dhcp lease/i }).should("not.exist", {
     timeout: LONG_TIMEOUT,
   });
 });
@@ -182,7 +182,11 @@ Then(
   "the machine is linked to the static DHCP lease in the table",
   function () {
     cy.reload();
-    cy.findByRole("treegrid", { name: /static dhcp leases/i }).within(() => {
+    cy.waitForPageToLoad();
+    cy.findByRole("treegrid", {
+      name: /static dhcp leases/i,
+      timeout: LONG_TIMEOUT,
+    }).within(() => {
       cy.findByText(new RegExp(this.reservedMac, "i"))
         .closest("tr")
         .within(() => {
