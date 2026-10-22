@@ -103,6 +103,28 @@ const canEdit =
 
 ---
 
+## Machine and Device Access on 3.8
+
+- Machine list and details routes require `can_view_available_machines` in
+  entitlement-based auth modes. `can_view_machines` and `can_edit_machines`
+  also satisfy this requirement. RBAC bypasses entitlement-based route and
+  navigation checks; it does not fetch OpenFGA entitlements.
+- For a loaded machine or a fully loaded explicit selection, use
+  `canOpenActionForm` and `useIsMachineActionDisabled`: the backend's `actions`
+  list determines availability in every auth mode, including RBAC. A bulk
+  action is enabled if at least one selected machine allows it. Clone also
+  requires a valid destination status; soft power off follows power off.
+- For filter, group, or unresolved selections, RBAC leaves authorization to
+  the backend. Other auth modes require `can_edit_machines` in some pool for
+  administrative actions; lifecycle actions remain available because ownership
+  may allow them. Do not apply the RBAC bypass to loaded machines' action lists.
+- Device list and details routes need no entitlement. Device delete and set-zone
+  actions use `permissions.includes("edit")`, not the `actions` list, in all
+  auth modes. This backend permission reflects ownership. Device name editing
+  uses `useCanEdit(device, true)` because it does not require a rack connection.
+
+---
+
 ## Testing Permissions
 
 ### Admin check (Layer 1)

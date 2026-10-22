@@ -8,8 +8,8 @@ describe("DeviceActionFormWrapper", () => {
   it("can set selected devices to those that can perform action", async () => {
     const state = factory.rootState();
     const devices = [
-      factory.device({ system_id: "abc123", actions: [NodeActions.DELETE] }),
-      factory.device({ system_id: "def456", actions: [] }),
+      factory.device({ system_id: "abc123", permissions: ["edit"] }),
+      factory.device({ system_id: "def456", permissions: [] }),
     ];
 
     const setRowSelection = vi.fn();

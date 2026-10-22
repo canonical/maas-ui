@@ -2,7 +2,6 @@ import DeviceListHeader from "./DeviceListHeader";
 
 import AddDeviceForm from "@/app/devices/components/AddDeviceForm";
 import type { RootState } from "@/app/store/root/types";
-import { NodeActions } from "@/app/store/types/node";
 import * as factory from "@/testing/factories";
 import {
   mockSidePanel,
@@ -42,7 +41,7 @@ describe("DeviceListHeader", () => {
     expect(screen.getByText(/loading/i)).toBeInTheDocument();
   });
 
-  it("displays a devices count if devices have loaded", () => {
+  it("displays a devices count if all devices have loaded", () => {
     state.device.loaded = true;
     renderWithProviders(
       <DeviceListHeader
@@ -90,10 +89,10 @@ describe("DeviceListHeader", () => {
     );
   });
 
-  it("disables the Take action menu when no selected devices have actions", () => {
+  it("disables the Take action menu when no selected devices have the edit permission", () => {
     state.device.items = [
-      factory.device({ actions: [], system_id: "abc123" }),
-      factory.device({ actions: [], system_id: "def456" }),
+      factory.device({ permissions: [], system_id: "abc123" }),
+      factory.device({ permissions: [], system_id: "def456" }),
     ];
     renderWithProviders(
       <DeviceListHeader
@@ -109,10 +108,10 @@ describe("DeviceListHeader", () => {
     ).toBeAriaDisabled();
   });
 
-  it("enables the Take action menu when a selected device has actions", () => {
+  it("enables the Take action menu when a selected device has the edit permission", () => {
     state.device.items = [
-      factory.device({ actions: [NodeActions.SET_ZONE], system_id: "abc123" }),
-      factory.device({ actions: [], system_id: "def456" }),
+      factory.device({ permissions: ["edit"], system_id: "abc123" }),
+      factory.device({ permissions: [], system_id: "def456" }),
     ];
     renderWithProviders(
       <DeviceListHeader
