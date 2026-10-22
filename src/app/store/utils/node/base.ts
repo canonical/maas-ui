@@ -223,6 +223,15 @@ export const canOpenActionForm = (
     return false;
   }
 
+  if (
+    nodeIsDevice(node) &&
+    [NodeActions.DELETE, NodeActions.SET_ZONE].includes(actionName)
+  ) {
+    // Device actions are gated on ownership, which the backend reports via
+    // the "edit" permission, rather than on the device's actions list.
+    return node.permissions.includes("edit");
+  }
+
   if (nodeIsMachine(node) && actionName === NodeActions.CLONE) {
     // Cloning in the UI works inverse to the rest of the machine actions - we
     // select the destination machines first then when the form is open we

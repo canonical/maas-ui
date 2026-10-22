@@ -1,6 +1,7 @@
 import { matchRoutes, useRoutes } from "react-router";
 
 import urls from "@/app/base/urls";
+import { Label as DeviceSummaryLabel } from "@/app/devices/components/DeviceSummary/DeviceSummary";
 import { Entitlement } from "@/app/settings/views/UserManagement/views/Groups/constants";
 import { router } from "@/router";
 import * as factory from "@/testing/factories";
@@ -28,6 +29,19 @@ const machineDetailsRoute = matchRoutes(
 )!.find(({ route }) => route.path === urls.machines.machine.index(null))!.route;
 
 const MachineRoutes = () => useRoutes([machineListRoute, machineDetailsRoute]);
+
+const deviceListRoute = matchRoutes(router.routes, urls.devices.index)!.find(
+  ({ route }) => route.path === `${urls.devices.index}/*`
+)!.route;
+
+const deviceDetailsRoute = matchRoutes(
+  router.routes,
+  urls.devices.device.index({ id: "abc123" })
+)!.find(
+  ({ route }) => route.path === `${urls.devices.device.index(null)}/*`
+)!.route;
+
+const DeviceRoutes = () => useRoutes([deviceListRoute, deviceDetailsRoute]);
 
 describe("machine list route", () => {
   it("renders the machine list with can_view_available_machines in a pool", async () => {
@@ -73,6 +87,47 @@ describe("machine details route", () => {
 
     expect(
       await screen.findByRole("heading", { name: "Machine not found" })
+    ).toBeInTheDocument();
+  });
+});
+
+describe("device list route", () => {
+  it("renders the device list without any entitlements", async () => {
+    mockServer.use(authResolvers.getMeEntitlements.handler([]));
+    const state = factory.rootState({
+      device: factory.deviceState({
+        items: [factory.device({ hostname: "owned-device" })],
+        loaded: true,
+      }),
+    });
+    renderWithProviders(<DeviceRoutes />, {
+      initialEntries: [urls.devices.index],
+      state,
+    });
+
+    expect(
+      await screen.findByRole("link", { name: /owned-device/ })
+    ).toBeInTheDocument();
+  });
+});
+
+describe("device details route", () => {
+  it("renders the device details without any entitlements", async () => {
+    mockServer.use(authResolvers.getMeEntitlements.handler([]));
+    const state = factory.rootState({
+      device: factory.deviceState({
+        items: [factory.deviceDetails({ system_id: "abc123" })],
+        loaded: true,
+        loading: false,
+      }),
+    });
+    renderWithProviders(<DeviceRoutes />, {
+      initialEntries: [urls.devices.device.summary({ id: "abc123" })],
+      state,
+    });
+
+    expect(
+      await screen.findByLabelText(DeviceSummaryLabel.Title)
     ).toBeInTheDocument();
   });
 });

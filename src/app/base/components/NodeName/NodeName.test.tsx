@@ -179,4 +179,22 @@ describe("NodeName", () => {
       screen.getByText("hostname is a required field")
     ).toBeInTheDocument();
   });
+
+  it("allows editing a device name with the edit permission when no rack controller is connected", () => {
+    state.general.powerTypes.data = [];
+    const device = factory.deviceDetails({ permissions: ["edit"] });
+    renderWithProviders(
+      <NodeName
+        editingName={false}
+        node={device}
+        onSubmit={vi.fn()}
+        setEditingName={vi.fn()}
+      />,
+      { state }
+    );
+
+    expect(
+      screen.getByRole("button", { name: device.fqdn })
+    ).toBeInTheDocument();
+  });
 });
