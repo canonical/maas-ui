@@ -143,6 +143,9 @@ Then(
 );
 
 Then("the new pool name should be visible in the machines grid", () => {
+  cy.reload();
+  cy.waitForPageToLoad();
+  cy.waitForTableToLoad({ name: /^Machines/ });
   cy.findByRole("grid", { name: /^Machines/ }).within(() => {
     cy.findByText(newPoolName, { timeout: LONG_TIMEOUT }).should("exist");
   });
