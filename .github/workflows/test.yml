@@ -16,7 +16,7 @@ jobs:
     name: Lint
     runs-on: ubuntu-24.04
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
         with:
           ref: ${{ inputs.version && format('refs/heads/{0}', inputs.version) || github.sha }}
 
@@ -41,7 +41,7 @@ jobs:
     name: Test
     runs-on: ubuntu-24.04
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
         with:
           ref: ${{ inputs.version && format('refs/heads/{0}', inputs.version) || github.sha }}
       - name: Restore node_modules
@@ -70,7 +70,7 @@ jobs:
     timeout-minutes: 15
     runs-on: ubuntu-24.04
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
         with:
           ref: ${{ inputs.version && format('refs/heads/{0}', inputs.version) || github.sha }}
       - name: Restore node_modules
