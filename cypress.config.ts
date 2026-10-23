@@ -20,7 +20,17 @@ export default defineConfig({
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     async setupNodeEvents(on: any, config) {
       await addCucumberPreprocessorPlugin(on, config);
+      // Persists across specs within a run, unlike browser-side state.
+      let isAppWarmedUp = false;
       on("task", {
+        isAppWarmedUp() {
+          return isAppWarmedUp;
+        },
+        markAppWarmedUp() {
+          isAppWarmedUp = true;
+
+          return null;
+        },
         log(args: unknown) {
           console.log(args);
 

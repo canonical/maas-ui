@@ -5,6 +5,9 @@ import "cypress-axe";
 import "cypress-wait-until";
 import "./commands";
 
+import { APP_WARM_UP_TIMEOUT } from "../constants";
+import { generateMAASURL } from "../e2e/utils";
+
 export type A11yPageContext = { url?: string; title?: string };
 export type SubnetOptions = {
   subnetName?: string;
@@ -50,4 +53,18 @@ Cypress.on("uncaught:exception", (err) => {
   if (unloadedScripts.some((script) => err.message.includes(script))) {
     return false;
   }
+});
+
+// The dev server compiles the app on its first page load, which can exceed
+// the page load timeout on CI. Load the app once per run, before whichever
+// spec happens to run first, so tests start against a warm server.
+before(() => {
+  cy.task<boolean>("isAppWarmedUp").then((isAppWarmedUp) => {
+    if (isAppWarmedUp) {
+      return;
+    }
+    cy.visit(generateMAASURL("/"), { timeout: APP_WARM_UP_TIMEOUT });
+    cy.get("#maas-ui", { timeout: APP_WARM_UP_TIMEOUT }).should("exist");
+    cy.task("markAppWarmedUp");
+  });
 });
