@@ -31,7 +31,10 @@ When(
     cy.getMainNavigation()
       .should("be.visible")
       .within(() =>
-        cy.findByRole("button", { name: new RegExp(buttonName, "i") }).click()
+        cy
+          .findByRole("button", { name: new RegExp(buttonName, "i") })
+          .focus()
+          .click()
       );
   }
 );
