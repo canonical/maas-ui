@@ -31,7 +31,7 @@ When("the user switches to an ipad mini landscape viewport", () => {
 });
 
 When("the user deletes the current machine", () => {
-  cy.findByRole("button", { name: /Menu/i }).click();
+  cy.findByRole("button", { name: "Menu" }).click();
   cy.findByRole("menuitem", { name: /Delete/i }).click();
   cy.findByRole("button", { name: /Delete machine/i }).click();
   cy.waitForPageToLoad();

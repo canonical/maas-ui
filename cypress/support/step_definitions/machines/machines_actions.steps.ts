@@ -40,12 +40,12 @@ Given("a machine has been added", () => {
 });
 
 Given("the machines table is loaded", () => {
-  cy.waitForTableToLoad({ name: /Machines/i });
+  cy.waitForTableToLoad({ name: /^Machines/ });
 });
 
 Given("the user filters the machine list by the generated machine", () => {
   cy.findByRole("searchbox", { name: "Search" }).type(machineName);
-  cy.waitForTableToLoad({ name: /Machines/i });
+  cy.waitForTableToLoad({ name: /^Machines/ });
 });
 
 Given("the user selects that machine", () => {
@@ -143,7 +143,10 @@ Then(
 );
 
 Then("the new pool name should be visible in the machines grid", () => {
-  cy.findByRole("grid", { name: /Machines/i }).within(() => {
+  cy.reload();
+  cy.waitForPageToLoad();
+  cy.waitForTableToLoad({ name: /^Machines/ });
+  cy.findByRole("grid", { name: /^Machines/ }).within(() => {
     cy.findByText(newPoolName, { timeout: LONG_TIMEOUT }).should("exist");
   });
 });
@@ -165,7 +168,7 @@ Then(
 );
 
 Then("the new tag should be visible in the machines grid", () => {
-  cy.findByRole("grid", { name: /Machines/i }).within(() => {
+  cy.findByRole("grid", { name: /^Machines/ }).within(() => {
     cy.findByText(newTagName).should("exist");
   });
 });

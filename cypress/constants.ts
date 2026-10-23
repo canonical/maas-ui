@@ -25,7 +25,7 @@ export const routes: Record<string, string> = {
   images: "/images",
   "images setup": "/intro/images",
   "maas setup": "/intro",
-  "machines list": "/machines",
+  machines: "/machines",
   networks: "/networks",
   "networks by fabric": "/networks?by=fabric",
   "network discovery": "/network-discovery",
@@ -67,3 +67,5 @@ export const LONG_TIMEOUT = 30000;
 // extra-long timeout for operations that may take significantly
 // longer due to backend workflows (e.g. first-time image sync)
 export const VERY_LONG_TIMEOUT = 60000;
+// the first visit of a run can be slow on CI while the dev server compiles the app
+export const APP_WARM_UP_TIMEOUT = 300000;

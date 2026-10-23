@@ -25,9 +25,9 @@ Scenario: Clicking a button expands and collapses the side navigation
     Given the viewport is "ipad-mini"
     And the page is loaded
     And the navigation is collapsed
-    When the user clicks the "expand main navigation" button
+    When the user clicks the "expand main navigation" button in the main navigation
     Then the navigation is expanded
-    When the user clicks the "collapse main navigation" button
+    When the user clicks the "collapse main navigation" button in the main navigation
     Then the navigation is collapsed
 
 

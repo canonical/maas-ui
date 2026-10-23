@@ -71,7 +71,10 @@ Cypress.Commands.add("addMachine", (hostname = generateName()) => {
   cy.findByRole("option", { name: "Manual" }).click();
   cy.findByRole("button", { name: /Power type/i }).blur();
   cy.findByRole("button", { name: /save machine/i }).click();
-  cy.get("#aside-panel").should("not.be.visible");
+  cy.findByRole("button", {
+    name: /save machine/i,
+    timeout: LONG_TIMEOUT,
+  }).should("not.exist");
 });
 
 Cypress.Commands.add("deleteMachine", (hostname: string) => {

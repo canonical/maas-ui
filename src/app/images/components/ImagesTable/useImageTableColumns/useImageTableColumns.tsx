@@ -79,8 +79,10 @@ const useImageTableColumns = ({
 }): ImageColumnDef[] => {
   const { openModal } = useModal();
   const { failure } = useToastNotification();
-  const startSync = useStartImageSync();
-  const stopSync = useStopImageSync();
+  const { mutateAsync: startSync, isPending: isStartSyncPending } =
+    useStartImageSync();
+  const { mutateAsync: stopSync, isPending: isStopSyncPending } =
+    useStopImageSync();
   const { allowed: canEdit } = useHasEntitlements([
     Entitlement.CAN_EDIT_BOOT_ENTITIES,
   ]);
@@ -88,8 +90,8 @@ const useImageTableColumns = ({
   const { data: sources, isPending: isSourcesPending } = useImageSources();
   const { data: availableImages, isPending: isAvailableImagesPending } =
     useAvailableSelections();
-  const addSelections = useAddSelections();
-  const deleteSelections = useDeleteSelections();
+  const { mutate: addSelections } = useAddSelections();
+  const { mutateAsync: deleteSelections } = useDeleteSelections();
 
   // Pre-compute a map of os/release/arch -> deduplicated BootSourceResponse[]
   const sourcesByImageKey = useMemo(
@@ -373,22 +375,20 @@ const useImageTableColumns = ({
                   update_status === "OptimisticStopping"
                 }
                 onSourceSelect={(source) => {
-                  deleteSelections
-                    .mutateAsync({
-                      query: { id: [Number.parseInt(id)] },
-                    })
-                    .then(() => {
-                      addSelections.mutate({
-                        body: [
-                          {
-                            os: os,
-                            release: release,
-                            arch: architecture,
-                            boot_source_id: source.id,
-                          },
-                        ],
-                      });
+                  deleteSelections({
+                    query: { id: [Number.parseInt(id)] },
+                  }).then(() => {
+                    addSelections({
+                      body: [
+                        {
+                          os: os,
+                          release: release,
+                          arch: architecture,
+                          boot_source_id: source.id,
+                        },
+                      ],
                     });
+                  });
                 }}
                 sources={switchableSources}
               />
@@ -453,23 +453,21 @@ const useImageTableColumns = ({
                       className="is-dense u-table-cell-padding-overlap"
                       disabled={
                         !canEdit ||
-                        startSync.isPending ||
+                        isStartSyncPending ||
                         isOptimisticDownloading ||
                         isOptimisticStopping ||
                         isCustom
                       }
                       hasIcon
                       onClick={() => {
-                        stopSync
-                          .mutateAsync({
-                            path: {
-                              id: imageId,
-                              boot_source_id: boot_source_id!,
-                            },
-                          })
-                          .catch((e: unknown) => {
-                            failure(TOOLTIP_MESSAGES.STOP_SYNC_FAILED, e);
-                          });
+                        stopSync({
+                          path: {
+                            id: imageId,
+                            boot_source_id: boot_source_id!,
+                          },
+                        }).catch((e: unknown) => {
+                          failure(TOOLTIP_MESSAGES.STOP_SYNC_FAILED, e);
+                        });
                       }}
                     >
                       <Icon name="stop">Stop synchronization</Icon>
@@ -493,22 +491,20 @@ const useImageTableColumns = ({
                         !canEdit ||
                         !selected ||
                         !downloadAvailable ||
-                        stopSync.isPending ||
+                        isStopSyncPending ||
                         isOptimisticStopping ||
                         isCustom
                       }
                       hasIcon
                       onClick={() => {
-                        startSync
-                          .mutateAsync({
-                            path: {
-                              id: imageId,
-                              boot_source_id: boot_source_id!,
-                            },
-                          })
-                          .catch((e: unknown) => {
-                            failure(TOOLTIP_MESSAGES.START_SYNC_FAILED, e);
-                          });
+                        startSync({
+                          path: {
+                            id: imageId,
+                            boot_source_id: boot_source_id!,
+                          },
+                        }).catch((e: unknown) => {
+                          failure(TOOLTIP_MESSAGES.START_SYNC_FAILED, e);
+                        });
                       }}
                     >
                       <Icon name="begin-downloading">
@@ -565,7 +561,9 @@ const useImageTableColumns = ({
       addSelections,
       selectedRows,
       startSync,
+      isStartSyncPending,
       stopSync,
+      isStopSyncPending,
       failure,
       openModal,
       setSelectedRows,
