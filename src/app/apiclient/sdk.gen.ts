@@ -177,9 +177,9 @@ import type {
   DeletePackageRepositoryData,
   DeletePackageRepositoryErrors,
   DeletePackageRepositoryResponses,
-  DeleteRackAgentData,
-  DeleteRackAgentErrors,
-  DeleteRackAgentResponses,
+  DeleteRackControllerData,
+  DeleteRackControllerErrors,
+  DeleteRackControllerResponses,
   DeleteRacksData,
   DeleteRacksErrors,
   DeleteRacksResponses,
@@ -324,9 +324,9 @@ import type {
   GetPackageRepositoryData,
   GetPackageRepositoryErrors,
   GetPackageRepositoryResponses,
-  GetRackAgentData,
-  GetRackAgentErrors,
-  GetRackAgentResponses,
+  GetRackControllerData,
+  GetRackControllerErrors,
+  GetRackControllerResponses,
   GetRackData,
   GetRackErrors,
   GetRackResponses,
@@ -480,9 +480,9 @@ import type {
   ListPowerTypesData,
   ListPowerTypesErrors,
   ListPowerTypesResponses,
-  ListRackAgentsData,
-  ListRackAgentsErrors,
-  ListRackAgentsResponses,
+  ListRackControllersData,
+  ListRackControllersErrors,
+  ListRackControllersResponses,
   ListRacksData,
   ListRacksErrors,
   ListRacksResponses,
@@ -2455,34 +2455,34 @@ export const createRack = <ThrowOnError extends boolean = false>(
   });
 
 /**
- * Delete Rack Agent
+ * Delete Rack Controller
  */
-export const deleteRackAgent = <ThrowOnError extends boolean = false>(
-  options: Options<DeleteRackAgentData, ThrowOnError>
+export const deleteRackController = <ThrowOnError extends boolean = false>(
+  options: Options<DeleteRackControllerData, ThrowOnError>
 ) =>
   (options.client ?? client).delete<
-    DeleteRackAgentResponses,
-    DeleteRackAgentErrors,
+    DeleteRackControllerResponses,
+    DeleteRackControllerErrors,
     ThrowOnError
   >({
     security: [{ scheme: "bearer", type: "http" }],
-    url: "/MAAS/a/v3/racks/{rack_id}/agents/{id}",
+    url: "/MAAS/a/v3/racks/{rack_id}/rack_controllers/{id}",
     ...options,
   });
 
 /**
- * Get Rack Agent
+ * Get Rack Controller
  */
-export const getRackAgent = <ThrowOnError extends boolean = false>(
-  options: Options<GetRackAgentData, ThrowOnError>
+export const getRackController = <ThrowOnError extends boolean = false>(
+  options: Options<GetRackControllerData, ThrowOnError>
 ) =>
   (options.client ?? client).get<
-    GetRackAgentResponses,
-    GetRackAgentErrors,
+    GetRackControllerResponses,
+    GetRackControllerErrors,
     ThrowOnError
   >({
     security: [{ scheme: "bearer", type: "http" }],
-    url: "/MAAS/a/v3/racks/{rack_id}/agents/{id}",
+    url: "/MAAS/a/v3/racks/{rack_id}/rack_controllers/{id}",
     ...options,
   });
 
@@ -2555,18 +2555,18 @@ export const generateRackBootstrapToken = <
   });
 
 /**
- * List Rack Agents
+ * List Rack Controllers
  */
-export const listRackAgents = <ThrowOnError extends boolean = false>(
-  options: Options<ListRackAgentsData, ThrowOnError>
+export const listRackControllers = <ThrowOnError extends boolean = false>(
+  options: Options<ListRackControllersData, ThrowOnError>
 ) =>
   (options.client ?? client).get<
-    ListRackAgentsResponses,
-    ListRackAgentsErrors,
+    ListRackControllersResponses,
+    ListRackControllersErrors,
     ThrowOnError
   >({
     security: [{ scheme: "bearer", type: "http" }],
-    url: "/MAAS/a/v3/racks/{rack_id}/agents",
+    url: "/MAAS/a/v3/racks/{rack_id}/rack_controllers",
     ...options,
   });
 

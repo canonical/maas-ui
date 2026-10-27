@@ -25,7 +25,7 @@ const GuidedProvisioning = ({ id }: GuidedProvisioningProps): ReactElement => {
       <CodeSnippet
         blocks={[
           {
-            code: "sudo snap install maas-agent --channel=3.7",
+            code: "sudo snap install maas-rack-controller --channel=3.7",
             dropdowns: [
               {
                 options: [{ label: "v3.7 Snap", value: "3.7" }],
@@ -40,11 +40,11 @@ const GuidedProvisioning = ({ id }: GuidedProvisioningProps): ReactElement => {
         className="u-nudge-down"
         data-testid="first-command-snippet"
       />
-      Generate a bootstrap token and use it to initialize the MAAS agent.
+      Generate a bootstrap token and use it to initialize the rack controller.
       <CodeSnippet
         blocks={[
           {
-            code: "maas-agent init --token <TOKEN> ",
+            code: "maas-rack-controller init --token <TOKEN> ",
             dropdowns: [
               {
                 options: [{ label: "v3.7 Snap", value: "3.7" }],
@@ -73,7 +73,7 @@ const GuidedProvisioning = ({ id }: GuidedProvisioningProps): ReactElement => {
               ),
             },
           ]}
-          className="p-agent-token"
+          className="p-rack-controller-token"
         />
       ) : (
         <span className="u-flex--end">
