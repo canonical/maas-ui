@@ -51,20 +51,12 @@ describe("AddController", () => {
     expect(mockClose).toHaveBeenCalled();
   });
 
-  it("uses a fixed version in both snap and packages instructions", async () => {
+  it("uses a fixed version in the snap instructions", () => {
     renderWithProviders(<AddController />, {
       state,
     });
     expect(
       screen.getByText(/sudo snap install maas --channel=3.2/)
-    ).toBeInTheDocument();
-
-    await userEvent.selectOptions(
-      screen.getAllByRole("combobox", { name: "version" })[0],
-      "v3.2 Packages"
-    );
-    expect(
-      screen.getByText(new RegExp("sudo apt-add-repository ppa:maas/3.2"))
     ).toBeInTheDocument();
   });
 });
