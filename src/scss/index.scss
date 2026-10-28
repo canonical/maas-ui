@@ -96,7 +96,6 @@
 @import "@/app/base/components/FormCard";
 @import "@/app/base/components/LabelledList";
 @import "@/app/base/components/MachineSelectTable";
-@import "@/app/base/components/ListDisplayCount";
 @import "@/app/base/components/Modal";
 @import "@/app/base/components/node/HardwareCard";
 @import "@/app/base/components/node/networking/NetworkTable";
@@ -191,7 +190,6 @@
 @include CloneFormFields;
 @include MachineList;
 @include MachineListControls;
-@include ListDisplayCount;
 @include MachineListPagination;
 @include MachineSummary;
 @include MarkBrokenFormFields;
