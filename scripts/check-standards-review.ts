@@ -1,4 +1,4 @@
-import { execSync } from "child_process";
+import { execSync, spawnSync } from "child_process";
 import * as fs from "fs";
 import * as path from "path";
 
@@ -6,7 +6,7 @@ const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
 const GITHUB_TOKEN = process.env.GITHUB_TOKEN;
 const PR_NUMBER = process.env.PR_NUMBER;
 
-const MODEL = "gemini-2.0-flash";
+const MODEL = "gemini-3.8-flash";
 const MAX_DOC_SIZE = 50000;
 const MAX_SOURCE_SAMPLE_SIZE = 15000;
 const MAX_PROMPT_SIZE = 100000;
@@ -120,16 +120,22 @@ function runLayer1Checks(files: string[]): Violation[] {
   if (files.length === 0) return [];
 
   try {
-    const output = execSync(
-      `npx tsx scripts/check-standards.ts --skip=data-testid`,
-      { stdio: "pipe" }
-    ).toString();
+    const result = spawnSync(
+      "npx",
+      ["tsx", "scripts/check-standards.ts", "--skip=data-testid"],
+      { encoding: "utf-8" }
+    );
+    if (result.error) throw result.error;
+    if (result.status !== 0 && result.status !== 1) {
+      throw new Error(`Static checker failed: ${result.stderr}`);
+    }
+    const output = result.stdout;
 
     const violations: Violation[] = [];
     const lines = output.split("\n");
 
     for (const line of lines) {
-      const match = line.match(/^(.+?):(\d+):(\d+)\s+—\s+(.+?)\s+→\s+(.+)$/);
+      const match = line.trim().match(/^(.+?):(\d+):(\d+)\s+—\s+(.+)$/);
       if (match) {
         violations.push({
           file: match[1],
