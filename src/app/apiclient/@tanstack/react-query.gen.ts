@@ -18,6 +18,7 @@ import {
   clearAllDiscoveriesWithOptionalIpAndMac,
   clearNeighboursDiscoveries,
   clearRdnsAndMdnsDiscoveries,
+  commissionMachine,
   completeIntro,
   createBootsource,
   createBootsourceBootsourceselection,
@@ -254,6 +255,9 @@ import type {
   ClearRdnsAndMdnsDiscoveriesData,
   ClearRdnsAndMdnsDiscoveriesError,
   ClearRdnsAndMdnsDiscoveriesResponse,
+  CommissionMachineData,
+  CommissionMachineError,
+  CommissionMachineResponse,
   CompleteIntroData,
   CompleteIntroError,
   CompleteIntroResponse,
@@ -3075,6 +3079,33 @@ export const getFabricVlanSubnetIprangeOptions = (
     },
     queryKey: getFabricVlanSubnetIprangeQueryKey(options),
   });
+
+/**
+ * Commission Machine
+ */
+export const commissionMachineMutation = (
+  options?: Partial<Options<CommissionMachineData>>
+): UseMutationOptions<
+  CommissionMachineResponse,
+  CommissionMachineError,
+  Options<CommissionMachineData>
+> => {
+  const mutationOptions: UseMutationOptions<
+    CommissionMachineResponse,
+    CommissionMachineError,
+    Options<CommissionMachineData>
+  > = {
+    mutationFn: async (fnOptions) => {
+      const { data } = await commissionMachine({
+        ...options,
+        ...fnOptions,
+        throwOnError: true,
+      });
+      return data;
+    },
+  };
+  return mutationOptions;
+};
 
 export const getMachinePowerParametersQueryKey = (
   options: Options<GetMachinePowerParametersData>

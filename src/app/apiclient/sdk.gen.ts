@@ -51,6 +51,9 @@ import type {
   ClearRdnsAndMdnsDiscoveriesData,
   ClearRdnsAndMdnsDiscoveriesErrors,
   ClearRdnsAndMdnsDiscoveriesResponses,
+  CommissionMachineData,
+  CommissionMachineErrors,
+  CommissionMachineResponses,
   CompleteIntroData,
   CompleteIntroErrors,
   CompleteIntroResponses,
@@ -2050,6 +2053,26 @@ export const getFabricVlanSubnetIprange = <
     security: [{ scheme: "bearer", type: "http" }],
     url: "/MAAS/a/v3/fabrics/{fabric_id}/vlans/{vlan_id}/subnets/{subnet_id}/ipranges/{id}",
     ...options,
+  });
+
+/**
+ * Commission Machine
+ */
+export const commissionMachine = <ThrowOnError extends boolean = false>(
+  options: Options<CommissionMachineData, ThrowOnError>
+) =>
+  (options.client ?? client).post<
+    CommissionMachineResponses,
+    CommissionMachineErrors,
+    ThrowOnError
+  >({
+    security: [{ scheme: "bearer", type: "http" }],
+    url: "/MAAS/a/v3/machines/{system_id}:commission",
+    ...options,
+    headers: {
+      "Content-Type": "application/json",
+      ...options.headers,
+    },
   });
 
 /**
