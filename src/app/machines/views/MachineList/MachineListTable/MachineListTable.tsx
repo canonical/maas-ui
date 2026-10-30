@@ -1,13 +1,17 @@
 import { useMemo, memo, useCallback, useState } from "react";
 
-import {
-  GenericTable,
-  PaginationContainer,
-} from "@canonical/maas-react-components";
+import { GenericTable } from "@canonical/maas-react-components";
 import { Select } from "@canonical/react-components";
-import type { Column, Header, Row } from "@tanstack/react-table";
+import type {
+  Column,
+  Header,
+  Row,
+  RowSelectionState,
+} from "@tanstack/react-table";
 import classNames from "classnames";
+import { useSelector } from "react-redux";
 
+import MachineListPagination from "./MachineListPagination";
 import type { MachineListTableProps, MachineTableRow } from "./types";
 import useMachinesTableColumns from "./useMachinesTableColumns/useMachinesTableColumns";
 import { generateMachineTableRows } from "./utils";
@@ -16,6 +20,7 @@ import { useFetchActions } from "@/app/base/hooks";
 import { SortDirection } from "@/app/base/types";
 import { groupOptions, MachineColumns } from "@/app/machines/constants";
 import { generalActions } from "@/app/store/general";
+import machineSelectors from "@/app/store/machine/selectors";
 import { FilterMachines, useFetchedCount } from "@/app/store/machine/utils";
 import { tagActions } from "@/app/store/tag";
 import { generateEmptyStateMsg, getTableStatus } from "@/app/utils";
@@ -28,6 +33,10 @@ export enum Label {
 }
 
 export const PAGE_SIZES = [50, 100, 200];
+
+// The checkbox column GenericTable adds when it is given a selection. The
+// machine list renders its own checkboxes, so this column is never shown.
+const GENERIC_TABLE_SELECT_COLUMN = "p-generic-table__select";
 
 export const MachineListTable = ({
   callId,
@@ -59,7 +68,6 @@ export const MachineListTable = ({
   const [showFullName, setShowFullName] = useState(false);
   // Keep showing the previous counts while the next page is being fetched.
   const count = useFetchedCount(machineCount, machinesLoading);
-  const pageCount = useFetchedCount(totalPages, machinesLoading);
   const pageMachineCount = useFetchedCount(
     machinesLoading ? null : machines.length,
     machinesLoading
@@ -118,12 +126,42 @@ export const MachineListTable = ({
     [grouping, groups, machines]
   );
 
+  // GenericTable marks every row as unselected unless it is given the
+  // selection, so mirror the checked state of the machine and group
+  // checkboxes, which manage the selection in Redux.
+  const selected = useSelector(machineSelectors.selected);
+  const selection = useMemo(() => {
+    const rowSelection: RowSelectionState = {};
+    const allSelected = !!selected && "filter" in selected;
+    const selectedGroups =
+      selected && "groups" in selected ? (selected.groups ?? []) : [];
+    const selectedItems =
+      selected && "items" in selected ? (selected.items ?? []) : [];
+    rows.forEach((row) => {
+      const isSelected =
+        row.type === "group"
+          ? // Collapsed groups are selected by value, expanded groups by
+            // selecting all of their machines.
+            selectedGroups.includes(row.group.value) ||
+            (row.group.items.length > 0 &&
+              row.group.items.every((item) => selectedItems.includes(item)))
+          : (row.groupValue !== null &&
+              selectedGroups.includes(row.groupValue)) ||
+            selectedItems.includes(row.systemId);
+      if (allSelected || isSelected) {
+        rowSelection[row.id] = true;
+      }
+    });
+    return { rowSelection };
+  }, [rows, selected]);
+
   // The FQDN column is never hidden when actions are shown, as it contains
   // the selection checkboxes.
   const isColumnVisible = useCallback(
     (columnId: string) =>
-      !hiddenColumns.includes(columnId) ||
-      (columnId === MachineColumns.FQDN && showActions),
+      columnId !== GENERIC_TABLE_SELECT_COLUMN &&
+      (!hiddenColumns.includes(columnId) ||
+        (columnId === MachineColumns.FQDN && showActions)),
     [hiddenColumns, showActions]
   );
 
@@ -157,8 +195,8 @@ export const MachineListTable = ({
       {/* GenericTable's built-in pagination derives the page count from the
           machine count, which includes machines in collapsed groups that the
           server excludes from its pages. This bar mirrors GenericTable's
-          markup but uses the server's page count. Replace it once GenericTable
-          accepts a separate page count. */}
+          markup but uses the server's page count and debounces typed page
+          numbers. Replace it once GenericTable accepts a separate page count. */}
       {count > 0 ? (
         <section
           aria-label="Table controls"
@@ -169,11 +207,13 @@ export const MachineListTable = ({
               Showing {pageMachineCount} out of {count} machines
             </strong>
             <div className="u-flex u-flex--wrap u-flex--column-x-small controls-bar__right">
-              <PaginationContainer
+              <MachineListPagination
                 currentPage={currentPage}
-                disabled={!!machinesLoading}
+                itemsPerPage={pageSize}
+                machineCount={machineCount}
+                machinesLoading={machinesLoading}
                 paginate={setCurrentPage}
-                totalPages={pageCount}
+                totalPages={totalPages}
               />
               <Select
                 aria-label="Items per page"
@@ -213,6 +253,7 @@ export const MachineListTable = ({
           default: Label.EmptyList,
           filtered: Label.NoResults,
         })}
+        selection={selection}
         skeletonRowCount={5}
         variant="regular"
       />

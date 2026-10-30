@@ -131,8 +131,14 @@
       padding-right: 1rem;
     }
 
-    .p-pagination__link--next {
-      margin-right: 0;
+    // Higher specificity than MachineListPagination's own spacing, which is
+    // meant for use outside a controls bar.
+    .p-pagination--machines .p-pagination--items {
+      padding-bottom: 0;
+
+      .p-pagination__link--next {
+        margin-right: 0;
+      }
     }
   }
 

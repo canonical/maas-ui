@@ -12,6 +12,7 @@ import { poolsResolvers } from "@/testing/resolvers/pools";
 import { mockUsers, usersResolvers } from "@/testing/resolvers/users";
 import { zoneResolvers } from "@/testing/resolvers/zones";
 import {
+  fireEvent,
   userEvent,
   screen,
   within,
@@ -33,6 +34,8 @@ const callId = "mocked-nanoid";
 const getTableHeader = () => screen.getAllByRole("rowgroup")[0];
 const getTableBody = () => screen.getAllByRole("rowgroup")[1];
 const getBodyRows = () => within(getTableBody()).getAllByRole("row");
+const getMachineRow = (hostname: string) =>
+  getBodyRows().find((row) => row.textContent?.includes(hostname));
 
 describe("MachineListTable", () => {
   let state: RootState;
@@ -479,6 +482,43 @@ describe("MachineListTable", () => {
         store.getActions().find((action) => action.type === expected.type)
       ).toStrictEqual(expected);
     });
+
+    it("marks selected machines as selected rows", () => {
+      state.machine.selected = { items: [machines[0].system_id] };
+      renderTable();
+
+      expect(getMachineRow("koala")).toHaveAttribute("aria-selected", "true");
+      expect(getMachineRow("quokka")).toHaveAttribute("aria-selected", "false");
+      expect(getMachineRow("wombat")).toHaveAttribute("aria-selected", "false");
+    });
+
+    it.each([
+      {
+        // The group checkbox selects an expanded group's machines.
+        description: "all of its machines are selected",
+        selected: {
+          items: ["abc123", "ghi789"],
+          grouping: FetchGroupKey.Status,
+        },
+      },
+      {
+        description: "it is selected by value",
+        selected: { groups: ["deployed"], grouping: FetchGroupKey.Status },
+      },
+    ])("marks a group's rows as selected when $description", ({ selected }) => {
+      state.machine.selected = selected;
+      renderTable({ grouping: FetchGroupKey.Status });
+
+      expect(
+        screen.getByRole("row", { name: /Deployed machines group/i })
+      ).toHaveAttribute("aria-selected", "true");
+      expect(
+        screen.getByRole("row", { name: /Releasing machines group/i })
+      ).toHaveAttribute("aria-selected", "false");
+      expect(getMachineRow("koala")).toHaveAttribute("aria-selected", "true");
+      expect(getMachineRow("quokka")).toHaveAttribute("aria-selected", "true");
+      expect(getMachineRow("wombat")).toHaveAttribute("aria-selected", "false");
+    });
   });
 
   describe("pagination", () => {
@@ -521,6 +561,21 @@ describe("MachineListTable", () => {
       await userEvent.click(screen.getByRole("button", { name: "Next page" }));
 
       expect(setCurrentPage).toHaveBeenCalledWith(2);
+    });
+
+    it("navigates once after a multi-digit page number is typed", async () => {
+      const setCurrentPage = vi.fn();
+      renderTable({ machineCount: 1500, setCurrentPage, totalPages: 30 });
+
+      const pageInput = screen.getByRole("spinbutton", { name: "page number" });
+      // Simulate selecting the current page and typing "2" then "5".
+      fireEvent.change(pageInput, { target: { value: "2" } });
+      fireEvent.change(pageInput, { target: { value: "25" } });
+
+      await waitFor(() => {
+        expect(setCurrentPage).toHaveBeenCalledWith(25);
+      });
+      expect(setCurrentPage).toHaveBeenCalledTimes(1);
     });
 
     it("offers the supported page sizes", () => {
