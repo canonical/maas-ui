@@ -127,6 +127,7 @@ describe("MachineListTable", () => {
       setSortKey: vi.fn(),
       sortDirection: SortDirection.NONE,
       sortKey: null,
+      totalPages: 1,
     };
   });
 
@@ -260,6 +261,16 @@ describe("MachineListTable", () => {
       expect(
         screen.queryByRole("row", { name: /machines group/i })
       ).not.toBeInTheDocument();
+    });
+
+    it("reports a row count that includes group rows", () => {
+      renderTable({ grouping: FetchGroupKey.Status });
+
+      const table = screen.getByRole("treegrid");
+      expect(table).toHaveAttribute(
+        "aria-rowcount",
+        String(within(table).getAllByRole("row").length)
+      );
     });
   });
 
@@ -472,11 +483,19 @@ describe("MachineListTable", () => {
 
   describe("pagination", () => {
     it("displays the number of machines on the current page", () => {
-      renderTable({ machineCount: 120, pageSize: 50 });
+      renderTable({ machineCount: 120, pageSize: 50, totalPages: 3 });
 
       expect(
-        screen.getByText("Showing 50 out of 120 machines")
+        screen.getByText(`Showing ${machines.length} out of 120 machines`)
       ).toBeInTheDocument();
+    });
+
+    it("uses the server page count, which excludes collapsed groups", () => {
+      renderTable({ machineCount: 150, pageSize: 50, totalPages: 1 });
+
+      expect(
+        screen.getByRole("button", { name: "Next page" })
+      ).toBeAriaDisabled();
     });
 
     it("does not display pagination if there are no machines", () => {
@@ -492,7 +511,12 @@ describe("MachineListTable", () => {
 
     it("can change the page", async () => {
       const setCurrentPage = vi.fn();
-      renderTable({ machineCount: 120, pageSize: 50, setCurrentPage });
+      renderTable({
+        machineCount: 120,
+        pageSize: 50,
+        setCurrentPage,
+        totalPages: 3,
+      });
 
       await userEvent.click(screen.getByRole("button", { name: "Next page" }));
 

@@ -110,6 +110,32 @@
     text-overflow: clip !important;
   }
 
+  // GenericTable's controls-bar styles only apply inside .p-generic-table, but
+  // the machine list renders its own pagination bar outside the table.
+  .machine-list__controls.controls-bar {
+    align-items: center;
+    border-bottom: 1px solid var(--vf-color-border-default);
+    border-top: 1px solid var(--vf-color-border-default);
+    margin-top: 1rem;
+    padding: 0.5rem 0;
+
+    .p-form--inline {
+      width: 100%;
+    }
+
+    .controls-bar__right {
+      margin-left: auto;
+    }
+
+    .p-pagination {
+      padding-right: 1rem;
+    }
+
+    .p-pagination__link--next {
+      margin-right: 0;
+    }
+  }
+
   .machine-list__group-toggle {
     position: absolute;
     top: 0;

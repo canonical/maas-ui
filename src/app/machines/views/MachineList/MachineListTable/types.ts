@@ -20,8 +20,7 @@ export type MachineListTableProps = {
   machines: Machine[];
   machinesLoading?: boolean | null;
   pageSize: number;
-  // Unused: GenericTable derives the page count from machineCount and pageSize.
-  totalPages?: number | null;
+  totalPages: number | null;
   setCurrentPage: (currentPage: number) => void;
   setHiddenGroups?: (hiddenGroups: (string | null)[]) => void;
   setPageSize?: (pageSize: number) => void;

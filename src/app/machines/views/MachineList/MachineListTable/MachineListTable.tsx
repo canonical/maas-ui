@@ -1,6 +1,10 @@
 import { useMemo, memo, useCallback, useState } from "react";
 
-import { GenericTable } from "@canonical/maas-react-components";
+import {
+  GenericTable,
+  PaginationContainer,
+} from "@canonical/maas-react-components";
+import { Select } from "@canonical/react-components";
 import type { Column, Header, Row } from "@tanstack/react-table";
 import classNames from "classnames";
 
@@ -45,6 +49,7 @@ export const MachineListTable = ({
   sortKey,
   setSortDirection,
   setSortKey,
+  totalPages,
 }: MachineListTableProps): React.ReactElement => {
   const parsedFilter = useMemo(
     () => FilterMachines.parseFetchFilters(filter),
@@ -52,8 +57,13 @@ export const MachineListTable = ({
   );
   const [showMAC, setShowMAC] = useState(false);
   const [showFullName, setShowFullName] = useState(false);
-  // Keep showing the previous count while the next page is being fetched.
+  // Keep showing the previous counts while the next page is being fetched.
   const count = useFetchedCount(machineCount, machinesLoading);
+  const pageCount = useFetchedCount(totalPages, machinesLoading);
+  const pageMachineCount = useFetchedCount(
+    machinesLoading ? null : machines.length,
+    machinesLoading
+  );
 
   useFetchActions([
     generalActions.fetchArchitectures,
@@ -143,44 +153,70 @@ export const MachineListTable = ({
   });
 
   return (
-    <GenericTable<MachineTableRow>
-      aria-label={
-        machinesLoading ? Label.Loading : `${Label.Machines} - ${groupByStatus}`
-      }
-      className={classNames("machine-list", {
-        "machine-list--grouped": grouping,
-        "machine-list--loading": machinesLoading,
-      })}
-      columns={columns}
-      data={rows}
-      filterCells={filterCells}
-      filterHeaders={filterHeaders}
-      isLoading={!!machinesLoading}
-      loadingVariant="skeleton"
-      noData={generateEmptyStateMsg(tableStatus, {
-        default: Label.EmptyList,
-        filtered: Label.NoResults,
-      })}
-      pagination={
-        count > 0
-          ? {
-              currentPage,
-              dataContext: "machines",
-              handlePageSizeChange: (size: number) => {
-                setCurrentPage(1);
-                setPageSize?.(size);
-              },
-              isPending: !!machinesLoading,
-              itemsPerPage: pageSize,
-              pageSizes: PAGE_SIZES,
-              setCurrentPage,
-              totalItems: count,
-            }
-          : undefined
-      }
-      skeletonRowCount={5}
-      variant="regular"
-    />
+    <>
+      {/* GenericTable's built-in pagination derives the page count from the
+          machine count, which includes machines in collapsed groups that the
+          server excludes from its pages. This bar mirrors GenericTable's
+          markup but uses the server's page count. Replace it once GenericTable
+          accepts a separate page count. */}
+      {count > 0 ? (
+        <section
+          aria-label="Table controls"
+          className="machine-list__controls controls-bar u-flex u-flex--justify-between u-flex--wrap"
+        >
+          <div className="p-form p-form--inline">
+            <strong className="controls-bar__description">
+              Showing {pageMachineCount} out of {count} machines
+            </strong>
+            <div className="u-flex u-flex--wrap u-flex--column-x-small controls-bar__right">
+              <PaginationContainer
+                currentPage={currentPage}
+                disabled={!!machinesLoading}
+                paginate={setCurrentPage}
+                totalPages={pageCount}
+              />
+              <Select
+                aria-label="Items per page"
+                className="u-no-margin--bottom"
+                name="Items per page"
+                onChange={(event) => {
+                  setCurrentPage(1);
+                  setPageSize?.(Number(event.target.value));
+                }}
+                options={PAGE_SIZES.map((size) => ({
+                  label: `${size}/page`,
+                  value: size,
+                }))}
+                value={pageSize}
+              />
+            </div>
+          </div>
+        </section>
+      ) : null}
+      <GenericTable<MachineTableRow>
+        aria-label={
+          machinesLoading
+            ? Label.Loading
+            : `${Label.Machines} - ${groupByStatus}`
+        }
+        className={classNames("machine-list", {
+          "machine-list--grouped": grouping,
+          "machine-list--loading": machinesLoading,
+        })}
+        columns={columns}
+        data={rows}
+        filterCells={filterCells}
+        filterHeaders={filterHeaders}
+        isLoading={!!machinesLoading}
+        loadingVariant="skeleton"
+        noData={generateEmptyStateMsg(tableStatus, {
+          default: Label.EmptyList,
+          filtered: Label.NoResults,
+        })}
+        skeletonRowCount={5}
+        variant="regular"
+      />
+    </>
   );
 };
 
