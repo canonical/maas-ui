@@ -25,11 +25,13 @@ jobs:
           node-version-file: ".nvmrc"
 
       - name: Run Gemini docs update
+        id: update-docs
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
         run: npx tsx scripts/update-docs.ts
 
       - name: Create or update PR
+        if: steps.update-docs.outputs.docs_updated == 'true'
         uses: peter-evans/create-pull-request@v6
         with:
           branch: docs/auto-update
