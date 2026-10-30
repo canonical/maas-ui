@@ -11,7 +11,7 @@ const waitForMachines = async (context, commands, pageSize = 50) => {
   );
   context.log.info(`waiting for ${pageSize} machine list rows`);
   await commands.wait.byCondition(
-    `document.querySelectorAll('table[aria-label] tbody tr.machine-list__machine')?.length === ${pageSize}`,
+    `document.querySelectorAll('table[aria-label^="Machines"] tbody tr:not(:has(.machine-list__group-toggle))')?.length === ${pageSize}`,
     TIMEOUT
   );
 };

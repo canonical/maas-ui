@@ -12,7 +12,7 @@ Given("the user creates a machine through the add machine flow", () => {
 
 Given("the user searches for the created machine", () => {
   cy.findByRole("searchbox").type(machineName);
-  cy.findByRole("grid", { name: /Loading/i }).should("not.exist");
+  cy.findByRole("treegrid", { name: /Loading/i }).should("not.exist");
 });
 
 When("the user opens the created machine details", () => {

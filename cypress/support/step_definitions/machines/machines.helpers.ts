@@ -4,7 +4,7 @@ import { generateMac, generateName } from "../../../e2e/utils";
 export const completeAddMachineForm = () => {
   const name = generateName("machine");
   cy.waitForPageToLoad();
-  cy.waitForTableToLoad({ name: /Machines/i });
+  cy.waitForTableToLoad({ name: /Machines/i, role: "treegrid" });
   cy.findByRole("button", { name: "Add hardware" }).click();
   cy.findByRole("menuitem", { name: "Machine", timeout: LONG_TIMEOUT }).click();
   cy.findByLabelText("Machine name").type(name);

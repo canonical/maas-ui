@@ -16,6 +16,7 @@ import { groupOptions } from "@/app/machines/constants";
 import HiddenColumnsSelect from "@/app/machines/views/MachineList/MachineListControls/HiddenColumnsSelect";
 import MachinesFilterAccordion from "@/app/machines/views/MachineList/MachineListControls/MachinesFilterAccordion";
 import AddHardwareMenu from "@/app/machines/views/MachineList/MachineListHeader/AddHardwareMenu";
+import MachineListSelectedCount from "@/app/machines/views/MachineList/MachineListTable/MachineListSelectedCount";
 import type { useResponsiveColumns } from "@/app/machines/views/MachineList/hooks";
 import { Entitlement } from "@/app/settings/views/UserManagement/views/Groups/constants";
 import { machineActions } from "@/app/store/machine";
@@ -24,7 +25,10 @@ import { useHasSelection } from "@/app/store/machine/utils/hooks";
 
 export type MachineListControlsProps = {
   machineCount: number;
+  // The number of machines matching the current filter.
+  filteredMachineCount?: number;
   resourcePoolsCount: number;
+  selectedCount?: number;
   filter: string;
   grouping: FetchGroupKey | null;
   setFilter: (filter: string) => void;
@@ -36,7 +40,9 @@ export type MachineListControlsProps = {
 
 const MachineListControls = ({
   machineCount,
+  filteredMachineCount,
   resourcePoolsCount,
+  selectedCount = 0,
   filter,
   grouping,
   setFilter,
@@ -65,6 +71,13 @@ const MachineListControls = ({
           {resourcePoolsCount} {pluralize("pool", resourcePoolsCount)}
         </Link>
       </MainToolbar.Title>
+      {selectedCount > 0 ? (
+        <MachineListSelectedCount
+          filter={filter}
+          machineCount={filteredMachineCount ?? machineCount}
+          selectedCount={selectedCount}
+        />
+      ) : null}
       <MainToolbar.Controls>
         {!hasSelection ? (
           <>
