@@ -22,7 +22,7 @@ describe("GuidedProvisioning", () => {
     const instructions = screen.getByTestId("first-command-snippet");
     expect(
       within(instructions).getByText(
-        new RegExp("sudo snap install maas-agent --channel=3.7")
+        new RegExp("sudo snap install maas-rack-controller --channel=3.7")
       )
     ).toBeInTheDocument();
   });
@@ -32,7 +32,7 @@ describe("GuidedProvisioning", () => {
     const instructions = screen.getByTestId("second-command-snippet");
     expect(
       within(instructions).getByText(
-        new RegExp("maas-agent init --token <TOKEN>")
+        new RegExp("maas-rack-controller init --token <TOKEN>")
       )
     ).toBeInTheDocument();
   });

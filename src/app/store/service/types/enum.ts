@@ -4,7 +4,6 @@ export enum ServiceMeta {
 }
 
 export enum ServiceName {
-  AGENT = "agent",
   BIND9 = "bind9",
   DHCPD = "dhcpd",
   DHCPD6 = "dhcpd6",
@@ -14,6 +13,7 @@ export enum ServiceName {
   NTP_REGION = "ntp_region",
   PROXY = "proxy",
   PROXY_RACK = "proxy_rack",
+  RACK_CONTROLLER = "rack-controller",
   RACKD = "rackd",
   REGIOND = "regiond",
   REVERSE_PROXY = "reverse_proxy",

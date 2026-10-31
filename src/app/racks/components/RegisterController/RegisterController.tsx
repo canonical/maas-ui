@@ -34,7 +34,7 @@ const RegisterController = ({ id }: RegisterControllerProps): ReactElement => {
               Guided provisioning{" "}
               <TooltipButton
                 iconName="help-mid-dark"
-                message="Guided provisioning is used to register controllers during MAAS agent installation."
+                message="Guided provisioning is used to register controllers during rack controller installation."
                 position={position.btmLeft}
               />
             </>
@@ -51,7 +51,7 @@ const RegisterController = ({ id }: RegisterControllerProps): ReactElement => {
               One-touch provisioning{" "}
               <TooltipButton
                 iconName="help-mid-dark"
-                message="One-touch provisioning is used to register controllers with MAAS agent pre-installed."
+                message="One-touch provisioning is used to register controllers with the rack controller pre-installed."
                 position={position.btmLeft}
               />
             </>
