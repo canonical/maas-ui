@@ -37,6 +37,9 @@ jobs:
   weekly-scan:
     if: github.event_name == 'schedule' || (github.event_name == 'workflow_dispatch' && github.event.inputs.pr_number == '')
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
     steps:
       - uses: actions/checkout@v4
         with:
@@ -52,6 +55,7 @@ jobs:
         run: npx tsx scripts/check-standards-review.ts
 
       - name: Create or update PR
+        if: hashFiles('.github/standards-review-findings.md') != ''
         uses: peter-evans/create-pull-request@v6
         with:
           branch: standards-review/weekly
