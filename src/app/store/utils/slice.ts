@@ -64,11 +64,7 @@ type StatusStates = Pick<
 
 // Types of the statuses for valid models.
 type ModelStatuses =
-  | ControllerStatus
-  | DeviceStatus
-  | MachineStatus
-  | SubnetStatus
-  | VLANStatus;
+  ControllerStatus | DeviceStatus | MachineStatus | SubnetStatus | VLANStatus;
 
 // Models that contain statuses.
 type StatusStateTypes = StatusStates[keyof StatusStates];

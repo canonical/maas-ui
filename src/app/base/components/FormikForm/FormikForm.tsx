@@ -6,12 +6,7 @@ import type { Props as ContentProps } from "@/app/base/components/FormikFormCont
 
 // explicitly disallow null and undefined as they cause Formik to throw an error
 type InputFieldValue =
-  | string[]
-  | boolean
-  | number
-  | object
-  | string
-  | undefined;
+  string[] | boolean | number | object | string | undefined;
 export type FormikFormValues = Record<string, InputFieldValue>;
 
 export type Props<V extends object, E = null> = ContentProps<V, E> &

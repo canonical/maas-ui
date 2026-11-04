@@ -100,9 +100,7 @@ const AddSource = (): ReactElement => {
   const errors =
     createSource.error || fetchImageSource.error
       ? ((createSource.error ?? fetchImageSource.error) as
-          | NotFoundBodyResponse
-          | ValidationErrorBodyResponse
-          | null)
+          NotFoundBodyResponse | ValidationErrorBodyResponse | null)
       : null;
 
   return (
@@ -178,9 +176,7 @@ const AddSource = (): ReactElement => {
               name="keyring_type"
               onChange={async (e: React.ChangeEvent<HTMLSelectElement>) => {
                 const newType = e.target.value as
-                  | "keyring_data"
-                  | "keyring_filename"
-                  | "keyring_unsigned";
+                  "keyring_data" | "keyring_filename" | "keyring_unsigned";
                 await setFieldValue("keyring_type", newType).catch(
                   (reason: unknown) => {
                     throw new FormikFieldChangeError(

@@ -108,12 +108,7 @@ export type HWEKernelsState = {
 };
 
 export type KnownArchitecture =
-  | "amd64"
-  | "arm64"
-  | "armhf"
-  | "i386"
-  | "ppc64el"
-  | "s390x";
+  "amd64" | "arm64" | "armhf" | "i386" | "ppc64el" | "s390x";
 
 export type KnownArchitecturesState = {
   errors: APIError;
