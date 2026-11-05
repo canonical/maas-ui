@@ -22,8 +22,7 @@ const systemResolvers = {
     resolved: false,
     handler: (
       data:
-        | GetSystemInfoResponse
-        | Promise<GetSystemInfoResponse> = mockSystemInfo
+        GetSystemInfoResponse | Promise<GetSystemInfoResponse> = mockSystemInfo
     ) =>
       http.get(`${BASE_URL}MAAS/a/v3/system/info`, async () => {
         const response = await data;

@@ -891,14 +891,7 @@ export type DnsResourceRecordSetRequest = {
  * DNSResourceTypeEnum
  */
 export type DnsResourceTypeEnum =
-  | "A"
-  | "AAAA"
-  | "CNAME"
-  | "MX"
-  | "NS"
-  | "SRV"
-  | "SSHFP"
-  | "TXT";
+  "A" | "AAAA" | "CNAME" | "MX" | "NS" | "SRV" | "SSHFP" | "TXT";
 
 /**
  * DiscoveriesListResponse
@@ -1308,12 +1301,7 @@ export type EventResponse = {
  * EventTypeLevelEnum
  */
 export type EventTypeLevelEnum =
-  | "AUDIT"
-  | "CRITICAL"
-  | "DEBUG"
-  | "ERROR"
-  | "INFO"
-  | "WARNING";
+  "AUDIT" | "CRITICAL" | "DEBUG" | "ERROR" | "INFO" | "WARNING";
 
 /**
  * EventTypeResponse
@@ -1783,10 +1771,7 @@ export type ImageStatisticResponse = {
  * ImageStatus
  */
 export type ImageStatus =
-  | "Downloading"
-  | "Optimistic"
-  | "Ready"
-  | "Waiting for download";
+  "Downloading" | "Optimistic" | "Ready" | "Waiting for download";
 
 /**
  * ImageStatusListResponse
@@ -1838,10 +1823,7 @@ export type ImageStatusResponse = {
  * ImageUpdateStatus
  */
 export type ImageUpdateStatus =
-  | "Downloading"
-  | "No updates available"
-  | "Optimistic"
-  | "Update available";
+  "Downloading" | "No updates available" | "Optimistic" | "Update available";
 
 /**
  * InterfaceLinkType
@@ -1930,33 +1912,19 @@ export type InterfaceResponse = {
  * The vocabulary of possible types for `Interface`.
  */
 export type InterfaceType =
-  | "alias"
-  | "bond"
-  | "bridge"
-  | "physical"
-  | "unknown"
-  | "vlan";
+  "alias" | "bond" | "bridge" | "physical" | "unknown" | "vlan";
 
 /**
  * KnownArchesEnum
  */
 export type KnownArchesEnum =
-  | "amd64"
-  | "arm64"
-  | "armhf"
-  | "i386"
-  | "ppc64el"
-  | "riscv64"
-  | "s390x";
+  "amd64" | "arm64" | "armhf" | "i386" | "ppc64el" | "riscv64" | "s390x";
 
 /**
  * KnownComponentsEnum
  */
 export type KnownComponentsEnum =
-  | "main"
-  | "multiverse"
-  | "restricted"
-  | "universe";
+  "main" | "multiverse" | "restricted" | "universe";
 
 /**
  * LinkResponse
@@ -2580,11 +2548,7 @@ export type OperationTaskResponse = {
  * OperationTaskStatus
  */
 export type OperationTaskStatus =
-  | "CANCELLED"
-  | "COMPLETED"
-  | "FAILED"
-  | "RUNNING"
-  | "WAITING";
+  "CANCELLED" | "COMPLETED" | "FAILED" | "RUNNING" | "WAITING";
 
 /**
  * OperationTasksListResponse

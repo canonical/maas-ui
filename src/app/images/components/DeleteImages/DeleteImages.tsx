@@ -22,9 +22,7 @@ import { ConfigNames } from "@/app/store/config/types";
 type DeleteImagesProps = {
   rowSelection: RowSelectionState;
   setRowSelection:
-    | Dispatch<SetStateAction<RowSelectionState>>
-    | null
-    | undefined;
+    Dispatch<SetStateAction<RowSelectionState>> | null | undefined;
 };
 
 const DeleteImages = ({

@@ -230,12 +230,12 @@ const useNetworkTableColumns = ({
             <NetworkTableActions
               link={link}
               nic={nic}
-              selected={table.getSelectedRowModel().flatRows.map(
-                (row): Selected => ({
+              selected={table
+                .getSelectedRowModel()
+                .flatRows.map((row): Selected => ({
                   linkId: row.original.link?.id,
                   nicId: row.original.nic.id,
-                })
-              )}
+                }))}
               setSelected={setSelected}
               systemId={node.system_id}
             />

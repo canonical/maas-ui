@@ -13,7 +13,7 @@ When("the user adds a tag to the controller", () => {
   cy.wrap(tagName).as("createdTag");
 
   // can add a tag to the controller
-  cy.findByRole("link", {
+  cy.findByRole("tab", {
     name: /Configuration/,
   }).click();
   cy.findAllByRole("button", {
@@ -29,12 +29,12 @@ When("the user adds a tag to the controller", () => {
   cy.findByRole("button", { name: /Create and add to tag changes/ }).click();
   cy.findByRole("button", { name: /Save changes/ }).click();
 
-  cy.findByRole("link", { name: /Summary/ }).click();
+  cy.findByRole("tab", { name: /Summary/ }).click();
   cy.findByTestId("machine-tags").contains(tagName);
 });
 
 When("the user clicks the created tag", () => {
-  cy.findByRole("link", {
+  cy.findByRole("tab", {
     name: /Configuration/,
   }).click();
   cy.get<string>("@createdTag").then((tagName) => {

@@ -177,8 +177,7 @@ export const mergeGroupUpdates = ({
   updatedCollapsedGroups,
   updatedExpandedGroups,
 }: Record<string, MachineStateListGroup[] | null>):
-  | MachineStateListGroup[]
-  | null => {
+  MachineStateListGroup[] | null => {
   let groups: MachineStateListGroup[] = [];
   if (
     initialGroups &&

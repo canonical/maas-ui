@@ -22,10 +22,6 @@ When("the user opens the created machine details", () => {
   }).click();
 });
 
-When("the user opens the {string} tab", (tab: string) => {
-  cy.findByRole("link", { name: new RegExp(tab, "i") }).click();
-});
-
 When("the user switches to an ipad mini landscape viewport", () => {
   cy.viewport("ipad-mini", "landscape");
 });

@@ -153,7 +153,7 @@ it("gets and sets the controller as active only once when navigating within the 
   });
 
   await userEvent.click(
-    screen.getByRole("link", { name: ControllerDetailsTabLabels.vlans })
+    screen.getByRole("tab", { name: ControllerDetailsTabLabels.vlans })
   );
 
   const actualActions = store.getActions();

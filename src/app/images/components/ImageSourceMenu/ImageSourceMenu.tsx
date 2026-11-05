@@ -26,15 +26,13 @@ const ImageSourceMenu = ({
       hasToggleIcon
       links={[
         "Change source:",
-        ...sources.map(
-          (source): MenuLink => ({
-            disabled: source.id === currentSourceId,
-            children: source.name ?? "",
-            onClick: () => {
-              onSourceSelect(source);
-            },
-          })
-        ),
+        ...sources.map((source): MenuLink => ({
+          disabled: source.id === currentSourceId,
+          children: source.name ?? "",
+          onClick: () => {
+            onSourceSelect(source);
+          },
+        })),
       ]}
       position="right"
       toggleAppearance="base"

@@ -8,7 +8,7 @@ Scenario: The subnet column is hidden on small screens
     Given the user creates a machine through the add machine flow
     And the user searches for the created machine    
     When the user opens the created machine details
-    And the user clicks the "Network" link
+    And the user opens the "Network" tab
     Then the ip column header should exist
     And the subnet column header should exist
     When the user switches to an ipad mini landscape viewport

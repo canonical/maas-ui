@@ -40,20 +40,18 @@ const getSubnetUsedIPs = (subnet: Subnet | null): SubnetUsedIP[] => {
     return [];
   }
 
-  return subnet.ip_addresses.map(
-    (ip, index): SubnetUsedIP => ({
-      id: index,
-      ip: ip.ip,
-      type: getIPTypeDisplay(ip.alloc_type),
-      nodeHostName: ip.node_summary?.hostname,
-      nodeSystemId: ip.node_summary?.system_id,
-      nodeType: ip.node_summary?.node_type,
-      interface: ip.node_summary?.via,
-      usage: getIPUsageDisplay(ip),
-      owner: ip.user,
-      lastSeen: ip.updated,
-    })
-  );
+  return subnet.ip_addresses.map((ip, index): SubnetUsedIP => ({
+    id: index,
+    ip: ip.ip,
+    type: getIPTypeDisplay(ip.alloc_type),
+    nodeHostName: ip.node_summary?.hostname,
+    nodeSystemId: ip.node_summary?.system_id,
+    nodeType: ip.node_summary?.node_type,
+    interface: ip.node_summary?.via,
+    usage: getIPUsageDisplay(ip),
+    owner: ip.user,
+    lastSeen: ip.updated,
+  }));
 };
 
 const SubnetUsedIPs = ({ subnetId }: Props): ReactElement => {

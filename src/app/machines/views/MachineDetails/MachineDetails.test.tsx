@@ -108,7 +108,7 @@ describe("MachineDetails", () => {
       pattern: `${urls.machines.machine.index(null)}/*`,
     });
 
-    const linkTo = screen.getByRole("link", { name: "USB" });
+    const linkTo = screen.getByRole("tab", { name: "USB" });
     await userEvent.click(linkTo);
     await waitFor(() => {
       expect(scrollToSpy).toHaveBeenCalled();

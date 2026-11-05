@@ -26,7 +26,7 @@ describe("SwitchDetailsHeader", () => {
       pattern: "/switches/:id/*",
     });
 
-    expect(screen.getByRole("link", { name: "Summary" })).toHaveAttribute(
+    expect(screen.getByRole("tab", { name: "Summary" })).toHaveAttribute(
       "href",
       "/switches/1/summary"
     );
