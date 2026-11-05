@@ -12,7 +12,11 @@ import {
   screen,
   userEvent,
   fireEvent,
+  mockSidePanel,
+  waitFor,
 } from "@/testing/utils";
+
+const { mockClose } = await mockSidePanel();
 
 describe("SelectProjectForm", () => {
   let state: RootState;
@@ -160,6 +164,44 @@ describe("SelectProjectForm", () => {
       .getActions()
       .find((action) => action.type === "pod/create");
     expect(actualAction).toStrictEqual(expectedAction);
+  });
+
+  it("closes the side panel once the LXD host has been saved", async () => {
+    state.pod.projects = {
+      "192.168.1.1": [factory.podProject({ name: "existing-project" })],
+    };
+    const { rerender } = renderWithProviders(
+      <SelectProjectForm
+        newPodValues={newPodValues}
+        setStep={vi.fn()}
+        setSubmissionErrors={vi.fn()}
+      />,
+      { initialEntries: ["/kvm/add"], state }
+    );
+
+    const nameInput = screen.getByRole("textbox", {
+      name: /New project name/i,
+    });
+    await userEvent.clear(nameInput);
+    await userEvent.type(nameInput, "new-project");
+    await userEvent.click(
+      screen.getByRole("button", { name: "Save LXD host" })
+    );
+    expect(mockClose).not.toHaveBeenCalled();
+
+    state.pod.saved = true;
+    rerender(
+      <SelectProjectForm
+        newPodValues={newPodValues}
+        setStep={vi.fn()}
+        setSubmissionErrors={vi.fn()}
+      />,
+      { state }
+    );
+
+    await waitFor(() => {
+      expect(mockClose).toHaveBeenCalled();
+    });
   });
 
   it("reverts back to credentials step if attempt to create pod results in error", () => {
