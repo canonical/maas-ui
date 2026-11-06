@@ -1,5 +1,4 @@
 import {
-  Before,
   DataTable,
   Given,
   Then,
@@ -11,7 +10,6 @@ import { generateName } from "../../../e2e/utils";
 let machineName = "";
 let newPoolName = "";
 let newTagName = "";
-let doesMachineExist = false;
 
 const openMachineActionDropdown = (groupLabel: string) => {
   cy.findAllByRole("button", { name: groupLabel }).first().click();
@@ -26,20 +24,9 @@ const openMachineActionForm = (groupLabel: string, action: string) => {
   });
 };
 
-Before({ tags: "@machine-actions" }, () => {
-  if (!doesMachineExist) {
-    machineName = generateName("machine");
-    cy.login();
-    cy.addMachine(machineName);
-    cy.findByRole("searchbox", { name: "Search" }).type(machineName);
-    cy.findByRole("checkbox", {
-      name: `${machineName}.maas`,
-      timeout: LONG_TIMEOUT,
-    }).should("exist");
-    cy.then(() => {
-      doesMachineExist = true;
-    });
-  }
+Given("a machine has been added", () => {
+  machineName = generateName("machine");
+  cy.addMachine(machineName);
 });
 
 Given("the machines table is loaded", () => {
@@ -57,14 +44,10 @@ Given("the user selects that machine", () => {
   }).click({ force: true });
 });
 
-When("the user selects the first machine in the grid", () => {
-  cy.findByRole("grid", { name: /^Machines/ }).within(() => {
-    cy.findAllByRole("gridcell", { name: /FQDN/i, timeout: LONG_TIMEOUT })
-      .first()
-      .within(() => {
-        cy.findByRole("checkbox").click({ force: true });
-      });
-  });
+// Selecting by filter enables actions from entitlements (or defers to the
+// backend for RBAC), rather than using a machine's status-dependent actions.
+When("the user selects all machines in the grid", () => {
+  cy.findByRole("checkbox", { name: "All machines" }).click({ force: true });
 });
 
 When(

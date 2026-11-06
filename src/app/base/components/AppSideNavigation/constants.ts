@@ -11,7 +11,7 @@ const navGroups: NavGroup[] = [
       {
         highlight: [urls.machines.index, urls.machines.machine.index(null)],
         label: "Machines",
-        requiredEntitlements: [Entitlement.CAN_VIEW_MACHINES],
+        requiredEntitlements: [Entitlement.CAN_VIEW_AVAILABLE_MACHINES],
         url: urls.machines.index,
       },
       {
@@ -23,7 +23,6 @@ const navGroups: NavGroup[] = [
       {
         highlight: [urls.devices.index, urls.devices.device.index(null)],
         label: "Devices",
-        requiredEntitlements: [Entitlement.CAN_VIEW_DEVICES],
         url: urls.devices.index,
       },
       {
