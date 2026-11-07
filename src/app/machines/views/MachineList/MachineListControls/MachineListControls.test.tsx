@@ -225,4 +225,25 @@ describe("MachineListControls", () => {
       ).toBeAriaDisabled();
     });
   });
+
+  it("displays the selected count out of the filtered machines", () => {
+    renderWithProviders(
+      <MachineListControls
+        filter="status:new"
+        filteredMachineCount={5}
+        grouping={null}
+        hiddenColumns={[]}
+        machineCount={20}
+        resourcePoolsCount={1}
+        selectedCount={2}
+        setFilter={vi.fn()}
+        setGrouping={vi.fn()}
+        setHiddenColumns={vi.fn()}
+        setHiddenGroups={vi.fn()}
+      />,
+      { state: initialState }
+    );
+
+    expect(screen.getByText(/2 of 5 machines selected/i)).toBeInTheDocument();
+  });
 });
