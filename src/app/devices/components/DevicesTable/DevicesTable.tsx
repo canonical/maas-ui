@@ -53,9 +53,10 @@ const DevicesTable = ({
     <GenericTable
       className="devices-table"
       columns={columns}
-      data={devices.map(
-        (device): DeviceRow => ({ ...device, zone: device.zone.name })
-      )}
+      data={devices.map((device): DeviceRow => ({
+        ...device,
+        zone: device.zone.name,
+      }))}
       isLoading={devicesLoading}
       noData="No devices available."
       selection={{

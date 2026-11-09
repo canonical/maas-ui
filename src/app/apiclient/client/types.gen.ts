@@ -42,13 +42,7 @@ export interface Config<T extends ClientOptions = ClientOptions>
    * @default 'auto'
    */
   parseAs?:
-    | "arrayBuffer"
-    | "auto"
-    | "blob"
-    | "formData"
-    | "json"
-    | "stream"
-    | "text";
+    "arrayBuffer" | "auto" | "blob" | "formData" | "json" | "stream" | "text";
   /**
    * Should we return only data or multiple fields (data, error, response, etc.)?
    *
@@ -128,11 +122,8 @@ export type RequestResult<
     >
   : Promise<
       TResponseStyle extends "data"
-        ?
-            | (TData extends Record<string, unknown>
-                ? TData[keyof TData]
-                : TData)
-            | undefined
+        ? | (TData extends Record<string, unknown> ? TData[keyof TData] : TData)
+          | undefined
         : {
             /** request may be undefined, because error may be from building the request object itself */
             request?: Request;

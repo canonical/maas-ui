@@ -20,6 +20,10 @@ setupMockServer(
   zoneResolvers.listZones.handler({
     items: [factory.zone({ id: 1, name: "zone-1" })],
     total: 1,
+  }),
+  zoneResolvers.listZonesWithStatistics.handler({
+    items: [factory.zoneWithStatistics({ id: 1 })],
+    total: 1,
   })
 );
 
@@ -71,10 +75,8 @@ describe("AddDeviceForm", () => {
       ).toBeInTheDocument();
     });
 
-    await userEvent.type(
-      screen.getByRole("textbox", { name: "Device name" }),
-      "plot-device"
-    );
+    await userEvent.click(screen.getByRole("textbox", { name: "Device name" }));
+    await userEvent.paste("plot-device");
 
     await userEvent.selectOptions(
       screen.getByRole("combobox", { name: "Domain" }),
@@ -101,10 +103,8 @@ describe("AddDeviceForm", () => {
       return within(cards[index]).getByRole(type, { name });
     };
 
-    await userEvent.type(
-      getFieldFromCard(0, "MAC address", "textbox"),
-      "11:11:11:11:11:11"
-    );
+    await userEvent.click(getFieldFromCard(0, "MAC address", "textbox"));
+    await userEvent.paste("11:11:11:11:11:11");
 
     await userEvent.selectOptions(
       getFieldFromCard(0, "IP assignment", "combobox"),
@@ -116,27 +116,22 @@ describe("AddDeviceForm", () => {
       "0"
     );
 
-    await userEvent.type(getFieldFromCard(0, "IP address", "textbox"), "1");
+    await userEvent.click(getFieldFromCard(0, "IP address", "textbox"));
+    await userEvent.paste("1");
 
-    await userEvent.type(
-      getFieldFromCard(1, "MAC address", "textbox"),
-      "22:22:22:22:22:22"
-    );
+    await userEvent.click(getFieldFromCard(1, "MAC address", "textbox"));
+    await userEvent.paste("22:22:22:22:22:22");
 
     await userEvent.selectOptions(
       getFieldFromCard(1, "IP assignment", "combobox"),
       DeviceIpAssignment.EXTERNAL
     );
 
-    await userEvent.type(
-      getFieldFromCard(1, "IP address", "textbox"),
-      "192.168.1.2"
-    );
+    await userEvent.click(getFieldFromCard(1, "IP address", "textbox"));
+    await userEvent.paste("192.168.1.2");
 
-    await userEvent.type(
-      getFieldFromCard(2, "MAC address", "textbox"),
-      "33:33:33:33:33:33"
-    );
+    await userEvent.click(getFieldFromCard(2, "MAC address", "textbox"));
+    await userEvent.paste("33:33:33:33:33:33");
 
     await userEvent.selectOptions(
       getFieldFromCard(2, "IP assignment", "combobox"),

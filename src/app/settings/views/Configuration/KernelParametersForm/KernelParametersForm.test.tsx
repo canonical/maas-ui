@@ -73,6 +73,12 @@ describe("KernelParametersForm", () => {
       ).toBeEnabled();
     });
 
+    await waitFor(() => {
+      expect(
+        screen.getByRole("textbox", { name: FormLabels.GlobalBootParams })
+      ).toHaveValue("foo");
+    });
+
     await userEvent.clear(
       screen.getByRole("textbox", { name: FormLabels.GlobalBootParams })
     );

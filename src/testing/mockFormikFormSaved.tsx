@@ -17,6 +17,7 @@ afterEach(() => {
 export const mockFormikFormSaved = (): SpyInstance =>
   vi
     .spyOn(baseHooks, "useCycled")
-    .mockImplementation(
-      (): ReturnType<typeof baseHooks.useCycled> => [true, () => null]
-    );
+    .mockImplementation((): ReturnType<typeof baseHooks.useCycled> => [
+      true,
+      () => null,
+    ]);

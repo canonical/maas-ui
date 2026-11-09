@@ -141,9 +141,7 @@ const eventErrorsForControllers = createSelector(
     (
       _state: RootState,
       ids:
-        | Controller[ControllerMeta.PK]
-        | Controller[ControllerMeta.PK][]
-        | null,
+        Controller[ControllerMeta.PK] | Controller[ControllerMeta.PK][] | null,
       event?: string | null
     ) => ({
       ids,

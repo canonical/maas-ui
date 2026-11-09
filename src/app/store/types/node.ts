@@ -248,9 +248,7 @@ export type BaseNode = SimpleNode & {
 export type Node = Controller | Device | Machine;
 
 export type NodeModel =
-  | ControllerMeta.MODEL
-  | DeviceMeta.MODEL
-  | MachineMeta.MODEL;
+  ControllerMeta.MODEL | DeviceMeta.MODEL | MachineMeta.MODEL;
 
 export type NodeDetails = ControllerDetails | DeviceDetails | MachineDetails;
 

@@ -27,13 +27,18 @@ const AddDeviceInterfaceFields = ({
   iface: AddDeviceInterface;
   removeInterface: (id: number) => void;
 }) => {
-  const { handleChange, setFieldValue } = useFormikContext<AddDeviceValues>();
+  const { setFieldValue } = useFormikContext<AddDeviceValues>();
+  const subnets = useSelector(subnetSelectors.all);
   const subnet = useSelector((state: RootState) =>
     subnetSelectors.getById(state, parseInt(iface.subnet))
   );
 
   useEffect(() => {
-    if (iface.ip_assignment === DeviceIpAssignment.STATIC && subnet) {
+    if (
+      iface.ip_assignment === DeviceIpAssignment.STATIC &&
+      subnet &&
+      iface.subnet_cidr !== subnet.cidr
+    ) {
       setFieldValue(`interfaces[${iface.id}].subnet_cidr`, subnet.cidr).catch(
         (reason: unknown) => {
           throw new FormikFieldChangeError(
@@ -44,7 +49,7 @@ const AddDeviceInterfaceFields = ({
         }
       );
     }
-  }, [iface.id, iface.ip_assignment, setFieldValue, subnet]);
+  }, [iface.id, iface.ip_assignment, iface.subnet_cidr, setFieldValue, subnet]);
 
   const showSubnetField = iface.ip_assignment === DeviceIpAssignment.STATIC;
 
@@ -63,25 +68,19 @@ const AddDeviceInterfaceFields = ({
       <IpAssignmentSelect
         name={`interfaces[${iface.id}].ip_assignment`}
         onChange={(e: ChangeEvent<HTMLSelectElement>) => {
-          handleChange(e);
-          setFieldValue(`interfaces[${iface.id}].subnet`, "").catch(
-            (reason: unknown) => {
-              throw new FormikFieldChangeError(
-                `interfaces[${iface.id}].subnet`,
-                "setFieldValue",
-                reason as string
-              );
-            }
-          );
-          setFieldValue(`interfaces[${iface.id}].ip_address`, "").catch(
-            (reason: unknown) => {
-              throw new FormikFieldChangeError(
-                `interfaces[${iface.id}].ip_address`,
-                "setFieldValue",
-                reason as string
-              );
-            }
-          );
+          setFieldValue(`interfaces[${iface.id}]`, {
+            ...iface,
+            ip_assignment: e.target.value as DeviceIpAssignment,
+            subnet: "",
+            subnet_cidr: "",
+            ip_address: "",
+          }).catch((reason: unknown) => {
+            throw new FormikFieldChangeError(
+              `interfaces[${iface.id}]`,
+              "setFieldValue",
+              reason as string
+            );
+          });
         }}
         required
       />
@@ -89,6 +88,22 @@ const AddDeviceInterfaceFields = ({
         <SubnetSelect
           data-testid="subnet-field"
           name={`interfaces[${iface.id}].subnet`}
+          onChange={(e) => {
+            const selectedSubnet = subnets.find(
+              (item) => item.id === parseInt(e.target.value)
+            );
+            setFieldValue(`interfaces[${iface.id}]`, {
+              ...iface,
+              subnet: e.target.value,
+              subnet_cidr: selectedSubnet?.cidr ?? "",
+            }).catch((reason: unknown) => {
+              throw new FormikFieldChangeError(
+                `interfaces[${iface.id}]`,
+                "setFieldValue",
+                reason as string
+              );
+            });
+          }}
         />
       ) : null}
       {iface.ip_assignment === DeviceIpAssignment.STATIC ? (

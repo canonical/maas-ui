@@ -19,6 +19,6 @@ Scenario: Valid actions on the controller details page are listed
     And the "Deploy" action should not exist
 
 Scenario: Displaying controller commissioning details
-    When the user clicks the "Commissioning" link
+    When the user opens the "Commissioning" tab
     And the user clicks name of the first script
     Then the heading matching "details" text should exist

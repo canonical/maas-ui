@@ -95,9 +95,7 @@ const errorTypeFormatters: Record<ErrorTypeFormat, ErrorFormatter> = {
 // `any` is needed here since we do not know the type of the error, and the error formatters expect different types.
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export type ErrorType<E = null, I = any, K extends keyof I = any> =
-  | APIError<E>
-  | Error
-  | EventError<I, E, K>;
+  APIError<E> | Error | EventError<I, E, K>;
 
 /**
  * Formats errors of different types into a single string.
