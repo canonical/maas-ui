@@ -2,32 +2,47 @@
 
 ## Contents
 
-- [Project conventions](#project-conventions)
-  - [Usability](#usability)
-  - [Code style](#code-style)
-  - [React components](#react-components)
-- [Code structure](#code-structure)
-- [React](#react)
-  - [Hooks](#hooks)
-  - [Components](#components)
-    - [Forms](#forms)
-  - [Vanilla components](#vanilla-components)
-  - [Redux](#redux)
-    - [Redux Toolkit](#redux-toolkit)
-    - [Reselect](#reselect)
-    - [Redux-Saga](#redux-saga)
-  - [TypeScript](#typeScript)
-    - [TSFixMe](#tsfixme)
-  - [Testing](#testing)
-    - [Test attributes (OUTDATED)](#test-attributes)
-    - [Model factories](#model-factories)
-  - [Coding style](#coding-style)
-    - [ES6](#es6)
-    - [Prettier](#prettier)
-- [Proxy](#proxy)
-- [End-to-end](#end-to-end)
-  - [Cypress](#cypress)
-  - [Playwright](#playwright)
+- [MAAS UI](#maas-ui)
+  - [Contents](#contents)
+  - [Project conventions](#project-conventions)
+    - [Usability](#usability)
+    - [Code style](#code-style)
+    - [React Components](#react-components)
+  - [Code structure](#code-structure)
+  - [React](#react)
+    - [Vite](#vite)
+    - [Hooks](#hooks)
+    - [Components](#components)
+      - [Forms](#forms)
+    - [Vanilla components](#vanilla-components)
+    - [TanStack Query](#tanstack-query)
+      - [Typical Query Function](#typical-query-function)
+    - [Redux](#redux)
+      - [Slice structure](#slice-structure)
+        - [Typical slice](#typical-slice)
+        - [state.machine slice](#statemachine-slice)
+      - [Redux Toolkit](#redux-toolkit)
+      - [Reselect](#reselect)
+      - [Redux-Saga](#redux-saga)
+      - [Redux-Saga flow in maas-ui](#redux-saga-flow-in-maas-ui)
+        - [rootSaga](#rootsaga)
+        - [handleMessage](#handlemessage)
+        - [sendMessage](#sendmessage)
+        - [setupWebSocket and watchWebSockets](#setupwebsocket-and-watchwebsockets)
+    - [TypeScript](#typescript)
+      - [TSFixMe](#tsfixme)
+    - [Testing](#testing)
+      - [Vitest and testing-library](#vitest-and-testing-library)
+      - [Testing utility functions](#testing-utility-functions)
+      - [Test attributes](#test-attributes)
+      - [Model factories](#model-factories)
+    - [Coding style](#coding-style)
+      - [ES6](#es6)
+      - [Prettier](#prettier)
+  - [Proxy](#proxy)
+  - [End-to-end](#end-to-end)
+    - [Cypress](#cypress)
+    - [Playwright](#playwright)
 
 ## Project conventions
 
@@ -44,7 +59,7 @@ Prioritize clear, self-explanatory code, and only use JSDoc to provide context o
 
 We encourage [component-driven](https://www.componentdriven.org/) development, and use of [Storybook](https://storybook.js.org/) for interactive documentation.
 
-Follow the presentational and container components pattern where appropriate. Read more on good component design in the  [React documentation](https://reactjs.org/docs/thinking-in-react.html#step-3-identify-the-minimal-but-complete-representation-of-ui-state).
+Follow the presentational and container components pattern where appropriate. Read more on good component design in the [React documentation](https://reactjs.org/docs/thinking-in-react.html#step-3-identify-the-minimal-but-complete-representation-of-ui-state).
 
 When developing new features or extending existing ones, consider the following:
 
@@ -72,10 +87,10 @@ The high-level interactions between the React side of the frontend and the API a
 
 MAAS UI is bootstrapped with [Vite](https://vitejs.dev/). The main features that MAAS UI uses are:
 
- - Hot module replacement
- - [Manual chunks](https://github.com/canonical/maas-ui/blob/main/vite.config.ts#L7-L12) at build time
- - Native ES modules
- - Lazy-loading / route-based code splitting
+- Hot module replacement
+- [Code splitting](https://github.com/canonical/maas-ui/blob/main/vite.config.ts#L42-L56) at build time
+- Native ES modules
+- Lazy-loading / route-based code splitting
 
 ### Hooks
 
@@ -210,7 +225,7 @@ The saga files can be found in [ui/src/app/base/sagas](https://github.com/canoni
 - `yield*call(func, ...args)` is used to call a function with the provided arguments,
 - `yield* put(action)` is used to dispatch an action to the Redux store,
 - `yield*take(actionType)` is used to pause the generator function until an action with the provided type is dispatched,
-- `yield* takeLatest(actionType, func)`  starts the provided function when an action with the provided type is dispatched, but if there was a previously started func still running, it gets cancelled.
+- `yield* takeLatest(actionType, func)` starts the provided function when an action with the provided type is dispatched, but if there was a previously started func still running, it gets cancelled.
 
 #### Redux-Saga flow in maas-ui
 
