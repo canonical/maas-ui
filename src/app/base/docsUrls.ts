@@ -27,7 +27,7 @@ const docsUrls = {
     "https://canonical.com/maas/docs/latest/explanation/machine-groups/#machine-groups",
   tagsKernelOptions:
     "https://canonical.com/maas/docs/latest/how-to-guides/manage-machines/#kernel-configuration",
-  tagsXpathExpressions: "https://www.w3schools.com/xml/XPath_intro.asp",
+  tagsXpathExpressions: "https://www.w3schools.com/xml/xpath_intro.asp",
   vaultIntegration:
     "https://canonical.com/maas/docs/latest/how-to-guides/enhance-maas-security/#manage-vault",
   windowsImages:
