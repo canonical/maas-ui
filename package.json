@@ -55,8 +55,8 @@
   },
   "dependencies": {
     "@canonical/ds-assets": "0.45.0",
-    "@canonical/maas-react-components": "2.9.2",
-    "@canonical/react-components": "4.16.0",
+    "@canonical/maas-react-components": "2.9.14",
+    "@canonical/react-components": "4.16.5",
     "@canonical/react-ds-global": "0.45.0",
     "@canonical/react-ds-global-form": "0.45.0",
     "@canonical/styles": "0.45.0",
