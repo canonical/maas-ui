@@ -26,7 +26,7 @@ jobs:
         with:
           ref: ${{ inputs.version && format('refs/heads/{0}', inputs.version) || github.sha }}
       - name: Use Node.js from .nvmrc
-        uses: actions/setup-node@v6
+        uses: actions/setup-node@v7
         with:
           node-version-file: ".nvmrc"
       - name: Build production UI
