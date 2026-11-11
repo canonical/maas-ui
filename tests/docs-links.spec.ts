@@ -10,7 +10,7 @@ const redirectErrorMessage = (url: string, location: string | null) => `
   ${url}
   
   TO:
-  https://maas.io${location}
+  ${location}
   
   `;
 
