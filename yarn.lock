@@ -1036,15 +1036,15 @@
   dependencies:
     "@canonical/ds-types" "^0.45.0"
 
-"@canonical/maas-react-components@2.9.2":
-  version "2.9.2"
-  resolved "https://registry.yarnpkg.com/@canonical/maas-react-components/-/maas-react-components-2.9.2.tgz#fdf0913150e430d7dce7ed0ac94bd602a4b0b706"
-  integrity sha512-pHxWRPoVdgeE2J9KzrhTGJIsZMVGdJD2cck+wdGLdKwpmHtwA/GBZHLiaAu/CUowSWkVnjacePd/+OaG3jLeVQ==
+"@canonical/maas-react-components@2.9.14":
+  version "2.9.14"
+  resolved "https://registry.yarnpkg.com/@canonical/maas-react-components/-/maas-react-components-2.9.14.tgz#fbd837c2ffc41dca6883a945a02668ac5e08da47"
+  integrity sha512-KGZ5jXTZ3Y55tPcjZKsFW4Cvmb2L80jf9y7a9OeVlBm+PQZFpceXhCl0VBaIWS3DiawJp5awXVDwerRaPiGMOA==
 
-"@canonical/react-components@4.16.0":
-  version "4.16.0"
-  resolved "https://registry.yarnpkg.com/@canonical/react-components/-/react-components-4.16.0.tgz#a273b0a7cb6128c2bf4e663df67a597719b294be"
-  integrity sha512-rEwmL7Bv3I4ojYtrnQWPP6YmFa6+WeuwMxZhYmhXu5G369bMBsRiw6ez4t84kDI98K0j668hhN5dh5dinmPihQ==
+"@canonical/react-components@4.16.5":
+  version "4.16.5"
+  resolved "https://registry.yarnpkg.com/@canonical/react-components/-/react-components-4.16.5.tgz#673c9adbec28684332491042a54801cfb7c8dbbe"
+  integrity sha512-ucDkOwmv0jkwC9Z5Gk55DZ3aHzOJMjJtgHSE+ULEjpA5rRyUeaFHq4TqaEpYQfloFkUc8GxXwfmH7ojKucy8yg==
   dependencies:
     "@types/jest" "30.0.0"
     "@types/node" "20.19.30"
