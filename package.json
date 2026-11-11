@@ -101,7 +101,7 @@
     "yup": "0.32.11"
   },
   "devDependencies": {
-    "@badeball/cypress-cucumber-preprocessor": "23.2.1",
+    "@badeball/cypress-cucumber-preprocessor": "28.0.1",
     "@bahmutov/cypress-esbuild-preprocessor": "2.2.8",
     "@canonical/summon": "0.44.0",
     "@canonical/summon-application": "0.44.0",
