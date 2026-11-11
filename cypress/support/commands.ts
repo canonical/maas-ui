@@ -62,7 +62,7 @@ Cypress.Commands.add("loginNonAdmin", () => {
 Cypress.Commands.add("addMachine", (hostname = generateName()) => {
   cy.visit(generateMAASURL("/machines"));
   cy.waitForPageToLoad();
-  cy.waitForTableToLoad({ name: /Machines/i });
+  cy.waitForTableToLoad({ name: /Machines/i, role: "treegrid" });
   cy.findByRole("button", { name: "Add hardware" }).click();
   cy.findByRole("menuitem", { name: "Machine", timeout: LONG_TIMEOUT }).click();
   cy.get("input[name='hostname']").type(hostname);
@@ -84,7 +84,7 @@ Cypress.Commands.add("deleteMachine", (hostname: string) => {
   cy.findByText(/Showing 1 out of 1 machines/, {
     timeout: LONG_TIMEOUT,
   }).should("exist");
-  cy.findByRole("grid", { name: /Machines/ }).within(() =>
+  cy.findByRole("treegrid", { name: /Machines/ }).within(() =>
     cy
       .findByRole("checkbox", { name: new RegExp(hostname) })
       .click({ force: true })

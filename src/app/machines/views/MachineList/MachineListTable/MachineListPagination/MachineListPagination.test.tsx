@@ -82,6 +82,20 @@ describe("MachineListPagination", () => {
     expect(props.paginate).toHaveBeenCalledWith(1);
   });
 
+  it("displays the current page when it is changed elsewhere", () => {
+    props.currentPage = 2;
+    const { rerender } = render(<MachineListPagination {...props} />);
+
+    rerender(<MachineListPagination {...props} currentPage={1} />);
+
+    expect(screen.getByRole("spinbutton", { name: "page number" })).toHaveValue(
+      1
+    );
+    expect(
+      screen.getByRole("button", { name: "Previous page" })
+    ).toBeAriaDisabled();
+  });
+
   it("takes an input for page number and calls a function to paginate if the number is valid", async () => {
     renderWithProviders(<MachineListPagination {...props} />);
 

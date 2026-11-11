@@ -40,6 +40,15 @@ const MachineListPagination = ({
   );
   const [error, setError] = useState("");
 
+  // Show the new page when it is changed elsewhere, e.g. reset to the first
+  // page after a filter or page size change.
+  const [previousPage, setPreviousPage] = useState(props.currentPage);
+  if (props.currentPage !== previousPage) {
+    setPreviousPage(props.currentPage);
+    setPageNumber(props.currentPage);
+    setError("");
+  }
+
   // Clear the timeout when the component is unmounted.
   useEffect(() => {
     return () => {

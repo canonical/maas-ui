@@ -1,27 +1,24 @@
-import { waitFor } from "@testing-library/react";
-
-import { MachineListTable, Label } from "./MachineListTable";
+import { MachineListTable, Label, PAGE_SIZES } from "./MachineListTable";
+import type { MachineListTableProps } from "./types";
 
 import { SortDirection } from "@/app/base/types";
-import { MachineColumns, columnLabels } from "@/app/machines/constants";
+import { machineActions } from "@/app/store/machine";
 import type { Machine, MachineStateListGroup } from "@/app/store/machine/types";
 import { FetchGroupKey } from "@/app/store/machine/types";
 import type { RootState } from "@/app/store/root/types";
-import {
-  NodeStatus,
-  NodeStatusCode,
-  TestStatusStatus,
-} from "@/app/store/types/node";
+import { NodeStatus, NodeStatusCode } from "@/app/store/types/node";
 import * as factory from "@/testing/factories";
 import { poolsResolvers } from "@/testing/resolvers/pools";
 import { mockUsers, usersResolvers } from "@/testing/resolvers/users";
 import { zoneResolvers } from "@/testing/resolvers/zones";
 import {
+  fireEvent,
   userEvent,
   screen,
   within,
   renderWithProviders,
   setupMockServer,
+  waitFor,
 } from "@/testing/utils";
 
 setupMockServer(
@@ -34,145 +31,73 @@ setupMockServer(
 
 const callId = "mocked-nanoid";
 
+const getTableHeader = () => screen.getAllByRole("rowgroup")[0];
+const getTableBody = () => screen.getAllByRole("rowgroup")[1];
+const getBodyRows = () => within(getTableBody()).getAllByRole("row");
+const getMachineRow = (hostname: string) =>
+  getBodyRows().find((row) => row.textContent?.includes(hostname));
+
 describe("MachineListTable", () => {
   let state: RootState;
-  let machines: Machine[] = [];
-  let groups: MachineStateListGroup[] = [];
+  let machines: Machine[];
+  let groups: MachineStateListGroup[];
+  let defaultProps: MachineListTableProps;
+
+  const renderTable = (props: Partial<MachineListTableProps> = {}) =>
+    renderWithProviders(<MachineListTable {...defaultProps} {...props} />, {
+      state,
+    });
+
   beforeEach(() => {
     machines = [
       factory.machine({
-        actions: [],
-        architecture: "amd64/generic",
-        cpu_count: 4,
-        cpu_test_status: factory.testStatus({
-          status: TestStatusStatus.RUNNING,
-        }),
-        distro_series: "bionic",
-        domain: factory.modelRef({
-          name: "example",
-        }),
-        extra_macs: [],
+        domain: factory.modelRef({ name: "example" }),
         fqdn: "koala.example",
         hostname: "koala",
-        ip_addresses: [],
-        memory: 8,
-        memory_test_status: factory.testStatus({
-          status: TestStatusStatus.PASSED,
-        }),
-        network_test_status: factory.testStatus({
-          status: TestStatusStatus.PASSED,
-        }),
-        osystem: "ubuntu",
         owner: mockUsers.items[0].username,
-        physical_disk_count: 1,
-        pool: factory.modelRef(),
         pxe_mac: "00:11:22:33:44:55",
-        spaces: [],
         status: NodeStatus.DEPLOYED,
         status_code: NodeStatusCode.DEPLOYED,
-        status_message: "",
-        storage: 8,
-        storage_test_status: factory.testStatus({
-          status: TestStatusStatus.PASSED,
-        }),
-        testing_status: TestStatusStatus.PASSED,
         system_id: "abc123",
-        zone: factory.modelRef(),
       }),
       factory.machine({
-        actions: [],
-        architecture: "amd64/generic",
-        cpu_count: 2,
-        cpu_test_status: factory.testStatus({
-          status: TestStatusStatus.FAILED,
-        }),
-        distro_series: "xenial",
-        domain: factory.modelRef({
-          name: "example",
-        }),
-        extra_macs: [],
-        fqdn: "other.example",
-        hostname: "other",
-        ip_addresses: [],
-        memory: 6,
-        memory_test_status: factory.testStatus({
-          status: TestStatusStatus.FAILED,
-        }),
-        network_test_status: factory.testStatus({
-          status: TestStatusStatus.FAILED,
-        }),
-        osystem: "ubuntu",
+        domain: factory.modelRef({ name: "example" }),
+        fqdn: "wombat.example",
+        hostname: "wombat",
         owner: "user",
-        physical_disk_count: 2,
-        pool: factory.modelRef(),
         pxe_mac: "66:77:88:99:00:11",
-        spaces: [],
         status: NodeStatus.RELEASING,
         status_code: NodeStatusCode.RELEASING,
-        status_message: "",
-        storage: 16,
-        storage_test_status: factory.testStatus({
-          status: TestStatusStatus.FAILED,
-        }),
-        testing_status: TestStatusStatus.FAILED,
         system_id: "def456",
-        zone: factory.modelRef(),
       }),
       factory.machine({
-        actions: [],
-        architecture: "amd64/generic",
-        cpu_count: 2,
-        cpu_test_status: factory.testStatus({
-          status: TestStatusStatus.FAILED,
-        }),
-        distro_series: "xenial",
-        domain: factory.modelRef({
-          name: "example",
-        }),
-        extra_macs: [],
-        fqdn: "other.example",
-        hostname: "other",
-        ip_addresses: [],
-        memory: 6,
-        memory_test_status: factory.testStatus({
-          status: TestStatusStatus.FAILED,
-        }),
-        network_test_status: factory.testStatus({
-          status: TestStatusStatus.FAILED,
-        }),
-        osystem: "ubuntu",
+        domain: factory.modelRef({ name: "example" }),
+        fqdn: "quokka.example",
+        hostname: "quokka",
         owner: "user",
-        physical_disk_count: 2,
-        pool: factory.modelRef(),
-        pxe_mac: "66:77:88:99:00:11",
-        spaces: [],
-        status: NodeStatus.RELEASING,
+        pxe_mac: "aa:bb:cc:dd:ee:ff",
+        status: NodeStatus.DEPLOYED,
         status_code: NodeStatusCode.DEPLOYED,
-        status_message: "",
-        storage: 16,
-        storage_test_status: factory.testStatus({
-          status: TestStatusStatus.FAILED,
-        }),
-        testing_status: TestStatusStatus.FAILED,
         system_id: "ghi789",
-        zone: factory.modelRef(),
       }),
     ];
     groups = [
       factory.machineStateListGroup({
+        count: 2,
         items: [machines[0].system_id, machines[2].system_id],
         name: "Deployed",
+        value: "deployed",
       }),
       factory.machineStateListGroup({
+        count: 1,
         items: [machines[1].system_id],
         name: "Releasing",
+        value: "releasing",
       }),
     ];
     state = factory.rootState({
       general: factory.generalState({
-        machineActions: factory.machineActionsState({
-          data: [],
-        }),
+        machineActions: factory.machineActionsState({ data: [] }),
         osInfo: factory.osInfoState({
           data: factory.osInfo({
             osystems: [["ubuntu", "Ubuntu"]],
@@ -184,524 +109,216 @@ describe("MachineListTable", () => {
       machine: factory.machineState({
         items: machines,
         lists: {
-          [callId]: factory.machineStateList({
-            loading: true,
-            groups,
-          }),
+          [callId]: factory.machineStateList({ loading: false, groups }),
         },
       }),
     });
+    defaultProps = {
+      callId,
+      currentPage: 1,
+      filter: "",
+      grouping: null,
+      groups,
+      hiddenGroups: [],
+      machineCount: 3,
+      machines,
+      pageSize: 50,
+      setCurrentPage: vi.fn(),
+      setHiddenGroups: vi.fn(),
+      setPageSize: vi.fn(),
+      setSortDirection: vi.fn(),
+      setSortKey: vi.fn(),
+      sortDirection: SortDirection.NONE,
+      sortKey: null,
+      totalPages: 1,
+    };
   });
 
   afterEach(() => {
     localStorage.clear();
   });
 
-  it("displays skeleton rows when loading", () => {
-    renderWithProviders(
-      <MachineListTable
-        callId={callId}
-        currentPage={1}
-        filter=""
-        grouping={FetchGroupKey.Status}
-        groups={groups}
-        hiddenGroups={[]}
-        machineCount={10}
-        machines={machines}
-        machinesLoading
-        pageSize={20}
-        setCurrentPage={vi.fn()}
-        setHiddenGroups={vi.fn()}
-        setSortDirection={vi.fn()}
-        setSortKey={vi.fn()}
-        sortDirection="none"
-        sortKey={null}
-        totalPages={1}
-      />,
-      { state }
-    );
-    expect(
-      within(
-        screen.getAllByRole("gridcell", {
-          name: columnLabels[MachineColumns.FQDN],
-        })[0]
-      ).getByText("xxxxxxxxx.xxxx")
-    ).toBeInTheDocument();
-    expect(
-      screen.getByRole("grid", {
-        name: Label.Loading,
-      })
-    ).toHaveClass("machine-list--loading");
-  });
+  describe("display", () => {
+    it("displays skeleton rows when loading", () => {
+      renderTable({ machinesLoading: true });
 
-  it("displays a message if there are no search results", () => {
-    groups = [];
-    state.machine = factory.machineState({
-      items: [],
-      lists: {
-        [callId]: factory.machineStateList({
-          loading: false,
-          groups,
-        }),
-      },
+      const table = screen.getByRole("treegrid", { name: Label.Loading });
+      expect(table).toHaveAttribute("aria-busy", "true");
+      expect(within(table).getAllByText("xxxxxxxxx.xxxx")).toHaveLength(5);
     });
 
-    renderWithProviders(
-      <MachineListTable
-        callId={callId}
-        currentPage={1}
-        filter="this does not match anything"
-        grouping={FetchGroupKey.Status}
-        groups={groups}
-        hiddenGroups={[]}
-        machineCount={10}
-        machines={machines}
-        pageSize={20}
-        setCurrentPage={vi.fn()}
-        setHiddenGroups={vi.fn()}
-        setSortDirection={vi.fn()}
-        setSortKey={vi.fn()}
-        sortDirection="none"
-        sortKey={null}
-        totalPages={1}
-      />,
-      { state }
-    );
-    expect(screen.getByText(Label.NoResults)).toBeInTheDocument();
-  });
+    it("labels the table with the current grouping", () => {
+      renderTable({ grouping: FetchGroupKey.Status });
 
-  it("displays a message if there are no machines", () => {
-    groups = [];
-    state.machine = factory.machineState({
-      items: [],
-      lists: {
-        [callId]: factory.machineStateList({
-          loading: false,
-          groups,
-        }),
-      },
+      expect(
+        screen.getByRole("treegrid", {
+          name: `${Label.Machines} - Group by status`,
+        })
+      ).toBeInTheDocument();
     });
 
-    renderWithProviders(
-      <MachineListTable
-        callId={callId}
-        currentPage={1}
-        filter=""
-        grouping={FetchGroupKey.Status}
-        groups={groups}
-        hiddenGroups={[]}
-        machineCount={10}
-        machines={machines}
-        pageSize={20}
-        setCurrentPage={vi.fn()}
-        setHiddenGroups={vi.fn()}
-        setSortDirection={vi.fn()}
-        setSortKey={vi.fn()}
-        sortDirection="none"
-        sortKey={null}
-        totalPages={1}
-      />,
-      { state }
-    );
-    expect(screen.getByText(Label.EmptyList)).toBeInTheDocument();
+    it("displays a row for each machine", () => {
+      renderTable();
+
+      expect(getBodyRows()).toHaveLength(machines.length);
+      machines.forEach(({ hostname }) => {
+        expect(
+          within(getTableBody()).getByRole("link", {
+            name: new RegExp(hostname),
+          })
+        ).toBeInTheDocument();
+      });
+    });
+
+    it("displays a message if there are no search results", () => {
+      renderTable({
+        filter: "this does not match anything",
+        groups: [],
+        machineCount: 0,
+        machines: [],
+      });
+
+      expect(screen.getByText(Label.NoResults)).toBeInTheDocument();
+    });
+
+    it("displays a message if there are no machines", () => {
+      renderTable({ groups: [], machineCount: 0, machines: [] });
+
+      expect(screen.getByText(Label.EmptyList)).toBeInTheDocument();
+    });
   });
 
-  it("includes groups", () => {
-    renderWithProviders(
-      <MachineListTable
-        callId={callId}
-        currentPage={1}
-        filter=""
-        grouping={FetchGroupKey.Status}
-        groups={groups}
-        hiddenGroups={[]}
-        machineCount={10}
-        machines={machines}
-        pageSize={20}
-        setCurrentPage={vi.fn()}
-        setHiddenGroups={vi.fn()}
-        setSortDirection={vi.fn()}
-        setSortKey={vi.fn()}
-        sortDirection="none"
-        sortKey={null}
-        totalPages={1}
-      />,
-      { state }
-    );
+  describe("grouping", () => {
+    it("displays a row for each group", () => {
+      renderTable({ grouping: FetchGroupKey.Status });
 
-    expect(
-      screen.queryAllByRole("row", { name: /machines group/i }).length
-    ).toEqual(2);
-    expect(
-      screen.getByRole("row", { name: /Deployed machines group/i })
-    ).toBeInTheDocument();
-    expect(
-      screen.getByRole("row", { name: /Releasing machines group/i })
-    ).toBeInTheDocument();
-  });
+      expect(
+        screen.getAllByRole("row", { name: /machines group/i })
+      ).toHaveLength(2);
+      expect(
+        screen.getByRole("row", { name: /Deployed machines group/i })
+      ).toBeInTheDocument();
+      expect(
+        screen.getByRole("row", { name: /Releasing machines group/i })
+      ).toBeInTheDocument();
+    });
 
-  it("does not display a group header if the table is ungrouped", () => {
-    renderWithProviders(
-      <MachineListTable
-        callId={callId}
-        currentPage={1}
-        filter=""
-        grouping={null}
-        groups={groups}
-        hiddenGroups={[]}
-        machineCount={10}
-        machines={machines}
-        pageSize={20}
-        setCurrentPage={vi.fn()}
-        setHiddenGroups={vi.fn()}
-        setSortDirection={vi.fn()}
-        setSortKey={vi.fn()}
-        sortDirection="none"
-        sortKey={null}
-        totalPages={1}
-      />,
-      { state }
-    );
-    expect(
-      screen.queryByRole("row", { name: /machines group/i })
-    ).not.toBeInTheDocument();
-  });
+    it("displays the machines in server order beneath their group", () => {
+      renderTable({ grouping: FetchGroupKey.Status });
 
-  it("can change machines to display PXE MAC instead of FQDN", async () => {
-    renderWithProviders(
-      <MachineListTable
-        callId={callId}
-        currentPage={1}
-        filter=""
-        grouping={null}
-        groups={groups}
-        hiddenGroups={[]}
-        machineCount={10}
-        machines={machines}
-        pageSize={20}
-        setCurrentPage={vi.fn()}
-        setHiddenGroups={vi.fn()}
-        setSortDirection={vi.fn()}
-        setSortKey={vi.fn()}
-        sortDirection="none"
-        sortKey={null}
-        totalPages={1}
-      />,
-      { state }
-    );
+      const rowText = getBodyRows().map((row) => row.textContent);
+      expect(rowText[0]).toContain("Deployed");
+      expect(rowText[1]).toContain("koala");
+      expect(rowText[2]).toContain("quokka");
+      expect(rowText[3]).toContain("Releasing");
+      expect(rowText[4]).toContain("wombat");
+    });
 
-    const firstMachine = machines[0];
-    expect(
-      screen.getByRole("checkbox", { name: /koala*/i })
-    ).toBeInTheDocument();
-    const tableHeader = screen.getAllByRole("rowgroup")[0];
-    // Click the MAC table header
-    await userEvent.click(
-      within(tableHeader).getByRole("button", { name: "MAC" })
-    );
-    const tableBody = screen.getAllByRole("rowgroup")[1];
-    expect(within(tableBody).getAllByRole("link")[0]).toHaveTextContent(
-      firstMachine.pxe_mac!
-    );
-  });
+    it("displays group rows as a single cell", () => {
+      renderTable({ grouping: FetchGroupKey.Status });
 
-  it("can change machines to display full owners name instead of username", async () => {
-    renderWithProviders(
-      <MachineListTable
-        callId={callId}
-        currentPage={1}
-        filter=""
-        grouping={null}
-        groups={groups}
-        hiddenGroups={[]}
-        machineCount={10}
-        machines={machines}
-        pageSize={20}
-        setCurrentPage={vi.fn()}
-        setHiddenGroups={vi.fn()}
-        setSortDirection={vi.fn()}
-        setSortKey={vi.fn()}
-        sortDirection="none"
-        sortKey={null}
-        totalPages={1}
-      />,
-      { state }
-    );
-    const tableBody = screen.getAllByRole("rowgroup")[1];
-    const getFirstRow = () => within(tableBody).getAllByRole("row")[0];
-    const getFirstMachineOwner = () =>
-      within(
-        within(getFirstRow()).getByRole("gridcell", { name: "Owner" })
-      ).getByTestId("owner");
-    expect(getFirstMachineOwner()).toHaveTextContent(
-      mockUsers.items[0].username
-    );
-    await userEvent.click(
-      within(screen.getByRole("columnheader", { name: "Owner" })).getByRole(
-        "button",
-        { name: /Name/ }
-      )
-    );
-    await waitFor(() => {
-      expect(getFirstMachineOwner()).toHaveTextContent(
-        mockUsers.items[0].last_name!
+      const groupRow = screen.getByRole("row", {
+        name: /Deployed machines group/i,
+      });
+      expect(within(groupRow).getAllByRole("gridcell")).toHaveLength(1);
+    });
+
+    it("displays the machine count in group rows", () => {
+      renderTable({ grouping: FetchGroupKey.Status });
+
+      expect(
+        within(
+          screen.getByRole("row", { name: /Deployed machines group/i })
+        ).getByText("2 machines")
+      ).toBeInTheDocument();
+    });
+
+    it("does not display machines in collapsed groups", () => {
+      groups[1].collapsed = true;
+      renderTable({ grouping: FetchGroupKey.Status });
+
+      expect(
+        screen.getByRole("row", { name: /Releasing machines group/i })
+      ).toBeInTheDocument();
+      expect(
+        within(getTableBody()).queryByRole("link", { name: /wombat/ })
+      ).not.toBeInTheDocument();
+    });
+
+    it("can collapse a group", async () => {
+      const setHiddenGroups = vi.fn();
+      renderTable({ grouping: FetchGroupKey.Status, setHiddenGroups });
+
+      await userEvent.click(
+        within(
+          screen.getByRole("row", { name: /Deployed machines group/i })
+        ).getByRole("button", { name: "Hide" })
+      );
+
+      expect(setHiddenGroups).toHaveBeenCalledWith(["deployed"]);
+    });
+
+    it("does not display group rows if the table is ungrouped", () => {
+      renderTable({ grouping: null });
+
+      expect(
+        screen.queryByRole("row", { name: /machines group/i })
+      ).not.toBeInTheDocument();
+    });
+
+    it("reports a row count that includes group rows", () => {
+      renderTable({ grouping: FetchGroupKey.Status });
+
+      const table = screen.getByRole("treegrid");
+      expect(table).toHaveAttribute(
+        "aria-rowcount",
+        String(within(table).getAllByRole("row").length)
       );
     });
   });
 
-  it("updates sort on header click", async () => {
-    const setSortDirection = vi.fn();
-    const setSortKey = vi.fn();
-    renderWithProviders(
-      <MachineListTable
-        callId={callId}
-        currentPage={1}
-        filter=""
-        grouping={null}
-        groups={groups}
-        hiddenGroups={[]}
-        machineCount={10}
-        machines={machines}
-        pageSize={20}
-        setCurrentPage={vi.fn()}
-        setHiddenGroups={vi.fn()}
-        setSortDirection={setSortDirection}
-        setSortKey={setSortKey}
-        sortDirection="none"
-        sortKey={null}
-        totalPages={1}
-      />,
-      { state }
-    );
-    const tableHeader = screen.getAllByRole("rowgroup")[0];
-    await userEvent.click(
-      within(tableHeader).getByRole("button", { name: /cores/i })
-    );
-    expect(setSortKey).toHaveBeenCalledWith(FetchGroupKey.CpuCount);
-    expect(setSortDirection).toHaveBeenCalledWith(SortDirection.DESCENDING);
-  });
+  describe("columns", () => {
+    it("can display the PXE MAC instead of the FQDN", async () => {
+      renderTable();
 
-  it("clears the sort when the same header is clicked and is ascending", async () => {
-    const setSortDirection = vi.fn();
-    const setSortKey = vi.fn();
-    renderWithProviders(
-      <MachineListTable
-        callId={callId}
-        currentPage={1}
-        filter=""
-        grouping={null}
-        groups={groups}
-        hiddenGroups={[]}
-        machineCount={10}
-        machines={machines}
-        pageSize={20}
-        setCurrentPage={vi.fn()}
-        setHiddenGroups={vi.fn()}
-        setSortDirection={setSortDirection}
-        setSortKey={setSortKey}
-        sortDirection={SortDirection.ASCENDING}
-        sortKey={FetchGroupKey.CpuCount}
-        totalPages={1}
-      />,
-      { state }
-    );
-    const tableHeader = screen.getAllByRole("rowgroup")[0];
-    await userEvent.click(
-      within(tableHeader).getByRole("button", { name: /cores/i })
-    );
-    expect(setSortKey).toHaveBeenCalledWith(null);
-    expect(setSortDirection).toHaveBeenCalledWith(SortDirection.NONE);
-  });
-
-  it("updates the sort when the same header is clicked and is descending", async () => {
-    const setSortDirection = vi.fn();
-    const setSortKey = vi.fn();
-    renderWithProviders(
-      <MachineListTable
-        callId={callId}
-        currentPage={1}
-        filter=""
-        grouping={null}
-        groups={groups}
-        hiddenGroups={[]}
-        machineCount={10}
-        machines={machines}
-        pageSize={20}
-        setCurrentPage={vi.fn()}
-        setHiddenGroups={vi.fn()}
-        setSortDirection={setSortDirection}
-        setSortKey={setSortKey}
-        sortDirection={SortDirection.DESCENDING}
-        sortKey={FetchGroupKey.CpuCount}
-        totalPages={1}
-      />,
-      { state }
-    );
-    const tableHeader = screen.getAllByRole("rowgroup")[0];
-    await userEvent.click(
-      within(tableHeader).getByRole("button", { name: /cores/i })
-    );
-    expect(setSortKey).not.toHaveBeenCalled();
-    expect(setSortDirection).toHaveBeenCalledWith(SortDirection.ASCENDING);
-  });
-
-  it("updates the sort when the same header is clicked and direction is not set", async () => {
-    const setSortDirection = vi.fn();
-    const setSortKey = vi.fn();
-    renderWithProviders(
-      <MachineListTable
-        callId={callId}
-        currentPage={1}
-        filter=""
-        grouping={null}
-        groups={groups}
-        hiddenGroups={[]}
-        machineCount={10}
-        machines={machines}
-        pageSize={20}
-        setCurrentPage={vi.fn()}
-        setHiddenGroups={vi.fn()}
-        setSortDirection={setSortDirection}
-        setSortKey={setSortKey}
-        sortDirection={SortDirection.NONE}
-        sortKey={FetchGroupKey.CpuCount}
-        totalPages={1}
-      />,
-      { state }
-    );
-    const tableHeader = screen.getAllByRole("rowgroup")[0];
-    await userEvent.click(
-      within(tableHeader).getByRole("button", { name: /cores/i })
-    );
-    expect(setSortKey).not.toHaveBeenCalled();
-    expect(setSortDirection).toHaveBeenCalledWith(SortDirection.ASCENDING);
-  });
-
-  it("updates the sort when a different header is clicked", async () => {
-    const setSortDirection = vi.fn();
-    const setSortKey = vi.fn();
-    renderWithProviders(
-      <MachineListTable
-        callId={callId}
-        currentPage={1}
-        filter=""
-        grouping={null}
-        groups={groups}
-        hiddenGroups={[]}
-        machineCount={10}
-        machines={machines}
-        pageSize={20}
-        setCurrentPage={vi.fn()}
-        setHiddenGroups={vi.fn()}
-        setSortDirection={setSortDirection}
-        setSortKey={setSortKey}
-        sortDirection={SortDirection.DESCENDING}
-        sortKey={FetchGroupKey.CpuCount}
-        totalPages={1}
-      />,
-      { state }
-    );
-    const tableHeader = screen.getAllByRole("rowgroup")[0];
-    await userEvent.click(
-      within(tableHeader).getByRole("button", { name: /power/i })
-    );
-    expect(setSortKey).toHaveBeenCalledWith(FetchGroupKey.PowerState);
-    expect(setSortDirection).toHaveBeenCalledWith(SortDirection.DESCENDING);
-  });
-
-  it("displays correct selected string in group header", () => {
-    machines[1].status_code = NodeStatusCode.DEPLOYED;
-    renderWithProviders(
-      <MachineListTable
-        callId={callId}
-        currentPage={1}
-        filter=""
-        grouping={FetchGroupKey.Status}
-        groups={groups}
-        hiddenGroups={[]}
-        machineCount={10}
-        machines={machines}
-        pageSize={20}
-        setCurrentPage={vi.fn()}
-        setHiddenGroups={vi.fn()}
-        setSortDirection={vi.fn()}
-        setSortKey={vi.fn()}
-        sortDirection="none"
-        sortKey={null}
-        totalPages={1}
-      />,
-      { state }
-    );
-    expect(
-      within(
-        screen.getAllByRole("row", { name: /machines group/i })[0]
-      ).getByText("15 machines")
-    ).toBeInTheDocument();
-  });
-
-  it("shows the correct number of checkboxes", () => {
-    renderWithProviders(
-      <MachineListTable
-        callId={callId}
-        currentPage={1}
-        groups={groups}
-        machineCount={10}
-        machines={machines}
-        pageSize={20}
-        setCurrentPage={vi.fn()}
-        setSortDirection={vi.fn()}
-        setSortKey={vi.fn()}
-        showActions={true}
-        sortDirection="none"
-        sortKey={null}
-        totalPages={1}
-      />,
-      { state }
-    );
-    expect(screen.getAllByRole("checkbox").length).toBe(4);
-  });
-
-  it("does not show checkboxes if showActions is false", () => {
-    renderWithProviders(
-      <MachineListTable
-        callId={callId}
-        currentPage={1}
-        groups={groups}
-        machineCount={10}
-        machines={machines}
-        pageSize={20}
-        setCurrentPage={vi.fn()}
-        setSortDirection={vi.fn()}
-        setSortKey={vi.fn()}
-        showActions={false}
-        sortDirection="none"
-        sortKey={null}
-        totalPages={1}
-      />
-    );
-    expect(screen.queryAllByRole("checkbox").length).toBe(0);
-  });
-
-  describe("hiddenColumns", () => {
-    it("can render columns", () => {
-      renderWithProviders(
-        <MachineListTable
-          callId={callId}
-          currentPage={1}
-          groups={groups}
-          hiddenColumns={[]}
-          machineCount={10}
-          machines={machines}
-          pageSize={20}
-          setCurrentPage={vi.fn()}
-          setSortDirection={vi.fn()}
-          setSortKey={vi.fn()}
-          sortDirection="none"
-          sortKey={null}
-          totalPages={1}
-        />,
-        { state }
+      await userEvent.click(
+        within(getTableHeader()).getByRole("button", { name: "MAC" })
       );
+
+      expect(within(getTableBody()).getAllByRole("link")[0]).toHaveTextContent(
+        machines[0].pxe_mac!
+      );
+    });
+
+    it("can display the owner's full name instead of their username", async () => {
+      renderTable();
+
+      const getFirstOwnerCell = () =>
+        within(getBodyRows()[0]).getByRole("gridcell", { name: "Owner" });
+      expect(
+        within(getFirstOwnerCell()).getByText(mockUsers.items[0].username)
+      ).toBeInTheDocument();
+
+      await userEvent.click(
+        within(screen.getByRole("columnheader", { name: "Owner" })).getByRole(
+          "button",
+          { name: /Name/ }
+        )
+      );
+
+      await waitFor(() => {
+        expect(
+          within(getFirstOwnerCell()).getByText(
+            new RegExp(mockUsers.items[0].last_name!)
+          )
+        ).toBeInTheDocument();
+      });
+    });
+
+    it("can render all columns", () => {
+      renderTable({ hiddenColumns: [] });
+
+      expect(getTableHeader().querySelectorAll("th")).toHaveLength(11);
       expect(
         screen.getByRole("columnheader", { name: /power/i })
       ).toBeInTheDocument();
@@ -711,24 +328,7 @@ describe("MachineListTable", () => {
     });
 
     it("can hide columns", () => {
-      renderWithProviders(
-        <MachineListTable
-          callId={callId}
-          currentPage={1}
-          groups={groups}
-          hiddenColumns={["power", "zone"]}
-          machineCount={10}
-          machines={machines}
-          pageSize={20}
-          setCurrentPage={vi.fn()}
-          setSortDirection={vi.fn()}
-          setSortKey={vi.fn()}
-          sortDirection="none"
-          sortKey={null}
-          totalPages={1}
-        />,
-        { state }
-      );
+      renderTable({ hiddenColumns: ["power", "zone"] });
 
       expect(
         screen.queryByRole("columnheader", { name: /power/i })
@@ -736,57 +336,276 @@ describe("MachineListTable", () => {
       expect(
         screen.queryByRole("columnheader", { name: /zone/i })
       ).not.toBeInTheDocument();
+      expect(
+        within(getBodyRows()[0]).queryByRole("gridcell", { name: "Power" })
+      ).not.toBeInTheDocument();
     });
 
-    it("still displays fqdn if showActions is true", () => {
-      renderWithProviders(
-        <MachineListTable
-          callId={callId}
-          currentPage={1}
-          groups={groups}
-          hiddenColumns={["fqdn"]}
-          machineCount={10}
-          machines={machines}
-          pageSize={20}
-          setCurrentPage={vi.fn()}
-          setSortDirection={vi.fn()}
-          setSortKey={vi.fn()}
-          showActions
-          sortDirection="none"
-          sortKey={null}
-          totalPages={1}
-        />,
-        { state }
-      );
+    it("still displays the FQDN column if showActions is true", () => {
+      renderTable({ hiddenColumns: ["fqdn"], showActions: true });
 
       expect(
         screen.getByRole("columnheader", { name: /FQDN/i })
       ).toBeInTheDocument();
     });
 
-    it("hides fqdn if if showActions is false", () => {
-      renderWithProviders(
-        <MachineListTable
-          callId={callId}
-          currentPage={1}
-          groups={groups}
-          hiddenColumns={["fqdn"]}
-          machineCount={10}
-          machines={machines}
-          pageSize={20}
-          setCurrentPage={vi.fn()}
-          setSortDirection={vi.fn()}
-          setSortKey={vi.fn()}
-          showActions={false}
-          sortDirection="none"
-          sortKey={null}
-          totalPages={1}
-        />,
-        { state }
-      );
+    it("hides the FQDN column if showActions is false", () => {
+      renderTable({ hiddenColumns: ["fqdn"], showActions: false });
+
       expect(
         screen.queryByRole("columnheader", { name: /FQDN/i })
       ).not.toBeInTheDocument();
+    });
+  });
+
+  describe("sorting", () => {
+    it("updates the sort on header click", async () => {
+      const setSortDirection = vi.fn();
+      const setSortKey = vi.fn();
+      renderTable({ setSortDirection, setSortKey });
+
+      await userEvent.click(
+        within(getTableHeader()).getByRole("button", { name: /cores/i })
+      );
+
+      expect(setSortKey).toHaveBeenCalledWith(FetchGroupKey.CpuCount);
+      expect(setSortDirection).toHaveBeenCalledWith(SortDirection.DESCENDING);
+    });
+
+    it("clears the sort when the same header is clicked and is ascending", async () => {
+      const setSortDirection = vi.fn();
+      const setSortKey = vi.fn();
+      renderTable({
+        setSortDirection,
+        setSortKey,
+        sortDirection: SortDirection.ASCENDING,
+        sortKey: FetchGroupKey.CpuCount,
+      });
+
+      await userEvent.click(
+        within(getTableHeader()).getByRole("button", { name: /cores/i })
+      );
+
+      expect(setSortKey).toHaveBeenCalledWith(null);
+      expect(setSortDirection).toHaveBeenCalledWith(SortDirection.NONE);
+    });
+
+    it("updates the sort when the same header is clicked and is descending", async () => {
+      const setSortDirection = vi.fn();
+      const setSortKey = vi.fn();
+      renderTable({
+        setSortDirection,
+        setSortKey,
+        sortDirection: SortDirection.DESCENDING,
+        sortKey: FetchGroupKey.CpuCount,
+      });
+
+      await userEvent.click(
+        within(getTableHeader()).getByRole("button", { name: /cores/i })
+      );
+
+      expect(setSortKey).not.toHaveBeenCalled();
+      expect(setSortDirection).toHaveBeenCalledWith(SortDirection.ASCENDING);
+    });
+
+    it("updates the sort when the same header is clicked and direction is not set", async () => {
+      const setSortDirection = vi.fn();
+      const setSortKey = vi.fn();
+      renderTable({
+        setSortDirection,
+        setSortKey,
+        sortDirection: SortDirection.NONE,
+        sortKey: FetchGroupKey.CpuCount,
+      });
+
+      await userEvent.click(
+        within(getTableHeader()).getByRole("button", { name: /cores/i })
+      );
+
+      expect(setSortKey).not.toHaveBeenCalled();
+      expect(setSortDirection).toHaveBeenCalledWith(SortDirection.ASCENDING);
+    });
+
+    it("updates the sort when a different header is clicked", async () => {
+      const setSortDirection = vi.fn();
+      const setSortKey = vi.fn();
+      renderTable({
+        setSortDirection,
+        setSortKey,
+        sortDirection: SortDirection.DESCENDING,
+        sortKey: FetchGroupKey.CpuCount,
+      });
+
+      await userEvent.click(
+        within(getTableHeader()).getByRole("button", { name: /power/i })
+      );
+
+      expect(setSortKey).toHaveBeenCalledWith(FetchGroupKey.PowerState);
+      expect(setSortDirection).toHaveBeenCalledWith(SortDirection.DESCENDING);
+    });
+  });
+
+  describe("selection", () => {
+    it("displays a checkbox for all machines and for each machine", () => {
+      renderTable({ showActions: true });
+
+      expect(
+        screen.getByRole("checkbox", { name: "All machines" })
+      ).toBeInTheDocument();
+      expect(screen.getAllByRole("checkbox")).toHaveLength(machines.length + 1);
+    });
+
+    it("displays a checkbox for each group", () => {
+      renderTable({ grouping: FetchGroupKey.Status, showActions: true });
+
+      expect(
+        screen.getByRole("checkbox", { name: /Deployed/ })
+      ).toBeInTheDocument();
+      expect(
+        screen.getByRole("checkbox", { name: /Releasing/ })
+      ).toBeInTheDocument();
+    });
+
+    it("does not display checkboxes if showActions is false", () => {
+      renderTable({ grouping: FetchGroupKey.Status, showActions: false });
+
+      expect(screen.queryAllByRole("checkbox")).toHaveLength(0);
+    });
+
+    it("can select a machine", async () => {
+      const { store } = renderTable({ showActions: true });
+
+      await userEvent.click(screen.getByRole("checkbox", { name: /koala/ }));
+
+      const expected = machineActions.setSelected({ items: ["abc123"] });
+      expect(
+        store.getActions().find((action) => action.type === expected.type)
+      ).toStrictEqual(expected);
+    });
+
+    it("marks selected machines as selected rows", () => {
+      state.machine.selected = { items: [machines[0].system_id] };
+      renderTable();
+
+      expect(getMachineRow("koala")).toHaveAttribute("aria-selected", "true");
+      expect(getMachineRow("quokka")).toHaveAttribute("aria-selected", "false");
+      expect(getMachineRow("wombat")).toHaveAttribute("aria-selected", "false");
+    });
+
+    it.each([
+      {
+        // The group checkbox selects an expanded group's machines.
+        description: "all of its machines are selected",
+        selected: {
+          items: ["abc123", "ghi789"],
+          grouping: FetchGroupKey.Status,
+        },
+      },
+      {
+        description: "it is selected by value",
+        selected: { groups: ["deployed"], grouping: FetchGroupKey.Status },
+      },
+    ])("marks a group's rows as selected when $description", ({ selected }) => {
+      state.machine.selected = selected;
+      renderTable({ grouping: FetchGroupKey.Status });
+
+      expect(
+        screen.getByRole("row", { name: /Deployed machines group/i })
+      ).toHaveAttribute("aria-selected", "true");
+      expect(
+        screen.getByRole("row", { name: /Releasing machines group/i })
+      ).toHaveAttribute("aria-selected", "false");
+      expect(getMachineRow("koala")).toHaveAttribute("aria-selected", "true");
+      expect(getMachineRow("quokka")).toHaveAttribute("aria-selected", "true");
+      expect(getMachineRow("wombat")).toHaveAttribute("aria-selected", "false");
+    });
+  });
+
+  describe("pagination", () => {
+    it("displays the number of machines on the current page", () => {
+      renderTable({ machineCount: 120, pageSize: 50, totalPages: 3 });
+
+      expect(
+        screen.getByText(`Showing ${machines.length} out of 120 machines`)
+      ).toBeInTheDocument();
+    });
+
+    it("uses the server page count, which excludes collapsed groups", () => {
+      renderTable({ machineCount: 150, pageSize: 50, totalPages: 1 });
+
+      expect(
+        screen.getByRole("button", { name: "Next page" })
+      ).toBeAriaDisabled();
+    });
+
+    it("does not display pagination if there are no machines", () => {
+      renderTable({ groups: [], machineCount: 0, machines: [] });
+
+      expect(
+        screen.queryByRole("button", { name: "Next page" })
+      ).not.toBeInTheDocument();
+      expect(
+        screen.queryByRole("combobox", { name: "Items per page" })
+      ).not.toBeInTheDocument();
+    });
+
+    it("can change the page", async () => {
+      const setCurrentPage = vi.fn();
+      renderTable({
+        machineCount: 120,
+        pageSize: 50,
+        setCurrentPage,
+        totalPages: 3,
+      });
+
+      await userEvent.click(screen.getByRole("button", { name: "Next page" }));
+
+      expect(setCurrentPage).toHaveBeenCalledWith(2);
+    });
+
+    it("navigates once after a multi-digit page number is typed", async () => {
+      const setCurrentPage = vi.fn();
+      renderTable({ machineCount: 1500, setCurrentPage, totalPages: 30 });
+
+      const pageInput = screen.getByRole("spinbutton", { name: "page number" });
+      // Simulate selecting the current page and typing "2" then "5".
+      fireEvent.change(pageInput, { target: { value: "2" } });
+      fireEvent.change(pageInput, { target: { value: "25" } });
+
+      await waitFor(() => {
+        expect(setCurrentPage).toHaveBeenCalledWith(25);
+      });
+      expect(setCurrentPage).toHaveBeenCalledTimes(1);
+    });
+
+    it("offers the supported page sizes", () => {
+      renderTable();
+
+      const options = within(
+        screen.getByRole("combobox", { name: "Items per page" })
+      ).getAllByRole("option");
+      expect(options.map((option) => option.textContent)).toEqual(
+        PAGE_SIZES.map((size) => `${size}/page`)
+      );
+    });
+
+    it("returns to the first page when the page size changes", async () => {
+      const setCurrentPage = vi.fn();
+      const setPageSize = vi.fn();
+      renderTable({
+        currentPage: 2,
+        machineCount: 120,
+        setCurrentPage,
+        setPageSize,
+      });
+
+      await userEvent.selectOptions(
+        screen.getByRole("combobox", { name: "Items per page" }),
+        "100/page"
+      );
+
+      expect(setCurrentPage).toHaveBeenCalledWith(1);
+      expect(setPageSize).toHaveBeenCalledWith(100);
     });
   });
 });

@@ -134,7 +134,7 @@ When(
 );
 
 When("the user selects the commissioning group", () => {
-  cy.findByRole("grid", { name: /Machines/ }).within(() => {
+  cy.findByRole("treegrid", { name: /Machines/ }).within(() => {
     cy.findByRole("checkbox", { name: /Commissioning/i }).click({
       force: true,
     });
@@ -220,7 +220,7 @@ Then("the machine list heading should be visible", () => {
 });
 
 Then("the machines grid for {string} should exist", (groupBy: string) => {
-  cy.findByRole("grid", { name: `Machines - ${groupBy}` }).should("exist");
+  cy.findByRole("treegrid", { name: `Machines - ${groupBy}` }).should("exist");
 });
 
 Then("the text {string} should be visible", (text: string) => {
