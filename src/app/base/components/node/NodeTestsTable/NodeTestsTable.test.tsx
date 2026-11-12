@@ -1,4 +1,4 @@
-import type { Mock, SpyInstance } from "vitest";
+import type { Mock, MockInstance } from "vitest";
 
 import NodeTestsTable from "./NodeTestsTable";
 
@@ -25,7 +25,7 @@ describe("NodeTestsTable", () => {
   let machine: MachineDetails;
   let state: RootState;
   let mockSendAnalytics: Mock;
-  let mockUseSendAnalytics: SpyInstance;
+  let mockUseSendAnalytics: MockInstance;
 
   beforeEach(() => {
     machine = factory.machineDetails({

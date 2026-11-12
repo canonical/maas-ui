@@ -29,7 +29,7 @@ describe("GroupMembersTable", () => {
         <GroupMembersTable
           id={1}
           memberSelection={[]}
-          setMemberSelection={vi.fn}
+          setMemberSelection={vi.fn()}
         />
       );
 
@@ -46,7 +46,7 @@ describe("GroupMembersTable", () => {
         <GroupMembersTable
           id={1}
           memberSelection={[]}
-          setMemberSelection={vi.fn}
+          setMemberSelection={vi.fn()}
         />
       );
 
@@ -60,7 +60,7 @@ describe("GroupMembersTable", () => {
         <GroupMembersTable
           id={1}
           memberSelection={[]}
-          setMemberSelection={vi.fn}
+          setMemberSelection={vi.fn()}
         />
       );
 
@@ -103,7 +103,7 @@ describe("GroupMembersTable", () => {
         <GroupMembersTable
           id={1}
           memberSelection={[]}
-          setMemberSelection={vi.fn}
+          setMemberSelection={vi.fn()}
         />
       );
 

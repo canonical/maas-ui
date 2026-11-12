@@ -1,13 +1,9 @@
 import { expect } from "vitest";
 
-declare global {
-  // This is the simplest way of making sure our custom matcher is usable
-  // and doesn't cause lint errors.
-  // eslint-disable-next-line @typescript-eslint/no-namespace
-  namespace jest {
-    interface Matchers<R> {
-      toBeAriaDisabled(): R;
-    }
+declare module "vitest" {
+  // eslint-disable-next-line unused-imports/no-unused-vars
+  interface Matchers<R, T> {
+    toBeAriaDisabled(): R;
   }
 }
 

@@ -34,7 +34,7 @@ describe("GroupEntitlementsTable", () => {
         <GroupEntitlementsTable
           entitlementSelection={[]}
           id={1}
-          setEntitlementSelection={vi.fn}
+          setEntitlementSelection={vi.fn()}
         />
       );
 
@@ -51,7 +51,7 @@ describe("GroupEntitlementsTable", () => {
         <GroupEntitlementsTable
           entitlementSelection={[]}
           id={1}
-          setEntitlementSelection={vi.fn}
+          setEntitlementSelection={vi.fn()}
         />
       );
 
@@ -67,7 +67,7 @@ describe("GroupEntitlementsTable", () => {
         <GroupEntitlementsTable
           entitlementSelection={[]}
           id={1}
-          setEntitlementSelection={vi.fn}
+          setEntitlementSelection={vi.fn()}
         />
       );
 
@@ -110,7 +110,7 @@ describe("GroupEntitlementsTable", () => {
         <GroupEntitlementsTable
           entitlementSelection={[]}
           id={1}
-          setEntitlementSelection={vi.fn}
+          setEntitlementSelection={vi.fn()}
         />
       );
 

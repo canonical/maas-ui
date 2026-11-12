@@ -46,7 +46,7 @@ describe("DeleteImages", () => {
     renderWithProviders(
       <DeleteImages
         rowSelection={{ "1-selection": true, "4-custom": true }}
-        setRowSelection={vi.fn}
+        setRowSelection={vi.fn()}
       />
     );
     await waitForLoading();
@@ -66,7 +66,7 @@ describe("DeleteImages", () => {
 
   it("calls closeForm on cancel click", async () => {
     renderWithProviders(
-      <DeleteImages rowSelection={{}} setRowSelection={vi.fn} />
+      <DeleteImages rowSelection={{}} setRowSelection={vi.fn()} />
     );
     await waitForLoading();
     await userEvent.click(screen.getByRole("button", { name: "Cancel" }));
@@ -77,7 +77,7 @@ describe("DeleteImages", () => {
     renderWithProviders(
       <DeleteImages
         rowSelection={{ "1-selection": true, "4-custom": true }}
-        setRowSelection={vi.fn}
+        setRowSelection={vi.fn()}
       />
     );
     await waitForLoading();
@@ -97,7 +97,7 @@ describe("DeleteImages", () => {
     renderWithProviders(
       <DeleteImages
         rowSelection={{ "1-selection": true }}
-        setRowSelection={vi.fn}
+        setRowSelection={vi.fn()}
       />
     );
     await waitForLoading();

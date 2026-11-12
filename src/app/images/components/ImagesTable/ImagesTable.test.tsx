@@ -74,7 +74,7 @@ describe("ImagesTable", () => {
     it("displays a loading component if images are loading", async () => {
       mockIsPending();
       renderWithProviders(
-        <ImagesTable selectedRows={{}} setSelectedRows={vi.fn} />
+        <ImagesTable selectedRows={{}} setSelectedRows={vi.fn()} />
       );
 
       await waitFor(() => {
@@ -88,7 +88,7 @@ describe("ImagesTable", () => {
         imageResolvers.listCustomImages.handler({ items: [], total: 0 })
       );
       renderWithProviders(
-        <ImagesTable selectedRows={{}} setSelectedRows={vi.fn} />
+        <ImagesTable selectedRows={{}} setSelectedRows={vi.fn()} />
       );
 
       await waitFor(() => {
@@ -100,7 +100,7 @@ describe("ImagesTable", () => {
 
     it("displays the columns correctly", () => {
       renderWithProviders(
-        <ImagesTable selectedRows={{}} setSelectedRows={vi.fn} />
+        <ImagesTable selectedRows={{}} setSelectedRows={vi.fn()} />
       );
 
       [
@@ -124,7 +124,7 @@ describe("ImagesTable", () => {
       mockServer.use(imageResolvers.listSelectionStatistics.error());
 
       renderWithProviders(
-        <ImagesTable selectedRows={{}} setSelectedRows={vi.fn} />
+        <ImagesTable selectedRows={{}} setSelectedRows={vi.fn()} />
       );
 
       await waitFor(() => {
@@ -158,7 +158,7 @@ describe("ImagesTable", () => {
         })
       );
       renderWithProviders(
-        <ImagesTable selectedRows={{}} setSelectedRows={vi.fn} />
+        <ImagesTable selectedRows={{}} setSelectedRows={vi.fn()} />
       );
       await waitForLoading();
 
@@ -194,7 +194,7 @@ describe("ImagesTable", () => {
         })
       );
       renderWithProviders(
-        <ImagesTable selectedRows={{}} setSelectedRows={vi.fn} />
+        <ImagesTable selectedRows={{}} setSelectedRows={vi.fn()} />
       );
 
       await waitFor(() => {
@@ -218,7 +218,7 @@ describe("ImagesTable", () => {
         })
       );
       renderWithProviders(
-        <ImagesTable selectedRows={{}} setSelectedRows={vi.fn} />
+        <ImagesTable selectedRows={{}} setSelectedRows={vi.fn()} />
       );
       await waitForLoading();
 
@@ -251,7 +251,7 @@ describe("ImagesTable", () => {
         })
       );
       renderWithProviders(
-        <ImagesTable selectedRows={{}} setSelectedRows={vi.fn} />
+        <ImagesTable selectedRows={{}} setSelectedRows={vi.fn()} />
       );
       await waitForLoading();
 
@@ -326,7 +326,7 @@ describe("ImagesTable", () => {
         })
       );
       renderWithProviders(
-        <ImagesTable selectedRows={{}} setSelectedRows={vi.fn} />
+        <ImagesTable selectedRows={{}} setSelectedRows={vi.fn()} />
       );
       await waitForLoading();
 
@@ -367,7 +367,7 @@ describe("ImagesTable", () => {
         })
       );
       renderWithProviders(
-        <ImagesTable selectedRows={{}} setSelectedRows={vi.fn} />
+        <ImagesTable selectedRows={{}} setSelectedRows={vi.fn()} />
       );
       await waitForLoading();
 
@@ -413,7 +413,7 @@ describe("ImagesTable", () => {
         })
       );
       renderWithProviders(
-        <ImagesTable selectedRows={{}} setSelectedRows={vi.fn} />
+        <ImagesTable selectedRows={{}} setSelectedRows={vi.fn()} />
       );
       await waitForLoading();
 
@@ -472,7 +472,7 @@ describe("ImagesTable", () => {
         imageResolvers.addSelections.handler()
       );
       renderWithProviders(
-        <ImagesTable selectedRows={{}} setSelectedRows={vi.fn} />
+        <ImagesTable selectedRows={{}} setSelectedRows={vi.fn()} />
       );
       await waitForLoading();
 
@@ -506,7 +506,7 @@ describe("ImagesTable", () => {
         })
       );
       renderWithProviders(
-        <ImagesTable selectedRows={{}} setSelectedRows={vi.fn} />
+        <ImagesTable selectedRows={{}} setSelectedRows={vi.fn()} />
       );
 
       await waitFor(() => {
@@ -522,7 +522,7 @@ describe("ImagesTable", () => {
         title: "Delete image",
         props: {
           rowSelection: { "1-selection": true },
-          setRowSelection: vi.fn,
+          setRowSelection: expect.any(Function),
         },
       });
     });
@@ -549,7 +549,7 @@ describe("ImagesTable", () => {
         })
       );
       renderWithProviders(
-        <ImagesTable selectedRows={{}} setSelectedRows={vi.fn} />
+        <ImagesTable selectedRows={{}} setSelectedRows={vi.fn()} />
       );
 
       await waitFor(() => {
@@ -584,7 +584,7 @@ describe("ImagesTable", () => {
         })
       );
       renderWithProviders(
-        <ImagesTable selectedRows={{}} setSelectedRows={vi.fn} />
+        <ImagesTable selectedRows={{}} setSelectedRows={vi.fn()} />
       );
 
       await waitFor(() => {
@@ -615,7 +615,7 @@ describe("ImagesTable", () => {
       renderWithProviders(
         <ImagesTable
           selectedRows={{ "1-selection": true }}
-          setSelectedRows={vi.fn}
+          setSelectedRows={vi.fn()}
         />
       );
       await waitForLoading();
@@ -651,7 +651,7 @@ describe("ImagesTable", () => {
         imageSyncResolvers.startSynchronization.error()
       );
       renderWithProviders(
-        <ImagesTable selectedRows={{}} setSelectedRows={vi.fn} />
+        <ImagesTable selectedRows={{}} setSelectedRows={vi.fn()} />
       );
       await waitForLoading();
 
@@ -680,7 +680,7 @@ describe("ImagesTable", () => {
         imageSyncResolvers.stopSynchronization.error()
       );
       renderWithProviders(
-        <ImagesTable selectedRows={{}} setSelectedRows={vi.fn} />
+        <ImagesTable selectedRows={{}} setSelectedRows={vi.fn()} />
       );
       await waitForLoading();
 

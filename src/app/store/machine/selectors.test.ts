@@ -6,6 +6,14 @@ import { NodeActions, NodeStatusCode } from "@/app/store/types/node";
 import { callId, enableCallIdMocks } from "@/testing/callId-mock";
 import * as factory from "@/testing/factories";
 
+vi.mock("@reduxjs/toolkit", async () => {
+  const actual: object = await vi.importActual("@reduxjs/toolkit");
+  return {
+    ...actual,
+    nanoid: vi.fn(),
+  };
+});
+
 enableCallIdMocks();
 
 describe("machine selectors", () => {

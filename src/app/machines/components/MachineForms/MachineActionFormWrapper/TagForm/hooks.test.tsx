@@ -13,6 +13,14 @@ import { tagActions } from "@/app/store/tag";
 import * as factory from "@/testing/factories";
 import { waitFor } from "@/testing/utils";
 
+vi.mock("@reduxjs/toolkit", async () => {
+  const actual: object = await vi.importActual("@reduxjs/toolkit");
+  return {
+    ...actual,
+    nanoid: vi.fn(),
+  };
+});
+
 const mockStore = configureStore();
 
 describe("useSelectedTags", () => {
@@ -87,14 +95,6 @@ describe("useUnchangedTags", () => {
 });
 
 describe("useFetchTags", () => {
-  vi.mock("@reduxjs/toolkit", async () => {
-    const actual: object = await vi.importActual("@reduxjs/toolkit");
-    return {
-      ...actual,
-      nanoid: vi.fn(),
-    };
-  });
-
   beforeEach(() => {
     vi.spyOn(query, "generateCallId").mockReturnValue("mock-call-id");
     vi.spyOn(reduxToolkit, "nanoid").mockReturnValue("mock-call-id");
