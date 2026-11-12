@@ -1,7 +1,6 @@
 import DeviceDetailsHeader from "./DeviceDetailsHeader";
 
 import type { RootState } from "@/app/store/root/types";
-import { NodeActions } from "@/app/store/types/node";
 import * as factory from "@/testing/factories";
 import { screen, renderWithProviders } from "@/testing/utils";
 
@@ -62,9 +61,9 @@ describe("DeviceDetailsHeader", () => {
     );
   });
 
-  it("disables the Take action menu when no actions are available", () => {
+  it("disables the Take action menu without the edit permission", () => {
     state.device.items = [
-      factory.deviceDetails({ actions: [], system_id: "abc123" }),
+      factory.deviceDetails({ permissions: [], system_id: "abc123" }),
     ];
 
     renderWithProviders(<DeviceDetailsHeader systemId="abc123" />, { state });
@@ -74,10 +73,10 @@ describe("DeviceDetailsHeader", () => {
     ).toBeAriaDisabled();
   });
 
-  it("enables the Take action menu when actions are available", () => {
+  it("enables the Take action menu with the edit permission", () => {
     state.device.items = [
       factory.deviceDetails({
-        actions: [NodeActions.SET_ZONE],
+        permissions: ["edit"],
         system_id: "abc123",
       }),
     ];

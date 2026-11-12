@@ -88,7 +88,7 @@ const DeviceListHeader = ({
         </Button>
         <NodeActionMenu
           disabled={selectedDevices.every(
-            (device) => device.actions.length === 0
+            (device) => !device.permissions.includes("edit")
           )}
           filterActions
           hasSelection={selectedDevices.length > 0}

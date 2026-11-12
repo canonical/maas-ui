@@ -62,9 +62,19 @@ describe("node utils", () => {
     });
 
     it("handles whether a node can open an action form", () => {
-      const node = factory.device({ actions: [NodeActions.SET_ZONE] });
+      const node = factory.machine({ actions: [NodeActions.SET_ZONE] });
       expect(canOpenActionForm(node, NodeActions.SET_ZONE)).toBe(true);
       expect(canOpenActionForm(node, NodeActions.DELETE)).toBe(false);
+    });
+
+    it("gates device actions on the edit permission", () => {
+      const owned = factory.device({ actions: [], permissions: ["edit"] });
+      const notOwned = factory.device({
+        actions: [NodeActions.DELETE],
+        permissions: [],
+      });
+      expect(canOpenActionForm(owned, NodeActions.DELETE)).toBe(true);
+      expect(canOpenActionForm(notOwned, NodeActions.DELETE)).toBe(false);
     });
 
     it("handles whether a machine can open the clone action form", () => {
@@ -85,9 +95,14 @@ describe("node utils", () => {
         status: NodeStatus.NEW,
       });
       expect(canOpenActionForm(machine1, NodeActions.CLONE)).toBe(true);
-      expect(canOpenActionForm(machine2, NodeActions.CLONE)).toBe(true);
+      expect(canOpenActionForm(machine2, NodeActions.CLONE)).toBe(false);
       expect(canOpenActionForm(machine3, NodeActions.CLONE)).toBe(false);
       expect(canOpenActionForm(machine4, NodeActions.CLONE)).toBe(false);
+    });
+
+    it("allows soft power off when a machine can be powered off", () => {
+      const machine = factory.machine({ actions: [NodeActions.OFF] });
+      expect(canOpenActionForm(machine, NodeActions.SOFT_OFF)).toBe(true);
     });
   });
 });

@@ -190,7 +190,7 @@ export const router = createBrowserRouter(
               path: urls.machines.index,
               element: (
                 <RequireEntitlements
-                  entitlements={[Entitlement.CAN_VIEW_MACHINES]}
+                  entitlements={[Entitlement.CAN_VIEW_AVAILABLE_MACHINES]}
                 >
                   <ErrorBoundary>
                     <Machines />
@@ -238,25 +238,17 @@ export const router = createBrowserRouter(
             {
               path: `${urls.devices.index}/*`,
               element: (
-                <RequireEntitlements
-                  entitlements={[Entitlement.CAN_VIEW_DEVICES]}
-                >
-                  <ErrorBoundary>
-                    <DeviceList />
-                  </ErrorBoundary>
-                </RequireEntitlements>
+                <ErrorBoundary>
+                  <DeviceList />
+                </ErrorBoundary>
               ),
             },
             {
               path: `${urls.devices.device.index(null)}/*`,
               element: (
-                <RequireEntitlements
-                  entitlements={[Entitlement.CAN_VIEW_DEVICES]}
-                >
-                  <ErrorBoundary>
-                    <DeviceDetails />
-                  </ErrorBoundary>
-                </RequireEntitlements>
+                <ErrorBoundary>
+                  <DeviceDetails />
+                </ErrorBoundary>
               ),
             },
             {
@@ -410,7 +402,7 @@ export const router = createBrowserRouter(
               path: urls.machines.machine.index(null),
               element: (
                 <RequireEntitlements
-                  entitlements={[Entitlement.CAN_VIEW_MACHINES]}
+                  entitlements={[Entitlement.CAN_VIEW_AVAILABLE_MACHINES]}
                 >
                   <ErrorBoundary>
                     <MachineDetails />
