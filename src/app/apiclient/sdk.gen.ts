@@ -2,8 +2,10 @@
 
 import {
   type Client,
+  type ClientMeta,
   formDataBodySerializer,
   type Options as Options2,
+  type RequestResult,
   type TDataShape,
   urlSearchParamsBodySerializer,
 } from "./client";
@@ -51,6 +53,9 @@ import type {
   ClearRdnsAndMdnsDiscoveriesData,
   ClearRdnsAndMdnsDiscoveriesErrors,
   ClearRdnsAndMdnsDiscoveriesResponses,
+  CommissionMachineData,
+  CommissionMachineErrors,
+  CommissionMachineResponses,
   CompleteIntroData,
   CompleteIntroErrors,
   CompleteIntroResponses,
@@ -647,7 +652,7 @@ export type Options<
    * You can pass arbitrary values through the `meta` object. This can be
    * used to access values that aren't defined as part of the SDK function.
    */
-  meta?: Record<string, unknown>;
+  meta?: keyof ClientMeta extends never ? Record<string, unknown> : ClientMeta;
 };
 
 /**
@@ -655,7 +660,11 @@ export type Options<
  */
 export const listOauthProviders = <ThrowOnError extends boolean = false>(
   options?: Options<ListOauthProvidersData, ThrowOnError>
-) =>
+): RequestResult<
+  ListOauthProvidersResponses,
+  ListOauthProvidersErrors,
+  ThrowOnError
+> =>
   (options?.client ?? client).get<
     ListOauthProvidersResponses,
     ListOauthProvidersErrors,
@@ -671,7 +680,11 @@ export const listOauthProviders = <ThrowOnError extends boolean = false>(
  */
 export const createOauthProvider = <ThrowOnError extends boolean = false>(
   options: Options<CreateOauthProviderData, ThrowOnError>
-) =>
+): RequestResult<
+  CreateOauthProviderResponses,
+  CreateOauthProviderErrors,
+  ThrowOnError
+> =>
   (options.client ?? client).post<
     CreateOauthProviderResponses,
     CreateOauthProviderErrors,
@@ -691,7 +704,7 @@ export const createOauthProvider = <ThrowOnError extends boolean = false>(
  */
 export const createSession = <ThrowOnError extends boolean = false>(
   options?: Options<CreateSessionData, ThrowOnError>
-) =>
+): RequestResult<CreateSessionResponses, CreateSessionErrors, ThrowOnError> =>
   (options?.client ?? client).post<
     CreateSessionResponses,
     CreateSessionErrors,
@@ -707,7 +720,11 @@ export const createSession = <ThrowOnError extends boolean = false>(
  */
 export const deleteOauthProvider = <ThrowOnError extends boolean = false>(
   options: Options<DeleteOauthProviderData, ThrowOnError>
-) =>
+): RequestResult<
+  DeleteOauthProviderResponses,
+  DeleteOauthProviderErrors,
+  ThrowOnError
+> =>
   (options.client ?? client).delete<
     DeleteOauthProviderResponses,
     DeleteOauthProviderErrors,
@@ -723,7 +740,11 @@ export const deleteOauthProvider = <ThrowOnError extends boolean = false>(
  */
 export const getOauthProviderById = <ThrowOnError extends boolean = false>(
   options: Options<GetOauthProviderByIdData, ThrowOnError>
-) =>
+): RequestResult<
+  GetOauthProviderByIdResponses,
+  GetOauthProviderByIdErrors,
+  ThrowOnError
+> =>
   (options.client ?? client).get<
     GetOauthProviderByIdResponses,
     GetOauthProviderByIdErrors,
@@ -739,7 +760,11 @@ export const getOauthProviderById = <ThrowOnError extends boolean = false>(
  */
 export const updateOauthProvider = <ThrowOnError extends boolean = false>(
   options: Options<UpdateOauthProviderData, ThrowOnError>
-) =>
+): RequestResult<
+  UpdateOauthProviderResponses,
+  UpdateOauthProviderErrors,
+  ThrowOnError
+> =>
   (options.client ?? client).put<
     UpdateOauthProviderResponses,
     UpdateOauthProviderErrors,
@@ -759,7 +784,7 @@ export const updateOauthProvider = <ThrowOnError extends boolean = false>(
  */
 export const extendSession = <ThrowOnError extends boolean = false>(
   options?: Options<ExtendSessionData, ThrowOnError>
-) =>
+): RequestResult<ExtendSessionResponses, ExtendSessionErrors, ThrowOnError> =>
   (options?.client ?? client).post<
     ExtendSessionResponses,
     ExtendSessionErrors,
@@ -775,7 +800,7 @@ export const extendSession = <ThrowOnError extends boolean = false>(
  */
 export const getAccessToken = <ThrowOnError extends boolean = false>(
   options?: Options<GetAccessTokenData, ThrowOnError>
-) =>
+): RequestResult<GetAccessTokenResponses, GetAccessTokenErrors, ThrowOnError> =>
   (options?.client ?? client).get<
     GetAccessTokenResponses,
     GetAccessTokenErrors,
@@ -791,7 +816,11 @@ export const getAccessToken = <ThrowOnError extends boolean = false>(
  */
 export const getOauthProvider = <ThrowOnError extends boolean = false>(
   options?: Options<GetOauthProviderData, ThrowOnError>
-) =>
+): RequestResult<
+  GetOauthProviderResponses,
+  GetOauthProviderErrors,
+  ThrowOnError
+> =>
   (options?.client ?? client).get<
     GetOauthProviderResponses,
     GetOauthProviderErrors,
@@ -809,7 +838,11 @@ export const getOauthProvider = <ThrowOnError extends boolean = false>(
  */
 export const handleOauthCallback = <ThrowOnError extends boolean = false>(
   options: Options<HandleOauthCallbackData, ThrowOnError>
-) =>
+): RequestResult<
+  HandleOauthCallbackResponses,
+  HandleOauthCallbackErrors,
+  ThrowOnError
+> =>
   (options.client ?? client).get<
     HandleOauthCallbackResponses,
     HandleOauthCallbackErrors,
@@ -823,7 +856,11 @@ export const handleOauthCallback = <ThrowOnError extends boolean = false>(
  */
 export const initiateAuthFlow = <ThrowOnError extends boolean = false>(
   options: Options<InitiateAuthFlowData, ThrowOnError>
-) =>
+): RequestResult<
+  InitiateAuthFlowResponses,
+  InitiateAuthFlowErrors,
+  ThrowOnError
+> =>
   (options.client ?? client).get<
     InitiateAuthFlowResponses,
     InitiateAuthFlowErrors,
@@ -835,7 +872,7 @@ export const initiateAuthFlow = <ThrowOnError extends boolean = false>(
  */
 export const preLogin = <ThrowOnError extends boolean = false>(
   options?: Options<PreLoginData, ThrowOnError>
-) =>
+): RequestResult<PreLoginResponses, PreLoginErrors, ThrowOnError> =>
   (options?.client ?? client).get<
     PreLoginResponses,
     PreLoginErrors,
@@ -847,7 +884,7 @@ export const preLogin = <ThrowOnError extends boolean = false>(
  */
 export const login = <ThrowOnError extends boolean = false>(
   options: Options<LoginData, ThrowOnError>
-) =>
+): RequestResult<LoginResponses, LoginErrors, ThrowOnError> =>
   (options.client ?? client).post<LoginResponses, LoginErrors, ThrowOnError>({
     ...urlSearchParamsBodySerializer,
     url: "/MAAS/a/v3/auth/login",
@@ -863,7 +900,7 @@ export const login = <ThrowOnError extends boolean = false>(
  */
 export const logout = <ThrowOnError extends boolean = false>(
   options?: Options<LogoutData, ThrowOnError>
-) =>
+): RequestResult<LogoutResponses, LogoutErrors, ThrowOnError> =>
   (options?.client ?? client).post<LogoutResponses, LogoutErrors, ThrowOnError>(
     { url: "/MAAS/a/v3/auth/logout", ...options }
   );
@@ -873,7 +910,7 @@ export const logout = <ThrowOnError extends boolean = false>(
  */
 export const getBootloader = <ThrowOnError extends boolean = false>(
   options: Options<GetBootloaderData, ThrowOnError>
-) =>
+): RequestResult<GetBootloaderResponses, GetBootloaderErrors, ThrowOnError> =>
   (options.client ?? client).get<
     GetBootloaderResponses,
     GetBootloaderErrors,
@@ -889,7 +926,11 @@ export const getBootloader = <ThrowOnError extends boolean = false>(
  */
 export const listBootloaders = <ThrowOnError extends boolean = false>(
   options?: Options<ListBootloadersData, ThrowOnError>
-) =>
+): RequestResult<
+  ListBootloadersResponses,
+  ListBootloadersErrors,
+  ThrowOnError
+> =>
   (options?.client ?? client).get<
     ListBootloadersResponses,
     ListBootloadersErrors,
@@ -905,7 +946,11 @@ export const listBootloaders = <ThrowOnError extends boolean = false>(
  */
 export const listBootsources = <ThrowOnError extends boolean = false>(
   options?: Options<ListBootsourcesData, ThrowOnError>
-) =>
+): RequestResult<
+  ListBootsourcesResponses,
+  ListBootsourcesErrors,
+  ThrowOnError
+> =>
   (options?.client ?? client).get<
     ListBootsourcesResponses,
     ListBootsourcesErrors,
@@ -921,7 +966,11 @@ export const listBootsources = <ThrowOnError extends boolean = false>(
  */
 export const createBootsource = <ThrowOnError extends boolean = false>(
   options: Options<CreateBootsourceData, ThrowOnError>
-) =>
+): RequestResult<
+  CreateBootsourceResponses,
+  CreateBootsourceErrors,
+  ThrowOnError
+> =>
   (options.client ?? client).post<
     CreateBootsourceResponses,
     CreateBootsourceErrors,
@@ -943,7 +992,11 @@ export const listBootsourceBootsourceselection = <
   ThrowOnError extends boolean = false,
 >(
   options: Options<ListBootsourceBootsourceselectionData, ThrowOnError>
-) =>
+): RequestResult<
+  ListBootsourceBootsourceselectionResponses,
+  ListBootsourceBootsourceselectionErrors,
+  ThrowOnError
+> =>
   (options.client ?? client).get<
     ListBootsourceBootsourceselectionResponses,
     ListBootsourceBootsourceselectionErrors,
@@ -961,7 +1014,11 @@ export const createBootsourceBootsourceselection = <
   ThrowOnError extends boolean = false,
 >(
   options: Options<CreateBootsourceBootsourceselectionData, ThrowOnError>
-) =>
+): RequestResult<
+  CreateBootsourceBootsourceselectionResponses,
+  CreateBootsourceBootsourceselectionErrors,
+  ThrowOnError
+> =>
   (options.client ?? client).post<
     CreateBootsourceBootsourceselectionResponses,
     CreateBootsourceBootsourceselectionErrors,
@@ -981,7 +1038,11 @@ export const createBootsourceBootsourceselection = <
  */
 export const deleteBootsource = <ThrowOnError extends boolean = false>(
   options: Options<DeleteBootsourceData, ThrowOnError>
-) =>
+): RequestResult<
+  DeleteBootsourceResponses,
+  DeleteBootsourceErrors,
+  ThrowOnError
+> =>
   (options.client ?? client).delete<
     DeleteBootsourceResponses,
     DeleteBootsourceErrors,
@@ -997,7 +1058,7 @@ export const deleteBootsource = <ThrowOnError extends boolean = false>(
  */
 export const getBootsource = <ThrowOnError extends boolean = false>(
   options: Options<GetBootsourceData, ThrowOnError>
-) =>
+): RequestResult<GetBootsourceResponses, GetBootsourceErrors, ThrowOnError> =>
   (options.client ?? client).get<
     GetBootsourceResponses,
     GetBootsourceErrors,
@@ -1013,7 +1074,11 @@ export const getBootsource = <ThrowOnError extends boolean = false>(
  */
 export const updateBootsource = <ThrowOnError extends boolean = false>(
   options: Options<UpdateBootsourceData, ThrowOnError>
-) =>
+): RequestResult<
+  UpdateBootsourceResponses,
+  UpdateBootsourceErrors,
+  ThrowOnError
+> =>
   (options.client ?? client).put<
     UpdateBootsourceResponses,
     UpdateBootsourceErrors,
@@ -1035,7 +1100,11 @@ export const deleteBootsourceBootsourceselection = <
   ThrowOnError extends boolean = false,
 >(
   options: Options<DeleteBootsourceBootsourceselectionData, ThrowOnError>
-) =>
+): RequestResult<
+  DeleteBootsourceBootsourceselectionResponses,
+  DeleteBootsourceBootsourceselectionErrors,
+  ThrowOnError
+> =>
   (options.client ?? client).delete<
     DeleteBootsourceBootsourceselectionResponses,
     DeleteBootsourceBootsourceselectionErrors,
@@ -1053,7 +1122,11 @@ export const getBootsourceBootsourceselection = <
   ThrowOnError extends boolean = false,
 >(
   options: Options<GetBootsourceBootsourceselectionData, ThrowOnError>
-) =>
+): RequestResult<
+  GetBootsourceBootsourceselectionResponses,
+  GetBootsourceBootsourceselectionErrors,
+  ThrowOnError
+> =>
   (options.client ?? client).get<
     GetBootsourceBootsourceselectionResponses,
     GetBootsourceBootsourceselectionErrors,
@@ -1071,7 +1144,11 @@ export const fetchBootsourcesAvailableImages = <
   ThrowOnError extends boolean = false,
 >(
   options: Options<FetchBootsourcesAvailableImagesData, ThrowOnError>
-) =>
+): RequestResult<
+  FetchBootsourcesAvailableImagesResponses,
+  FetchBootsourcesAvailableImagesErrors,
+  ThrowOnError
+> =>
   (options.client ?? client).post<
     FetchBootsourcesAvailableImagesResponses,
     FetchBootsourcesAvailableImagesErrors,
@@ -1091,7 +1168,11 @@ export const fetchBootsourcesAvailableImages = <
  */
 export const getAllAvailableImages = <ThrowOnError extends boolean = false>(
   options?: Options<GetAllAvailableImagesData, ThrowOnError>
-) =>
+): RequestResult<
+  GetAllAvailableImagesResponses,
+  GetAllAvailableImagesErrors,
+  ThrowOnError
+> =>
   (options?.client ?? client).get<
     GetAllAvailableImagesResponses,
     GetAllAvailableImagesErrors,
@@ -1109,7 +1190,11 @@ export const getBootsourceAvailableImages = <
   ThrowOnError extends boolean = false,
 >(
   options: Options<GetBootsourceAvailableImagesData, ThrowOnError>
-) =>
+): RequestResult<
+  GetBootsourceAvailableImagesResponses,
+  GetBootsourceAvailableImagesErrors,
+  ThrowOnError
+> =>
   (options.client ?? client).get<
     GetBootsourceAvailableImagesResponses,
     GetBootsourceAvailableImagesErrors,
@@ -1127,7 +1212,11 @@ export const getBootsourceBootsourceselectionResource = <
   ThrowOnError extends boolean = false,
 >(
   options: Options<GetBootsourceBootsourceselectionResourceData, ThrowOnError>
-) =>
+): RequestResult<
+  GetBootsourceBootsourceselectionResourceResponses,
+  GetBootsourceBootsourceselectionResourceErrors,
+  ThrowOnError
+> =>
   (options.client ?? client).get<
     GetBootsourceBootsourceselectionResourceResponses,
     GetBootsourceBootsourceselectionResourceErrors,
@@ -1145,7 +1234,11 @@ export const listBootsourceBootsourceselectionResources = <
   ThrowOnError extends boolean = false,
 >(
   options: Options<ListBootsourceBootsourceselectionResourcesData, ThrowOnError>
-) =>
+): RequestResult<
+  ListBootsourceBootsourceselectionResourcesResponses,
+  ListBootsourceBootsourceselectionResourcesErrors,
+  ThrowOnError
+> =>
   (options.client ?? client).get<
     ListBootsourceBootsourceselectionResourcesResponses,
     ListBootsourceBootsourceselectionResourcesErrors,
@@ -1163,7 +1256,11 @@ export const stopSyncBootsourceBootsourceselection = <
   ThrowOnError extends boolean = false,
 >(
   options: Options<StopSyncBootsourceBootsourceselectionData, ThrowOnError>
-) =>
+): RequestResult<
+  StopSyncBootsourceBootsourceselectionResponses,
+  StopSyncBootsourceBootsourceselectionErrors,
+  ThrowOnError
+> =>
   (options.client ?? client).post<
     StopSyncBootsourceBootsourceselectionResponses,
     StopSyncBootsourceBootsourceselectionErrors,
@@ -1181,7 +1278,11 @@ export const syncBootsourceBootsourceselection = <
   ThrowOnError extends boolean = false,
 >(
   options: Options<SyncBootsourceBootsourceselectionData, ThrowOnError>
-) =>
+): RequestResult<
+  SyncBootsourceBootsourceselectionResponses,
+  SyncBootsourceBootsourceselectionErrors,
+  ThrowOnError
+> =>
   (options.client ?? client).post<
     SyncBootsourceBootsourceselectionResponses,
     SyncBootsourceBootsourceselectionErrors,
@@ -1197,7 +1298,11 @@ export const syncBootsourceBootsourceselection = <
  */
 export const updateManifestBootsources = <ThrowOnError extends boolean = false>(
   options?: Options<UpdateManifestBootsourcesData, ThrowOnError>
-) =>
+): RequestResult<
+  UpdateManifestBootsourcesResponses,
+  UpdateManifestBootsourcesErrors,
+  ThrowOnError
+> =>
   (options?.client ?? client).post<
     UpdateManifestBootsourcesResponses,
     UpdateManifestBootsourcesErrors,
@@ -1213,7 +1318,11 @@ export const updateManifestBootsources = <ThrowOnError extends boolean = false>(
  */
 export const listSelectionStatus = <ThrowOnError extends boolean = false>(
   options?: Options<ListSelectionStatusData, ThrowOnError>
-) =>
+): RequestResult<
+  ListSelectionStatusResponses,
+  ListSelectionStatusErrors,
+  ThrowOnError
+> =>
   (options?.client ?? client).get<
     ListSelectionStatusResponses,
     ListSelectionStatusErrors,
@@ -1229,7 +1338,11 @@ export const listSelectionStatus = <ThrowOnError extends boolean = false>(
  */
 export const getSelectionStatus = <ThrowOnError extends boolean = false>(
   options: Options<GetSelectionStatusData, ThrowOnError>
-) =>
+): RequestResult<
+  GetSelectionStatusResponses,
+  GetSelectionStatusErrors,
+  ThrowOnError
+> =>
   (options.client ?? client).get<
     GetSelectionStatusResponses,
     GetSelectionStatusErrors,
@@ -1245,7 +1358,11 @@ export const getSelectionStatus = <ThrowOnError extends boolean = false>(
  */
 export const listSelectionStatistic = <ThrowOnError extends boolean = false>(
   options?: Options<ListSelectionStatisticData, ThrowOnError>
-) =>
+): RequestResult<
+  ListSelectionStatisticResponses,
+  ListSelectionStatisticErrors,
+  ThrowOnError
+> =>
   (options?.client ?? client).get<
     ListSelectionStatisticResponses,
     ListSelectionStatisticErrors,
@@ -1261,7 +1378,11 @@ export const listSelectionStatistic = <ThrowOnError extends boolean = false>(
  */
 export const getSelectionStatistic = <ThrowOnError extends boolean = false>(
   options: Options<GetSelectionStatisticData, ThrowOnError>
-) =>
+): RequestResult<
+  GetSelectionStatisticResponses,
+  GetSelectionStatisticErrors,
+  ThrowOnError
+> =>
   (options.client ?? client).get<
     GetSelectionStatisticResponses,
     GetSelectionStatisticErrors,
@@ -1277,7 +1398,11 @@ export const getSelectionStatistic = <ThrowOnError extends boolean = false>(
  */
 export const bulkDeleteSelections = <ThrowOnError extends boolean = false>(
   options: Options<BulkDeleteSelectionsData, ThrowOnError>
-) =>
+): RequestResult<
+  BulkDeleteSelectionsResponses,
+  BulkDeleteSelectionsErrors,
+  ThrowOnError
+> =>
   (options.client ?? client).delete<
     BulkDeleteSelectionsResponses,
     BulkDeleteSelectionsErrors,
@@ -1293,7 +1418,7 @@ export const bulkDeleteSelections = <ThrowOnError extends boolean = false>(
  */
 export const listSelections = <ThrowOnError extends boolean = false>(
   options?: Options<ListSelectionsData, ThrowOnError>
-) =>
+): RequestResult<ListSelectionsResponses, ListSelectionsErrors, ThrowOnError> =>
   (options?.client ?? client).get<
     ListSelectionsResponses,
     ListSelectionsErrors,
@@ -1309,7 +1434,11 @@ export const listSelections = <ThrowOnError extends boolean = false>(
  */
 export const bulkCreateSelections = <ThrowOnError extends boolean = false>(
   options: Options<BulkCreateSelectionsData, ThrowOnError>
-) =>
+): RequestResult<
+  BulkCreateSelectionsResponses,
+  BulkCreateSelectionsErrors,
+  ThrowOnError
+> =>
   (options.client ?? client).post<
     BulkCreateSelectionsResponses,
     BulkCreateSelectionsErrors,
@@ -1329,7 +1458,7 @@ export const bulkCreateSelections = <ThrowOnError extends boolean = false>(
  */
 export const getSelection = <ThrowOnError extends boolean = false>(
   options: Options<GetSelectionData, ThrowOnError>
-) =>
+): RequestResult<GetSelectionResponses, GetSelectionErrors, ThrowOnError> =>
   (options.client ?? client).get<
     GetSelectionResponses,
     GetSelectionErrors,
@@ -1345,7 +1474,11 @@ export const getSelection = <ThrowOnError extends boolean = false>(
  */
 export const getConfiguration = <ThrowOnError extends boolean = false>(
   options: Options<GetConfigurationData, ThrowOnError>
-) =>
+): RequestResult<
+  GetConfigurationResponses,
+  GetConfigurationErrors,
+  ThrowOnError
+> =>
   (options.client ?? client).get<
     GetConfigurationResponses,
     GetConfigurationErrors,
@@ -1361,7 +1494,11 @@ export const getConfiguration = <ThrowOnError extends boolean = false>(
  */
 export const setConfiguration = <ThrowOnError extends boolean = false>(
   options: Options<SetConfigurationData, ThrowOnError>
-) =>
+): RequestResult<
+  SetConfigurationResponses,
+  SetConfigurationErrors,
+  ThrowOnError
+> =>
   (options.client ?? client).put<
     SetConfigurationResponses,
     SetConfigurationErrors,
@@ -1381,7 +1518,11 @@ export const setConfiguration = <ThrowOnError extends boolean = false>(
  */
 export const getConfigurations = <ThrowOnError extends boolean = false>(
   options?: Options<GetConfigurationsData, ThrowOnError>
-) =>
+): RequestResult<
+  GetConfigurationsResponses,
+  GetConfigurationsErrors,
+  ThrowOnError
+> =>
   (options?.client ?? client).get<
     GetConfigurationsResponses,
     GetConfigurationsErrors,
@@ -1397,7 +1538,11 @@ export const getConfigurations = <ThrowOnError extends boolean = false>(
  */
 export const setConfigurations = <ThrowOnError extends boolean = false>(
   options: Options<SetConfigurationsData, ThrowOnError>
-) =>
+): RequestResult<
+  SetConfigurationsResponses,
+  SetConfigurationsErrors,
+  ThrowOnError
+> =>
   (options.client ?? client).put<
     SetConfigurationsResponses,
     SetConfigurationsErrors,
@@ -1417,7 +1562,11 @@ export const setConfigurations = <ThrowOnError extends boolean = false>(
  */
 export const listCustomImagesStatus = <ThrowOnError extends boolean = false>(
   options?: Options<ListCustomImagesStatusData, ThrowOnError>
-) =>
+): RequestResult<
+  ListCustomImagesStatusResponses,
+  ListCustomImagesStatusErrors,
+  ThrowOnError
+> =>
   (options?.client ?? client).get<
     ListCustomImagesStatusResponses,
     ListCustomImagesStatusErrors,
@@ -1433,7 +1582,11 @@ export const listCustomImagesStatus = <ThrowOnError extends boolean = false>(
  */
 export const getCustomImageStatus = <ThrowOnError extends boolean = false>(
   options: Options<GetCustomImageStatusData, ThrowOnError>
-) =>
+): RequestResult<
+  GetCustomImageStatusResponses,
+  GetCustomImageStatusErrors,
+  ThrowOnError
+> =>
   (options.client ?? client).get<
     GetCustomImageStatusResponses,
     GetCustomImageStatusErrors,
@@ -1449,7 +1602,11 @@ export const getCustomImageStatus = <ThrowOnError extends boolean = false>(
  */
 export const listCustomImagesStatistic = <ThrowOnError extends boolean = false>(
   options?: Options<ListCustomImagesStatisticData, ThrowOnError>
-) =>
+): RequestResult<
+  ListCustomImagesStatisticResponses,
+  ListCustomImagesStatisticErrors,
+  ThrowOnError
+> =>
   (options?.client ?? client).get<
     ListCustomImagesStatisticResponses,
     ListCustomImagesStatisticErrors,
@@ -1465,7 +1622,11 @@ export const listCustomImagesStatistic = <ThrowOnError extends boolean = false>(
  */
 export const getCustomImageStatistic = <ThrowOnError extends boolean = false>(
   options: Options<GetCustomImageStatisticData, ThrowOnError>
-) =>
+): RequestResult<
+  GetCustomImageStatisticResponses,
+  GetCustomImageStatisticErrors,
+  ThrowOnError
+> =>
   (options.client ?? client).get<
     GetCustomImageStatisticResponses,
     GetCustomImageStatisticErrors,
@@ -1481,7 +1642,11 @@ export const getCustomImageStatistic = <ThrowOnError extends boolean = false>(
  */
 export const bulkDeleteCustomImages = <ThrowOnError extends boolean = false>(
   options: Options<BulkDeleteCustomImagesData, ThrowOnError>
-) =>
+): RequestResult<
+  BulkDeleteCustomImagesResponses,
+  BulkDeleteCustomImagesErrors,
+  ThrowOnError
+> =>
   (options.client ?? client).delete<
     BulkDeleteCustomImagesResponses,
     BulkDeleteCustomImagesErrors,
@@ -1497,7 +1662,11 @@ export const bulkDeleteCustomImages = <ThrowOnError extends boolean = false>(
  */
 export const listCustomImages = <ThrowOnError extends boolean = false>(
   options?: Options<ListCustomImagesData, ThrowOnError>
-) =>
+): RequestResult<
+  ListCustomImagesResponses,
+  ListCustomImagesErrors,
+  ThrowOnError
+> =>
   (options?.client ?? client).get<
     ListCustomImagesResponses,
     ListCustomImagesErrors,
@@ -1513,7 +1682,11 @@ export const listCustomImages = <ThrowOnError extends boolean = false>(
  */
 export const uploadCustomImage = <ThrowOnError extends boolean = false>(
   options: Options<UploadCustomImageData, ThrowOnError>
-) =>
+): RequestResult<
+  UploadCustomImageResponses,
+  UploadCustomImageErrors,
+  ThrowOnError
+> =>
   (options.client ?? client).post<
     UploadCustomImageResponses,
     UploadCustomImageErrors,
@@ -1534,7 +1707,11 @@ export const uploadCustomImage = <ThrowOnError extends boolean = false>(
  */
 export const deleteCustomImageById = <ThrowOnError extends boolean = false>(
   options: Options<DeleteCustomImageByIdData, ThrowOnError>
-) =>
+): RequestResult<
+  DeleteCustomImageByIdResponses,
+  DeleteCustomImageByIdErrors,
+  ThrowOnError
+> =>
   (options.client ?? client).delete<
     DeleteCustomImageByIdResponses,
     DeleteCustomImageByIdErrors,
@@ -1550,7 +1727,11 @@ export const deleteCustomImageById = <ThrowOnError extends boolean = false>(
  */
 export const getCustomImageById = <ThrowOnError extends boolean = false>(
   options: Options<GetCustomImageByIdData, ThrowOnError>
-) =>
+): RequestResult<
+  GetCustomImageByIdResponses,
+  GetCustomImageByIdErrors,
+  ThrowOnError
+> =>
   (options.client ?? client).get<
     GetCustomImageByIdResponses,
     GetCustomImageByIdErrors,
@@ -1566,7 +1747,7 @@ export const getCustomImageById = <ThrowOnError extends boolean = false>(
  */
 export const listEvents = <ThrowOnError extends boolean = false>(
   options?: Options<ListEventsData, ThrowOnError>
-) =>
+): RequestResult<ListEventsResponses, ListEventsErrors, ThrowOnError> =>
   (options?.client ?? client).get<
     ListEventsResponses,
     ListEventsErrors,
@@ -1584,7 +1765,11 @@ export const clearAllDiscoveriesWithOptionalIpAndMac = <
   ThrowOnError extends boolean = false,
 >(
   options?: Options<ClearAllDiscoveriesWithOptionalIpAndMacData, ThrowOnError>
-) =>
+): RequestResult<
+  ClearAllDiscoveriesWithOptionalIpAndMacResponses,
+  ClearAllDiscoveriesWithOptionalIpAndMacErrors,
+  ThrowOnError
+> =>
   (options?.client ?? client).delete<
     ClearAllDiscoveriesWithOptionalIpAndMacResponses,
     ClearAllDiscoveriesWithOptionalIpAndMacErrors,
@@ -1600,7 +1785,11 @@ export const clearAllDiscoveriesWithOptionalIpAndMac = <
  */
 export const listDiscoveries = <ThrowOnError extends boolean = false>(
   options?: Options<ListDiscoveriesData, ThrowOnError>
-) =>
+): RequestResult<
+  ListDiscoveriesResponses,
+  ListDiscoveriesErrors,
+  ThrowOnError
+> =>
   (options?.client ?? client).get<
     ListDiscoveriesResponses,
     ListDiscoveriesErrors,
@@ -1618,7 +1807,11 @@ export const clearNeighboursDiscoveries = <
   ThrowOnError extends boolean = false,
 >(
   options?: Options<ClearNeighboursDiscoveriesData, ThrowOnError>
-) =>
+): RequestResult<
+  ClearNeighboursDiscoveriesResponses,
+  ClearNeighboursDiscoveriesErrors,
+  ThrowOnError
+> =>
   (options?.client ?? client).delete<
     ClearNeighboursDiscoveriesResponses,
     ClearNeighboursDiscoveriesErrors,
@@ -1636,7 +1829,11 @@ export const clearRdnsAndMdnsDiscoveries = <
   ThrowOnError extends boolean = false,
 >(
   options?: Options<ClearRdnsAndMdnsDiscoveriesData, ThrowOnError>
-) =>
+): RequestResult<
+  ClearRdnsAndMdnsDiscoveriesResponses,
+  ClearRdnsAndMdnsDiscoveriesErrors,
+  ThrowOnError
+> =>
   (options?.client ?? client).delete<
     ClearRdnsAndMdnsDiscoveriesResponses,
     ClearRdnsAndMdnsDiscoveriesErrors,
@@ -1652,7 +1849,7 @@ export const clearRdnsAndMdnsDiscoveries = <
  */
 export const getDiscovery = <ThrowOnError extends boolean = false>(
   options: Options<GetDiscoveryData, ThrowOnError>
-) =>
+): RequestResult<GetDiscoveryResponses, GetDiscoveryErrors, ThrowOnError> =>
   (options.client ?? client).get<
     GetDiscoveryResponses,
     GetDiscoveryErrors,
@@ -1668,7 +1865,7 @@ export const getDiscovery = <ThrowOnError extends boolean = false>(
  */
 export const listDomains = <ThrowOnError extends boolean = false>(
   options?: Options<ListDomainsData, ThrowOnError>
-) =>
+): RequestResult<ListDomainsResponses, ListDomainsErrors, ThrowOnError> =>
   (options?.client ?? client).get<
     ListDomainsResponses,
     ListDomainsErrors,
@@ -1684,7 +1881,7 @@ export const listDomains = <ThrowOnError extends boolean = false>(
  */
 export const createDomain = <ThrowOnError extends boolean = false>(
   options: Options<CreateDomainData, ThrowOnError>
-) =>
+): RequestResult<CreateDomainResponses, CreateDomainErrors, ThrowOnError> =>
   (options.client ?? client).post<
     CreateDomainResponses,
     CreateDomainErrors,
@@ -1704,7 +1901,11 @@ export const createDomain = <ThrowOnError extends boolean = false>(
  */
 export const getDomainRrsets = <ThrowOnError extends boolean = false>(
   options: Options<GetDomainRrsetsData, ThrowOnError>
-) =>
+): RequestResult<
+  GetDomainRrsetsResponses,
+  GetDomainRrsetsErrors,
+  ThrowOnError
+> =>
   (options.client ?? client).get<
     GetDomainRrsetsResponses,
     GetDomainRrsetsErrors,
@@ -1720,7 +1921,11 @@ export const getDomainRrsets = <ThrowOnError extends boolean = false>(
  */
 export const createDomainRrsets = <ThrowOnError extends boolean = false>(
   options: Options<CreateDomainRrsetsData, ThrowOnError>
-) =>
+): RequestResult<
+  CreateDomainRrsetsResponses,
+  CreateDomainRrsetsErrors,
+  ThrowOnError
+> =>
   (options.client ?? client).post<
     CreateDomainRrsetsResponses,
     CreateDomainRrsetsErrors,
@@ -1740,7 +1945,7 @@ export const createDomainRrsets = <ThrowOnError extends boolean = false>(
  */
 export const deleteDomain = <ThrowOnError extends boolean = false>(
   options: Options<DeleteDomainData, ThrowOnError>
-) =>
+): RequestResult<DeleteDomainResponses, DeleteDomainErrors, ThrowOnError> =>
   (options.client ?? client).delete<
     DeleteDomainResponses,
     DeleteDomainErrors,
@@ -1756,7 +1961,7 @@ export const deleteDomain = <ThrowOnError extends boolean = false>(
  */
 export const getDomain = <ThrowOnError extends boolean = false>(
   options: Options<GetDomainData, ThrowOnError>
-) =>
+): RequestResult<GetDomainResponses, GetDomainErrors, ThrowOnError> =>
   (options.client ?? client).get<
     GetDomainResponses,
     GetDomainErrors,
@@ -1772,7 +1977,7 @@ export const getDomain = <ThrowOnError extends boolean = false>(
  */
 export const listFabrics = <ThrowOnError extends boolean = false>(
   options?: Options<ListFabricsData, ThrowOnError>
-) =>
+): RequestResult<ListFabricsResponses, ListFabricsErrors, ThrowOnError> =>
   (options?.client ?? client).get<
     ListFabricsResponses,
     ListFabricsErrors,
@@ -1788,7 +1993,7 @@ export const listFabrics = <ThrowOnError extends boolean = false>(
  */
 export const createFabric = <ThrowOnError extends boolean = false>(
   options: Options<CreateFabricData, ThrowOnError>
-) =>
+): RequestResult<CreateFabricResponses, CreateFabricErrors, ThrowOnError> =>
   (options.client ?? client).post<
     CreateFabricResponses,
     CreateFabricErrors,
@@ -1808,7 +2013,7 @@ export const createFabric = <ThrowOnError extends boolean = false>(
  */
 export const deleteFabric = <ThrowOnError extends boolean = false>(
   options: Options<DeleteFabricData, ThrowOnError>
-) =>
+): RequestResult<DeleteFabricResponses, DeleteFabricErrors, ThrowOnError> =>
   (options.client ?? client).delete<
     DeleteFabricResponses,
     DeleteFabricErrors,
@@ -1824,7 +2029,7 @@ export const deleteFabric = <ThrowOnError extends boolean = false>(
  */
 export const getFabric = <ThrowOnError extends boolean = false>(
   options: Options<GetFabricData, ThrowOnError>
-) =>
+): RequestResult<GetFabricResponses, GetFabricErrors, ThrowOnError> =>
   (options.client ?? client).get<
     GetFabricResponses,
     GetFabricErrors,
@@ -1840,7 +2045,7 @@ export const getFabric = <ThrowOnError extends boolean = false>(
  */
 export const updateFabric = <ThrowOnError extends boolean = false>(
   options: Options<UpdateFabricData, ThrowOnError>
-) =>
+): RequestResult<UpdateFabricResponses, UpdateFabricErrors, ThrowOnError> =>
   (options.client ?? client).put<
     UpdateFabricResponses,
     UpdateFabricErrors,
@@ -1860,7 +2065,7 @@ export const updateFabric = <ThrowOnError extends boolean = false>(
  */
 export const deleteFile = <ThrowOnError extends boolean = false>(
   options: Options<DeleteFileData, ThrowOnError>
-) =>
+): RequestResult<DeleteFileResponses, DeleteFileErrors, ThrowOnError> =>
   (options.client ?? client).delete<
     DeleteFileResponses,
     DeleteFileErrors,
@@ -1876,7 +2081,7 @@ export const deleteFile = <ThrowOnError extends boolean = false>(
  */
 export const listFiles = <ThrowOnError extends boolean = false>(
   options?: Options<ListFilesData, ThrowOnError>
-) =>
+): RequestResult<ListFilesResponses, ListFilesErrors, ThrowOnError> =>
   (options?.client ?? client).get<
     ListFilesResponses,
     ListFilesErrors,
@@ -1892,7 +2097,11 @@ export const listFiles = <ThrowOnError extends boolean = false>(
  */
 export const createOrReplaceFile = <ThrowOnError extends boolean = false>(
   options: Options<CreateOrReplaceFileData, ThrowOnError>
-) =>
+): RequestResult<
+  CreateOrReplaceFileResponses,
+  CreateOrReplaceFileErrors,
+  ThrowOnError
+> =>
   (options.client ?? client).put<
     CreateOrReplaceFileResponses,
     CreateOrReplaceFileErrors,
@@ -1913,7 +2122,7 @@ export const createOrReplaceFile = <ThrowOnError extends boolean = false>(
  */
 export const getFile = <ThrowOnError extends boolean = false>(
   options: Options<GetFileData, ThrowOnError>
-) =>
+): RequestResult<GetFileResponses, GetFileErrors, ThrowOnError> =>
   (options.client ?? client).get<GetFileResponses, GetFileErrors, ThrowOnError>(
     {
       security: [{ scheme: "bearer", type: "http" }],
@@ -1927,7 +2136,7 @@ export const getFile = <ThrowOnError extends boolean = false>(
  */
 export const getFileByKey = <ThrowOnError extends boolean = false>(
   options: Options<GetFileByKeyData, ThrowOnError>
-) =>
+): RequestResult<GetFileByKeyResponses, GetFileByKeyErrors, ThrowOnError> =>
   (options.client ?? client).get<
     GetFileByKeyResponses,
     GetFileByKeyErrors,
@@ -1943,7 +2152,7 @@ export const getFileByKey = <ThrowOnError extends boolean = false>(
  */
 export const listInterfaces = <ThrowOnError extends boolean = false>(
   options: Options<ListInterfacesData, ThrowOnError>
-) =>
+): RequestResult<ListInterfacesResponses, ListInterfacesErrors, ThrowOnError> =>
   (options.client ?? client).get<
     ListInterfacesResponses,
     ListInterfacesErrors,
@@ -1961,7 +2170,11 @@ export const listFabricVlanSubnetIprange = <
   ThrowOnError extends boolean = false,
 >(
   options: Options<ListFabricVlanSubnetIprangeData, ThrowOnError>
-) =>
+): RequestResult<
+  ListFabricVlanSubnetIprangeResponses,
+  ListFabricVlanSubnetIprangeErrors,
+  ThrowOnError
+> =>
   (options.client ?? client).get<
     ListFabricVlanSubnetIprangeResponses,
     ListFabricVlanSubnetIprangeErrors,
@@ -1979,7 +2192,11 @@ export const createFabricVlanSubnetIprange = <
   ThrowOnError extends boolean = false,
 >(
   options: Options<CreateFabricVlanSubnetIprangeData, ThrowOnError>
-) =>
+): RequestResult<
+  CreateFabricVlanSubnetIprangeResponses,
+  CreateFabricVlanSubnetIprangeErrors,
+  ThrowOnError
+> =>
   (options.client ?? client).post<
     CreateFabricVlanSubnetIprangeResponses,
     CreateFabricVlanSubnetIprangeErrors,
@@ -2001,7 +2218,11 @@ export const deleteFabricVlanSubnetIprange = <
   ThrowOnError extends boolean = false,
 >(
   options: Options<DeleteFabricVlanSubnetIprangeData, ThrowOnError>
-) =>
+): RequestResult<
+  DeleteFabricVlanSubnetIprangeResponses,
+  DeleteFabricVlanSubnetIprangeErrors,
+  ThrowOnError
+> =>
   (options.client ?? client).delete<
     DeleteFabricVlanSubnetIprangeResponses,
     DeleteFabricVlanSubnetIprangeErrors,
@@ -2019,7 +2240,11 @@ export const updateFabricVlanSubnetIprange = <
   ThrowOnError extends boolean = false,
 >(
   options: Options<UpdateFabricVlanSubnetIprangeData, ThrowOnError>
-) =>
+): RequestResult<
+  UpdateFabricVlanSubnetIprangeResponses,
+  UpdateFabricVlanSubnetIprangeErrors,
+  ThrowOnError
+> =>
   (options.client ?? client).put<
     UpdateFabricVlanSubnetIprangeResponses,
     UpdateFabricVlanSubnetIprangeErrors,
@@ -2041,7 +2266,11 @@ export const getFabricVlanSubnetIprange = <
   ThrowOnError extends boolean = false,
 >(
   options: Options<GetFabricVlanSubnetIprangeData, ThrowOnError>
-) =>
+): RequestResult<
+  GetFabricVlanSubnetIprangeResponses,
+  GetFabricVlanSubnetIprangeErrors,
+  ThrowOnError
+> =>
   (options.client ?? client).get<
     GetFabricVlanSubnetIprangeResponses,
     GetFabricVlanSubnetIprangeErrors,
@@ -2053,11 +2282,39 @@ export const getFabricVlanSubnetIprange = <
   });
 
 /**
+ * Commission Machine
+ */
+export const commissionMachine = <ThrowOnError extends boolean = false>(
+  options: Options<CommissionMachineData, ThrowOnError>
+): RequestResult<
+  CommissionMachineResponses,
+  CommissionMachineErrors,
+  ThrowOnError
+> =>
+  (options.client ?? client).post<
+    CommissionMachineResponses,
+    CommissionMachineErrors,
+    ThrowOnError
+  >({
+    security: [{ scheme: "bearer", type: "http" }],
+    url: "/MAAS/a/v3/machines/{system_id}:commission",
+    ...options,
+    headers: {
+      "Content-Type": "application/json",
+      ...options.headers,
+    },
+  });
+
+/**
  * Get Machine Power Parameters
  */
 export const getMachinePowerParameters = <ThrowOnError extends boolean = false>(
   options: Options<GetMachinePowerParametersData, ThrowOnError>
-) =>
+): RequestResult<
+  GetMachinePowerParametersResponses,
+  GetMachinePowerParametersErrors,
+  ThrowOnError
+> =>
   (options.client ?? client).get<
     GetMachinePowerParametersResponses,
     GetMachinePowerParametersErrors,
@@ -2073,7 +2330,11 @@ export const getMachinePowerParameters = <ThrowOnError extends boolean = false>(
  */
 export const listMachinePciDevices = <ThrowOnError extends boolean = false>(
   options: Options<ListMachinePciDevicesData, ThrowOnError>
-) =>
+): RequestResult<
+  ListMachinePciDevicesResponses,
+  ListMachinePciDevicesErrors,
+  ThrowOnError
+> =>
   (options.client ?? client).get<
     ListMachinePciDevicesResponses,
     ListMachinePciDevicesErrors,
@@ -2089,7 +2350,11 @@ export const listMachinePciDevices = <ThrowOnError extends boolean = false>(
  */
 export const listMachineUsbDevices = <ThrowOnError extends boolean = false>(
   options: Options<ListMachineUsbDevicesData, ThrowOnError>
-) =>
+): RequestResult<
+  ListMachineUsbDevicesResponses,
+  ListMachineUsbDevicesErrors,
+  ThrowOnError
+> =>
   (options.client ?? client).get<
     ListMachineUsbDevicesResponses,
     ListMachineUsbDevicesErrors,
@@ -2105,7 +2370,7 @@ export const listMachineUsbDevices = <ThrowOnError extends boolean = false>(
  */
 export const listMachines = <ThrowOnError extends boolean = false>(
   options?: Options<ListMachinesData, ThrowOnError>
-) =>
+): RequestResult<ListMachinesResponses, ListMachinesErrors, ThrowOnError> =>
   (options?.client ?? client).get<
     ListMachinesResponses,
     ListMachinesErrors,
@@ -2131,7 +2396,11 @@ export const listMachines = <ThrowOnError extends boolean = false>(
  */
 export const getNosInstaller = <ThrowOnError extends boolean = false>(
   options: Options<GetNosInstallerData, ThrowOnError>
-) =>
+): RequestResult<
+  GetNosInstallerResponses,
+  GetNosInstallerErrors,
+  ThrowOnError
+> =>
   (options.client ?? client).get<
     GetNosInstallerResponses,
     GetNosInstallerErrors,
@@ -2143,7 +2412,11 @@ export const getNosInstaller = <ThrowOnError extends boolean = false>(
  */
 export const listNotifications = <ThrowOnError extends boolean = false>(
   options?: Options<ListNotificationsData, ThrowOnError>
-) =>
+): RequestResult<
+  ListNotificationsResponses,
+  ListNotificationsErrors,
+  ThrowOnError
+> =>
   (options?.client ?? client).get<
     ListNotificationsResponses,
     ListNotificationsErrors,
@@ -2159,7 +2432,11 @@ export const listNotifications = <ThrowOnError extends boolean = false>(
  */
 export const createNotification = <ThrowOnError extends boolean = false>(
   options: Options<CreateNotificationData, ThrowOnError>
-) =>
+): RequestResult<
+  CreateNotificationResponses,
+  CreateNotificationErrors,
+  ThrowOnError
+> =>
   (options.client ?? client).post<
     CreateNotificationResponses,
     CreateNotificationErrors,
@@ -2179,7 +2456,11 @@ export const createNotification = <ThrowOnError extends boolean = false>(
  */
 export const deleteNotification = <ThrowOnError extends boolean = false>(
   options: Options<DeleteNotificationData, ThrowOnError>
-) =>
+): RequestResult<
+  DeleteNotificationResponses,
+  DeleteNotificationErrors,
+  ThrowOnError
+> =>
   (options.client ?? client).delete<
     DeleteNotificationResponses,
     DeleteNotificationErrors,
@@ -2195,7 +2476,11 @@ export const deleteNotification = <ThrowOnError extends boolean = false>(
  */
 export const getNotification = <ThrowOnError extends boolean = false>(
   options: Options<GetNotificationData, ThrowOnError>
-) =>
+): RequestResult<
+  GetNotificationResponses,
+  GetNotificationErrors,
+  ThrowOnError
+> =>
   (options.client ?? client).get<
     GetNotificationResponses,
     GetNotificationErrors,
@@ -2211,7 +2496,11 @@ export const getNotification = <ThrowOnError extends boolean = false>(
  */
 export const updateNotification = <ThrowOnError extends boolean = false>(
   options: Options<UpdateNotificationData, ThrowOnError>
-) =>
+): RequestResult<
+  UpdateNotificationResponses,
+  UpdateNotificationErrors,
+  ThrowOnError
+> =>
   (options.client ?? client).put<
     UpdateNotificationResponses,
     UpdateNotificationErrors,
@@ -2231,7 +2520,11 @@ export const updateNotification = <ThrowOnError extends boolean = false>(
  */
 export const dismissNotification = <ThrowOnError extends boolean = false>(
   options: Options<DismissNotificationData, ThrowOnError>
-) =>
+): RequestResult<
+  DismissNotificationResponses,
+  DismissNotificationErrors,
+  ThrowOnError
+> =>
   (options.client ?? client).post<
     DismissNotificationResponses,
     DismissNotificationErrors,
@@ -2249,7 +2542,11 @@ export const dismissNotification = <ThrowOnError extends boolean = false>(
  */
 export const cancelOperation = <ThrowOnError extends boolean = false>(
   options: Options<CancelOperationData, ThrowOnError>
-) =>
+): RequestResult<
+  CancelOperationResponses,
+  CancelOperationErrors,
+  ThrowOnError
+> =>
   (options.client ?? client).delete<
     CancelOperationResponses,
     CancelOperationErrors,
@@ -2267,7 +2564,7 @@ export const cancelOperation = <ThrowOnError extends boolean = false>(
  */
 export const getOperation = <ThrowOnError extends boolean = false>(
   options: Options<GetOperationData, ThrowOnError>
-) =>
+): RequestResult<GetOperationResponses, GetOperationErrors, ThrowOnError> =>
   (options.client ?? client).get<
     GetOperationResponses,
     GetOperationErrors,
@@ -2285,7 +2582,11 @@ export const getOperation = <ThrowOnError extends boolean = false>(
  */
 export const getOperationTasks = <ThrowOnError extends boolean = false>(
   options: Options<GetOperationTasksData, ThrowOnError>
-) =>
+): RequestResult<
+  GetOperationTasksResponses,
+  GetOperationTasksErrors,
+  ThrowOnError
+> =>
   (options.client ?? client).get<
     GetOperationTasksResponses,
     GetOperationTasksErrors,
@@ -2303,7 +2604,7 @@ export const getOperationTasks = <ThrowOnError extends boolean = false>(
  */
 export const listOperations = <ThrowOnError extends boolean = false>(
   options?: Options<ListOperationsData, ThrowOnError>
-) =>
+): RequestResult<ListOperationsResponses, ListOperationsErrors, ThrowOnError> =>
   (options?.client ?? client).get<
     ListOperationsResponses,
     ListOperationsErrors,
@@ -2319,7 +2620,11 @@ export const listOperations = <ThrowOnError extends boolean = false>(
  */
 export const listPackageRepositories = <ThrowOnError extends boolean = false>(
   options?: Options<ListPackageRepositoriesData, ThrowOnError>
-) =>
+): RequestResult<
+  ListPackageRepositoriesResponses,
+  ListPackageRepositoriesErrors,
+  ThrowOnError
+> =>
   (options?.client ?? client).get<
     ListPackageRepositoriesResponses,
     ListPackageRepositoriesErrors,
@@ -2335,7 +2640,11 @@ export const listPackageRepositories = <ThrowOnError extends boolean = false>(
  */
 export const createPackageRepository = <ThrowOnError extends boolean = false>(
   options: Options<CreatePackageRepositoryData, ThrowOnError>
-) =>
+): RequestResult<
+  CreatePackageRepositoryResponses,
+  CreatePackageRepositoryErrors,
+  ThrowOnError
+> =>
   (options.client ?? client).post<
     CreatePackageRepositoryResponses,
     CreatePackageRepositoryErrors,
@@ -2355,7 +2664,11 @@ export const createPackageRepository = <ThrowOnError extends boolean = false>(
  */
 export const deletePackageRepository = <ThrowOnError extends boolean = false>(
   options: Options<DeletePackageRepositoryData, ThrowOnError>
-) =>
+): RequestResult<
+  DeletePackageRepositoryResponses,
+  DeletePackageRepositoryErrors,
+  ThrowOnError
+> =>
   (options.client ?? client).delete<
     DeletePackageRepositoryResponses,
     DeletePackageRepositoryErrors,
@@ -2371,7 +2684,11 @@ export const deletePackageRepository = <ThrowOnError extends boolean = false>(
  */
 export const getPackageRepository = <ThrowOnError extends boolean = false>(
   options: Options<GetPackageRepositoryData, ThrowOnError>
-) =>
+): RequestResult<
+  GetPackageRepositoryResponses,
+  GetPackageRepositoryErrors,
+  ThrowOnError
+> =>
   (options.client ?? client).get<
     GetPackageRepositoryResponses,
     GetPackageRepositoryErrors,
@@ -2387,7 +2704,11 @@ export const getPackageRepository = <ThrowOnError extends boolean = false>(
  */
 export const updatePackageRepository = <ThrowOnError extends boolean = false>(
   options: Options<UpdatePackageRepositoryData, ThrowOnError>
-) =>
+): RequestResult<
+  UpdatePackageRepositoryResponses,
+  UpdatePackageRepositoryErrors,
+  ThrowOnError
+> =>
   (options.client ?? client).put<
     UpdatePackageRepositoryResponses,
     UpdatePackageRepositoryErrors,
@@ -2407,7 +2728,7 @@ export const updatePackageRepository = <ThrowOnError extends boolean = false>(
  */
 export const listPowerTypes = <ThrowOnError extends boolean = false>(
   options?: Options<ListPowerTypesData, ThrowOnError>
-) =>
+): RequestResult<ListPowerTypesResponses, ListPowerTypesErrors, ThrowOnError> =>
   (options?.client ?? client).get<
     ListPowerTypesResponses,
     ListPowerTypesErrors,
@@ -2423,7 +2744,7 @@ export const listPowerTypes = <ThrowOnError extends boolean = false>(
  */
 export const listRacks = <ThrowOnError extends boolean = false>(
   options?: Options<ListRacksData, ThrowOnError>
-) =>
+): RequestResult<ListRacksResponses, ListRacksErrors, ThrowOnError> =>
   (options?.client ?? client).get<
     ListRacksResponses,
     ListRacksErrors,
@@ -2439,7 +2760,7 @@ export const listRacks = <ThrowOnError extends boolean = false>(
  */
 export const createRack = <ThrowOnError extends boolean = false>(
   options: Options<CreateRackData, ThrowOnError>
-) =>
+): RequestResult<CreateRackResponses, CreateRackErrors, ThrowOnError> =>
   (options.client ?? client).post<
     CreateRackResponses,
     CreateRackErrors,
@@ -2459,7 +2780,11 @@ export const createRack = <ThrowOnError extends boolean = false>(
  */
 export const deleteRackAgent = <ThrowOnError extends boolean = false>(
   options: Options<DeleteRackAgentData, ThrowOnError>
-) =>
+): RequestResult<
+  DeleteRackAgentResponses,
+  DeleteRackAgentErrors,
+  ThrowOnError
+> =>
   (options.client ?? client).delete<
     DeleteRackAgentResponses,
     DeleteRackAgentErrors,
@@ -2475,7 +2800,7 @@ export const deleteRackAgent = <ThrowOnError extends boolean = false>(
  */
 export const getRackAgent = <ThrowOnError extends boolean = false>(
   options: Options<GetRackAgentData, ThrowOnError>
-) =>
+): RequestResult<GetRackAgentResponses, GetRackAgentErrors, ThrowOnError> =>
   (options.client ?? client).get<
     GetRackAgentResponses,
     GetRackAgentErrors,
@@ -2491,7 +2816,7 @@ export const getRackAgent = <ThrowOnError extends boolean = false>(
  */
 export const deleteRacks = <ThrowOnError extends boolean = false>(
   options: Options<DeleteRacksData, ThrowOnError>
-) =>
+): RequestResult<DeleteRacksResponses, DeleteRacksErrors, ThrowOnError> =>
   (options.client ?? client).delete<
     DeleteRacksResponses,
     DeleteRacksErrors,
@@ -2507,7 +2832,7 @@ export const deleteRacks = <ThrowOnError extends boolean = false>(
  */
 export const getRack = <ThrowOnError extends boolean = false>(
   options: Options<GetRackData, ThrowOnError>
-) =>
+): RequestResult<GetRackResponses, GetRackErrors, ThrowOnError> =>
   (options.client ?? client).get<GetRackResponses, GetRackErrors, ThrowOnError>(
     {
       security: [{ scheme: "bearer", type: "http" }],
@@ -2521,7 +2846,7 @@ export const getRack = <ThrowOnError extends boolean = false>(
  */
 export const updateRack = <ThrowOnError extends boolean = false>(
   options: Options<UpdateRackData, ThrowOnError>
-) =>
+): RequestResult<UpdateRackResponses, UpdateRackErrors, ThrowOnError> =>
   (options.client ?? client).put<
     UpdateRackResponses,
     UpdateRackErrors,
@@ -2543,7 +2868,11 @@ export const generateRackBootstrapToken = <
   ThrowOnError extends boolean = false,
 >(
   options: Options<GenerateRackBootstrapTokenData, ThrowOnError>
-) =>
+): RequestResult<
+  GenerateRackBootstrapTokenResponses,
+  GenerateRackBootstrapTokenErrors,
+  ThrowOnError
+> =>
   (options.client ?? client).post<
     GenerateRackBootstrapTokenResponses,
     GenerateRackBootstrapTokenErrors,
@@ -2559,7 +2888,7 @@ export const generateRackBootstrapToken = <
  */
 export const listRackAgents = <ThrowOnError extends boolean = false>(
   options: Options<ListRackAgentsData, ThrowOnError>
-) =>
+): RequestResult<ListRackAgentsResponses, ListRackAgentsErrors, ThrowOnError> =>
   (options.client ?? client).get<
     ListRackAgentsResponses,
     ListRackAgentsErrors,
@@ -2575,7 +2904,11 @@ export const listRackAgents = <ThrowOnError extends boolean = false>(
  */
 export const listRacksWithSummary = <ThrowOnError extends boolean = false>(
   options?: Options<ListRacksWithSummaryData, ThrowOnError>
-) =>
+): RequestResult<
+  ListRacksWithSummaryResponses,
+  ListRacksWithSummaryErrors,
+  ThrowOnError
+> =>
   (options?.client ?? client).get<
     ListRacksWithSummaryResponses,
     ListRacksWithSummaryErrors,
@@ -2593,7 +2926,11 @@ export const listFabricVlanSubnetReservedIps = <
   ThrowOnError extends boolean = false,
 >(
   options: Options<ListFabricVlanSubnetReservedIpsData, ThrowOnError>
-) =>
+): RequestResult<
+  ListFabricVlanSubnetReservedIpsResponses,
+  ListFabricVlanSubnetReservedIpsErrors,
+  ThrowOnError
+> =>
   (options.client ?? client).get<
     ListFabricVlanSubnetReservedIpsResponses,
     ListFabricVlanSubnetReservedIpsErrors,
@@ -2611,7 +2948,11 @@ export const createFabricVlanSubnetReservedIp = <
   ThrowOnError extends boolean = false,
 >(
   options: Options<CreateFabricVlanSubnetReservedIpData, ThrowOnError>
-) =>
+): RequestResult<
+  CreateFabricVlanSubnetReservedIpResponses,
+  CreateFabricVlanSubnetReservedIpErrors,
+  ThrowOnError
+> =>
   (options.client ?? client).post<
     CreateFabricVlanSubnetReservedIpResponses,
     CreateFabricVlanSubnetReservedIpErrors,
@@ -2633,7 +2974,11 @@ export const deleteFabricVlanSubnetReservedIp = <
   ThrowOnError extends boolean = false,
 >(
   options: Options<DeleteFabricVlanSubnetReservedIpData, ThrowOnError>
-) =>
+): RequestResult<
+  DeleteFabricVlanSubnetReservedIpResponses,
+  DeleteFabricVlanSubnetReservedIpErrors,
+  ThrowOnError
+> =>
   (options.client ?? client).delete<
     DeleteFabricVlanSubnetReservedIpResponses,
     DeleteFabricVlanSubnetReservedIpErrors,
@@ -2651,7 +2996,11 @@ export const updateFabricVlanSubnetReservedIp = <
   ThrowOnError extends boolean = false,
 >(
   options: Options<UpdateFabricVlanSubnetReservedIpData, ThrowOnError>
-) =>
+): RequestResult<
+  UpdateFabricVlanSubnetReservedIpResponses,
+  UpdateFabricVlanSubnetReservedIpErrors,
+  ThrowOnError
+> =>
   (options.client ?? client).put<
     UpdateFabricVlanSubnetReservedIpResponses,
     UpdateFabricVlanSubnetReservedIpErrors,
@@ -2673,7 +3022,11 @@ export const getFabricVlanSubnetReservedIp = <
   ThrowOnError extends boolean = false,
 >(
   options: Options<GetFabricVlanSubnetReservedIpData, ThrowOnError>
-) =>
+): RequestResult<
+  GetFabricVlanSubnetReservedIpResponses,
+  GetFabricVlanSubnetReservedIpErrors,
+  ThrowOnError
+> =>
   (options.client ?? client).get<
     GetFabricVlanSubnetReservedIpResponses,
     GetFabricVlanSubnetReservedIpErrors,
@@ -2689,7 +3042,11 @@ export const getFabricVlanSubnetReservedIp = <
  */
 export const listResourcePools = <ThrowOnError extends boolean = false>(
   options?: Options<ListResourcePoolsData, ThrowOnError>
-) =>
+): RequestResult<
+  ListResourcePoolsResponses,
+  ListResourcePoolsErrors,
+  ThrowOnError
+> =>
   (options?.client ?? client).get<
     ListResourcePoolsResponses,
     ListResourcePoolsErrors,
@@ -2705,7 +3062,11 @@ export const listResourcePools = <ThrowOnError extends boolean = false>(
  */
 export const createResourcePool = <ThrowOnError extends boolean = false>(
   options: Options<CreateResourcePoolData, ThrowOnError>
-) =>
+): RequestResult<
+  CreateResourcePoolResponses,
+  CreateResourcePoolErrors,
+  ThrowOnError
+> =>
   (options.client ?? client).post<
     CreateResourcePoolResponses,
     CreateResourcePoolErrors,
@@ -2725,7 +3086,11 @@ export const createResourcePool = <ThrowOnError extends boolean = false>(
  */
 export const deleteResourcePool = <ThrowOnError extends boolean = false>(
   options: Options<DeleteResourcePoolData, ThrowOnError>
-) =>
+): RequestResult<
+  DeleteResourcePoolResponses,
+  DeleteResourcePoolErrors,
+  ThrowOnError
+> =>
   (options.client ?? client).delete<
     DeleteResourcePoolResponses,
     DeleteResourcePoolErrors,
@@ -2741,7 +3106,11 @@ export const deleteResourcePool = <ThrowOnError extends boolean = false>(
  */
 export const getResourcePool = <ThrowOnError extends boolean = false>(
   options: Options<GetResourcePoolData, ThrowOnError>
-) =>
+): RequestResult<
+  GetResourcePoolResponses,
+  GetResourcePoolErrors,
+  ThrowOnError
+> =>
   (options.client ?? client).get<
     GetResourcePoolResponses,
     GetResourcePoolErrors,
@@ -2757,7 +3126,11 @@ export const getResourcePool = <ThrowOnError extends boolean = false>(
  */
 export const updateResourcePool = <ThrowOnError extends boolean = false>(
   options: Options<UpdateResourcePoolData, ThrowOnError>
-) =>
+): RequestResult<
+  UpdateResourcePoolResponses,
+  UpdateResourcePoolErrors,
+  ThrowOnError
+> =>
   (options.client ?? client).put<
     UpdateResourcePoolResponses,
     UpdateResourcePoolErrors,
@@ -2781,7 +3154,11 @@ export const listResourcePoolsStatistics = <
   ThrowOnError extends boolean = false,
 >(
   options?: Options<ListResourcePoolsStatisticsData, ThrowOnError>
-) =>
+): RequestResult<
+  ListResourcePoolsStatisticsResponses,
+  ListResourcePoolsStatisticsErrors,
+  ThrowOnError
+> =>
   (options?.client ?? client).get<
     ListResourcePoolsStatisticsResponses,
     ListResourcePoolsStatisticsErrors,
@@ -2797,7 +3174,7 @@ export const listResourcePoolsStatistics = <
  */
 export const getSystemInfo = <ThrowOnError extends boolean = false>(
   options?: Options<GetSystemInfoData, ThrowOnError>
-) =>
+): RequestResult<GetSystemInfoResponses, GetSystemInfoErrors, ThrowOnError> =>
   (options?.client ?? client).get<
     GetSystemInfoResponses,
     GetSystemInfoErrors,
@@ -2815,7 +3192,11 @@ export const listFabricVlanSubnetStaticroutes = <
   ThrowOnError extends boolean = false,
 >(
   options: Options<ListFabricVlanSubnetStaticroutesData, ThrowOnError>
-) =>
+): RequestResult<
+  ListFabricVlanSubnetStaticroutesResponses,
+  ListFabricVlanSubnetStaticroutesErrors,
+  ThrowOnError
+> =>
   (options.client ?? client).get<
     ListFabricVlanSubnetStaticroutesResponses,
     ListFabricVlanSubnetStaticroutesErrors,
@@ -2833,7 +3214,11 @@ export const createFabricVlanSubnetStaticroute = <
   ThrowOnError extends boolean = false,
 >(
   options: Options<CreateFabricVlanSubnetStaticrouteData, ThrowOnError>
-) =>
+): RequestResult<
+  CreateFabricVlanSubnetStaticrouteResponses,
+  CreateFabricVlanSubnetStaticrouteErrors,
+  ThrowOnError
+> =>
   (options.client ?? client).post<
     CreateFabricVlanSubnetStaticrouteResponses,
     CreateFabricVlanSubnetStaticrouteErrors,
@@ -2855,7 +3240,11 @@ export const deleteFabricVlanSubnetStaticroute = <
   ThrowOnError extends boolean = false,
 >(
   options: Options<DeleteFabricVlanSubnetStaticrouteData, ThrowOnError>
-) =>
+): RequestResult<
+  DeleteFabricVlanSubnetStaticrouteResponses,
+  DeleteFabricVlanSubnetStaticrouteErrors,
+  ThrowOnError
+> =>
   (options.client ?? client).delete<
     DeleteFabricVlanSubnetStaticrouteResponses,
     DeleteFabricVlanSubnetStaticrouteErrors,
@@ -2873,7 +3262,11 @@ export const getFabricVlanSubnetStaticroute = <
   ThrowOnError extends boolean = false,
 >(
   options: Options<GetFabricVlanSubnetStaticrouteData, ThrowOnError>
-) =>
+): RequestResult<
+  GetFabricVlanSubnetStaticrouteResponses,
+  GetFabricVlanSubnetStaticrouteErrors,
+  ThrowOnError
+> =>
   (options.client ?? client).get<
     GetFabricVlanSubnetStaticrouteResponses,
     GetFabricVlanSubnetStaticrouteErrors,
@@ -2891,7 +3284,11 @@ export const updateFabricVlanSubnetStaticroute = <
   ThrowOnError extends boolean = false,
 >(
   options: Options<UpdateFabricVlanSubnetStaticrouteData, ThrowOnError>
-) =>
+): RequestResult<
+  UpdateFabricVlanSubnetStaticrouteResponses,
+  UpdateFabricVlanSubnetStaticrouteErrors,
+  ThrowOnError
+> =>
   (options.client ?? client).put<
     UpdateFabricVlanSubnetStaticrouteResponses,
     UpdateFabricVlanSubnetStaticrouteErrors,
@@ -2911,7 +3308,7 @@ export const updateFabricVlanSubnetStaticroute = <
  */
 export const listSpaces = <ThrowOnError extends boolean = false>(
   options?: Options<ListSpacesData, ThrowOnError>
-) =>
+): RequestResult<ListSpacesResponses, ListSpacesErrors, ThrowOnError> =>
   (options?.client ?? client).get<
     ListSpacesResponses,
     ListSpacesErrors,
@@ -2927,7 +3324,7 @@ export const listSpaces = <ThrowOnError extends boolean = false>(
  */
 export const createSpace = <ThrowOnError extends boolean = false>(
   options: Options<CreateSpaceData, ThrowOnError>
-) =>
+): RequestResult<CreateSpaceResponses, CreateSpaceErrors, ThrowOnError> =>
   (options.client ?? client).post<
     CreateSpaceResponses,
     CreateSpaceErrors,
@@ -2947,7 +3344,7 @@ export const createSpace = <ThrowOnError extends boolean = false>(
  */
 export const deleteSpace = <ThrowOnError extends boolean = false>(
   options: Options<DeleteSpaceData, ThrowOnError>
-) =>
+): RequestResult<DeleteSpaceResponses, DeleteSpaceErrors, ThrowOnError> =>
   (options.client ?? client).delete<
     DeleteSpaceResponses,
     DeleteSpaceErrors,
@@ -2963,7 +3360,7 @@ export const deleteSpace = <ThrowOnError extends boolean = false>(
  */
 export const getSpace = <ThrowOnError extends boolean = false>(
   options: Options<GetSpaceData, ThrowOnError>
-) =>
+): RequestResult<GetSpaceResponses, GetSpaceErrors, ThrowOnError> =>
   (options.client ?? client).get<
     GetSpaceResponses,
     GetSpaceErrors,
@@ -2979,7 +3376,7 @@ export const getSpace = <ThrowOnError extends boolean = false>(
  */
 export const updateSpace = <ThrowOnError extends boolean = false>(
   options: Options<UpdateSpaceData, ThrowOnError>
-) =>
+): RequestResult<UpdateSpaceResponses, UpdateSpaceErrors, ThrowOnError> =>
   (options.client ?? client).put<
     UpdateSpaceResponses,
     UpdateSpaceErrors,
@@ -2999,7 +3396,11 @@ export const updateSpace = <ThrowOnError extends boolean = false>(
  */
 export const listUserSshkeys = <ThrowOnError extends boolean = false>(
   options?: Options<ListUserSshkeysData, ThrowOnError>
-) =>
+): RequestResult<
+  ListUserSshkeysResponses,
+  ListUserSshkeysErrors,
+  ThrowOnError
+> =>
   (options?.client ?? client).get<
     ListUserSshkeysResponses,
     ListUserSshkeysErrors,
@@ -3015,7 +3416,11 @@ export const listUserSshkeys = <ThrowOnError extends boolean = false>(
  */
 export const createUserSshkeys = <ThrowOnError extends boolean = false>(
   options: Options<CreateUserSshkeysData, ThrowOnError>
-) =>
+): RequestResult<
+  CreateUserSshkeysResponses,
+  CreateUserSshkeysErrors,
+  ThrowOnError
+> =>
   (options.client ?? client).post<
     CreateUserSshkeysResponses,
     CreateUserSshkeysErrors,
@@ -3035,7 +3440,11 @@ export const createUserSshkeys = <ThrowOnError extends boolean = false>(
  */
 export const deleteUserSshkey = <ThrowOnError extends boolean = false>(
   options: Options<DeleteUserSshkeyData, ThrowOnError>
-) =>
+): RequestResult<
+  DeleteUserSshkeyResponses,
+  DeleteUserSshkeyErrors,
+  ThrowOnError
+> =>
   (options.client ?? client).delete<
     DeleteUserSshkeyResponses,
     DeleteUserSshkeyErrors,
@@ -3051,7 +3460,7 @@ export const deleteUserSshkey = <ThrowOnError extends boolean = false>(
  */
 export const getUserSshkey = <ThrowOnError extends boolean = false>(
   options: Options<GetUserSshkeyData, ThrowOnError>
-) =>
+): RequestResult<GetUserSshkeyResponses, GetUserSshkeyErrors, ThrowOnError> =>
   (options.client ?? client).get<
     GetUserSshkeyResponses,
     GetUserSshkeyErrors,
@@ -3067,7 +3476,11 @@ export const getUserSshkey = <ThrowOnError extends boolean = false>(
  */
 export const importUserSshkeys = <ThrowOnError extends boolean = false>(
   options: Options<ImportUserSshkeysData, ThrowOnError>
-) =>
+): RequestResult<
+  ImportUserSshkeysResponses,
+  ImportUserSshkeysErrors,
+  ThrowOnError
+> =>
   (options.client ?? client).post<
     ImportUserSshkeysResponses,
     ImportUserSshkeysErrors,
@@ -3087,7 +3500,7 @@ export const importUserSshkeys = <ThrowOnError extends boolean = false>(
  */
 export const getUserSslkeys = <ThrowOnError extends boolean = false>(
   options?: Options<GetUserSslkeysData, ThrowOnError>
-) =>
+): RequestResult<GetUserSslkeysResponses, GetUserSslkeysErrors, ThrowOnError> =>
   (options?.client ?? client).get<
     GetUserSslkeysResponses,
     GetUserSslkeysErrors,
@@ -3103,7 +3516,11 @@ export const getUserSslkeys = <ThrowOnError extends boolean = false>(
  */
 export const createUserSslkey = <ThrowOnError extends boolean = false>(
   options: Options<CreateUserSslkeyData, ThrowOnError>
-) =>
+): RequestResult<
+  CreateUserSslkeyResponses,
+  CreateUserSslkeyErrors,
+  ThrowOnError
+> =>
   (options.client ?? client).post<
     CreateUserSslkeyResponses,
     CreateUserSslkeyErrors,
@@ -3123,7 +3540,11 @@ export const createUserSslkey = <ThrowOnError extends boolean = false>(
  */
 export const deleteUserSslkey = <ThrowOnError extends boolean = false>(
   options: Options<DeleteUserSslkeyData, ThrowOnError>
-) =>
+): RequestResult<
+  DeleteUserSslkeyResponses,
+  DeleteUserSslkeyErrors,
+  ThrowOnError
+> =>
   (options.client ?? client).delete<
     DeleteUserSslkeyResponses,
     DeleteUserSslkeyErrors,
@@ -3139,7 +3560,7 @@ export const deleteUserSslkey = <ThrowOnError extends boolean = false>(
  */
 export const getUserSslkey = <ThrowOnError extends boolean = false>(
   options: Options<GetUserSslkeyData, ThrowOnError>
-) =>
+): RequestResult<GetUserSslkeyResponses, GetUserSslkeyErrors, ThrowOnError> =>
   (options.client ?? client).get<
     GetUserSslkeyResponses,
     GetUserSslkeyErrors,
@@ -3155,7 +3576,11 @@ export const getUserSslkey = <ThrowOnError extends boolean = false>(
  */
 export const listUserSslkeysStatistics = <ThrowOnError extends boolean = false>(
   options?: Options<ListUserSslkeysStatisticsData, ThrowOnError>
-) =>
+): RequestResult<
+  ListUserSslkeysStatisticsResponses,
+  ListUserSslkeysStatisticsErrors,
+  ThrowOnError
+> =>
   (options?.client ?? client).get<
     ListUserSslkeysStatisticsResponses,
     ListUserSslkeysStatisticsErrors,
@@ -3171,7 +3596,11 @@ export const listUserSslkeysStatistics = <ThrowOnError extends boolean = false>(
  */
 export const listSshHostKeys = <ThrowOnError extends boolean = false>(
   options?: Options<ListSshHostKeysData, ThrowOnError>
-) =>
+): RequestResult<
+  ListSshHostKeysResponses,
+  ListSshHostKeysErrors,
+  ThrowOnError
+> =>
   (options?.client ?? client).get<
     ListSshHostKeysResponses,
     ListSshHostKeysErrors,
@@ -3187,7 +3616,11 @@ export const listSshHostKeys = <ThrowOnError extends boolean = false>(
  */
 export const createSshHostKey = <ThrowOnError extends boolean = false>(
   options: Options<CreateSshHostKeyData, ThrowOnError>
-) =>
+): RequestResult<
+  CreateSshHostKeyResponses,
+  CreateSshHostKeyErrors,
+  ThrowOnError
+> =>
   (options.client ?? client).post<
     CreateSshHostKeyResponses,
     CreateSshHostKeyErrors,
@@ -3207,7 +3640,11 @@ export const createSshHostKey = <ThrowOnError extends boolean = false>(
  */
 export const deleteSshHostKey = <ThrowOnError extends boolean = false>(
   options: Options<DeleteSshHostKeyData, ThrowOnError>
-) =>
+): RequestResult<
+  DeleteSshHostKeyResponses,
+  DeleteSshHostKeyErrors,
+  ThrowOnError
+> =>
   (options.client ?? client).delete<
     DeleteSshHostKeyResponses,
     DeleteSshHostKeyErrors,
@@ -3223,7 +3660,7 @@ export const deleteSshHostKey = <ThrowOnError extends boolean = false>(
  */
 export const getSshHostKey = <ThrowOnError extends boolean = false>(
   options: Options<GetSshHostKeyData, ThrowOnError>
-) =>
+): RequestResult<GetSshHostKeyResponses, GetSshHostKeyErrors, ThrowOnError> =>
   (options.client ?? client).get<
     GetSshHostKeyResponses,
     GetSshHostKeyErrors,
@@ -3239,7 +3676,11 @@ export const getSshHostKey = <ThrowOnError extends boolean = false>(
  */
 export const updateSshHostKey = <ThrowOnError extends boolean = false>(
   options: Options<UpdateSshHostKeyData, ThrowOnError>
-) =>
+): RequestResult<
+  UpdateSshHostKeyResponses,
+  UpdateSshHostKeyErrors,
+  ThrowOnError
+> =>
   (options.client ?? client).put<
     UpdateSshHostKeyResponses,
     UpdateSshHostKeyErrors,
@@ -3259,7 +3700,11 @@ export const updateSshHostKey = <ThrowOnError extends boolean = false>(
  */
 export const listFabricVlanSubnets = <ThrowOnError extends boolean = false>(
   options: Options<ListFabricVlanSubnetsData, ThrowOnError>
-) =>
+): RequestResult<
+  ListFabricVlanSubnetsResponses,
+  ListFabricVlanSubnetsErrors,
+  ThrowOnError
+> =>
   (options.client ?? client).get<
     ListFabricVlanSubnetsResponses,
     ListFabricVlanSubnetsErrors,
@@ -3275,7 +3720,11 @@ export const listFabricVlanSubnets = <ThrowOnError extends boolean = false>(
  */
 export const createFabricVlanSubnet = <ThrowOnError extends boolean = false>(
   options: Options<CreateFabricVlanSubnetData, ThrowOnError>
-) =>
+): RequestResult<
+  CreateFabricVlanSubnetResponses,
+  CreateFabricVlanSubnetErrors,
+  ThrowOnError
+> =>
   (options.client ?? client).post<
     CreateFabricVlanSubnetResponses,
     CreateFabricVlanSubnetErrors,
@@ -3295,7 +3744,11 @@ export const createFabricVlanSubnet = <ThrowOnError extends boolean = false>(
  */
 export const deleteFabricVlanSubnet = <ThrowOnError extends boolean = false>(
   options: Options<DeleteFabricVlanSubnetData, ThrowOnError>
-) =>
+): RequestResult<
+  DeleteFabricVlanSubnetResponses,
+  DeleteFabricVlanSubnetErrors,
+  ThrowOnError
+> =>
   (options.client ?? client).delete<
     DeleteFabricVlanSubnetResponses,
     DeleteFabricVlanSubnetErrors,
@@ -3311,7 +3764,11 @@ export const deleteFabricVlanSubnet = <ThrowOnError extends boolean = false>(
  */
 export const updateFabricVlanSubnet = <ThrowOnError extends boolean = false>(
   options: Options<UpdateFabricVlanSubnetData, ThrowOnError>
-) =>
+): RequestResult<
+  UpdateFabricVlanSubnetResponses,
+  UpdateFabricVlanSubnetErrors,
+  ThrowOnError
+> =>
   (options.client ?? client).put<
     UpdateFabricVlanSubnetResponses,
     UpdateFabricVlanSubnetErrors,
@@ -3331,7 +3788,11 @@ export const updateFabricVlanSubnet = <ThrowOnError extends boolean = false>(
  */
 export const getFabricVlanSubnet = <ThrowOnError extends boolean = false>(
   options: Options<GetFabricVlanSubnetData, ThrowOnError>
-) =>
+): RequestResult<
+  GetFabricVlanSubnetResponses,
+  GetFabricVlanSubnetErrors,
+  ThrowOnError
+> =>
   (options.client ?? client).get<
     GetFabricVlanSubnetResponses,
     GetFabricVlanSubnetErrors,
@@ -3352,7 +3813,7 @@ export const getFabricVlanSubnet = <ThrowOnError extends boolean = false>(
  */
 export const listSwitches = <ThrowOnError extends boolean = false>(
   options?: Options<ListSwitchesData, ThrowOnError>
-) =>
+): RequestResult<ListSwitchesResponses, ListSwitchesErrors, ThrowOnError> =>
   (options?.client ?? client).get<
     ListSwitchesResponses,
     ListSwitchesErrors,
@@ -3373,7 +3834,7 @@ export const listSwitches = <ThrowOnError extends boolean = false>(
  */
 export const createSwitch = <ThrowOnError extends boolean = false>(
   options: Options<CreateSwitchData, ThrowOnError>
-) =>
+): RequestResult<CreateSwitchResponses, CreateSwitchErrors, ThrowOnError> =>
   (options.client ?? client).post<
     CreateSwitchResponses,
     CreateSwitchErrors,
@@ -3398,7 +3859,7 @@ export const createSwitch = <ThrowOnError extends boolean = false>(
  */
 export const deleteSwitch = <ThrowOnError extends boolean = false>(
   options: Options<DeleteSwitchData, ThrowOnError>
-) =>
+): RequestResult<DeleteSwitchResponses, DeleteSwitchErrors, ThrowOnError> =>
   (options.client ?? client).delete<
     DeleteSwitchResponses,
     DeleteSwitchErrors,
@@ -3419,7 +3880,7 @@ export const deleteSwitch = <ThrowOnError extends boolean = false>(
  */
 export const getSwitch = <ThrowOnError extends boolean = false>(
   options: Options<GetSwitchData, ThrowOnError>
-) =>
+): RequestResult<GetSwitchResponses, GetSwitchErrors, ThrowOnError> =>
   (options.client ?? client).get<
     GetSwitchResponses,
     GetSwitchErrors,
@@ -3440,7 +3901,7 @@ export const getSwitch = <ThrowOnError extends boolean = false>(
  */
 export const updateSwitch = <ThrowOnError extends boolean = false>(
   options: Options<UpdateSwitchData, ThrowOnError>
-) =>
+): RequestResult<UpdateSwitchResponses, UpdateSwitchErrors, ThrowOnError> =>
   (options.client ?? client).patch<
     UpdateSwitchResponses,
     UpdateSwitchErrors,
@@ -3460,7 +3921,7 @@ export const updateSwitch = <ThrowOnError extends boolean = false>(
  */
 export const listTags = <ThrowOnError extends boolean = false>(
   options?: Options<ListTagsData, ThrowOnError>
-) =>
+): RequestResult<ListTagsResponses, ListTagsErrors, ThrowOnError> =>
   (options?.client ?? client).get<
     ListTagsResponses,
     ListTagsErrors,
@@ -3476,7 +3937,7 @@ export const listTags = <ThrowOnError extends boolean = false>(
  */
 export const createTag = <ThrowOnError extends boolean = false>(
   options: Options<CreateTagData, ThrowOnError>
-) =>
+): RequestResult<CreateTagResponses, CreateTagErrors, ThrowOnError> =>
   (options.client ?? client).post<
     CreateTagResponses,
     CreateTagErrors,
@@ -3496,7 +3957,7 @@ export const createTag = <ThrowOnError extends boolean = false>(
  */
 export const deleteTag = <ThrowOnError extends boolean = false>(
   options: Options<DeleteTagData, ThrowOnError>
-) =>
+): RequestResult<DeleteTagResponses, DeleteTagErrors, ThrowOnError> =>
   (options.client ?? client).delete<
     DeleteTagResponses,
     DeleteTagErrors,
@@ -3512,7 +3973,7 @@ export const deleteTag = <ThrowOnError extends boolean = false>(
  */
 export const getTag = <ThrowOnError extends boolean = false>(
   options: Options<GetTagData, ThrowOnError>
-) =>
+): RequestResult<GetTagResponses, GetTagErrors, ThrowOnError> =>
   (options.client ?? client).get<GetTagResponses, GetTagErrors, ThrowOnError>({
     security: [{ scheme: "bearer", type: "http" }],
     url: "/MAAS/a/v3/tags/{tag_id}",
@@ -3524,7 +3985,7 @@ export const getTag = <ThrowOnError extends boolean = false>(
  */
 export const updateTag = <ThrowOnError extends boolean = false>(
   options: Options<UpdateTagData, ThrowOnError>
-) =>
+): RequestResult<UpdateTagResponses, UpdateTagErrors, ThrowOnError> =>
   (options.client ?? client).put<
     UpdateTagResponses,
     UpdateTagErrors,
@@ -3544,7 +4005,7 @@ export const updateTag = <ThrowOnError extends boolean = false>(
  */
 export const evaluateTag = <ThrowOnError extends boolean = false>(
   options: Options<EvaluateTagData, ThrowOnError>
-) =>
+): RequestResult<EvaluateTagResponses, EvaluateTagErrors, ThrowOnError> =>
   (options.client ?? client).post<
     EvaluateTagResponses,
     EvaluateTagErrors,
@@ -3560,7 +4021,11 @@ export const evaluateTag = <ThrowOnError extends boolean = false>(
  */
 export const removeGroupEntitlement = <ThrowOnError extends boolean = false>(
   options: Options<RemoveGroupEntitlementData, ThrowOnError>
-) =>
+): RequestResult<
+  RemoveGroupEntitlementResponses,
+  RemoveGroupEntitlementErrors,
+  ThrowOnError
+> =>
   (options.client ?? client).delete<
     RemoveGroupEntitlementResponses,
     RemoveGroupEntitlementErrors,
@@ -3576,7 +4041,11 @@ export const removeGroupEntitlement = <ThrowOnError extends boolean = false>(
  */
 export const listGroupEntitlements = <ThrowOnError extends boolean = false>(
   options: Options<ListGroupEntitlementsData, ThrowOnError>
-) =>
+): RequestResult<
+  ListGroupEntitlementsResponses,
+  ListGroupEntitlementsErrors,
+  ThrowOnError
+> =>
   (options.client ?? client).get<
     ListGroupEntitlementsResponses,
     ListGroupEntitlementsErrors,
@@ -3592,7 +4061,11 @@ export const listGroupEntitlements = <ThrowOnError extends boolean = false>(
  */
 export const addGroupEntitlement = <ThrowOnError extends boolean = false>(
   options: Options<AddGroupEntitlementData, ThrowOnError>
-) =>
+): RequestResult<
+  AddGroupEntitlementResponses,
+  AddGroupEntitlementErrors,
+  ThrowOnError
+> =>
   (options.client ?? client).post<
     AddGroupEntitlementResponses,
     AddGroupEntitlementErrors,
@@ -3612,7 +4085,11 @@ export const addGroupEntitlement = <ThrowOnError extends boolean = false>(
  */
 export const bulkRemoveGroupMembers = <ThrowOnError extends boolean = false>(
   options: Options<BulkRemoveGroupMembersData, ThrowOnError>
-) =>
+): RequestResult<
+  BulkRemoveGroupMembersResponses,
+  BulkRemoveGroupMembersErrors,
+  ThrowOnError
+> =>
   (options.client ?? client).delete<
     BulkRemoveGroupMembersResponses,
     BulkRemoveGroupMembersErrors,
@@ -3628,7 +4105,11 @@ export const bulkRemoveGroupMembers = <ThrowOnError extends boolean = false>(
  */
 export const listGroupMembers = <ThrowOnError extends boolean = false>(
   options: Options<ListGroupMembersData, ThrowOnError>
-) =>
+): RequestResult<
+  ListGroupMembersResponses,
+  ListGroupMembersErrors,
+  ThrowOnError
+> =>
   (options.client ?? client).get<
     ListGroupMembersResponses,
     ListGroupMembersErrors,
@@ -3644,7 +4125,7 @@ export const listGroupMembers = <ThrowOnError extends boolean = false>(
  */
 export const addGroupMember = <ThrowOnError extends boolean = false>(
   options: Options<AddGroupMemberData, ThrowOnError>
-) =>
+): RequestResult<AddGroupMemberResponses, AddGroupMemberErrors, ThrowOnError> =>
   (options.client ?? client).post<
     AddGroupMemberResponses,
     AddGroupMemberErrors,
@@ -3664,7 +4145,11 @@ export const addGroupMember = <ThrowOnError extends boolean = false>(
  */
 export const bulkAddGroupMembers = <ThrowOnError extends boolean = false>(
   options: Options<BulkAddGroupMembersData, ThrowOnError>
-) =>
+): RequestResult<
+  BulkAddGroupMembersResponses,
+  BulkAddGroupMembersErrors,
+  ThrowOnError
+> =>
   (options.client ?? client).post<
     BulkAddGroupMembersResponses,
     BulkAddGroupMembersErrors,
@@ -3686,7 +4171,11 @@ export const bulkRemoveGroupEntitlements = <
   ThrowOnError extends boolean = false,
 >(
   options: Options<BulkRemoveGroupEntitlementsData, ThrowOnError>
-) =>
+): RequestResult<
+  BulkRemoveGroupEntitlementsResponses,
+  BulkRemoveGroupEntitlementsErrors,
+  ThrowOnError
+> =>
   (options.client ?? client).post<
     BulkRemoveGroupEntitlementsResponses,
     BulkRemoveGroupEntitlementsErrors,
@@ -3706,7 +4195,7 @@ export const bulkRemoveGroupEntitlements = <
  */
 export const listGroups = <ThrowOnError extends boolean = false>(
   options?: Options<ListGroupsData, ThrowOnError>
-) =>
+): RequestResult<ListGroupsResponses, ListGroupsErrors, ThrowOnError> =>
   (options?.client ?? client).get<
     ListGroupsResponses,
     ListGroupsErrors,
@@ -3722,7 +4211,7 @@ export const listGroups = <ThrowOnError extends boolean = false>(
  */
 export const createGroup = <ThrowOnError extends boolean = false>(
   options: Options<CreateGroupData, ThrowOnError>
-) =>
+): RequestResult<CreateGroupResponses, CreateGroupErrors, ThrowOnError> =>
   (options.client ?? client).post<
     CreateGroupResponses,
     CreateGroupErrors,
@@ -3742,7 +4231,7 @@ export const createGroup = <ThrowOnError extends boolean = false>(
  */
 export const deleteGroup = <ThrowOnError extends boolean = false>(
   options: Options<DeleteGroupData, ThrowOnError>
-) =>
+): RequestResult<DeleteGroupResponses, DeleteGroupErrors, ThrowOnError> =>
   (options.client ?? client).delete<
     DeleteGroupResponses,
     DeleteGroupErrors,
@@ -3758,7 +4247,7 @@ export const deleteGroup = <ThrowOnError extends boolean = false>(
  */
 export const getGroup = <ThrowOnError extends boolean = false>(
   options: Options<GetGroupData, ThrowOnError>
-) =>
+): RequestResult<GetGroupResponses, GetGroupErrors, ThrowOnError> =>
   (options.client ?? client).get<
     GetGroupResponses,
     GetGroupErrors,
@@ -3774,7 +4263,7 @@ export const getGroup = <ThrowOnError extends boolean = false>(
  */
 export const updateGroup = <ThrowOnError extends boolean = false>(
   options: Options<UpdateGroupData, ThrowOnError>
-) =>
+): RequestResult<UpdateGroupResponses, UpdateGroupErrors, ThrowOnError> =>
   (options.client ?? client).put<
     UpdateGroupResponses,
     UpdateGroupErrors,
@@ -3794,7 +4283,11 @@ export const updateGroup = <ThrowOnError extends boolean = false>(
  */
 export const listGroupsStatistics = <ThrowOnError extends boolean = false>(
   options?: Options<ListGroupsStatisticsData, ThrowOnError>
-) =>
+): RequestResult<
+  ListGroupsStatisticsResponses,
+  ListGroupsStatisticsErrors,
+  ThrowOnError
+> =>
   (options?.client ?? client).get<
     ListGroupsStatisticsResponses,
     ListGroupsStatisticsErrors,
@@ -3810,7 +4303,11 @@ export const listGroupsStatistics = <ThrowOnError extends boolean = false>(
  */
 export const removeGroupMember = <ThrowOnError extends boolean = false>(
   options: Options<RemoveGroupMemberData, ThrowOnError>
-) =>
+): RequestResult<
+  RemoveGroupMemberResponses,
+  RemoveGroupMemberErrors,
+  ThrowOnError
+> =>
   (options.client ?? client).delete<
     RemoveGroupMemberResponses,
     RemoveGroupMemberErrors,
@@ -3826,7 +4323,11 @@ export const removeGroupMember = <ThrowOnError extends boolean = false>(
  */
 export const getMeStatistics = <ThrowOnError extends boolean = false>(
   options?: Options<GetMeStatisticsData, ThrowOnError>
-) =>
+): RequestResult<
+  GetMeStatisticsResponses,
+  GetMeStatisticsErrors,
+  ThrowOnError
+> =>
   (options?.client ?? client).get<
     GetMeStatisticsResponses,
     GetMeStatisticsErrors,
@@ -3842,7 +4343,7 @@ export const getMeStatistics = <ThrowOnError extends boolean = false>(
  */
 export const getUserInfo = <ThrowOnError extends boolean = false>(
   options?: Options<GetUserInfoData, ThrowOnError>
-) =>
+): RequestResult<GetUserInfoResponses, GetUserInfoErrors, ThrowOnError> =>
   (options?.client ?? client).get<
     GetUserInfoResponses,
     GetUserInfoErrors,
@@ -3858,7 +4359,7 @@ export const getUserInfo = <ThrowOnError extends boolean = false>(
  */
 export const updateUserMe = <ThrowOnError extends boolean = false>(
   options: Options<UpdateUserMeData, ThrowOnError>
-) =>
+): RequestResult<UpdateUserMeResponses, UpdateUserMeErrors, ThrowOnError> =>
   (options.client ?? client).put<
     UpdateUserMeResponses,
     UpdateUserMeErrors,
@@ -3878,7 +4379,11 @@ export const updateUserMe = <ThrowOnError extends boolean = false>(
  */
 export const getUserEntitlements = <ThrowOnError extends boolean = false>(
   options?: Options<GetUserEntitlementsData, ThrowOnError>
-) =>
+): RequestResult<
+  GetUserEntitlementsResponses,
+  GetUserEntitlementsErrors,
+  ThrowOnError
+> =>
   (options?.client ?? client).get<
     GetUserEntitlementsResponses,
     GetUserEntitlementsErrors,
@@ -3894,7 +4399,7 @@ export const getUserEntitlements = <ThrowOnError extends boolean = false>(
  */
 export const completeIntro = <ThrowOnError extends boolean = false>(
   options?: Options<CompleteIntroData, ThrowOnError>
-) =>
+): RequestResult<CompleteIntroResponses, CompleteIntroErrors, ThrowOnError> =>
   (options?.client ?? client).post<
     CompleteIntroResponses,
     CompleteIntroErrors,
@@ -3910,7 +4415,11 @@ export const completeIntro = <ThrowOnError extends boolean = false>(
  */
 export const changePasswordUser = <ThrowOnError extends boolean = false>(
   options: Options<ChangePasswordUserData, ThrowOnError>
-) =>
+): RequestResult<
+  ChangePasswordUserResponses,
+  ChangePasswordUserErrors,
+  ThrowOnError
+> =>
   (options.client ?? client).post<
     ChangePasswordUserResponses,
     ChangePasswordUserErrors,
@@ -3930,7 +4439,7 @@ export const changePasswordUser = <ThrowOnError extends boolean = false>(
  */
 export const listUsers = <ThrowOnError extends boolean = false>(
   options?: Options<ListUsersData, ThrowOnError>
-) =>
+): RequestResult<ListUsersResponses, ListUsersErrors, ThrowOnError> =>
   (options?.client ?? client).get<
     ListUsersResponses,
     ListUsersErrors,
@@ -3946,7 +4455,7 @@ export const listUsers = <ThrowOnError extends boolean = false>(
  */
 export const createUser = <ThrowOnError extends boolean = false>(
   options: Options<CreateUserData, ThrowOnError>
-) =>
+): RequestResult<CreateUserResponses, CreateUserErrors, ThrowOnError> =>
   (options.client ?? client).post<
     CreateUserResponses,
     CreateUserErrors,
@@ -3966,7 +4475,7 @@ export const createUser = <ThrowOnError extends boolean = false>(
  */
 export const deleteUser = <ThrowOnError extends boolean = false>(
   options: Options<DeleteUserData, ThrowOnError>
-) =>
+): RequestResult<DeleteUserResponses, DeleteUserErrors, ThrowOnError> =>
   (options.client ?? client).delete<
     DeleteUserResponses,
     DeleteUserErrors,
@@ -3982,7 +4491,7 @@ export const deleteUser = <ThrowOnError extends boolean = false>(
  */
 export const getUser = <ThrowOnError extends boolean = false>(
   options: Options<GetUserData, ThrowOnError>
-) =>
+): RequestResult<GetUserResponses, GetUserErrors, ThrowOnError> =>
   (options.client ?? client).get<GetUserResponses, GetUserErrors, ThrowOnError>(
     {
       security: [{ scheme: "bearer", type: "http" }],
@@ -3996,7 +4505,7 @@ export const getUser = <ThrowOnError extends boolean = false>(
  */
 export const updateUser = <ThrowOnError extends boolean = false>(
   options: Options<UpdateUserData, ThrowOnError>
-) =>
+): RequestResult<UpdateUserResponses, UpdateUserErrors, ThrowOnError> =>
   (options.client ?? client).put<
     UpdateUserResponses,
     UpdateUserErrors,
@@ -4016,7 +4525,11 @@ export const updateUser = <ThrowOnError extends boolean = false>(
  */
 export const changePasswordAdmin = <ThrowOnError extends boolean = false>(
   options: Options<ChangePasswordAdminData, ThrowOnError>
-) =>
+): RequestResult<
+  ChangePasswordAdminResponses,
+  ChangePasswordAdminErrors,
+  ThrowOnError
+> =>
   (options.client ?? client).post<
     ChangePasswordAdminResponses,
     ChangePasswordAdminErrors,
@@ -4036,7 +4549,11 @@ export const changePasswordAdmin = <ThrowOnError extends boolean = false>(
  */
 export const listUsersStatistics = <ThrowOnError extends boolean = false>(
   options?: Options<ListUsersStatisticsData, ThrowOnError>
-) =>
+): RequestResult<
+  ListUsersStatisticsResponses,
+  ListUsersStatisticsErrors,
+  ThrowOnError
+> =>
   (options?.client ?? client).get<
     ListUsersStatisticsResponses,
     ListUsersStatisticsErrors,
@@ -4052,7 +4569,11 @@ export const listUsersStatistics = <ThrowOnError extends boolean = false>(
  */
 export const listFabricVlans = <ThrowOnError extends boolean = false>(
   options: Options<ListFabricVlansData, ThrowOnError>
-) =>
+): RequestResult<
+  ListFabricVlansResponses,
+  ListFabricVlansErrors,
+  ThrowOnError
+> =>
   (options.client ?? client).get<
     ListFabricVlansResponses,
     ListFabricVlansErrors,
@@ -4068,7 +4589,11 @@ export const listFabricVlans = <ThrowOnError extends boolean = false>(
  */
 export const createFabricVlan = <ThrowOnError extends boolean = false>(
   options: Options<CreateFabricVlanData, ThrowOnError>
-) =>
+): RequestResult<
+  CreateFabricVlanResponses,
+  CreateFabricVlanErrors,
+  ThrowOnError
+> =>
   (options.client ?? client).post<
     CreateFabricVlanResponses,
     CreateFabricVlanErrors,
@@ -4088,7 +4613,11 @@ export const createFabricVlan = <ThrowOnError extends boolean = false>(
  */
 export const deleteFabricVlan = <ThrowOnError extends boolean = false>(
   options: Options<DeleteFabricVlanData, ThrowOnError>
-) =>
+): RequestResult<
+  DeleteFabricVlanResponses,
+  DeleteFabricVlanErrors,
+  ThrowOnError
+> =>
   (options.client ?? client).delete<
     DeleteFabricVlanResponses,
     DeleteFabricVlanErrors,
@@ -4104,7 +4633,7 @@ export const deleteFabricVlan = <ThrowOnError extends boolean = false>(
  */
 export const getFabricVlan = <ThrowOnError extends boolean = false>(
   options: Options<GetFabricVlanData, ThrowOnError>
-) =>
+): RequestResult<GetFabricVlanResponses, GetFabricVlanErrors, ThrowOnError> =>
   (options.client ?? client).get<
     GetFabricVlanResponses,
     GetFabricVlanErrors,
@@ -4120,7 +4649,11 @@ export const getFabricVlan = <ThrowOnError extends boolean = false>(
  */
 export const updateFabricVlan = <ThrowOnError extends boolean = false>(
   options: Options<UpdateFabricVlanData, ThrowOnError>
-) =>
+): RequestResult<
+  UpdateFabricVlanResponses,
+  UpdateFabricVlanErrors,
+  ThrowOnError
+> =>
   (options.client ?? client).put<
     UpdateFabricVlanResponses,
     UpdateFabricVlanErrors,
@@ -4140,7 +4673,7 @@ export const updateFabricVlan = <ThrowOnError extends boolean = false>(
  */
 export const listZones = <ThrowOnError extends boolean = false>(
   options?: Options<ListZonesData, ThrowOnError>
-) =>
+): RequestResult<ListZonesResponses, ListZonesErrors, ThrowOnError> =>
   (options?.client ?? client).get<
     ListZonesResponses,
     ListZonesErrors,
@@ -4156,7 +4689,7 @@ export const listZones = <ThrowOnError extends boolean = false>(
  */
 export const createZone = <ThrowOnError extends boolean = false>(
   options: Options<CreateZoneData, ThrowOnError>
-) =>
+): RequestResult<CreateZoneResponses, CreateZoneErrors, ThrowOnError> =>
   (options.client ?? client).post<
     CreateZoneResponses,
     CreateZoneErrors,
@@ -4178,7 +4711,7 @@ export const createZone = <ThrowOnError extends boolean = false>(
  */
 export const deleteZone = <ThrowOnError extends boolean = false>(
   options: Options<DeleteZoneData, ThrowOnError>
-) =>
+): RequestResult<DeleteZoneResponses, DeleteZoneErrors, ThrowOnError> =>
   (options.client ?? client).delete<
     DeleteZoneResponses,
     DeleteZoneErrors,
@@ -4194,7 +4727,7 @@ export const deleteZone = <ThrowOnError extends boolean = false>(
  */
 export const getZone = <ThrowOnError extends boolean = false>(
   options: Options<GetZoneData, ThrowOnError>
-) =>
+): RequestResult<GetZoneResponses, GetZoneErrors, ThrowOnError> =>
   (options.client ?? client).get<GetZoneResponses, GetZoneErrors, ThrowOnError>(
     {
       security: [{ scheme: "bearer", type: "http" }],
@@ -4208,7 +4741,7 @@ export const getZone = <ThrowOnError extends boolean = false>(
  */
 export const updateZone = <ThrowOnError extends boolean = false>(
   options: Options<UpdateZoneData, ThrowOnError>
-) =>
+): RequestResult<UpdateZoneResponses, UpdateZoneErrors, ThrowOnError> =>
   (options.client ?? client).put<
     UpdateZoneResponses,
     UpdateZoneErrors,
@@ -4230,7 +4763,11 @@ export const updateZone = <ThrowOnError extends boolean = false>(
  */
 export const listZonesWithStatistics = <ThrowOnError extends boolean = false>(
   options?: Options<ListZonesWithStatisticsData, ThrowOnError>
-) =>
+): RequestResult<
+  ListZonesWithStatisticsResponses,
+  ListZonesWithStatisticsErrors,
+  ThrowOnError
+> =>
   (options?.client ?? client).get<
     ListZonesWithStatisticsResponses,
     ListZonesWithStatisticsErrors,
@@ -4246,7 +4783,7 @@ export const listZonesWithStatistics = <ThrowOnError extends boolean = false>(
  */
 export const getSubnet = <ThrowOnError extends boolean = false>(
   options: Options<GetSubnetData, ThrowOnError>
-) =>
+): RequestResult<GetSubnetResponses, GetSubnetErrors, ThrowOnError> =>
   (options.client ?? client).get<
     GetSubnetResponses,
     GetSubnetErrors,
@@ -4262,7 +4799,7 @@ export const getSubnet = <ThrowOnError extends boolean = false>(
  */
 export const listSubnets = <ThrowOnError extends boolean = false>(
   options?: Options<ListSubnetsData, ThrowOnError>
-) =>
+): RequestResult<ListSubnetsResponses, ListSubnetsErrors, ThrowOnError> =>
   (options?.client ?? client).get<
     ListSubnetsResponses,
     ListSubnetsErrors,
