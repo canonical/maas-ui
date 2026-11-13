@@ -19,7 +19,7 @@ describe("RemoveGroupMember", () => {
       <RemoveGroupMember
         groupId={1}
         members={mockGroupMembers.items}
-        setMemberSelection={vi.fn}
+        setMemberSelection={vi.fn()}
       />
     );
 
@@ -32,7 +32,7 @@ describe("RemoveGroupMember", () => {
       <RemoveGroupMember
         groupId={1}
         members={mockGroupMembers.items}
-        setMemberSelection={vi.fn}
+        setMemberSelection={vi.fn()}
       />
     );
 
@@ -58,7 +58,7 @@ describe("RemoveGroupMember", () => {
       <RemoveGroupMember
         groupId={1}
         members={mockGroupMembers.items}
-        setMemberSelection={vi.fn}
+        setMemberSelection={vi.fn()}
       />
     );
 
@@ -76,7 +76,7 @@ describe("RemoveGroupMember", () => {
       <RemoveGroupMember
         groupId={1}
         members={mockGroupMembers.items}
-        setMemberSelection={vi.fn}
+        setMemberSelection={vi.fn()}
       />
     );
 
@@ -90,7 +90,7 @@ describe("RemoveGroupMember", () => {
       <RemoveGroupMember
         groupId={1}
         members={[mockGroupMembers.items[0]]}
-        setMemberSelection={vi.fn}
+        setMemberSelection={vi.fn()}
       />
     );
 
@@ -104,7 +104,7 @@ describe("RemoveGroupMember", () => {
       <RemoveGroupMember
         groupId={1}
         members={mockGroupMembers.items}
-        setMemberSelection={vi.fn}
+        setMemberSelection={vi.fn()}
       />
     );
 

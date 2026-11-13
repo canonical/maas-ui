@@ -1,5 +1,5 @@
 import { vi } from "vitest";
-import type { SpyInstance } from "vitest";
+import type { MockInstance } from "vitest";
 
 import * as baseHooks from "@/app/base/hooks/base";
 
@@ -14,7 +14,7 @@ afterEach(() => {
 });
 
 // Simulate FormikForm saved state going from false to true by mocking useCycled
-export const mockFormikFormSaved = (): SpyInstance =>
+export const mockFormikFormSaved = (): MockInstance =>
   vi
     .spyOn(baseHooks, "useCycled")
     .mockImplementation((): ReturnType<typeof baseHooks.useCycled> => [

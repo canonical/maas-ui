@@ -1,6 +1,7 @@
 import { expectSaga } from "redux-saga-test-plan";
 import * as matchers from "redux-saga-test-plan/matchers";
 import { throwError } from "redux-saga-test-plan/providers";
+import createFetchMock from "vitest-fetch-mock";
 
 import {
   api,
@@ -20,6 +21,8 @@ import { ScriptType } from "@/app/store/script/types";
 import { ScriptResultNames } from "@/app/store/scriptresult/types";
 import { getCookie } from "@/app/utils";
 import * as factory from "@/testing/factories";
+
+createFetchMock(vi).enableMocks();
 
 describe("Auth API", () => {
   beforeEach(() => {
@@ -99,7 +102,6 @@ describe("Auth API", () => {
         password: "gum%tree",
       });
       expect(fetch).toHaveBeenCalled();
-      // @ts-expect-error since the previous expect passed, the indexing is safe to be considered defined
       expect(fetchMock.mock.calls[0][1]?.body?.toString()).toBe(
         "username=ko%26ala&password=gum%25tree"
       );

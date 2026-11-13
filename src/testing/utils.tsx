@@ -279,16 +279,16 @@ const renderHookWithProviders = <T,>(
  * Mocks the `useModal` hook, returning `mockOpen`/`mockClose` spies.
  */
 export const mockModal = async (): Promise<{
-  mockOpen: Mock<unknown[], unknown>;
-  mockClose: Mock<unknown[], unknown>;
+  mockOpen: Mock<(...args: unknown[]) => unknown>;
+  mockClose: Mock<(...args: unknown[]) => unknown>;
 }> => {
   const mockUseModal = vi.spyOn(
     await import("@/app/base/modal-context"),
     "useModal"
   );
 
-  const mockOpen: Mock<unknown[], unknown> = vi.fn();
-  const mockClose: Mock<unknown[], unknown> = vi.fn();
+  const mockOpen: Mock<(...args: unknown[]) => unknown> = vi.fn();
+  const mockClose: Mock<(...args: unknown[]) => unknown> = vi.fn();
   let isOpen = false;
 
   const makeReturnValue = () => ({
