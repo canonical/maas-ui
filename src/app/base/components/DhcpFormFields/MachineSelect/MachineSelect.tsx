@@ -1,8 +1,7 @@
 import type { HTMLProps } from "react";
 import { useCallback, useId, useState } from "react";
 
-import { useOnEscapePressed } from "@canonical/react-components";
-import Field from "@canonical/react-components/dist/components/Field";
+import { Field, useOnEscapePressed } from "@canonical/react-components";
 import className from "classnames";
 import { useFormikContext } from "formik";
 
