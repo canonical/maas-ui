@@ -160,30 +160,23 @@ const getNetworkTableData = (
     }
   });
 
-  const nestedNetworks: Network[] = [];
+  // Nest by the interfaces' actual parents. An interface can be both a bond
+  // or bridge child and a parent (e.g. a bond under a bridge), which yields
+  // multiple nesting levels: bridge -> bond -> physical interfaces.
   const childIds = new Set<string>();
-
   flatNetworks.forEach((network) => {
     if (network.isABondOrBridgeChild) {
       const children = flatNetworks.filter(
-        (n) =>
-          n.isABondOrBridgeParent && n.bondOrBridge === network.bondOrBridge
+        (n) => n.isABondOrBridgeParent && network.nic.parents.includes(n.nic.id)
       );
       if (children.length > 0) {
         network.children = children;
         children.forEach((c) => childIds.add(c.id));
       }
-      nestedNetworks.push(network);
     }
   });
 
-  flatNetworks.forEach((network) => {
-    if (!network.isABondOrBridgeChild && !childIds.has(network.id)) {
-      nestedNetworks.push(network);
-    }
-  });
-
-  return nestedNetworks;
+  return flatNetworks.filter((network) => !childIds.has(network.id));
 };
 
 const extractSelected = (

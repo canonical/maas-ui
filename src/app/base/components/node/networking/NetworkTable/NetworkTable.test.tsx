@@ -353,5 +353,36 @@ describe("NetworkTable", () => {
       const actionCell = cells[8];
       expect(actionCell).toHaveTextContent("");
     });
+
+    it("can display a bond that is the parent of a bridge", () => {
+      machine = factory.machineDetails({
+        interfaces: [
+          factory.machineInterface({
+            id: 100,
+            children: [102],
+            name: "bond0",
+            parents: [101],
+            type: NetworkInterfaceTypes.BOND,
+          }),
+          factory.machineInterface({
+            id: 101,
+            children: [100],
+            name: "eth0",
+            type: NetworkInterfaceTypes.PHYSICAL,
+          }),
+          factory.machineInterface({
+            id: 102,
+            name: "br0",
+            parents: [100],
+            type: NetworkInterfaceTypes.BRIDGE,
+          }),
+        ],
+      });
+      renderWithProviders(<NetworkTable node={machine} />, { state });
+
+      expect(
+        screen.getAllByTestId("name").map((name) => name.textContent)
+      ).toEqual(["br0", "bond0", "eth0"]);
+    });
   });
 });
