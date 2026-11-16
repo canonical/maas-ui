@@ -116,6 +116,7 @@ export const SelectProjectForm = ({
         });
         dispatch(podActions.create(params));
       }}
+      onSuccess={closeSidePanel}
       saved={saved}
       saving={saving}
       submitLabel="Save LXD host"
