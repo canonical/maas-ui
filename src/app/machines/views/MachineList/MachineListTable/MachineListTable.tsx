@@ -126,9 +126,10 @@ export const MachineListTable = ({
     [grouping, groups, machines]
   );
 
-  // GenericTable marks every row as unselected unless it is given the
-  // selection, so mirror the checked state of the machine and group
-  // checkboxes, which manage the selection in Redux.
+  // The selection is passed to GenericTable only so that it sets
+  // `aria-selected` on the selected rows. Its own checkboxes are hidden; the
+  // machine and group checkboxes manage the selection in Redux, so we mirror
+  // their checked state here.
   const selected = useSelector(machineSelectors.selected);
   const selection = useMemo(() => {
     const rowSelection: RowSelectionState = {};

@@ -2,10 +2,11 @@
   $box-size: 1rem;
   $checkbox-offset: 0.1875rem; // Offset checkbox to prevent focus outline truncation
   $grouped-machines-indentation: $box-size + $sph--large - $checkbox-offset; // Checkbox + label - offset
-  $item-active-background: #dbedff;
 
-  // GenericTable can't set row classes, so group rows are identified by the
-  // toggle rendered in GroupColumn.
+  // The rows are flat (grouping is done by the server, and collapsed groups
+  // have no machines), so GenericTable doesn't add its
+  // `p-generic-table__group-row` class. Group rows are identified by the toggle
+  // rendered in GroupColumn instead.
   $group-row: "tr:has(.machine-list__group-toggle)";
   $machine-row: "tr:not(:has(.machine-list__group-toggle))";
 
@@ -77,8 +78,6 @@
 
       &:focus-within,
       &:hover {
-        background-color: $colors--light-theme--background-hover;
-
         .p-table-menu {
           display: block;
 
@@ -208,13 +207,6 @@
     i[class*="p-icon"]:last-child {
       margin-left: 0;
       margin-right: $spv--x-small;
-    }
-  }
-
-  .is-dark .p-generic-table.machine-list tbody #{$machine-row} {
-    &:focus-within,
-    &:hover {
-      background-color: $colors--dark-theme--background-hover;
     }
   }
 }
