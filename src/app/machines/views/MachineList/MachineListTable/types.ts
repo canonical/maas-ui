@@ -23,7 +23,7 @@ export type MachineListTableProps = {
   totalPages: number | null;
   setCurrentPage: (currentPage: number) => void;
   setHiddenGroups?: (hiddenGroups: (string | null)[]) => void;
-  setPageSize?: (pageSize: number) => void;
+  setPageSize: (pageSize: number) => void;
   showActions?: boolean;
   sortDirection: ValueOf<typeof SortDirection>;
   sortKey: FetchGroupKey | null;

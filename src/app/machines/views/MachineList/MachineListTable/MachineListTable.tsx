@@ -221,7 +221,7 @@ export const MachineListTable = ({
                 name="Items per page"
                 onChange={(event) => {
                   setCurrentPage(1);
-                  setPageSize?.(Number(event.target.value));
+                  setPageSize(Number(event.target.value));
                 }}
                 options={PAGE_SIZES.map((size) => ({
                   label: `${size}/page`,
