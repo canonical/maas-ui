@@ -1,6 +1,7 @@
 import type { ReactNode } from "react";
 import { useCallback, useMemo } from "react";
 
+import { Placeholder } from "@canonical/maas-react-components";
 import type { ColumnDef, Row } from "@tanstack/react-table";
 
 import AllCheckbox from "../AllCheckbox";
@@ -24,7 +25,6 @@ import type {
 } from "../types";
 
 import DoubleRow from "@/app/base/components/DoubleRow";
-import Placeholder from "@/app/base/components/Placeholder";
 import TableHeader from "@/app/base/components/TableHeader";
 import { useSendAnalytics } from "@/app/base/hooks";
 import type { Sort } from "@/app/base/types";
@@ -152,8 +152,12 @@ const useMachinesTableColumns = ({
           cellAriaLabel: cellAriaLabel(MachineColumns.FQDN),
           skeleton: () => (
             <DoubleRow
-              primary={<Placeholder>xxxxxxxxx.xxxx</Placeholder>}
-              secondary={<Placeholder>xxx.xxx.xx.x</Placeholder>}
+              primary={
+                <Placeholder height="1rem" variant="block" width="14ch" />
+              }
+              secondary={
+                <Placeholder height="1rem" variant="block" width="12ch" />
+              }
             />
           ),
         },
@@ -184,8 +188,12 @@ const useMachinesTableColumns = ({
           cellAriaLabel: cellAriaLabel(MachineColumns.POWER),
           skeleton: () => (
             <DoubleRow
-              primary={<Placeholder>Xxxxxxxxxxx</Placeholder>}
-              secondary={<Placeholder>Xxxxxxxxxxx</Placeholder>}
+              primary={
+                <Placeholder height="1rem" variant="block" width="11ch" />
+              }
+              secondary={
+                <Placeholder height="1rem" variant="block" width="11ch" />
+              }
             />
           ),
         },
@@ -215,7 +223,11 @@ const useMachinesTableColumns = ({
           headerAriaLabel: columnLabels[MachineColumns.STATUS],
           cellAriaLabel: cellAriaLabel(MachineColumns.STATUS),
           skeleton: () => (
-            <DoubleRow primary={<Placeholder>XXXXX XXXXX</Placeholder>} />
+            <DoubleRow
+              primary={
+                <Placeholder height="1rem" variant="block" width="11ch" />
+              }
+            />
           ),
         },
       },
@@ -263,8 +275,12 @@ const useMachinesTableColumns = ({
           cellAriaLabel: cellAriaLabel(MachineColumns.OWNER),
           skeleton: () => (
             <DoubleRow
-              primary={<Placeholder>Xxxx</Placeholder>}
-              secondary={<Placeholder>XXXX, XXX</Placeholder>}
+              primary={
+                <Placeholder height="1rem" variant="block" width="4ch" />
+              }
+              secondary={
+                <Placeholder height="1rem" variant="block" width="9ch" />
+              }
             />
           ),
         },
@@ -296,7 +312,11 @@ const useMachinesTableColumns = ({
           headerAriaLabel: columnLabels[MachineColumns.POOL],
           cellAriaLabel: cellAriaLabel(MachineColumns.POOL),
           skeleton: () => (
-            <DoubleRow primary={<Placeholder>Xxxxx</Placeholder>} />
+            <DoubleRow
+              primary={
+                <Placeholder height="1rem" variant="block" width="5ch" />
+              }
+            />
           ),
         },
       },
@@ -328,8 +348,12 @@ const useMachinesTableColumns = ({
           cellAriaLabel: cellAriaLabel(MachineColumns.ZONE),
           skeleton: () => (
             <DoubleRow
-              primary={<Placeholder>Xxxxxxx</Placeholder>}
-              secondary={<Placeholder>Xxxxxxx</Placeholder>}
+              primary={
+                <Placeholder height="1rem" variant="block" width="7ch" />
+              }
+              secondary={
+                <Placeholder height="1rem" variant="block" width="7ch" />
+              }
             />
           ),
         },
@@ -355,8 +379,12 @@ const useMachinesTableColumns = ({
           cellAriaLabel: cellAriaLabel(MachineColumns.FABRIC),
           skeleton: () => (
             <DoubleRow
-              primary={<Placeholder>Xxxxxxx-X</Placeholder>}
-              secondary={<Placeholder>Xxxxx</Placeholder>}
+              primary={
+                <Placeholder height="1rem" variant="block" width="9ch" />
+              }
+              secondary={
+                <Placeholder height="1rem" variant="block" width="5ch" />
+              }
             />
           ),
         },
@@ -386,9 +414,13 @@ const useMachinesTableColumns = ({
           cellAriaLabel: cellAriaLabel(MachineColumns.CPU),
           skeleton: () => (
             <DoubleRow
-              primary={<Placeholder>XX</Placeholder>}
+              primary={
+                <Placeholder height="1rem" variant="block" width="2ch" />
+              }
               primaryClassName="u-align--right"
-              secondary={<Placeholder>xxxXX</Placeholder>}
+              secondary={
+                <Placeholder height="1rem" variant="block" width="5ch" />
+              }
               secondaryClassName="u-align--right"
             />
           ),
@@ -414,7 +446,9 @@ const useMachinesTableColumns = ({
           cellAriaLabel: cellAriaLabel(MachineColumns.MEMORY),
           skeleton: () => (
             <DoubleRow
-              primary={<Placeholder>XX xxx</Placeholder>}
+              primary={
+                <Placeholder height="1rem" variant="block" width="6ch" />
+              }
               primaryClassName="u-align--right"
             />
           ),
@@ -442,7 +476,9 @@ const useMachinesTableColumns = ({
           cellAriaLabel: cellAriaLabel(MachineColumns.DISKS),
           skeleton: () => (
             <DoubleRow
-              primary={<Placeholder>XX</Placeholder>}
+              primary={
+                <Placeholder height="1rem" variant="block" width="2ch" />
+              }
               primaryClassName="u-align--right"
             />
           ),
@@ -470,7 +506,9 @@ const useMachinesTableColumns = ({
           cellAriaLabel: cellAriaLabel(MachineColumns.STORAGE),
           skeleton: () => (
             <DoubleRow
-              primary={<Placeholder>X.XX</Placeholder>}
+              primary={
+                <Placeholder height="1rem" variant="block" width="4ch" />
+              }
               primaryClassName="u-align--right"
             />
           ),

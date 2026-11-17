@@ -105,11 +105,6 @@
     }
   }
 
-  .machine-list--loading .u-truncate {
-    // When loading the skeleton placeholders should get cut off and not show an ellipsis.
-    text-overflow: clip !important;
-  }
-
   // GenericTable's controls-bar styles only apply inside .p-generic-table, but
   // the machine list renders its own pagination bar outside the table.
   .machine-list__controls.controls-bar {

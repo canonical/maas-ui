@@ -241,7 +241,6 @@ export const MachineListTable = ({
         }
         className={classNames("machine-list", {
           "machine-list--grouped": grouping,
-          "machine-list--loading": machinesLoading,
         })}
         columns={columns}
         data={rows}

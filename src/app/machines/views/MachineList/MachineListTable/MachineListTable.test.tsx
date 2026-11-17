@@ -144,7 +144,14 @@ describe("MachineListTable", () => {
 
       const table = screen.getByRole("treegrid", { name: Label.Loading });
       expect(table).toHaveAttribute("aria-busy", "true");
-      expect(within(table).getAllByText("xxxxxxxxx.xxxx")).toHaveLength(5);
+      // Skip the header row.
+      const rows = within(table).getAllByRole("row").slice(1);
+      expect(rows).toHaveLength(5);
+      rows.forEach((row) => {
+        expect(
+          within(row).getAllByRole("progressbar", { name: "loading" }).length
+        ).toBeGreaterThan(0);
+      });
     });
 
     it("labels the table with the current grouping", () => {
