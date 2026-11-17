@@ -25,7 +25,7 @@ describe("RemoveGroupEntitlement", () => {
       <RemoveGroupEntitlement
         entitlements={mockGroupEntitlements.items}
         group_id={1}
-        setEntitlementSelection={vi.fn}
+        setEntitlementSelection={vi.fn()}
       />
     );
 
@@ -38,7 +38,7 @@ describe("RemoveGroupEntitlement", () => {
       <RemoveGroupEntitlement
         entitlements={mockGroupEntitlements.items}
         group_id={1}
-        setEntitlementSelection={vi.fn}
+        setEntitlementSelection={vi.fn()}
       />
     );
 
@@ -64,7 +64,7 @@ describe("RemoveGroupEntitlement", () => {
       <RemoveGroupEntitlement
         entitlements={mockGroupEntitlements.items}
         group_id={1}
-        setEntitlementSelection={vi.fn}
+        setEntitlementSelection={vi.fn()}
       />
     );
 
@@ -82,7 +82,7 @@ describe("RemoveGroupEntitlement", () => {
       <RemoveGroupEntitlement
         entitlements={mockGroupEntitlements.items}
         group_id={1}
-        setEntitlementSelection={vi.fn}
+        setEntitlementSelection={vi.fn()}
       />
     );
 
@@ -104,7 +104,7 @@ describe("RemoveGroupEntitlement", () => {
       <RemoveGroupEntitlement
         entitlements={[entitlement]}
         group_id={1}
-        setEntitlementSelection={vi.fn}
+        setEntitlementSelection={vi.fn()}
       />
     );
 
@@ -122,7 +122,7 @@ describe("RemoveGroupEntitlement", () => {
       <RemoveGroupEntitlement
         entitlements={[entitlement]}
         group_id={1}
-        setEntitlementSelection={vi.fn}
+        setEntitlementSelection={vi.fn()}
       />
     );
 
@@ -134,7 +134,7 @@ describe("RemoveGroupEntitlement", () => {
       <RemoveGroupEntitlement
         entitlements={[mockGroupEntitlements.items[0]]}
         group_id={1}
-        setEntitlementSelection={vi.fn}
+        setEntitlementSelection={vi.fn()}
       />
     );
 
@@ -148,7 +148,7 @@ describe("RemoveGroupEntitlement", () => {
       <RemoveGroupEntitlement
         entitlements={mockGroupEntitlements.items}
         group_id={1}
-        setEntitlementSelection={vi.fn}
+        setEntitlementSelection={vi.fn()}
       />
     );
 

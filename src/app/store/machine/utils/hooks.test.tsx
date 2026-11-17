@@ -81,6 +81,7 @@ describe("machine hook utils", () => {
 
   afterEach(() => {
     vi.restoreAllMocks();
+    vi.resetAllMocks();
   });
 
   describe("useFetchMachineCount", () => {
@@ -145,6 +146,7 @@ describe("machine hook utils", () => {
 
     it("returns the machine count", async () => {
       vi.restoreAllMocks();
+      vi.resetAllMocks();
       vi.spyOn(query, "generateCallId").mockReturnValue("mocked-nanoid");
       const machineCount = 2;
       const counts = factory.machineStateCounts({
@@ -198,6 +200,7 @@ describe("machine hook utils", () => {
     it("fetches again if the filters change", () => {
       // clera all spies
       vi.restoreAllMocks();
+      vi.resetAllMocks();
       const store = mockStore(state);
       const { rerender } = renderHook(
         ({ filters }) => useFetchMachineCount(filters),
@@ -249,6 +252,7 @@ describe("machine hook utils", () => {
 
     afterEach(() => {
       vi.restoreAllMocks();
+      vi.resetAllMocks();
     });
 
     const generateWrapper =
@@ -425,6 +429,7 @@ describe("machine hook utils", () => {
 
     it("fetches again if the options change", () => {
       vi.restoreAllMocks();
+      vi.resetAllMocks();
       const store = mockStore(state);
       const { rerender } = renderHook(
         (options: UseFetchMachinesOptions) => useFetchMachines(options),
@@ -495,6 +500,7 @@ describe("machine hook utils", () => {
   describe("useFetchSelectedMachines", () => {
     afterEach(() => {
       vi.restoreAllMocks();
+      vi.resetAllMocks();
     });
 
     const generateWrapper =
@@ -777,6 +783,7 @@ describe("machine hook utils", () => {
     });
     afterEach(() => {
       vi.restoreAllMocks();
+      vi.resetAllMocks();
     });
     const generateWrapper =
       (store: MockStoreEnhanced<unknown>) =>

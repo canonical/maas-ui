@@ -12,6 +12,7 @@ import {
   screen,
   setupMockServer,
   userEvent,
+  within,
 } from "@/testing/utils";
 
 const mockServer = setupMockServer(
@@ -52,7 +53,14 @@ describe("UsersList", () => {
 
   it("renders EditUser when a valid userId is provided", async () => {
     mockServer.use(
-      authResolvers.getCurrentUser.handler(factory.user({ id: 99 })),
+      usersResolvers.listUsers.handler({
+        items: [
+          factory.user({ id: 1, username: "current-user" }),
+          factory.user({ id: 2, username: "other-user" }),
+        ],
+        total: 2,
+      }),
+      authResolvers.getCurrentUser.handler(factory.user({ id: 1 })),
       authResolvers.getMeEntitlements.handler([
         factory.entitlement({
           entitlement: Entitlement.CAN_EDIT_IDENTITIES,
@@ -61,11 +69,26 @@ describe("UsersList", () => {
     );
     renderWithProviders(<UsersList />, { state });
     await waitFor(() => {
+      expect(screen.getByRole("link", { name: "Edit" })).toHaveAttribute(
+        "href",
+        "/account/prefs/details"
+      );
       expect(
-        screen.getAllByRole("button", { name: "Edit" })[0]
+        screen.queryByLabelText("Loading machines count")
+      ).not.toBeInTheDocument();
+      expect(
+        within(screen.getByRole("row", { name: /other-user/ })).getByRole(
+          "button",
+          { name: "Edit" }
+        )
       ).not.toBeAriaDisabled();
     });
-    await userEvent.click(screen.getAllByRole("button", { name: "Edit" })[0]);
+    await userEvent.click(
+      within(screen.getByRole("row", { name: /other-user/ })).getByRole(
+        "button",
+        { name: "Edit" }
+      )
+    );
     expect(
       screen.getByRole("complementary", { name: "Edit user" })
     ).toBeInTheDocument();
@@ -73,7 +96,14 @@ describe("UsersList", () => {
 
   it("renders DeleteUser when a valid userId is provided", async () => {
     mockServer.use(
-      authResolvers.getCurrentUser.handler(factory.user({ id: 99 })),
+      usersResolvers.listUsers.handler({
+        items: [
+          factory.user({ id: 1, username: "current-user" }),
+          factory.user({ id: 2, username: "other-user" }),
+        ],
+        total: 2,
+      }),
+      authResolvers.getCurrentUser.handler(factory.user({ id: 1 })),
       authResolvers.getMeEntitlements.handler([
         factory.entitlement({
           entitlement: Entitlement.CAN_EDIT_IDENTITIES,
@@ -82,15 +112,31 @@ describe("UsersList", () => {
     );
     renderWithProviders(<UsersList />, { state });
     await waitFor(() => {
+      expect(screen.getByRole("link", { name: "Edit" })).toHaveAttribute(
+        "href",
+        "/account/prefs/details"
+      );
       expect(
-        screen.getAllByRole("button", { name: "Delete" })[0]
+        screen.queryByLabelText("Loading machines count")
+      ).not.toBeInTheDocument();
+      expect(
+        within(screen.getByRole("row", { name: /other-user/ })).getByRole(
+          "button",
+          { name: "Delete" }
+        )
       ).not.toBeAriaDisabled();
     });
-    await userEvent.click(screen.getAllByRole("button", { name: "Delete" })[0]);
+    await userEvent.click(
+      within(screen.getByRole("row", { name: /other-user/ })).getByRole(
+        "button",
+        { name: "Delete" }
+      )
+    );
     expect(mockOpenModal).toHaveBeenCalledWith(
       expect.objectContaining({
         component: DeleteUser,
         title: "Delete user",
+        props: { id: 2 },
       })
     );
   });

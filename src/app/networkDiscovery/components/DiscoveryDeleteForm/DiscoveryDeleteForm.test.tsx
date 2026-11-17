@@ -19,6 +19,14 @@ import {
   waitFor,
 } from "@/testing/utils";
 
+vi.mock("@reduxjs/toolkit", async () => {
+  const actual: object = await vi.importActual("@reduxjs/toolkit");
+  return {
+    ...actual,
+    nanoid: vi.fn(),
+  };
+});
+
 enableCallIdMocks();
 
 const mockServer = setupMockServer(
