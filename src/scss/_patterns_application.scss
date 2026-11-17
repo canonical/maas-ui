@@ -11,7 +11,13 @@
         flex-shrink: 0;
         overflow-y: auto;
         height: 30%;
-        scrollbar-gutter: stable;
+
+        // The nav is always rendered, even when empty. Only reserve space for
+        // the scrollbar when the secondary navigation is open, otherwise the
+        // empty gutter adds extra space next to the side navigation.
+        &.is-open {
+          scrollbar-gutter: stable;
+        }
 
         @media (min-width: $breakpoint-small) {
           height: calc(100vh - 2.5rem);

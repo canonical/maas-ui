@@ -43,8 +43,8 @@ describe("GroupDetailsHeader", () => {
           group={undefined}
           loading={true}
           memberSelection={[]}
-          setEntitlementSelection={vi.fn}
-          setMemberSelection={vi.fn}
+          setEntitlementSelection={vi.fn()}
+          setMemberSelection={vi.fn()}
         />,
         {
           initialEntries: [
@@ -66,8 +66,8 @@ describe("GroupDetailsHeader", () => {
           group={mockGroup}
           loading={false}
           memberSelection={[]}
-          setEntitlementSelection={vi.fn}
-          setMemberSelection={vi.fn}
+          setEntitlementSelection={vi.fn()}
+          setMemberSelection={vi.fn()}
         />,
         {
           initialEntries: [
@@ -92,8 +92,8 @@ describe("GroupDetailsHeader", () => {
           group={mockGroup}
           loading={false}
           memberSelection={[]}
-          setEntitlementSelection={vi.fn}
-          setMemberSelection={vi.fn}
+          setEntitlementSelection={vi.fn()}
+          setMemberSelection={vi.fn()}
         />,
         {
           initialEntries: [
@@ -116,8 +116,8 @@ describe("GroupDetailsHeader", () => {
           group={mockGroup}
           loading={false}
           memberSelection={[]}
-          setEntitlementSelection={vi.fn}
-          setMemberSelection={vi.fn}
+          setEntitlementSelection={vi.fn()}
+          setMemberSelection={vi.fn()}
         />,
         {
           initialEntries: [
@@ -140,8 +140,8 @@ describe("GroupDetailsHeader", () => {
           group={mockGroup}
           loading={false}
           memberSelection={[]}
-          setEntitlementSelection={vi.fn}
-          setMemberSelection={vi.fn}
+          setEntitlementSelection={vi.fn()}
+          setMemberSelection={vi.fn()}
         />,
         {
           initialEntries: [
@@ -176,8 +176,8 @@ describe("GroupDetailsHeader", () => {
           group={mockGroup}
           loading={false}
           memberSelection={[]}
-          setEntitlementSelection={vi.fn}
-          setMemberSelection={vi.fn}
+          setEntitlementSelection={vi.fn()}
+          setMemberSelection={vi.fn()}
         />,
         {
           initialEntries: [
@@ -205,8 +205,8 @@ describe("GroupDetailsHeader", () => {
           group={mockGroup}
           loading={false}
           memberSelection={[]}
-          setEntitlementSelection={vi.fn}
-          setMemberSelection={vi.fn}
+          setEntitlementSelection={vi.fn()}
+          setMemberSelection={vi.fn()}
         />,
         {
           initialEntries: [
@@ -228,8 +228,8 @@ describe("GroupDetailsHeader", () => {
           group={mockGroup}
           loading={false}
           memberSelection={[]}
-          setEntitlementSelection={vi.fn}
-          setMemberSelection={vi.fn}
+          setEntitlementSelection={vi.fn()}
+          setMemberSelection={vi.fn()}
         />,
         {
           initialEntries: [
@@ -257,8 +257,8 @@ describe("GroupDetailsHeader", () => {
           group={mockGroup}
           loading={false}
           memberSelection={[member]}
-          setEntitlementSelection={vi.fn}
-          setMemberSelection={vi.fn}
+          setEntitlementSelection={vi.fn()}
+          setMemberSelection={vi.fn()}
         />,
         {
           initialEntries: [
@@ -282,8 +282,8 @@ describe("GroupDetailsHeader", () => {
           group={mockGroup}
           loading={false}
           memberSelection={[]}
-          setEntitlementSelection={vi.fn}
-          setMemberSelection={vi.fn}
+          setEntitlementSelection={vi.fn()}
+          setMemberSelection={vi.fn()}
         />,
         {
           initialEntries: [
@@ -314,8 +314,8 @@ describe("GroupDetailsHeader", () => {
           group={mockGroup}
           loading={false}
           memberSelection={[]}
-          setEntitlementSelection={vi.fn}
-          setMemberSelection={vi.fn}
+          setEntitlementSelection={vi.fn()}
+          setMemberSelection={vi.fn()}
         />,
         {
           initialEntries: [
@@ -347,8 +347,8 @@ describe("GroupDetailsHeader", () => {
           group={mockGroup}
           loading={false}
           memberSelection={[]}
-          setEntitlementSelection={vi.fn}
-          setMemberSelection={vi.fn}
+          setEntitlementSelection={vi.fn()}
+          setMemberSelection={vi.fn()}
         />,
         {
           initialEntries: [
@@ -381,8 +381,8 @@ describe("GroupDetailsHeader", () => {
           group={mockGroup}
           loading={false}
           memberSelection={[]}
-          setEntitlementSelection={vi.fn}
-          setMemberSelection={vi.fn}
+          setEntitlementSelection={vi.fn()}
+          setMemberSelection={vi.fn()}
         />,
         {
           initialEntries: [
@@ -430,8 +430,8 @@ describe("GroupDetailsHeader", () => {
           group={mockGroup}
           loading={false}
           memberSelection={[]}
-          setEntitlementSelection={vi.fn}
-          setMemberSelection={vi.fn}
+          setEntitlementSelection={vi.fn()}
+          setMemberSelection={vi.fn()}
         />,
         {
           initialEntries: [
@@ -470,8 +470,8 @@ describe("GroupDetailsHeader", () => {
           group={mockGroup}
           loading={false}
           memberSelection={[member]}
-          setEntitlementSelection={vi.fn}
-          setMemberSelection={vi.fn}
+          setEntitlementSelection={vi.fn()}
+          setMemberSelection={vi.fn()}
         />,
         {
           initialEntries: [

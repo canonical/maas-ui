@@ -33,7 +33,7 @@ const mockServer = setupMockServer(
 describe("ImageListHeader", () => {
   it("sets loading state when polling", async () => {
     renderWithProviders(
-      <ImageListHeader selectedRows={{}} setSelectedRows={vi.fn} />
+      <ImageListHeader selectedRows={{}} setSelectedRows={vi.fn()} />
     );
     expect(screen.getByText("Loading...")).toBeInTheDocument();
   });
@@ -116,7 +116,7 @@ describe("Delete", () => {
 
   it("can trigger delete images modal", async () => {
     renderWithProviders(
-      <ImageListHeader selectedRows={{ 1: true }} setSelectedRows={vi.fn} />
+      <ImageListHeader selectedRows={{ 1: true }} setSelectedRows={vi.fn()} />
     );
     await waitForLoading();
     await waitFor(() => {
@@ -141,7 +141,7 @@ describe("permissions", () => {
   it("disables all header actions without the edit entitlement", async () => {
     mockServer.use(authResolvers.getMeEntitlements.handler([]));
     renderWithProviders(
-      <ImageListHeader selectedRows={{ 1: true }} setSelectedRows={vi.fn} />
+      <ImageListHeader selectedRows={{ 1: true }} setSelectedRows={vi.fn()} />
     );
     await waitForLoading();
 
@@ -166,7 +166,7 @@ describe("permissions", () => {
 
   it("enables the upload and select buttons with the edit entitlement", async () => {
     renderWithProviders(
-      <ImageListHeader selectedRows={{}} setSelectedRows={vi.fn} />
+      <ImageListHeader selectedRows={{}} setSelectedRows={vi.fn()} />
     );
     await waitForLoading();
 
@@ -182,7 +182,7 @@ describe("permissions", () => {
 
   it("can trigger the upload custom image side panel form", async () => {
     renderWithProviders(
-      <ImageListHeader selectedRows={{}} setSelectedRows={vi.fn} />
+      <ImageListHeader selectedRows={{}} setSelectedRows={vi.fn()} />
     );
     await waitForLoading();
     await waitFor(() => {

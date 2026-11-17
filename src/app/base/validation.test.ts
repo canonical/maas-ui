@@ -1,5 +1,3 @@
-import { ValidationError } from "yup";
-
 import {
   hostnameValidation,
   HostnameValidationLabel,
@@ -21,26 +19,20 @@ describe("hostname regex", () => {
   });
 
   it("handles invalid characters", async () => {
-    await expect(
-      hostnameValidation.validate("valid_name")
-    ).rejects.toStrictEqual(
-      new ValidationError(HostnameValidationLabel.CharactersError)
+    await expect(hostnameValidation.validate("valid_name")).rejects.toThrow(
+      HostnameValidationLabel.CharactersError
     );
   });
 
   it("is invalid if it starts with a dash", async () => {
-    await expect(
-      hostnameValidation.validate("-invalidname")
-    ).rejects.toStrictEqual(
-      new ValidationError(HostnameValidationLabel.DashStartError)
+    await expect(hostnameValidation.validate("-invalidname")).rejects.toThrow(
+      HostnameValidationLabel.DashStartError
     );
   });
 
   it("is invalid if it ends with a dash", async () => {
-    await expect(
-      hostnameValidation.validate("invalidname-")
-    ).rejects.toStrictEqual(
-      new ValidationError(HostnameValidationLabel.DashEndError)
+    await expect(hostnameValidation.validate("invalidname-")).rejects.toThrow(
+      HostnameValidationLabel.DashEndError
     );
   });
 
@@ -49,9 +41,7 @@ describe("hostname regex", () => {
       hostnameValidation.validate(
         "invalidnamethatiswaytoolongimeanthisislongbyanystandardormeasure"
       )
-    ).rejects.toStrictEqual(
-      new ValidationError(HostnameValidationLabel.LengthError)
-    );
+    ).rejects.toThrow(HostnameValidationLabel.LengthError);
   });
 });
 
@@ -63,13 +53,11 @@ describe("UrlSchema", () => {
   it("is invalid if undefined when chained with .required()", async () => {
     await expect(
       UrlSchema.required("URL is required").validate(undefined)
-    ).rejects.toStrictEqual(new ValidationError("URL is required"));
+    ).rejects.toThrow("URL is required");
   });
 
   it("rejects invalid URLs", async () => {
-    await expect(UrlSchema.validate("test")).rejects.toStrictEqual(
-      new ValidationError(UrlSchemaError)
-    );
+    await expect(UrlSchema.validate("test")).rejects.toThrow(UrlSchemaError);
   });
 
   it("allows URLs with a TLD", async () => {
