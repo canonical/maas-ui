@@ -345,7 +345,6 @@ export enum FetchGroupKey {
   CurrentTestingScriptSetId = "current_testing_script_set_id",
   DefaultUser = "default_user",
   Description = "description",
-  Dhcpsnippet = "dhcpsnippet",
   Discovery = "discovery",
   DistroSeries = "distro_series",
   DnsProcess = "dns_process",
