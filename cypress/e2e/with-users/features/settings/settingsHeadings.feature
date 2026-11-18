@@ -30,5 +30,4 @@ Feature: Settings page headings
       | settings commissioning scripts  | Commissioning scripts |
       | settings deployment scripts     | Deployment scripts    |
       | settings testing scripts        | Testing scripts       |
-      | settings dhcp snippets          | DHCP snippets         |
       | settings package repositories   | Package repositories  |

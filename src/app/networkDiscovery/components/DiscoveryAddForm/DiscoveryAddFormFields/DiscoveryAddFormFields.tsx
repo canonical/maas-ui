@@ -8,10 +8,10 @@ import { DeviceType } from "../types";
 
 import { useSelections } from "@/app/api/query/images";
 import type { DiscoveryResponse } from "@/app/apiclient";
-import MachineSelect from "@/app/base/components/DhcpFormFields/MachineSelect";
 import FormikField from "@/app/base/components/FormikField";
 import { FormikFieldChangeError } from "@/app/base/components/FormikField/FormikField";
 import IpAssignmentSelect from "@/app/base/components/IpAssignmentSelect";
+import MachineSelect from "@/app/base/components/MachineSelect";
 import TooltipButton from "@/app/base/components/TooltipButton";
 import urls from "@/app/base/urls";
 import { getOsDisplayName } from "@/app/images/utils";

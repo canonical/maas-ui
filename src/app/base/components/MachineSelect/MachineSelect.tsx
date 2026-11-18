@@ -5,7 +5,7 @@ import { Field, useOnEscapePressed } from "@canonical/react-components";
 import className from "classnames";
 import { useFormikContext } from "formik";
 
-import SelectButton from "../../SelectButton";
+import SelectButton from "../SelectButton";
 
 import MachineSelectBox from "./MachineSelectBox/MachineSelectBox";
 

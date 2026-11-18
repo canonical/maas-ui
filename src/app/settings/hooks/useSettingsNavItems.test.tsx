@@ -78,9 +78,6 @@ it("does not disable any Images items with both entitlements", async () => {
   expect(getLicenseKeysItem(result.current.items)?.disabled).toBeFalsy();
   expect(getDisabledScriptsItems(result.current.items)).toEqual([]);
   expect(
-    isGroupItemDisabled(result.current.items, "Networking", "DHCP snippets")
-  ).toBeFalsy();
-  expect(
     isGroupItemDisabled(
       result.current.items,
       "Images & operating systems",
@@ -89,7 +86,7 @@ it("does not disable any Images items with both entitlements", async () => {
   ).toBeFalsy();
 });
 
-it("disables Scripts, DHCP snippets and Package repos without the global entities entitlement", async () => {
+it("disables Scripts and Package repos without the global entities entitlement", async () => {
   mockServer.use(
     authResolvers.getMeEntitlements.handler([
       factory.entitlement({ entitlement: Entitlement.CAN_VIEW_CONFIGURATIONS }),
@@ -104,9 +101,6 @@ it("disables Scripts, DHCP snippets and Package repos without the global entitie
       "Testing scripts",
     ]);
   });
-  expect(
-    isGroupItemDisabled(result.current, "Networking", "DHCP snippets")
-  ).toBe(true);
   expect(
     isGroupItemDisabled(
       result.current,

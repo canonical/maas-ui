@@ -34,7 +34,6 @@ type GetComponent = (
 type Props = {
   actions?: GetComponent;
   addInterface?: GetComponent;
-  dhcpTable: GetComponent;
   expandedForm?: GetComponent;
   interfaceTable: GetComponent;
 };
@@ -42,7 +41,6 @@ type Props = {
 const NodeNetworkTab = ({
   actions,
   addInterface,
-  dhcpTable,
   expandedForm,
   interfaceTable,
   ...props
@@ -63,7 +61,6 @@ const NodeNetworkTab = ({
           ? addInterface(expanded, setExpanded)
           : null}
       </Strip>
-      {dhcpTable(expanded, setExpanded)}
     </div>
   );
 };

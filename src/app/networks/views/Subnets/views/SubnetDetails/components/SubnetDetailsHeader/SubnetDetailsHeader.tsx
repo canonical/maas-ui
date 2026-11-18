@@ -99,12 +99,6 @@ const SubnetDetailsHeader = ({ subnet }: Props): ReactElement => {
           to: `${urlBase}/address-reservation`,
         },
         {
-          active: pathname.startsWith(`${urlBase}/dhcp-snippets`),
-          component: Link,
-          label: "DHCP snippets",
-          to: `${urlBase}/dhcp-snippets`,
-        },
-        {
           active: pathname.startsWith(`${urlBase}/used-ip-addresses`),
           component: Link,
           label: "Used IP addresses",

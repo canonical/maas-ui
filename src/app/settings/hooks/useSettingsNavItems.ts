@@ -37,7 +37,6 @@ export const useSettingsNavItems = (): NavItem[] => {
         settingsURLs.scripts.commissioning.index,
         settingsURLs.scripts.deploying.index,
         settingsURLs.scripts.testing.index,
-        settingsURLs.dhcp.index,
         settingsURLs.repositories.index
       );
     }

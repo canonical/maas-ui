@@ -26,7 +26,6 @@ describe("DeviceNetwork", () => {
 
     renderWithProviders(<DeviceNetwork systemId="abc123" />, { state });
     expect(screen.getByLabelText("Device network")).toBeInTheDocument();
-    expect(screen.getByRole("treegrid", { name: /DHCP/ })).toBeInTheDocument();
     expect(
       screen.getByRole("treegrid", { name: "Interfaces" })
     ).toBeInTheDocument();

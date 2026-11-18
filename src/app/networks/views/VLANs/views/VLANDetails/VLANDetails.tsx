@@ -14,7 +14,7 @@ import {
 import ModelNotFound from "@/app/base/components/ModelNotFound";
 import PageContent from "@/app/base/components/PageContent";
 import { useFetchActions, useGetURLId, useWindowTitle } from "@/app/base/hooks";
-import { DHCPSnippets, ReservedRangesTable } from "@/app/networks/components";
+import { ReservedRangesTable } from "@/app/networks/components";
 import urls from "@/app/networks/urls";
 import type { RootState } from "@/app/store/root/types";
 import subnetSelectors from "@/app/store/subnet/selectors";
@@ -68,10 +68,6 @@ const VLANDetails = (): ReactElement => {
             vlanId={id}
           />
           <VLANSubnetsTable id={id} />
-          <DHCPSnippets
-            modelName={VLANMeta.MODEL}
-            subnetIds={vlan!.subnet_ids}
-          />
         </>
       )}
     </PageContent>

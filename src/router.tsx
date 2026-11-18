@@ -27,7 +27,6 @@ import Commissioning from "@/app/settings/views/Configuration/Commissioning";
 import Deploy from "@/app/settings/views/Configuration/Deploy";
 import General from "@/app/settings/views/Configuration/General";
 import KernelParameters from "@/app/settings/views/Configuration/KernelParameters";
-import DhcpList from "@/app/settings/views/Dhcp/DhcpList";
 import ImageSettings from "@/app/settings/views/Images";
 import ThirdPartyDrivers from "@/app/settings/views/Images/ThirdPartyDrivers";
 import VMWare from "@/app/settings/views/Images/VMWare";
@@ -1047,25 +1046,6 @@ export const router = createBrowserRouter(
                     },
                   ],
                 },
-                {
-                  path: getRelativeRoute(
-                    urls.settings.dhcp.index,
-                    urls.settings.index
-                  ),
-                  element: (
-                    <RequireEntitlements
-                      entitlements={[Entitlement.CAN_VIEW_GLOBAL_ENTITIES]}
-                      skeletonView="settings"
-                    >
-                      <ErrorBoundary>
-                        <PageContent>
-                          <DhcpList />
-                        </PageContent>
-                      </ErrorBoundary>
-                    </RequireEntitlements>
-                  ),
-                },
-
                 {
                   path: getRelativeRoute(
                     urls.settings.repositories.index,

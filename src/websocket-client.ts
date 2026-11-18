@@ -47,7 +47,6 @@ const WebSocketEndpoints = {
     "update",
     "update_interface",
   ],
-  dhcpsnippet: ["create", "delete", "get", "list", "revert", "update"],
   discovery: ["clear", "delete_by_mac_and_ip", "get", "list"],
   domain: [
     "create",
