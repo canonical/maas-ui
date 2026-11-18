@@ -31,7 +31,7 @@ export default defineConfig({
     globals: true,
     environment: "jsdom",
     setupFiles: ["./src/setupTests.ts"],
-    exclude: [...configDefaults.exclude, "**/tests/**"],
+    exclude: [...configDefaults.exclude, "**/tests/**", "**/cypress/**"],
     clearMocks: true,
     server: {
       deps: {

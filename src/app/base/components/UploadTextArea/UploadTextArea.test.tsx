@@ -1,5 +1,4 @@
 import { Formik } from "formik";
-import type { Mock } from "vitest";
 
 import UploadTextArea from "./UploadTextArea";
 
@@ -39,8 +38,9 @@ const getFileUploadInput = (container: HTMLElement) => {
 
 describe("UploadTextArea", () => {
   beforeEach(async () => {
-    const mockedFileReader = vi.spyOn(window, "FileReader");
-    (mockedFileReader as Mock).mockImplementation(() => new MockFileReader());
+    vi.spyOn(window, "FileReader").mockImplementation(
+      MockFileReader as unknown as typeof FileReader
+    );
   });
 
   afterEach(() => {

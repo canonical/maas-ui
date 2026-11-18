@@ -19,7 +19,7 @@ vi.mock("fs", () => {
 
 describe("docs maintenance", () => {
   let main: typeof import("./update-docs").main;
-  const fetchMock = vi.fn<Parameters<typeof fetch>, ReturnType<typeof fetch>>();
+  const fetchMock = vi.fn<typeof fetch>();
 
   beforeEach(async () => {
     vi.resetModules();
