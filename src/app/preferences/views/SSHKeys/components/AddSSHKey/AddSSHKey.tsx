@@ -28,11 +28,11 @@ const SSHKeySchema = Yup.object().shape({
   protocol: Yup.string().required("Source is required"),
   auth_id: Yup.string().when("protocol", {
     is: (val: string) => val && val !== "upload",
-    then: Yup.string().required("ID is required"),
+    then: (schema) => schema.required("ID is required"),
   }),
   key: Yup.string().when("protocol", {
     is: (val: string) => val === "upload",
-    then: Yup.string().required("Key is required"),
+    then: (schema) => schema.required("Key is required"),
   }),
 });
 

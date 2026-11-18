@@ -31,7 +31,7 @@ const EditDiskSchema = Yup.object().shape({
   mountOptions: Yup.string(),
   mountPoint: Yup.string().when("fstype", {
     is: (val: EditDiskValues["fstype"]) => Boolean(val) && val !== "swap",
-    then: Yup.string().matches(/^\//, "Mount point must start with /"),
+    then: (schema) => schema.matches(/^\//, "Mount point must start with /"),
   }),
   tags: Yup.array().of(Yup.string()),
 });
