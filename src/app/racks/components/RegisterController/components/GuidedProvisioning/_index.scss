@@ -1,5 +1,5 @@
 @mixin GuidedProvisioning {
-    .p-agent-token code
+    .p-agent-token .p-code-block > .ds.inline-code
     {
         word-break: break-all;
         white-space: normal;

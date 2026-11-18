@@ -1,6 +1,7 @@
 import { useState } from "react";
 
-import { Code, Tabs } from "@canonical/react-components";
+import { Tabs } from "@canonical/react-components";
+import { InlineCode } from "@canonical/react-ds-global";
 
 import type { ScriptResultData } from "@/app/store/scriptresult/types";
 import { ScriptResultDataType } from "@/app/store/scriptresult/types";
@@ -33,9 +34,11 @@ const NodeTestDetailsLogs = ({ log }: Props): React.ReactElement => {
   return (
     <>
       <Tabs links={links} />
-      <Code className="u-no-margin--bottom" data-testid="log-content">
-        {tabText === "" ? "No data" : tabText}
-      </Code>
+      <pre className="p-code-block u-no-margin--bottom">
+        <InlineCode data-testid="log-content">
+          {tabText === "" ? "No data" : tabText}
+        </InlineCode>
+      </pre>
     </>
   );
 };

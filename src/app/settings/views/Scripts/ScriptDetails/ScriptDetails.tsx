@@ -1,13 +1,8 @@
 import { useContext, useEffect, useRef } from "react";
 
 import { useSidePanel } from "@canonical/maas-react-components";
-import {
-  Button,
-  CodeSnippet,
-  Col,
-  Row,
-  Spinner,
-} from "@canonical/react-components";
+import { Button, Col, Row, Spinner } from "@canonical/react-components";
+import { InlineCode } from "@canonical/react-ds-global";
 import { nanoid } from "@reduxjs/toolkit";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -54,7 +49,9 @@ const ScriptDetails = ({ id }: Props): React.ReactElement => {
     <>
       <Row>
         <Col size={10}>
-          <CodeSnippet blocks={[{ code: script }]} />
+          <pre className="p-code-block">
+            <InlineCode>{script}</InlineCode>
+          </pre>
           <hr />
           <span className="u-flex--end">
             <Button appearance="base" onClick={closeSidePanel}>
