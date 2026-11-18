@@ -10,10 +10,21 @@ import type { NavGroup } from "../types";
 import { isSelected } from "../utils";
 
 import { useGetUserEntitlements } from "@/app/api/query/auth";
+import { useActiveNotifications } from "@/app/api/query/notifications";
 import type { EntitlementResponse } from "@/app/apiclient";
 import urls from "@/app/base/urls";
 import configSelectors from "@/app/store/config/selectors";
 import { hasPermissions } from "@/app/utils/permissions";
+
+// Maps backend notification categories to the icon shown per-severity in the
+// "Notifications" nav item. Kept local to this component since it's the only
+// place a NavItem needs to render a multi-severity status summary.
+const NOTIFICATION_SEVERITY_ICONS = {
+  success: "success",
+  info: "information",
+  warning: "warning",
+  error: "error",
+} as const;
 
 type Props = {
   groups: NavGroup[];
@@ -51,6 +62,22 @@ const AppSideNavItemGroup = ({
     configSelectors.experimentalSwitchProvisioning
   );
 
+  // Only used to render the severity summary on the "Notifications" nav
+  // item, so it's disabled entirely unless that nav item can actually be
+  // shown. When enabled, it shares its query cache with the toast
+  // notification bridge (useNotifications), so it doesn't add an extra
+  // network request beyond what's already fetched globally.
+  const activeNotifications = useActiveNotifications({
+    enabled: import.meta.env.VITE_APP_NOTIFICATIONS_PAGE === "true",
+  });
+  const countBySeverity = useMemo(() => {
+    const counts: Partial<Record<string, number>> = {};
+    activeNotifications.data?.items.forEach((item) => {
+      counts[item.category] = (counts[item.category] ?? 0) + 1;
+    });
+    return counts;
+  }, [activeNotifications.data]);
+
   const filteredLinks = group.navLinks
     .filter(
       (navLink) =>
@@ -74,6 +101,26 @@ const AppSideNavItemGroup = ({
             data-testid="warning-icon"
             name="security-warning-grey"
           />
+        ) : navLink.label === "Notifications" ? (
+          <>
+            <Navigation.Icon name={navLink.icon ?? "notifications"} />
+            {(
+              Object.keys(
+                NOTIFICATION_SEVERITY_ICONS
+              ) as (keyof typeof NOTIFICATION_SEVERITY_ICONS)[]
+            ).map((severity) =>
+              countBySeverity[severity] ? (
+                <span
+                  aria-label={`${countBySeverity[severity]} ${severity} notifications`}
+                  className="u-nudge-right--small"
+                  key={severity}
+                >
+                  <Icon name={NOTIFICATION_SEVERITY_ICONS[severity]} />
+                  {countBySeverity[severity]}
+                </span>
+              ) : null
+            )}
+          </>
         ) : (
           navLink.icon
         )

@@ -37,4 +37,4 @@ const systemResolvers = {
   },
 };
 
-export { systemResolvers, mockSystemInfo };
+export { mockSystemInfo, systemResolvers };

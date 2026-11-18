@@ -43,7 +43,7 @@ export const useListNotifications = (
   });
 };
 
-export const useActiveNotifications = () =>
+export const useActiveNotifications = (options?: { enabled?: boolean }) =>
   useWebsocketAwareQuery<
     WithHeaders<ListNotificationsResponse>,
     Error | ListNotificationsError
@@ -52,6 +52,7 @@ export const useActiveNotifications = () =>
       ...listNotificationsQueryKey({ query: { only_active: true } }),
       "all",
     ],
+    enabled: options?.enabled,
     queryFn: async (context) => {
       const fetchPage = (page: number) => {
         const { queryFn, queryKey } = notificationQueryOptions({
