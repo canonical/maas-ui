@@ -88,3 +88,47 @@ it("can dispatch an action to select all machines on current page using a dropdo
     store.getActions().find((action) => action.type === expected.type)
   ).toStrictEqual(expected);
 });
+
+it("does not duplicate machines or groups that are already selected when selecting the current page", async () => {
+  state.machine.lists[callId].groups = [
+    factory.machineStateListGroup({
+      count: 2,
+      items: ["abc123", "def456"],
+      name: "Deployed",
+      value: FetchNodeStatus.DEPLOYED,
+    }),
+    factory.machineStateListGroup({
+      count: 2,
+      collapsed: true,
+      name: "Failed testing",
+      value: FetchNodeStatus.FAILED_TESTING,
+    }),
+  ];
+  // The current page is already selected, along with a machine from another page.
+  state.machine.selected = {
+    groups: ["failed_testing"],
+    items: ["abc123", "def456", "ghi789"],
+  };
+
+  const { store } = renderWithProviders(
+    <AllDropdown callId={callId} filter={null} />,
+    { state }
+  );
+  await userEvent.click(
+    screen.getByRole("button", {
+      name: AllDropdownLabel.AllMachinesOptions,
+    })
+  );
+  await userEvent.click(
+    screen.getByRole("menuitem", {
+      name: AllDropdownLabel.SelectAllMachinesOnThisPage,
+    })
+  );
+  const expected = machineActions.setSelected({
+    groups: ["failed_testing"],
+    items: ["abc123", "def456", "ghi789"],
+  });
+  expect(
+    store.getActions().find((action) => action.type === expected.type)
+  ).toStrictEqual(expected);
+});
