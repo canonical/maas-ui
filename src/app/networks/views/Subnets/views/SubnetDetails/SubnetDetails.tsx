@@ -15,7 +15,7 @@ import SubnetUsedIPs from "./views/SubnetUsedIPs";
 import ModelNotFound from "@/app/base/components/ModelNotFound";
 import PageContent from "@/app/base/components/PageContent/PageContent";
 import { useGetURLId, useWindowTitle } from "@/app/base/hooks";
-import { DHCPSnippets, ReservedRangesTable } from "@/app/networks/components";
+import { ReservedRangesTable } from "@/app/networks/components";
 import urls from "@/app/networks/urls";
 import type { RootState } from "@/app/store/root/types";
 import { staticRouteActions } from "@/app/store/staticroute";
@@ -90,12 +90,6 @@ const SubnetDetails = (): ReactElement => {
               </>
             }
             path={getRelativeRoute(urls.subnet.addressReservation(null), base)}
-          />
-          <Route
-            element={
-              <DHCPSnippets modelName={SubnetMeta.MODEL} subnetIds={[id]} />
-            }
-            path={getRelativeRoute(urls.subnet.dhcpSnippets(null), base)}
           />
           <Route
             element={<SubnetUsedIPs subnetId={id} />}

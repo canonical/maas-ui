@@ -6,10 +6,6 @@ import type {
   ControllerMeta,
 } from "@/app/store/controller/types";
 import type { DeviceState, DeviceMeta } from "@/app/store/device/types";
-import type {
-  DHCPSnippetState,
-  DHCPSnippetMeta,
-} from "@/app/store/dhcpsnippet/types";
 import type { DomainState, DomainMeta } from "@/app/store/domain/types";
 import type { EventState, EventMeta } from "@/app/store/event/types";
 import type { FabricState, FabricMeta } from "@/app/store/fabric/types";
@@ -57,7 +53,6 @@ export type RootState = {
   [ConfigMeta.MODEL]: ConfigState;
   [ControllerMeta.MODEL]: ControllerState;
   [DeviceMeta.MODEL]: DeviceState;
-  [DHCPSnippetMeta.MODEL]: DHCPSnippetState;
   [DomainMeta.MODEL]: DomainState;
   [EventMeta.MODEL]: EventState;
   [FabricMeta.MODEL]: FabricState;

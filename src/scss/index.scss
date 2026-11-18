@@ -90,7 +90,6 @@
 @import "@/app/base/components/CertificateMetadata";
 @import "@/app/base/components/ColumnToggle";
 @import "@/app/base/components/DebounceSearchBox";
-@import "@/app/base/components/DHCPTable";
 @import "@/app/base/components/DoughnutChart";
 @import "@/app/base/components/FilterAccordion";
 @import "@/app/base/components/FormCard";
@@ -123,7 +122,6 @@
 @include CertificateMetadata;
 @include ColumnToggle;
 @include DebounceSearchBox;
-@include DHCPTable;
 @include DoughnutChart;
 @include DownloadMenu;
 @include FilterAccordion;
@@ -171,7 +169,7 @@
 @include MaasIntro;
 
 // kvm
-@import "@/app/base/components/DhcpFormFields/MachineSelect";
+@import "@/app/base/components/MachineSelect";
 @include MachineSelect;
 
 // Network Discovery
@@ -216,7 +214,6 @@
 @import "@/app/settings/views/Configuration/GeneralForm";
 @import "@/app/settings/views/Configuration/GeneralForm/ThemedRadioButton";
 @import "@/app/settings/views/Security/SecurityProtocols/TLSEnabled/TLSEnabledFields";
-@import "@/app/settings/views/Dhcp/DhcpList";
 @import "@/app/settings/views/LicenseKeys/views";
 @import "@/app/settings/views/Repositories/views";
 @import "@/app/settings/views/Repositories/components/RepositoryFormFields";
@@ -225,7 +222,6 @@
 @import "@/app/settings/views/Scripts/ScriptDetails";
 @import "@/app/settings/views/UserManagement/views/UsersList/components/UsersTable";
 @include SettingsTable;
-@include DhcpList;
 @include LicenseKeyList;
 @include RepositoriesList;
 @include RepositoryFormFields;

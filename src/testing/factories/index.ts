@@ -1,5 +1,4 @@
 export { config } from "./config";
-export { dhcpSnippet } from "./dhcpsnippet";
 export { discovery } from "./discovery";
 export { domain, domainDetails, domainResource } from "./domain";
 export { eventRecord, eventType } from "./event";
@@ -97,7 +96,6 @@ export {
   deviceState,
   deviceStatus,
   deviceStatuses,
-  dhcpSnippetState,
   domainState,
   eventState,
   fabricState,
