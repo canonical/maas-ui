@@ -30,16 +30,22 @@ const MAAS_ENDPOINTS = [DOCS, ...API_ENDPOINTS];
 
 // Proxy docs and API endpoints to the MAAS.
 app.use(
-  createProxyMiddleware(MAAS_ENDPOINTS, {
+  createProxyMiddleware({
     changeOrigin: true,
-    onProxyReq(proxyReq) {
-      // Django's CSRF protection requires requests to come from the correct
-      // protocol, so this makes XHR requests work when using TLS certs.
-      proxyReq.setHeader(
-        "Origin",
-        `${process.env.MAAS_URL.replace(/\/$/, "")}`
-      );
-      proxyReq.setHeader("Referer", `${process.env.MAAS_URL}${proxyReq.path}`);
+    pathFilter: MAAS_ENDPOINTS,
+    on: {
+      proxyReq(proxyReq) {
+        // Django's CSRF protection requires requests to come from the correct
+        // protocol, so this makes XHR requests work when using TLS certs.
+        proxyReq.setHeader(
+          "Origin",
+          `${process.env.MAAS_URL.replace(/\/$/, "")}`
+        );
+        proxyReq.setHeader(
+          "Referer",
+          `${process.env.MAAS_URL}${proxyReq.path}`
+        );
+      },
     },
     secure: false,
     target: process.env.MAAS_URL,
@@ -48,7 +54,8 @@ app.use(
 
 // Proxy the WebSocket API endpoint to the MAAS.
 app.use(
-  createProxyMiddleware(`${BASENAME}/ws`, {
+  createProxyMiddleware({
+    pathFilter: `${BASENAME}/ws`,
     secure: false,
     target: process.env.MAAS_URL,
     ws: true,
@@ -57,7 +64,8 @@ app.use(
 
 // Proxy the HMR endpoint to the React client.
 app.use(
-  createProxyMiddleware("/sockjs-node", {
+  createProxyMiddleware({
+    pathFilter: "/sockjs-node",
     target: `http://localhost:${VITE_PORT}/`,
     ws: true,
   })
@@ -66,7 +74,8 @@ app.use(
 // Proxy to the React client.
 if (process.env.STATIC_DEMO !== "true") {
   app.use(
-    createProxyMiddleware("/", {
+    createProxyMiddleware({
+      pathFilter: "/",
       target: `http://localhost:${VITE_PORT}/`,
     })
   );

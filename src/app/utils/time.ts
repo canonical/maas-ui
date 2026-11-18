@@ -30,8 +30,7 @@ export const formatUtcDatetime = (
     const utcTime = `${formatInTimeZone(
       parseUtcDatetime(utcTimeString),
       "UTC",
-      DATETIME_DISPLAY_FORMAT,
-      { addSuffix: true }
+      DATETIME_DISPLAY_FORMAT
     )} (UTC)` as const;
     return utcTime;
   } catch {

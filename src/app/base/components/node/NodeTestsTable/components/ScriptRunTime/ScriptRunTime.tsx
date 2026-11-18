@@ -17,7 +17,13 @@ type Props = {
 const zeroPad = (time?: number) => `0${time || "0"}`.slice(-2);
 
 const getElapsedTime = (starttime: ScriptResult["starttime"]) => {
-  const { days, hours, minutes, seconds } = intervalToDuration({
+  // date-fns omits zero-valued fields, so default them.
+  const {
+    days,
+    hours = 0,
+    minutes,
+    seconds,
+  } = intervalToDuration({
     start: starttime ? fromUnixTime(starttime) : Date.now(),
     end: Date.now(),
   });
