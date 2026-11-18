@@ -13,12 +13,6 @@
   .p-generic-table.machine-list {
     margin-bottom: 0;
 
-    // The sticky header is transparent by default, so rows show through it
-    // when the page scrolls.
-    thead {
-      background-color: var(--vf-color-background-default);
-    }
-
     th,
     td {
       text-align: left !important;
