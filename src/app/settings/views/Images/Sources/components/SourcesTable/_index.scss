@@ -1,8 +1,6 @@
-@import 'vanilla-framework';
-
-@include vf-base;
-
-@include vf-p-icons;
+// Definitions only — don't include vf-base/vf-p-icons here, as they would
+// re-emit Vanilla's base styles and @font-face rules into this chunk.
+@import "vanilla-framework";
 
 .p-generic-table.sources-table {
   tr {
@@ -52,16 +50,24 @@
     }
 
     .p-icon--help {
-      @include vf-themed-icon($light-value: vf-icon-help-url($colors--light-theme--text-muted), $dark-value: vf-icon-help-url($colors--dark-theme--text-muted));
+      @include vf-themed-icon(
+        $light-value: vf-icon-help-url($colors--light-theme--text-muted),
+        $dark-value: vf-icon-help-url($colors--dark-theme--text-muted)
+      );
     }
 
     .p-icon--success-grey {
-      @include vf-themed-icon($light-value: vf-icon-success-grey-url($colors--light-theme--text-muted), $dark-value: vf-icon-success-grey-url($colors--dark-theme--text-muted));
+      @include vf-themed-icon(
+        $light-value: vf-icon-success-grey-url($colors--light-theme--text-muted),
+        $dark-value: vf-icon-success-grey-url($colors--dark-theme--text-muted)
+      );
     }
 
     .p-icon--error-grey {
-      @include vf-themed-icon($light-value: vf-icon-error-grey-url($colors--light-theme--text-muted), $dark-value: vf-icon-error-grey-url($colors--dark-theme--text-muted));
+      @include vf-themed-icon(
+        $light-value: vf-icon-error-grey-url($colors--light-theme--text-muted),
+        $dark-value: vf-icon-error-grey-url($colors--dark-theme--text-muted)
+      );
     }
   }
 }
-
