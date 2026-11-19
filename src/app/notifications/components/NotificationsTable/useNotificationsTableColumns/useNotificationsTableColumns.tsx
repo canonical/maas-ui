@@ -25,19 +25,19 @@ const useNotificationsTableColumns = (): NotificationsColumnDef[] => {
   return useMemo(
     () => [
       {
+        id: "message",
+        accessorKey: "message",
+        enableSorting: false,
+        header: "Message",
+        cell: ({ row: { original } }) => original.message,
+      },
+      {
         id: "category",
         accessorKey: "category",
         enableSorting: false,
         header: "Category",
         cell: ({ row: { original } }) =>
           DEFAULT_TITLES[original.category] ?? original.category,
-      },
-      {
-        id: "description",
-        accessorKey: "message",
-        enableSorting: false,
-        header: "Description",
-        cell: ({ row: { original } }) => original.message,
       },
       {
         id: "action",

@@ -43,7 +43,7 @@ export const useListNotifications = (
   });
 };
 
-export const useActiveNotifications = (options?: { enabled?: boolean }) =>
+export const useActiveNotifications = () =>
   useWebsocketAwareQuery<
     WithHeaders<ListNotificationsResponse>,
     Error | ListNotificationsError
@@ -52,11 +52,42 @@ export const useActiveNotifications = (options?: { enabled?: boolean }) =>
       ...listNotificationsQueryKey({ query: { only_active: true } }),
       "all",
     ],
-    enabled: options?.enabled,
     queryFn: async (context) => {
       const fetchPage = (page: number) => {
         const { queryFn, queryKey } = notificationQueryOptions({
           query: { only_active: true, page, size: DEFAULT_PAGE_SIZE },
+        });
+        if (typeof queryFn !== "function") {
+          throw new Error("Notification query function is not available.");
+        }
+        return queryFn({ ...context, queryKey });
+      };
+      const firstPage = await fetchPage(1);
+      const items = [...firstPage.items];
+      const pageCount = Math.ceil(firstPage.total / DEFAULT_PAGE_SIZE);
+      for (let page = 2; page <= pageCount; page++) {
+        const nextPage = await fetchPage(page);
+        items.push(...nextPage.items);
+      }
+      return { ...firstPage, items };
+    },
+    refetchInterval: 30000,
+  });
+
+// Used by the Notifications page, which lists a user's full notification
+// history, including notifications they've already dismissed from the
+// toast bell.
+export const useAllNotifications = (options?: { enabled?: boolean }) =>
+  useWebsocketAwareQuery<
+    WithHeaders<ListNotificationsResponse>,
+    Error | ListNotificationsError
+  >({
+    queryKey: [...listNotificationsQueryKey({ query: {} }), "all"],
+    enabled: options?.enabled,
+    queryFn: async (context) => {
+      const fetchPage = (page: number) => {
+        const { queryFn, queryKey } = notificationQueryOptions({
+          query: { page, size: DEFAULT_PAGE_SIZE },
         });
         if (typeof queryFn !== "function") {
           throw new Error("Notification query function is not available.");

@@ -4,16 +4,18 @@ import { GenericTable } from "@canonical/maas-react-components";
 
 import useNotificationsTableColumns from "./useNotificationsTableColumns/useNotificationsTableColumns";
 
-import { useActiveNotifications } from "@/app/api/query/notifications";
+import { useAllNotifications } from "@/app/api/query/notifications";
 import type { NotificationSeverityFilter } from "@/app/notifications/constants";
 import { NotificationSeverityFilter as Filter } from "@/app/notifications/constants";
+
+import "./index.scss";
 
 type Props = {
   filter: NotificationSeverityFilter;
 };
 
 const NotificationsTable = ({ filter }: Props) => {
-  const notifications = useActiveNotifications();
+  const notifications = useAllNotifications();
   const columns = useNotificationsTableColumns();
 
   const filteredItems = useMemo(() => {
@@ -27,6 +29,7 @@ const NotificationsTable = ({ filter }: Props) => {
   return (
     <GenericTable
       aria-label="Notifications"
+      className="notifications-table"
       columns={columns}
       data={filteredItems}
       isLoading={notifications.isPending}

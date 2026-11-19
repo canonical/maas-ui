@@ -1,7 +1,7 @@
 import { useMemo, useState } from "react";
 
 import { Navigation } from "@canonical/maas-react-components";
-import { Icon } from "@canonical/react-components";
+import { Badge, Icon } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 
 import AppSideNavItem from "../AppSideNavItem";
@@ -10,21 +10,11 @@ import type { NavGroup } from "../types";
 import { isSelected } from "../utils";
 
 import { useGetUserEntitlements } from "@/app/api/query/auth";
-import { useActiveNotifications } from "@/app/api/query/notifications";
+import { useAllNotifications } from "@/app/api/query/notifications";
 import type { EntitlementResponse } from "@/app/apiclient";
 import urls from "@/app/base/urls";
 import configSelectors from "@/app/store/config/selectors";
 import { hasPermissions } from "@/app/utils/permissions";
-
-// Maps backend notification categories to the icon shown per-severity in the
-// "Notifications" nav item. Kept local to this component since it's the only
-// place a NavItem needs to render a multi-severity status summary.
-const NOTIFICATION_SEVERITY_ICONS = {
-  success: "success",
-  info: "information",
-  warning: "warning",
-  error: "error",
-} as const;
 
 type Props = {
   groups: NavGroup[];
@@ -64,19 +54,12 @@ const AppSideNavItemGroup = ({
 
   // Only used to render the severity summary on the "Notifications" nav
   // item, so it's disabled entirely unless that nav item can actually be
-  // shown. When enabled, it shares its query cache with the toast
-  // notification bridge (useNotifications), so it doesn't add an extra
-  // network request beyond what's already fetched globally.
-  const activeNotifications = useActiveNotifications({
+  // shown. Counts the user's full notification history (not just active
+  // ones), matching what the Notifications page itself shows.
+  const allNotifications = useAllNotifications({
     enabled: import.meta.env.VITE_APP_NOTIFICATIONS_PAGE === "true",
   });
-  const countBySeverity = useMemo(() => {
-    const counts: Partial<Record<string, number>> = {};
-    activeNotifications.data?.items.forEach((item) => {
-      counts[item.category] = (counts[item.category] ?? 0) + 1;
-    });
-    return counts;
-  }, [activeNotifications.data]);
+  const notificationCount = allNotifications.data?.items.length ?? 0;
 
   const filteredLinks = group.navLinks
     .filter(
@@ -104,22 +87,13 @@ const AppSideNavItemGroup = ({
         ) : navLink.label === "Notifications" ? (
           <>
             <Navigation.Icon name={navLink.icon ?? "notifications"} />
-            {(
-              Object.keys(
-                NOTIFICATION_SEVERITY_ICONS
-              ) as (keyof typeof NOTIFICATION_SEVERITY_ICONS)[]
-            ).map((severity) =>
-              countBySeverity[severity] ? (
-                <span
-                  aria-label={`${countBySeverity[severity]} ${severity} notifications`}
-                  className="u-nudge-right--small"
-                  key={severity}
-                >
-                  <Icon name={NOTIFICATION_SEVERITY_ICONS[severity]} />
-                  {countBySeverity[severity]}
-                </span>
-              ) : null
-            )}
+            {notificationCount > 0 ? (
+              <Badge
+                aria-label={`${notificationCount} notifications`}
+                className="u-nudge-right--small"
+                value={notificationCount}
+              />
+            ) : null}
           </>
         ) : (
           navLink.icon

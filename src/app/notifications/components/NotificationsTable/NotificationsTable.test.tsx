@@ -46,7 +46,7 @@ describe("NotificationsTable", () => {
     );
 
     await waitFor(() => {
-      ["Category", "Description", "Action"].forEach((column) => {
+      ["Category", "Message", "Action"].forEach((column) => {
         expect(
           screen.getByRole("columnheader", {
             name: new RegExp(`^${column}`, "i"),
@@ -68,7 +68,7 @@ describe("NotificationsTable", () => {
     });
   });
 
-  it("displays the notification message as the description", async () => {
+  it("displays the notification message", async () => {
     renderWithProviders(
       <NotificationsTable filter={NotificationSeverityFilter.All} />
     );

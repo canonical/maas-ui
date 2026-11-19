@@ -1,0 +1,8 @@
+.p-generic-table.notifications-table {
+  th,
+  td {
+    &.action {
+      text-align: right;
+    }
+  }
+}
