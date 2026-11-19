@@ -39,10 +39,11 @@ const TLSEnabledSchema = Yup.object()
     notificationEnabled: Yup.boolean(),
     notificationInterval: Yup.number().when("notificationEnabled", {
       is: true,
-      then: Yup.number()
-        .min(TLSExpiryNotificationInterval.MIN, INTERVAL_RANGE_ERROR)
-        .max(TLSExpiryNotificationInterval.MAX, INTERVAL_RANGE_ERROR)
-        .required("Notification interval is required."),
+      then: (schema) =>
+        schema
+          .min(TLSExpiryNotificationInterval.MIN, INTERVAL_RANGE_ERROR)
+          .max(TLSExpiryNotificationInterval.MAX, INTERVAL_RANGE_ERROR)
+          .required("Notification interval is required."),
     }),
   })
   .defined();

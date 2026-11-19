@@ -4,7 +4,6 @@ import { Col, Modal, Row, Textarea } from "@canonical/react-components";
 import { useFormikContext } from "formik";
 import { useSelector } from "react-redux";
 import usePortal from "react-useportal";
-import type { SchemaOf } from "yup";
 import * as Yup from "yup";
 
 import type { NodeConfigurationValues } from "./types";
@@ -22,14 +21,13 @@ export enum Label {
   Note = "Note",
 }
 
-export const NodeConfigurationSchema: SchemaOf<NodeConfigurationValues> =
-  Yup.object()
-    .shape({
-      description: Yup.string(),
-      tags: Yup.array().of(Yup.number()),
-      zone: Yup.string(),
-    })
-    .defined();
+export const NodeConfigurationSchema = Yup.object()
+  .shape({
+    description: Yup.string(),
+    tags: Yup.array().of(Yup.number()),
+    zone: Yup.string(),
+  })
+  .defined();
 
 const NodeConfigurationFields = (): React.ReactElement => {
   const { openPortal, closePortal, isOpen, Portal } = usePortal();

@@ -109,9 +109,8 @@ const setRedirectURL = (
 const DiscoveryAddSchema = Yup.object().shape({
   [DeviceMeta.PK]: Yup.string().when("type", {
     is: DeviceType.INTERFACE,
-    then: Yup.string().required(
-      "A device is required when adding an interface."
-    ),
+    then: (schema) =>
+      schema.required("A device is required when adding an interface."),
   }),
   domain: Yup.string(),
   hostname: hostnameValidation,
@@ -122,9 +121,10 @@ const DiscoveryAddSchema = Yup.object().shape({
   image: Yup.string(),
   mac_address: Yup.string().when("type", {
     is: DeviceType.SWITCH,
-    then: Yup.string()
-      .required("MAC address is required")
-      .matches(MAC_ADDRESS_REGEX, "Invalid MAC address"),
+    then: (schema) =>
+      schema
+        .required("MAC address is required")
+        .matches(MAC_ADDRESS_REGEX, "Invalid MAC address"),
   }),
 });
 

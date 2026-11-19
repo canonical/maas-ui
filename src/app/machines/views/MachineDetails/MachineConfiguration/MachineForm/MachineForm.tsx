@@ -2,7 +2,6 @@ import { useCallback } from "react";
 
 import { Spinner } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
-import type { SchemaOf } from "yup";
 import * as Yup from "yup";
 
 import MachineFormFields from "./MachineFormFields";
@@ -29,7 +28,7 @@ export type MachineFormValues = {
 
 type Props = { systemId: MachineDetails["system_id"] };
 
-const MachineFormSchema: SchemaOf<MachineFormValues> = Yup.object()
+const MachineFormSchema = Yup.object()
   .shape({
     architecture: Yup.string().required("Architecture is required"),
     description: Yup.string(),
