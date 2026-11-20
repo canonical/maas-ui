@@ -1,13 +1,8 @@
 import type { ReactElement } from "react";
 
 import { ContentSection } from "@canonical/maas-react-components";
-import {
-  CodeSnippet,
-  CodeSnippetBlockAppearance,
-  Link,
-  Notification,
-  Spinner,
-} from "@canonical/react-components";
+import { Link, Notification, Spinner } from "@canonical/react-components";
+import { InlineCode } from "@canonical/react-ds-global";
 
 import HardeningStatusTable from "./components/HardeningStatusTable";
 import { parseHardeningNotifications } from "./utils";
@@ -76,14 +71,9 @@ const HardeningStatus = (): ReactElement => {
                 command on a region controller; the change takes effect on the
                 next region restart.
               </p>
-              <CodeSnippet
-                blocks={[
-                  {
-                    appearance: CodeSnippetBlockAppearance.LINUX_PROMPT,
-                    code: "maas config-hardening enable",
-                  },
-                ]}
-              />
+              <pre className="p-code-block p-code-block--linux-prompt">
+                <InlineCode>maas config-hardening enable</InlineCode>
+              </pre>
               <p>
                 <Link
                   href={HARDENING_DOCS_URL}

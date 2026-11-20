@@ -1,9 +1,5 @@
-import {
-  Button,
-  CodeSnippet,
-  Icon,
-  Textarea,
-} from "@canonical/react-components";
+import { Button, Icon, Textarea } from "@canonical/react-components";
+import { InlineCode } from "@canonical/react-ds-global";
 import fileDownload from "js-file-download";
 
 import CopyButton from "@/app/base/components/CopyButton";
@@ -33,13 +29,11 @@ const CertificateDownload = ({
     <>
       {isGenerated ? (
         <div className="certificate-download">
-          <CodeSnippet
-            blocks={[
-              { code: `lxc config trust add - <<EOF\n\n${certificate}\nEOF` },
-            ]}
-            className="u-no-margin--bottom"
-            data-testid={TestIds.CertCodeSnippet}
-          />
+          <pre className="p-code-block u-no-margin--bottom">
+            <InlineCode data-testid={TestIds.CertCodeSnippet}>
+              {`lxc config trust add - <<EOF\n\n${certificate}\nEOF`}
+            </InlineCode>
+          </pre>
         </div>
       ) : (
         <Textarea

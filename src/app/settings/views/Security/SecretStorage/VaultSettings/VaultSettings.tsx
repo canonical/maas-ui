@@ -1,10 +1,6 @@
 import { ExternalLink } from "@canonical/maas-react-components";
-import {
-  Icon,
-  Spinner,
-  CodeSnippet,
-  CodeSnippetBlockAppearance,
-} from "@canonical/react-components";
+import { Icon, Spinner } from "@canonical/react-components";
+import { InlineCode } from "@canonical/react-ds-global";
 import { useSelector } from "react-redux";
 
 import docsUrls from "@/app/base/docsUrls";
@@ -86,26 +82,20 @@ const VaultSettings = (): React.ReactElement => {
                 .
               </p>
               <p>2. SSH into each region controller and configure Vault.</p>
-              <CodeSnippet
-                blocks={[
+              <pre className="p-code-block p-code-block--linux-prompt">
+                <InlineCode>
                   {
-                    appearance: CodeSnippetBlockAppearance.LINUX_PROMPT,
-                    code: "sudo maas config-vault configure $url $approle_id $wrapped_token $secrets_path --secrets-mount $secret_mount",
-                  },
-                ]}
-              />
+                    "sudo maas config-vault configure $url $approle_id $wrapped_token $secrets_path --secrets-mount $secret_mount"
+                  }
+                </InlineCode>
+              </pre>
               <p>
                 3. After Vault is configured on all region controllers, migrate
                 secrets on one of the region controllers.
               </p>
-              <CodeSnippet
-                blocks={[
-                  {
-                    appearance: CodeSnippetBlockAppearance.LINUX_PROMPT,
-                    code: "sudo maas config-vault migrate",
-                  },
-                ]}
-              />
+              <pre className="p-code-block p-code-block--linux-prompt">
+                <InlineCode>sudo maas config-vault migrate</InlineCode>
+              </pre>
             </section>
           </>
         ) : (
@@ -117,14 +107,9 @@ const VaultSettings = (): React.ReactElement => {
               </span>
             </p>
             <section aria-labelledby={id}>
-              <CodeSnippet
-                blocks={[
-                  {
-                    appearance: CodeSnippetBlockAppearance.LINUX_PROMPT,
-                    code: "sudo maas config-vault migrate",
-                  },
-                ]}
-              />
+              <pre className="p-code-block p-code-block--linux-prompt">
+                <InlineCode>sudo maas config-vault migrate</InlineCode>
+              </pre>
             </section>
           </>
         )}

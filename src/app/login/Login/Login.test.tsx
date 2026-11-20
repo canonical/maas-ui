@@ -225,6 +225,8 @@ describe("Login", () => {
     expect(
       screen.getByRole("heading", { name: Labels.NoUsers })
     ).toBeInTheDocument();
+    expect(screen.getByText("sudo maas createadmin")).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Copy" })).toBeInTheDocument();
   });
 
   it("shows an error if the provider is misconfigured", async () => {

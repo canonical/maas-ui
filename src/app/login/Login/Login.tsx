@@ -4,18 +4,19 @@ import { useCallback, useEffect, useState } from "react";
 import {
   Button,
   Card,
-  Code,
   Col,
   Notification as NotificationBanner,
   Row,
   Strip,
 } from "@canonical/react-components";
+import { InlineCode } from "@canonical/react-ds-global";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useSearchParams } from "react-router";
 import * as Yup from "yup";
 
 import { useAuthenticate, useIsOIDCUser } from "@/app/api/query/auth";
 import type { LoginError } from "@/app/apiclient";
+import CopyButton from "@/app/base/components/CopyButton";
 import FormikField from "@/app/base/components/FormikField";
 import { FormikFieldChangeError } from "@/app/base/components/FormikField/FormikField";
 import FormikForm from "@/app/base/components/FormikForm";
@@ -54,6 +55,8 @@ export const Labels = {
 } as const;
 
 type LoginStep = "OIDC" | "PASSWORD" | "USERNAME";
+
+const CREATE_ADMIN_COMMAND = "sudo maas createadmin";
 
 export const Login = (): ReactElement => {
   const dispatch = useDispatch();
@@ -148,7 +151,12 @@ export const Login = (): ReactElement => {
             {noUsers ? (
               <Card title={Labels.NoUsers}>
                 <p>Use the following command to create one:</p>
-                <Code copyable>sudo maas createadmin</Code>
+                <div className="p-code-block-copyable">
+                  <pre className="p-code-block">
+                    <InlineCode>{CREATE_ADMIN_COMMAND}</InlineCode>
+                  </pre>
+                  <CopyButton value={CREATE_ADMIN_COMMAND} />
+                </div>
                 <Button
                   className="u-no-margin--bottom"
                   onClick={() => dispatch(statusActions.checkAuthenticated())}

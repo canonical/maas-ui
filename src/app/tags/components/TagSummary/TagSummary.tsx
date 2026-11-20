@@ -1,4 +1,5 @@
-import { CodeSnippet, Col, Row, Spinner } from "@canonical/react-components";
+import { Col, Row, Spinner } from "@canonical/react-components";
+import { InlineCode } from "@canonical/react-ds-global";
 import { useSelector } from "react-redux";
 
 import AppliedTo from "../AppliedTo";
@@ -72,13 +73,9 @@ const TagSummary = ({ id, narrow }: Props): React.ReactElement => {
         <Col size={narrow ? 12 : 6}>
           <p className="u-text--muted">{Label.Options}</p>
           {tag.kernel_opts ? (
-            <CodeSnippet
-              blocks={[
-                {
-                  code: tag.kernel_opts,
-                },
-              ]}
-            />
+            <pre className="p-code-block">
+              <InlineCode>{tag.kernel_opts}</InlineCode>
+            </pre>
           ) : (
             <p>None</p>
           )}
@@ -86,13 +83,9 @@ const TagSummary = ({ id, narrow }: Props): React.ReactElement => {
         <Col size={narrow ? 12 : 6}>
           <p className="u-text--muted">{Label.Definition}</p>
           {tag.definition ? (
-            <CodeSnippet
-              blocks={[
-                {
-                  code: tag.definition,
-                },
-              ]}
-            />
+            <pre className="p-code-block">
+              <InlineCode>{tag.definition}</InlineCode>
+            </pre>
           ) : (
             <p>None</p>
           )}

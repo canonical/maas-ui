@@ -91,6 +91,9 @@ describe("VaultSettings", () => {
     expect(
       screen.getByLabelText(VaultSettingsLabels.SecretMigrationInstructions)
     ).toBeInTheDocument();
+    expect(
+      screen.getByText("sudo maas config-vault migrate")
+    ).toBeInTheDocument();
   });
 
   it("displays 'Vault enabled' and hides setup instructions if Vault is configured on all controllers", () => {

@@ -71,3 +71,11 @@ it("does not display the tag name when narrow", () => {
   renderWithProviders(<TagSummary id={1} narrow />, { state });
   expect(screen.queryByText("rad")).not.toBeInTheDocument();
 });
+
+it("displays the kernel options and definition as code", () => {
+  state.tag.items[0].kernel_opts = "nomodeset";
+  state.tag.items[0].definition = '//node[@id="cpu"]';
+  renderWithProviders(<TagSummary id={1} />, { state });
+  expect(screen.getByText("nomodeset")).toBeInTheDocument();
+  expect(screen.getByText('//node[@id="cpu"]')).toBeInTheDocument();
+});

@@ -1,5 +1,5 @@
-import { CodeSnippet, Spinner } from "@canonical/react-components";
-import { CodeSnippetBlockAppearance } from "@canonical/react-components/dist/components/CodeSnippet";
+import { Spinner } from "@canonical/react-components";
+import { InlineCode } from "@canonical/react-ds-global";
 import { useSelector } from "react-redux";
 
 import { useGetInstallationOutput } from "../hooks";
@@ -77,20 +77,26 @@ const InstallationOutput = ({ node }: Props): React.ReactElement => {
     return <Spinner aria-label={Label.Loading} text="Loading..." />;
   }
 
+  const output = generateOutput(
+    node,
+    installationOutput.log,
+    installationOutput.result
+  );
+
   return (
-    <CodeSnippet
+    <pre
       aria-label={Label.Title}
-      blocks={[
-        {
-          appearance: CodeSnippetBlockAppearance.NUMBERED,
-          code: generateOutput(
-            node,
-            installationOutput.log,
-            installationOutput.result
-          ),
-        },
-      ]}
-    />
+      className="p-code-block p-code-block--numbered"
+      role="region"
+    >
+      <InlineCode>
+        {output.split("\n").map((line, i) => (
+          <span className="p-code-block__line" key={i}>
+            {line}
+          </span>
+        ))}
+      </InlineCode>
+    </pre>
   );
 };
 
