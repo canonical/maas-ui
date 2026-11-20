@@ -101,7 +101,7 @@
     "yup": "1.7.1"
   },
   "devDependencies": {
-    "@badeball/cypress-cucumber-preprocessor": "23.2.1",
+    "@badeball/cypress-cucumber-preprocessor": "28.0.1",
     "@bahmutov/cypress-esbuild-preprocessor": "2.2.8",
     "@canonical/summon": "0.44.0",
     "@canonical/summon-application": "0.44.0",
@@ -150,7 +150,7 @@
     "colors": "1.4.0",
     "concurrently": "10.0.6",
     "cooky-cutter": "1.5.4",
-    "cypress": "15.21.1",
+    "cypress": "16.3.0",
     "cypress-axe": "1.7.0",
     "cypress-wait-until": "3.0.2",
     "dotenv-flow": "4.1.0",
