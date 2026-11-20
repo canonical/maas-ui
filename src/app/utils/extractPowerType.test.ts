@@ -1,15 +1,13 @@
 import { extractPowerType } from "./extractPowerType";
 
 it("can extract a power type from a description", () => {
-  expect(extractPowerType("The OpenBMC Power Driver", "openbmc")).toBe(
-    "OpenBMC"
-  );
+  expect(extractPowerType("The Redfish Power Driver", "redfish")).toBe("Redfish");
 });
 
 it("handles no matching power type", () => {
-  expect(extractPowerType("Open BMC Power Driver", "openbmc")).toBe("openbmc");
+  expect(extractPowerType("Red Fish Power Driver", "redfish")).toBe("redfish");
 });
 
 it("handles no description", () => {
-  expect(extractPowerType(null, "openbmc")).toBe("openbmc");
+  expect(extractPowerType(null, "redfish")).toBe("redfish");
 });
