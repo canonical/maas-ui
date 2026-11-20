@@ -69,7 +69,7 @@ const SERVICE_ITEMS: ServiceItem[] = [
         types: [NodeType.RACK_CONTROLLER, NodeType.REGION_AND_RACK_CONTROLLER],
       },
       {
-        name: ServiceName.AGENT,
+        name: ServiceName.RACK_CONTROLLER,
         types: [NodeType.RACK_CONTROLLER, NodeType.REGION_AND_RACK_CONTROLLER],
       },
     ],

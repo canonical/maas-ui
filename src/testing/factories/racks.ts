@@ -18,7 +18,7 @@ export const rackFactory = Factory.define<RackWithSummaryResponse>(
     return {
       id: sequence,
       name,
-      registered_agents_system_ids: [`controller-${sequence}`],
+      registered_rack_controllers_system_ids: [`controller-${sequence}`],
     };
   }
 );

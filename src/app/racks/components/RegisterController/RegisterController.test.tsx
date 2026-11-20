@@ -20,7 +20,9 @@ describe("RegisterController", () => {
     renderWithProviders(<RegisterController id={testRackId} />);
     await userEvent.click(screen.getByLabelText("One-touch provisioning"));
     await waitFor(() => {
-      expect(screen.getByLabelText(/MAAS Agent secret/i)).toBeInTheDocument();
+      expect(
+        screen.getByLabelText(/Rack controller secret/i)
+      ).toBeInTheDocument();
     });
   });
 });

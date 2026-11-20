@@ -388,7 +388,7 @@ export const rackFactory = Factory.define<RackWithSummaryResponse>(({ sequence }
   return {
     id: sequence,
     name,
-    registered_agents_system_ids: [chance.guid()],
+    registered_rack_controllers_system_ids: [chance.guid()],
   };
 });
 ```

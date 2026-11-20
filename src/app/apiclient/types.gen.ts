@@ -63,55 +63,6 @@ export type ARecordResponse = {
 };
 
 /**
- * AgentListResponse
- */
-export type AgentListResponse = {
-  /**
-   * Items
-   */
-  items: AgentResponse[];
-  /**
-   * Total
-   */
-  total: number;
-  /**
-   * Next
-   */
-  next?: string;
-  /**
-   * Kind
-   */
-  kind?: string;
-};
-
-/**
- * AgentResponse
- */
-export type AgentResponse = {
-  _links?: BaseHal;
-  /**
-   * Embedded
-   */
-  _embedded?: Record<string, unknown>;
-  /**
-   * Kind
-   */
-  kind?: string;
-  /**
-   * Id
-   */
-  id: number;
-  /**
-   * Rack Id
-   */
-  rack_id: number;
-  /**
-   * Rackcontroller Id
-   */
-  rackcontroller_id?: number;
-};
-
-/**
  * AuthInfoResponse
  *
  * Content for a response returning authentication flow information.
@@ -3190,6 +3141,55 @@ export type RackBootstrapTokenResponse = {
 };
 
 /**
+ * RackControllerListResponse
+ */
+export type RackControllerListResponse = {
+  /**
+   * Items
+   */
+  items: RackControllerResponse[];
+  /**
+   * Total
+   */
+  total: number;
+  /**
+   * Next
+   */
+  next?: string;
+  /**
+   * Kind
+   */
+  kind?: string;
+};
+
+/**
+ * RackControllerResponse
+ */
+export type RackControllerResponse = {
+  _links?: BaseHal;
+  /**
+   * Embedded
+   */
+  _embedded?: Record<string, unknown>;
+  /**
+   * Kind
+   */
+  kind?: string;
+  /**
+   * Id
+   */
+  id: number;
+  /**
+   * Rack Id
+   */
+  rack_id: number;
+  /**
+   * Node Id
+   */
+  node_id?: number;
+};
+
+/**
  * RackListResponse
  */
 export type RackListResponse = {
@@ -3290,9 +3290,9 @@ export type RackWithSummaryResponse = {
    */
   name: string;
   /**
-   * Registered Agents System Ids
+   * Registered Rack Controllers System Ids
    */
-  registered_agents_system_ids: string[];
+  registered_rack_controllers_system_ids: string[];
 };
 
 /**
@@ -9656,7 +9656,7 @@ export type CreateRackResponses = {
 
 export type CreateRackResponse = CreateRackResponses[keyof CreateRackResponses];
 
-export type DeleteRackAgentData = {
+export type DeleteRackControllerData = {
   body?: never;
   headers?: {
     /**
@@ -9675,10 +9675,10 @@ export type DeleteRackAgentData = {
     id: number;
   };
   query?: never;
-  url: "/MAAS/a/v3/racks/{rack_id}/agents/{id}";
+  url: "/MAAS/a/v3/racks/{rack_id}/rack_controllers/{id}";
 };
 
-export type DeleteRackAgentErrors = {
+export type DeleteRackControllerErrors = {
   /**
    * Not Found
    */
@@ -9689,20 +9689,20 @@ export type DeleteRackAgentErrors = {
   422: ValidationErrorBodyResponse;
 };
 
-export type DeleteRackAgentError =
-  DeleteRackAgentErrors[keyof DeleteRackAgentErrors];
+export type DeleteRackControllerError =
+  DeleteRackControllerErrors[keyof DeleteRackControllerErrors];
 
-export type DeleteRackAgentResponses = {
+export type DeleteRackControllerResponses = {
   /**
    * Successful Response
    */
   204: void;
 };
 
-export type DeleteRackAgentResponse =
-  DeleteRackAgentResponses[keyof DeleteRackAgentResponses];
+export type DeleteRackControllerResponse =
+  DeleteRackControllerResponses[keyof DeleteRackControllerResponses];
 
-export type GetRackAgentData = {
+export type GetRackControllerData = {
   body?: never;
   path: {
     /**
@@ -9715,10 +9715,10 @@ export type GetRackAgentData = {
     id: number;
   };
   query?: never;
-  url: "/MAAS/a/v3/racks/{rack_id}/agents/{id}";
+  url: "/MAAS/a/v3/racks/{rack_id}/rack_controllers/{id}";
 };
 
-export type GetRackAgentErrors = {
+export type GetRackControllerErrors = {
   /**
    * Not Found
    */
@@ -9729,17 +9729,18 @@ export type GetRackAgentErrors = {
   422: ValidationErrorBodyResponse;
 };
 
-export type GetRackAgentError = GetRackAgentErrors[keyof GetRackAgentErrors];
+export type GetRackControllerError =
+  GetRackControllerErrors[keyof GetRackControllerErrors];
 
-export type GetRackAgentResponses = {
+export type GetRackControllerResponses = {
   /**
    * Successful Response
    */
-  200: AgentResponse;
+  200: RackControllerResponse;
 };
 
-export type GetRackAgentResponse =
-  GetRackAgentResponses[keyof GetRackAgentResponses];
+export type GetRackControllerResponse =
+  GetRackControllerResponses[keyof GetRackControllerResponses];
 
 export type DeleteRacksData = {
   body?: never;
@@ -9886,7 +9887,7 @@ export type GenerateRackBootstrapTokenResponses = {
 export type GenerateRackBootstrapTokenResponse =
   GenerateRackBootstrapTokenResponses[keyof GenerateRackBootstrapTokenResponses];
 
-export type ListRackAgentsData = {
+export type ListRackControllersData = {
   body?: never;
   path: {
     /**
@@ -9904,10 +9905,10 @@ export type ListRackAgentsData = {
      */
     size?: number;
   };
-  url: "/MAAS/a/v3/racks/{rack_id}/agents";
+  url: "/MAAS/a/v3/racks/{rack_id}/rack_controllers";
 };
 
-export type ListRackAgentsErrors = {
+export type ListRackControllersErrors = {
   /**
    * Not Found
    */
@@ -9918,18 +9919,18 @@ export type ListRackAgentsErrors = {
   422: ValidationErrorBodyResponse;
 };
 
-export type ListRackAgentsError =
-  ListRackAgentsErrors[keyof ListRackAgentsErrors];
+export type ListRackControllersError =
+  ListRackControllersErrors[keyof ListRackControllersErrors];
 
-export type ListRackAgentsResponses = {
+export type ListRackControllersResponses = {
   /**
    * Successful Response
    */
-  200: AgentListResponse;
+  200: RackControllerListResponse;
 };
 
-export type ListRackAgentsResponse =
-  ListRackAgentsResponses[keyof ListRackAgentsResponses];
+export type ListRackControllersResponse =
+  ListRackControllersResponses[keyof ListRackControllersResponses];
 
 export type ListRacksWithSummaryData = {
   body?: never;

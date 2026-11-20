@@ -9,12 +9,12 @@ import docsUrls from "@/app/base/docsUrls";
 
 //TODO when endpoint is ready
 export type OneTouchProvisioning = {
-  MAASagentsecret: string;
+  rackControllerSecret: string;
 };
 
 //TODO when endpoint is ready
 const OneTouchProvisioningSchema = Yup.object().shape({
-  name: Yup.string().required("'MAAS Agent secret' is a required field."),
+  name: Yup.string().required("'Rack controller secret' is a required field."),
 });
 
 const OneTouchProvisioning = (): ReactElement => {
@@ -23,7 +23,7 @@ const OneTouchProvisioning = (): ReactElement => {
   return (
     <div>
       To register a controller to the rack using one-touch provisioning,
-      physically retrieve the MAAS agent secret of the controller from the
+      physically retrieve the rack controller secret of the controller from the
       hardware.
       <FormikForm<OneTouchProvisioning, string>
         aria-label="One-touch provisioning"
@@ -36,7 +36,7 @@ const OneTouchProvisioning = (): ReactElement => {
         }
         buttonsHelpClassName="u-align--right"
         initialValues={{
-          MAASagentsecret: "",
+          rackControllerSecret: "",
         }}
         onCancel={closeSidePanel}
         onSubmit={() => {}}
@@ -51,8 +51,8 @@ const OneTouchProvisioning = (): ReactElement => {
         // errors={registerController.error}
       >
         <FormikField
-          label="* MAAS agent secret"
-          name="* MAAS agent secret"
+          label="* Rack controller secret"
+          name="* Rack controller secret"
           type="text"
         />
       </FormikForm>

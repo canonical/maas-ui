@@ -19,15 +19,17 @@ import { FilterControllers } from "@/app/store/controller/utils";
 type RacksColumnDef = ColumnDef<RackWithSummaryResponse>;
 
 const getControllersLabel = (row: Row<RackWithSummaryResponse>) => {
-  if (row.original.registered_agents_system_ids.length === 0) {
+  if (row.original.registered_rack_controllers_system_ids.length === 0) {
     return "0 controllers";
   }
   const filters = FilterControllers.filtersToQueryString({
-    system_id: [`=${row.original.registered_agents_system_ids.join(",")}`],
+    system_id: [
+      `=${row.original.registered_rack_controllers_system_ids.join(",")}`,
+    ],
   });
   return (
     <Link to={`${urls.controllers.index}${filters}`}>
-      {`${row.original.registered_agents_system_ids.length} ${pluralize("controller", row.original.registered_agents_system_ids.length)}`}
+      {`${row.original.registered_rack_controllers_system_ids.length} ${pluralize("controller", row.original.registered_rack_controllers_system_ids.length)}`}
     </Link>
   );
 };
@@ -45,7 +47,7 @@ const useRacksTableColumns = (): RacksColumnDef[] => {
       },
       {
         id: "registered",
-        accessorKey: "registered_agents_system_ids",
+        accessorKey: "registered_rack_controllers_system_ids",
         enableSorting: true,
         header: "Registered",
         cell: ({ row }) => {

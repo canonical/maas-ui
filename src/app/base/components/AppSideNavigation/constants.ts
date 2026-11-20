@@ -30,7 +30,7 @@ const navGroups: NavGroup[] = [
         requiredEntitlements: [Entitlement.CAN_VIEW_CONTROLLERS],
         url: urls.controllers.index,
       },
-      ...(import.meta.env.VITE_APP_AGENT_ENROLLMENT === "true"
+      ...(import.meta.env.VITE_APP_RACK_CONTROLLER_ENROLLMENT === "true"
         ? [
             {
               highlight: [urls.racks.index],
