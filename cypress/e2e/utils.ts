@@ -23,7 +23,7 @@ export const generateCidr = () =>
   `192.168.${Math.floor(Math.random() * 255)}.0/24`;
 
 export const generateMAASURL = (route?: string): string =>
-  `${Cypress.env("BASENAME")}${Cypress.env("VITE_BASENAME")}${route || ""}`;
+  `${Cypress.expose("BASENAME")}${Cypress.expose("VITE_BASENAME")}${route || ""}`;
 
 export const generateRefreshTokenLifetime = (): string => {
   const days = Math.floor(Math.random() * 60) + 1;

@@ -19,9 +19,13 @@ When("the user enters invalid username and password", () => {
 });
 
 When("the user provides correct username and password", () => {
-  cy.findByRole("textbox", { name: /Username/ }).type(Cypress.env("username"));
+  cy.findByRole("textbox", { name: /Username/ }).type(
+    Cypress.expose("username")
+  );
   cy.findByRole("button", { name: /Next/ }).click();
-  cy.findByLabelText(/Password/).type(Cypress.env("password"));
+  cy.env(["password"]).then(({ password }) => {
+    cy.findByLabelText(/Password/).type(password);
+  });
   cy.findByRole("button", { name: /Login/ }).click();
 });
 
@@ -31,12 +35,13 @@ When("the user clicks on the {string} button", (buttonText: string) => {
   cy.findByRole("button", { name: new RegExp(buttonText, "i") }).click();
 
   // Log in at keycloak
-  cy.origin(
-    `${Cypress.env("KEYCLOAK_URL")}:${Cypress.env("KEYCLOAK_PORT")}`,
-    () => {
-      cy.get("input[name='username']").type("johndoe");
-      cy.get("input[name='password']").type("abc123");
-      cy.get("button[type='submit']").click();
+  cy.env(["KEYCLOAK_URL", "KEYCLOAK_PORT"]).then(
+    ({ KEYCLOAK_URL, KEYCLOAK_PORT }) => {
+      cy.origin(`${KEYCLOAK_URL}:${KEYCLOAK_PORT}`, () => {
+        cy.get("input[name='username']").type("johndoe");
+        cy.get("input[name='password']").type("abc123");
+        cy.get("button[type='submit']").click();
+      });
     }
   );
 });

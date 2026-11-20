@@ -10,19 +10,19 @@ When(
 );
 
 When("the user clicks the username link in the main navigation", () => {
-  const username = Cypress.env("username");
+  const username = Cypress.expose("username");
   cy.getMainNavigation().within(() =>
     cy.findByRole("link", { name: username }).should("be.visible").click()
   );
 });
 
 Then("the username navigation item should be selected", () => {
-  const username = Cypress.env("username");
+  const username = Cypress.expose("username");
   cy.get(".p-side-navigation__item.is-selected a").should("contain", username);
 });
 
 Then("the username link should have current page state", () => {
-  const username = Cypress.env("username");
+  const username = Cypress.expose("username");
   cy.findAllByRole("link", { current: "page", name: username }).should("exist");
 });
 
