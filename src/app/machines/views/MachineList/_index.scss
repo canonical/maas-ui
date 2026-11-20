@@ -2,58 +2,94 @@
   $box-size: 1rem;
   $checkbox-offset: 0.1875rem; // Offset checkbox to prevent focus outline truncation
   $grouped-machines-indentation: $box-size + $sph--large - $checkbox-offset; // Checkbox + label - offset
-  $item-active-background: #dbedff;
 
-  .machine-list {
-    @include truncated-border($width: $grouped-machines-indentation);
+  // The rows are flat (grouping is done by the server, and collapsed groups
+  // have no machines), so GenericTable doesn't add its
+  // `p-generic-table__group-row` class. Group rows are identified by the toggle
+  // rendered in GroupColumn instead.
+  $group-row: "tr:has(.machine-list__group-toggle)";
+  $machine-row: "tr:not(:has(.machine-list__group-toggle))";
+
+  .p-generic-table.machine-list {
     margin-bottom: 0;
 
-    .fqdn-col {
-      width: 20%;
+    th,
+    td {
+      text-align: left !important;
     }
 
-    .power-col {
-      width: 10%;
+    th.cpu,
+    th.memory,
+    th.disks,
+    th.storage {
+      text-align: right !important;
     }
 
-    .status-col {
-      width: 15%;
+    $column-widths: (
+      fqdn: 20%,
+      power: 10%,
+      status: 15%,
+      owner: 9%,
+      pool: 7%,
+      zone: 7%,
+      fabric: 7%,
+      cpu: 6%,
+      memory: 7%,
+      disks: 6%,
+      storage: 6%,
+    );
+
+    @each $column, $width in $column-widths {
+      th.#{$column},
+      td.#{$column} {
+        width: $width;
+      }
     }
 
-    .owner-col {
-      width: 9%;
+    .select-all-dropdown {
+      display: inline-flex;
+      margin-left: -0.8rem;
+      margin-top: -0.5rem;
+      padding: 0.5rem;
+      margin-right: 0.5rem;
     }
 
-    .pool-col {
-      width: 7%;
+    tbody #{$group-row} td {
+      position: relative;
+      width: 100%;
     }
 
-    .zone-col {
-      width: 7%;
-    }
+    tbody #{$machine-row} {
+      .p-table-menu {
+        display: none;
+      }
 
-    .fabric-col {
-      width: 7%;
-    }
+      &:last-child td {
+        // Force the cells in the last row to calculate their height.
+        // See: https://github.com/canonical/maas-ui/issues/935
+        min-height: 1px;
+      }
 
-    .cores-col {
-      width: 6%;
-    }
+      &:focus-within,
+      &:hover {
+        .p-table-menu {
+          display: block;
 
-    .ram-col {
-      width: 7%;
-    }
+          .p-table-menu__toggle {
+            opacity: 0.25;
+          }
+        }
 
-    .disks-col {
-      width: 6%;
-    }
-
-    .storage-col {
-      width: 6%;
+        .p-table-menu .p-table-menu__toggle:focus,
+        .p-table-menu .p-table-menu__toggle:active,
+        td:hover .p-table-menu .p-table-menu__toggle {
+          opacity: 1;
+        }
+      }
     }
   }
 
-  .machine-list--grouped .machine-list__machine {
+  .machine-list--grouped tbody #{$machine-row} {
     position: relative;
     transform: scale(1);
 
@@ -62,51 +98,36 @@
     }
   }
 
-  .machine-list--loading .u-truncate {
-    // When loading the skeleton placeholders should get cut off and not show an ellipsis.
-    text-overflow: clip !important;
-  }
+  // GenericTable's controls-bar styles only apply inside .p-generic-table, but
+  // the machine list renders its own pagination bar outside the table.
+  .machine-list__controls.controls-bar {
+    align-items: center;
+    border-bottom: 1px solid var(--vf-color-border-default);
+    border-top: 1px solid var(--vf-color-border-default);
+    margin-top: 1rem;
+    padding: 0.5rem 0;
 
-  .machine-list__machine .p-table-menu {
-    display: none;
-  }
+    .p-form--inline {
+      width: 100%;
+    }
 
-  .machine-list .select-all-dropdown {
-    display: inline-flex;
-    margin-left: -0.8rem;
-    margin-top: -0.5rem;
-    padding: 0.5rem;
-    margin-right: 0.5rem;
-  }
+    .controls-bar__right {
+      margin-left: auto;
+    }
 
-  .machine-list__machine:last-child td {
-    // Force the cells in the last row to calculate their height.
-    // See: https://github.com/canonical/maas-ui/issues/935
-    min-height: 1px;
-  }
+    .p-pagination {
+      padding-right: 1rem;
+    }
 
-  .machine-list__machine:focus-within,
-  .machine-list__machine:hover:not(.machine-list__machine--inactive),
-  .machine-list__machine--active {
-    background-color: $colors--light-theme--background-hover;
+    // Higher specificity than MachineListPagination's own spacing, which is
+    // meant for use outside a controls bar.
+    .p-pagination--machines .p-pagination--items {
+      padding-bottom: 0;
 
-    .p-table-menu {
-      display: block;
-
-      .p-table-menu__toggle {
-        opacity: 0.25;
+      .p-pagination__link--next {
+        margin-right: 0;
       }
     }
-
-    .p-table-menu .p-table-menu__toggle:focus,
-    .p-table-menu .p-table-menu__toggle:active,
-    td:hover .p-table-menu .p-table-menu__toggle {
-      opacity: 1;
-    }
-  }
-
-  .machine-list__group td {
-    position: relative;
   }
 
   .machine-list__group-toggle {
@@ -182,27 +203,4 @@
       margin-right: $spv--x-small;
     }
   }
-
-  .is-dark {
-
-    .machine-list__machine:focus-within,
-    .machine-list__machine:hover:not(.machine-list__machine--inactive),
-    .machine-list__machine--active {
-      background-color: $colors--dark-theme--background-hover;
-  
-      .p-table-menu {
-        display: block;
-  
-        .p-table-menu__toggle {
-          opacity: 0.25;
-        }
-      }
-  
-      .p-table-menu .p-table-menu__toggle:focus,
-      .p-table-menu .p-table-menu__toggle:active,
-      td:hover .p-table-menu .p-table-menu__toggle {
-        opacity: 1;
-      }
-    }
-  } 
 }

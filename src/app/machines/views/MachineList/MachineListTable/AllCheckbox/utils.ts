@@ -39,18 +39,22 @@ export const generateSelectedOnCurrentPage = ({
     !selected || "filter" in selected
       ? { groups: [] }
       : (cloneDeep(selected) ?? {});
-  newSelected.groups = newSelected.groups ?? [];
-  newSelected.items = newSelected.items ?? [];
+  // Use sets so that selecting the current page again doesn't add machines or
+  // groups that are already selected.
+  const selectedGroups = new Set(newSelected.groups ?? []);
+  const selectedItems = new Set(newSelected.items ?? []);
   groups?.forEach((group) => {
     if (group.collapsed) {
       // add all collapsed groups on the current page
-      newSelected.groups!.push(group.value);
+      selectedGroups.add(group.value);
     } else {
       // add all machine items for each expanded group
       group.items.forEach((item) => {
-        newSelected.items!.push(item);
+        selectedItems.add(item);
       });
     }
   });
+  newSelected.groups = [...selectedGroups];
+  newSelected.items = [...selectedItems];
   return newSelected;
 };

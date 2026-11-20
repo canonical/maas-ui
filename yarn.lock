@@ -1036,10 +1036,10 @@
   dependencies:
     "@canonical/ds-types" "^0.45.0"
 
-"@canonical/maas-react-components@3.0.7":
-  version "3.0.7"
-  resolved "https://registry.yarnpkg.com/@canonical/maas-react-components/-/maas-react-components-3.0.7.tgz#0cee4fea4136f29a3114773ab2202543f0374d73"
-  integrity sha512-pb+DOKjdy5Eryg/AzhAU+seWeJsBhZyudMjKJfcT5W1r1wQFg+LstS3mahfScINyx55ee1Y6cYZ4Sylgm8KlEQ==
+"@canonical/maas-react-components@3.0.8":
+  version "3.0.8"
+  resolved "https://registry.yarnpkg.com/@canonical/maas-react-components/-/maas-react-components-3.0.8.tgz#b0a29c352421d8a2f03c441c30e4467841921f2e"
+  integrity sha512-YWsPOg19deDByZiGomwj6QYXKksQGhKEM0e1i04ZZ5jksLUoTk8F+fX3hos+W6SapAX7+l8wc2JLsn867OdIgA==
 
 "@canonical/react-components@4.16.0":
   version "4.16.0"

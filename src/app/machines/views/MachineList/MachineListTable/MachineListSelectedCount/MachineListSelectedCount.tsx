@@ -1,7 +1,4 @@
-import {
-  Notification as NotificationBanner,
-  Button,
-} from "@canonical/react-components";
+import { Button } from "@canonical/react-components";
 import pluralize from "pluralize";
 import { useDispatch } from "react-redux";
 
@@ -20,46 +17,33 @@ export const MachineListSelectedCount = ({
   selectedCount,
 }: Props): React.ReactElement => {
   const dispatch = useDispatch();
+  const total = machineCount ?? 0;
+
+  if (selectedCount >= total) {
+    return (
+      <span className="u-text--muted">
+        All {pluralize("machine", total, true)} selected
+      </span>
+    );
+  }
 
   return (
-    <NotificationBanner
-      borderless
-      className="u-no-margin--bottom"
-      title="Selection"
-    >
-      {machineCount && selectedCount < machineCount ? (
-        <>
-          {selectedCount} {pluralize("machine", selectedCount)} selected.{" "}
-          <Button
-            appearance="link"
-            onClick={() => {
-              dispatch(
-                machineActions.setSelected({
-                  filter: FilterMachines.parseFetchFilters(filter),
-                })
-              );
-            }}
-          >
-            {filter
-              ? `Select all ${machineCount} filtered machines`
-              : `Select all ${machineCount} machines`}
-          </Button>
-        </>
-      ) : (
-        <>
-          Selected all {machineCount}
-          {filter ? " filtered" : ""} machines.{" "}
-          <Button
-            appearance="link"
-            onClick={() => {
-              dispatch(machineActions.setSelected(null));
-            }}
-          >
-            Clear selection
-          </Button>
-        </>
-      )}
-    </NotificationBanner>
+    <span className="u-text--muted">
+      {selectedCount} of {pluralize("machine", total, true)} selected.{" "}
+      <Button
+        appearance="link"
+        className="u-no-margin--bottom u-no-padding"
+        onClick={() => {
+          dispatch(
+            machineActions.setSelected({
+              filter: FilterMachines.parseFetchFilters(filter),
+            })
+          );
+        }}
+      >
+        Select all
+      </Button>
+    </span>
   );
 };
 

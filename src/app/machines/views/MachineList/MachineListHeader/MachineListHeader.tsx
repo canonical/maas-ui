@@ -1,5 +1,5 @@
 import type { ReactElement } from "react";
-import { useCallback } from "react";
+import { useCallback, useMemo } from "react";
 
 import { useDispatch } from "react-redux";
 
@@ -10,7 +10,11 @@ import { usePoolCount } from "@/app/api/query/pools";
 import type { SetSearchFilter } from "@/app/base/types";
 import { machineActions } from "@/app/store/machine";
 import type { FetchGroupKey } from "@/app/store/machine/types";
-import { useFetchMachineCount } from "@/app/store/machine/utils/hooks";
+import { FilterMachines } from "@/app/store/machine/utils";
+import {
+  useFetchMachineCount,
+  useMachineSelectedCount,
+} from "@/app/store/machine/utils/hooks";
 
 type Props = {
   grouping: FetchGroupKey | null;
@@ -34,6 +38,16 @@ export const MachineListHeader = ({
   const dispatch = useDispatch();
   // Get the count of all machines
   const { machineCount: allMachineCount } = useFetchMachineCount();
+  const parsedFilter = useMemo(
+    () => FilterMachines.parseFetchFilters(searchFilter),
+    [searchFilter]
+  );
+  // Only fetch a separate count when a filter is applied.
+  const { machineCount: filteredMachineCount } = useFetchMachineCount(
+    parsedFilter,
+    { isEnabled: !!searchFilter }
+  );
+  const { selectedCount } = useMachineSelectedCount(parsedFilter);
 
   const resourcePoolsCount = usePoolCount();
 
@@ -52,10 +66,14 @@ export const MachineListHeader = ({
   return (
     <MachineListControls
       filter={searchFilter}
+      filteredMachineCount={
+        searchFilter ? filteredMachineCount : allMachineCount
+      }
       grouping={grouping}
       hiddenColumns={hiddenColumns}
       machineCount={allMachineCount}
       resourcePoolsCount={resourcePoolsCount.data ?? 0}
+      selectedCount={selectedCount}
       setFilter={handleSetSearchFilter}
       setGrouping={setGrouping}
       setHiddenColumns={setHiddenColumns}
