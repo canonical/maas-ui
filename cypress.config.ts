@@ -70,14 +70,19 @@ export default defineConfig({
     viewportHeight: 1300,
     viewportWidth: 1440,
   },
-  env: {
+  // Non-sensitive values, read synchronously with Cypress.expose().
+  expose: {
     BASENAME: "/MAAS",
     VITE_BASENAME: "/r",
-    nonAdminPassword: "test",
     nonAdminUsername: "user",
-    password: "test",
     skipA11yFailures: false,
     username: "admin",
+  },
+  // Read asynchronously with cy.env(). KEYCLOAK_* can be overridden in CI
+  // using CYPRESS_KEYCLOAK_URL and CYPRESS_KEYCLOAK_PORT.
+  env: {
+    nonAdminPassword: "test",
+    password: "test",
     KEYCLOAK_URL: "http://localhost",
     KEYCLOAK_PORT: "8080",
   },

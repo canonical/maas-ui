@@ -9,7 +9,7 @@ Given(/^the user navigates to the (.+) page$/, (page: string) => {
   const path = routes[page];
   const url =
     page === "docs"
-      ? `${Cypress.env("BASENAME")}${path}`
+      ? `${Cypress.expose("BASENAME")}${path}`
       : generateMAASURL(path);
   cy.visit(url);
   if (page !== "home") {

@@ -22,13 +22,17 @@ This will automatically start the React and proxy servers and run the Cypress te
 
 By default, Cypress will run tests using the configuration defined in [cypress.config.ts](../cypress.config.ts).
 
-If you wish to overwrite any of the settings (e.g. MAAS URL or username/password) you can create a local configuration file:
+If you wish to overwrite any of the settings you can do so in two ways, depending on the type of value:
 
-```shell
-touch cypress.env.json
-```
+- Sensitive values in `env` (e.g. passwords and the Keycloak URL and port) can be overwritten by creating a local configuration file:
 
-Values from `cypress.env.json` will overwrite conflicting variables in the main `cypress.config.ts` configuration file.
+  ```shell
+  touch cypress.env.json
+  ```
+
+  Values from `cypress.env.json` will overwrite conflicting variables in the `env` section of `cypress.config.ts`. They are read in tests with `cy.env()`.
+
+- Non-sensitive values in `expose` (e.g. `username`, `BASENAME`) can be overwritten with the `--expose` (`-x`) CLI flag, e.g. `yarn cypress run --expose username=admin`. They are read in tests with `Cypress.expose()`.
 
 ## Developing Cypress tests
 
