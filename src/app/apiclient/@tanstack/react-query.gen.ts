@@ -9,6 +9,7 @@ import {
   bulkAddGroupMembers,
   bulkCreateSelections,
   bulkDeleteCustomImages,
+  bulkDeleteNotifications,
   bulkDeleteSelections,
   bulkRemoveGroupEntitlements,
   bulkRemoveGroupMembers,
@@ -18,6 +19,7 @@ import {
   clearAllDiscoveriesWithOptionalIpAndMac,
   clearNeighboursDiscoveries,
   clearRdnsAndMdnsDiscoveries,
+  commissionMachine,
   completeIntro,
   createBootsource,
   createBootsourceBootsourceselection,
@@ -227,6 +229,9 @@ import type {
   BulkDeleteCustomImagesData,
   BulkDeleteCustomImagesError,
   BulkDeleteCustomImagesResponse,
+  BulkDeleteNotificationsData,
+  BulkDeleteNotificationsError,
+  BulkDeleteNotificationsResponse,
   BulkDeleteSelectionsData,
   BulkDeleteSelectionsError,
   BulkDeleteSelectionsResponse,
@@ -254,6 +259,9 @@ import type {
   ClearRdnsAndMdnsDiscoveriesData,
   ClearRdnsAndMdnsDiscoveriesError,
   ClearRdnsAndMdnsDiscoveriesResponse,
+  CommissionMachineData,
+  CommissionMachineError,
+  CommissionMachineResponse,
   CompleteIntroData,
   CompleteIntroError,
   CompleteIntroResponse,
@@ -3076,6 +3084,33 @@ export const getFabricVlanSubnetIprangeOptions = (
     queryKey: getFabricVlanSubnetIprangeQueryKey(options),
   });
 
+/**
+ * Commission Machine
+ */
+export const commissionMachineMutation = (
+  options?: Partial<Options<CommissionMachineData>>
+): UseMutationOptions<
+  CommissionMachineResponse,
+  CommissionMachineError,
+  Options<CommissionMachineData>
+> => {
+  const mutationOptions: UseMutationOptions<
+    CommissionMachineResponse,
+    CommissionMachineError,
+    Options<CommissionMachineData>
+  > = {
+    mutationFn: async (fnOptions) => {
+      const { data } = await commissionMachine({
+        ...options,
+        ...fnOptions,
+        throwOnError: true,
+      });
+      return data;
+    },
+  };
+  return mutationOptions;
+};
+
 export const getMachinePowerParametersQueryKey = (
   options: Options<GetMachinePowerParametersData>
 ) => createQueryKey("getMachinePowerParameters", options);
@@ -3220,6 +3255,33 @@ export const getNosInstallerOptions = (options: Options<GetNosInstallerData>) =>
     },
     queryKey: getNosInstallerQueryKey(options),
   });
+
+/**
+ * Bulk Delete Notifications
+ */
+export const bulkDeleteNotificationsMutation = (
+  options?: Partial<Options<BulkDeleteNotificationsData>>
+): UseMutationOptions<
+  BulkDeleteNotificationsResponse,
+  BulkDeleteNotificationsError,
+  Options<BulkDeleteNotificationsData>
+> => {
+  const mutationOptions: UseMutationOptions<
+    BulkDeleteNotificationsResponse,
+    BulkDeleteNotificationsError,
+    Options<BulkDeleteNotificationsData>
+  > = {
+    mutationFn: async (fnOptions) => {
+      const { data } = await bulkDeleteNotifications({
+        ...options,
+        ...fnOptions,
+        throwOnError: true,
+      });
+      return data;
+    },
+  };
+  return mutationOptions;
+};
 
 export const listNotificationsQueryKey = (
   options?: Options<ListNotificationsData>

@@ -3,6 +3,7 @@
 import { createClientConfig } from "@/hey-api";
 
 import {
+  type Client,
   type ClientOptions,
   type Config,
   createClient,
@@ -22,8 +23,6 @@ export type CreateClientConfig<T extends ClientOptions = ClientOptions2> = (
   override?: Config<ClientOptions & T>
 ) => Config<Required<ClientOptions> & T>;
 
-export const client = createClient(
-  createClientConfig(
-    createConfig<ClientOptions2>({ baseUrl: "http://10.20.0.7:5240" })
-  )
+export const client: Client = createClient(
+  createClientConfig(createConfig<ClientOptions2>())
 );
