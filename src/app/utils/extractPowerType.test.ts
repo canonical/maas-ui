@@ -1,7 +1,9 @@
 import { extractPowerType } from "./extractPowerType";
 
 it("can extract a power type from a description", () => {
-  expect(extractPowerType("The Redfish Power Driver", "redfish")).toBe("Redfish");
+  expect(extractPowerType("The Redfish Power Driver", "redfish")).toBe(
+    "Redfish"
+  );
 });
 
 it("handles no matching power type", () => {
