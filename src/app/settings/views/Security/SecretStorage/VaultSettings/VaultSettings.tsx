@@ -1,8 +1,8 @@
 import { ExternalLink } from "@canonical/maas-react-components";
 import { Icon, Spinner } from "@canonical/react-components";
-import { InlineCode } from "@canonical/react-ds-global";
 import { useSelector } from "react-redux";
 
+import CodeBlock from "@/app/base/components/CodeBlock";
 import docsUrls from "@/app/base/docsUrls";
 import { useFetchActions } from "@/app/base/hooks";
 import { useId } from "@/app/base/hooks/base";
@@ -82,20 +82,18 @@ const VaultSettings = (): React.ReactElement => {
                 .
               </p>
               <p>2. SSH into each region controller and configure Vault.</p>
-              <pre className="p-code-block p-code-block--linux-prompt">
-                <InlineCode>
-                  {
-                    "sudo maas config-vault configure $url $approle_id $wrapped_token $secrets_path --secrets-mount $secret_mount"
-                  }
-                </InlineCode>
-              </pre>
+              <CodeBlock appearance="linux-prompt">
+                {
+                  "sudo maas config-vault configure $url $approle_id $wrapped_token $secrets_path --secrets-mount $secret_mount"
+                }
+              </CodeBlock>
               <p>
                 3. After Vault is configured on all region controllers, migrate
                 secrets on one of the region controllers.
               </p>
-              <pre className="p-code-block p-code-block--linux-prompt">
-                <InlineCode>sudo maas config-vault migrate</InlineCode>
-              </pre>
+              <CodeBlock appearance="linux-prompt">
+                {"sudo maas config-vault migrate"}
+              </CodeBlock>
             </section>
           </>
         ) : (
@@ -107,9 +105,9 @@ const VaultSettings = (): React.ReactElement => {
               </span>
             </p>
             <section aria-labelledby={id}>
-              <pre className="p-code-block p-code-block--linux-prompt">
-                <InlineCode>sudo maas config-vault migrate</InlineCode>
-              </pre>
+              <CodeBlock appearance="linux-prompt">
+                {"sudo maas config-vault migrate"}
+              </CodeBlock>
             </section>
           </>
         )}

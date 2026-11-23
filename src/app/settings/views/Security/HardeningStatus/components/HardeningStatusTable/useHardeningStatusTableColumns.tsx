@@ -1,10 +1,9 @@
 import { useMemo } from "react";
 
 import { Icon } from "@canonical/react-components";
-import { InlineCode } from "@canonical/react-ds-global";
 import type { ColumnDef } from "@tanstack/react-table";
 
-import CopyButton from "@/app/base/components/CopyButton";
+import CodeBlock from "@/app/base/components/CodeBlock";
 import type { HardeningRequirement } from "@/app/settings/views/Security/HardeningStatus/utils";
 
 type HardeningStatusColumnDef = ColumnDef<
@@ -48,10 +47,13 @@ const useHardeningStatusTableColumns = (): HardeningStatusColumnDef[] =>
         cell: ({ row: { original } }) =>
           original.command ? (
             <div className="hardening-status-table__command">
-              <CopyButton value={original.command} />
-              <pre className="p-code-block p-code-block--linux-prompt hardening-status-table__command-snippet u-no-margin--bottom">
-                <InlineCode>{original.command}</InlineCode>
-              </pre>
+              <CodeBlock
+                appearance="linux-prompt"
+                className="hardening-status-table__command-snippet u-no-margin--bottom"
+                copyable
+              >
+                {original.command}
+              </CodeBlock>
             </div>
           ) : (
             <>&mdash;</>

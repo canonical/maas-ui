@@ -3,9 +3,9 @@ import { useState } from "react";
 
 import { ExternalLink, useSidePanel } from "@canonical/maas-react-components";
 import { Button, Col, Row, Select } from "@canonical/react-components";
-import { InlineCode } from "@canonical/react-ds-global";
 import { useSelector } from "react-redux";
 
+import CodeBlock from "@/app/base/components/CodeBlock";
 import docsUrls from "@/app/base/docsUrls";
 import configSelectors from "@/app/store/config/selectors";
 import { version as versionSelectors } from "@/app/store/general/selectors";
@@ -43,30 +43,22 @@ export const AddController = (): React.ReactElement => {
         value={variant}
       />
       {variant === "packages" ? (
-        <pre className="p-code-block">
-          <InlineCode>
-            {`sudo apt-add-repository ppa:maas/${minorVersion}\nsudo apt install maas-rack-controller`}
-          </InlineCode>
-        </pre>
+        <CodeBlock>
+          {`sudo apt-add-repository ppa:maas/${minorVersion}\nsudo apt install maas-rack-controller`}
+        </CodeBlock>
       ) : (
-        <pre className="p-code-block">
-          <InlineCode>
-            {`sudo snap install maas --channel=${minorVersion}`}
-          </InlineCode>
-        </pre>
+        <CodeBlock>{`sudo snap install maas --channel=${minorVersion}`}</CodeBlock>
       )}
       <p>
         Register the rack controller with this MAAS. If the rack controller (and
         machines) don't have access to the URL, use a different IP address to
         allow connection.
       </p>
-      <pre className="p-code-block" data-testid="register-snippet">
-        <InlineCode>
-          {variant === "packages"
-            ? `sudo maas-rack register --url ${maasUrl} --secret ${rpcSharedSecret}`
-            : `sudo maas init rack --maas-url ${maasUrl} --secret ${rpcSharedSecret}`}
-        </InlineCode>
-      </pre>
+      <CodeBlock data-testid="register-snippet">
+        {variant === "packages"
+          ? `sudo maas-rack register --url ${maasUrl} --secret ${rpcSharedSecret}`
+          : `sudo maas init rack --maas-url ${maasUrl} --secret ${rpcSharedSecret}`}
+      </CodeBlock>
       <Row>
         <Col size={6}>
           <ExternalLink to={docsUrls.rackController}>

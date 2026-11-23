@@ -1,9 +1,9 @@
 import { Col, Row, Spinner } from "@canonical/react-components";
-import { InlineCode } from "@canonical/react-ds-global";
 import { useSelector } from "react-redux";
 
 import AppliedTo from "../AppliedTo";
 
+import CodeBlock from "@/app/base/components/CodeBlock";
 import Definition from "@/app/base/components/Definition";
 import ModelNotFound from "@/app/base/components/ModelNotFound";
 import { useFetchActions } from "@/app/base/hooks";
@@ -73,9 +73,7 @@ const TagSummary = ({ id, narrow }: Props): React.ReactElement => {
         <Col size={narrow ? 12 : 6}>
           <p className="u-text--muted">{Label.Options}</p>
           {tag.kernel_opts ? (
-            <pre className="p-code-block">
-              <InlineCode>{tag.kernel_opts}</InlineCode>
-            </pre>
+            <CodeBlock>{tag.kernel_opts}</CodeBlock>
           ) : (
             <p>None</p>
           )}
@@ -83,9 +81,7 @@ const TagSummary = ({ id, narrow }: Props): React.ReactElement => {
         <Col size={narrow ? 12 : 6}>
           <p className="u-text--muted">{Label.Definition}</p>
           {tag.definition ? (
-            <pre className="p-code-block">
-              <InlineCode>{tag.definition}</InlineCode>
-            </pre>
+            <CodeBlock>{tag.definition}</CodeBlock>
           ) : (
             <p>None</p>
           )}

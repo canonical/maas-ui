@@ -1,9 +1,9 @@
 import { Spinner } from "@canonical/react-components";
-import { InlineCode } from "@canonical/react-ds-global";
 import { useSelector } from "react-redux";
 
 import { useGetInstallationOutput } from "../hooks";
 
+import CodeBlock from "@/app/base/components/CodeBlock";
 import type { ControllerDetails } from "@/app/store/controller/types";
 import type { MachineDetails } from "@/app/store/machine/types";
 import type { RootState } from "@/app/store/root/types";
@@ -84,19 +84,9 @@ const InstallationOutput = ({ node }: Props): React.ReactElement => {
   );
 
   return (
-    <pre
-      aria-label={Label.Title}
-      className="p-code-block p-code-block--numbered"
-      role="region"
-    >
-      <InlineCode>
-        {output.split("\n").map((line, i) => (
-          <span className="p-code-block__line" key={i}>
-            {line}
-          </span>
-        ))}
-      </InlineCode>
-    </pre>
+    <CodeBlock appearance="numbered" aria-label={Label.Title} role="region">
+      {output}
+    </CodeBlock>
   );
 };
 

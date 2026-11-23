@@ -2,10 +2,10 @@ import { useContext, useEffect, useRef } from "react";
 
 import { useSidePanel } from "@canonical/maas-react-components";
 import { Button, Col, Row, Spinner } from "@canonical/react-components";
-import { InlineCode } from "@canonical/react-ds-global";
 import { nanoid } from "@reduxjs/toolkit";
 import { useDispatch, useSelector } from "react-redux";
 
+import CodeBlock from "@/app/base/components/CodeBlock";
 import FileContext from "@/app/base/file-context";
 import { scriptActions } from "@/app/store/script";
 import scriptSelectors from "@/app/store/script/selectors";
@@ -49,9 +49,7 @@ const ScriptDetails = ({ id }: Props): React.ReactElement => {
     <>
       <Row>
         <Col size={10}>
-          <pre className="p-code-block">
-            <InlineCode>{script}</InlineCode>
-          </pre>
+          <CodeBlock>{script}</CodeBlock>
           <hr />
           <span className="u-flex--end">
             <Button appearance="base" onClick={closeSidePanel}>

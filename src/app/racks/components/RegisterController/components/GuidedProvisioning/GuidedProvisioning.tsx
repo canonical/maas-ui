@@ -3,9 +3,9 @@ import { useState } from "react";
 
 import { ExternalLink, useSidePanel } from "@canonical/maas-react-components";
 import { Button, Select } from "@canonical/react-components";
-import { InlineCode } from "@canonical/react-ds-global";
 
 import { useGenerateToken } from "@/app/api/query/racks";
+import CodeBlock from "@/app/base/components/CodeBlock";
 import CopyButton from "@/app/base/components/CopyButton";
 import docsUrls from "@/app/base/docsUrls";
 import "./_index.scss";
@@ -33,26 +33,19 @@ const GuidedProvisioning = ({ id }: GuidedProvisioningProps): ReactElement => {
         value={maasVersion}
         wrapperClassName="u-nudge-down"
       />
-      <pre className="p-code-block" data-testid="first-command-snippet">
-        <InlineCode>
-          {`sudo snap install maas-agent --channel=${maasVersion}`}
-        </InlineCode>
-      </pre>
+      <CodeBlock data-testid="first-command-snippet">
+        {`sudo snap install maas-agent --channel=${maasVersion}`}
+      </CodeBlock>
       Generate a bootstrap token and use it to initialize the MAAS agent.
-      <pre
-        className="p-code-block u-nudge-down"
-        data-testid="second-command-snippet"
-      >
-        <InlineCode>{"maas-agent init --token <TOKEN> "}</InlineCode>
-      </pre>
+      <CodeBlock className="u-nudge-down" data-testid="second-command-snippet">
+        {"maas-agent init --token <TOKEN> "}
+      </CodeBlock>
       {generateTokenMutation.isSuccess ? (
         <div className="p-agent-token">
           <span className="u-flex--end">
             <CopyButton value={generateTokenMutation.data.token} />
           </span>
-          <pre className="p-code-block">
-            <InlineCode>{generateTokenMutation.data.token}</InlineCode>
-          </pre>
+          <CodeBlock>{generateTokenMutation.data.token}</CodeBlock>
         </div>
       ) : (
         <span className="u-flex--end">
