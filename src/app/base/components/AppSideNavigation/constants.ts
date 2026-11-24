@@ -131,20 +131,6 @@ const navGroups: NavGroup[] = [
       },
     ],
   },
-  ...(import.meta.env.VITE_APP_NOTIFICATIONS_PAGE === "true"
-    ? [
-        {
-          navLinks: [
-            {
-              icon: "notifications",
-              label: "Notifications",
-              requiredEntitlements: [Entitlement.CAN_VIEW_NOTIFICATIONS],
-              url: urls.notifications.index,
-            },
-          ],
-        },
-      ]
-    : []),
 ];
 
 export { navGroups };

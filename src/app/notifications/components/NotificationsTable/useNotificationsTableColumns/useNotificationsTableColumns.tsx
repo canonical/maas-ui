@@ -1,5 +1,6 @@
 import { useMemo } from "react";
 
+import { Icon } from "@canonical/react-components";
 import type { ColumnDef } from "@tanstack/react-table";
 
 import DeleteNotification from "../../DeleteNotification";
@@ -7,6 +8,7 @@ import DeleteNotification from "../../DeleteNotification";
 import type { NotificationResponse } from "@/app/apiclient";
 import TableActions from "@/app/base/components/TableActions";
 import { useModal } from "@/app/base/modal-context";
+import { NOTIFICATION_CATEGORY_ICONS } from "@/app/notifications/constants";
 
 type NotificationsColumnDef = ColumnDef<NotificationResponse>;
 
@@ -36,8 +38,16 @@ const useNotificationsTableColumns = (): NotificationsColumnDef[] => {
         accessorKey: "category",
         enableSorting: false,
         header: "Category",
-        cell: ({ row: { original } }) =>
-          DEFAULT_TITLES[original.category] ?? original.category,
+        cell: ({ row: { original } }) => (
+          <>
+            {NOTIFICATION_CATEGORY_ICONS[original.category] ? (
+              <Icon name={NOTIFICATION_CATEGORY_ICONS[original.category]} />
+            ) : null}
+            <span className="u-nudge-right--small">
+              {DEFAULT_TITLES[original.category] ?? original.category}
+            </span>
+          </>
+        ),
       },
       {
         id: "action",

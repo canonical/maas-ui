@@ -1,8 +1,11 @@
 .p-generic-table.notifications-table {
   th,
   td {
+    // Vanilla's base `td, th { text-align: left }` reset needs !important to
+    // beat (its own `.u-align--right` utility does the same).
     &.action {
-      text-align: right;
+      text-align: right !important;
+      justify-content: flex-end !important;
     }
   }
 }

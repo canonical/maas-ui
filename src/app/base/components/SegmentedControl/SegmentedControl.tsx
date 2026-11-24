@@ -1,9 +1,9 @@
-import type { HTMLAttributes } from "react";
+import type { HTMLAttributes, ReactNode } from "react";
 
 import classNames from "classnames";
 
 type Segment<V> = {
-  label: string;
+  label: ReactNode;
   value: V;
 };
 
@@ -32,7 +32,7 @@ const SegmentedControl = <V,>({
               "p-segmented-control__button",
               buttonClassName
             )}
-            key={button.label}
+            key={String(button.value)}
             onClick={() => {
               onSelect(button.value);
             }}

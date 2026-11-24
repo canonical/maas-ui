@@ -1,11 +1,14 @@
 import { MainToolbar } from "@canonical/maas-react-components";
-import { Button } from "@canonical/react-components";
+import { Button, Icon } from "@canonical/react-components";
 
 import DeleteAllNotifications from "../DeleteAllNotifications";
 
 import SegmentedControl from "@/app/base/components/SegmentedControl";
 import { useModal } from "@/app/base/modal-context";
-import { NotificationSeverityFilter } from "@/app/notifications/constants";
+import {
+  NOTIFICATION_CATEGORY_ICONS,
+  NotificationSeverityFilter,
+} from "@/app/notifications/constants";
 
 export enum Label {
   Header = "Notifications header",
@@ -16,6 +19,16 @@ export enum Label {
   Warning = "Warning",
   Error = "Error",
 }
+
+const categoryLabel = (
+  category: NotificationSeverityFilter,
+  label: string
+): React.ReactElement => (
+  <>
+    <Icon name={NOTIFICATION_CATEGORY_ICONS[category]} />
+    <span>{label}</span>
+  </>
+);
 
 type Props = {
   filter: NotificationSeverityFilter;
@@ -38,15 +51,30 @@ const NotificationsListHeader = ({
           options={[
             { label: Label.All, value: NotificationSeverityFilter.All },
             {
-              label: Label.Success,
+              label: categoryLabel(
+                NotificationSeverityFilter.Success,
+                Label.Success
+              ),
               value: NotificationSeverityFilter.Success,
             },
-            { label: Label.Info, value: NotificationSeverityFilter.Info },
             {
-              label: Label.Warning,
+              label: categoryLabel(NotificationSeverityFilter.Info, Label.Info),
+              value: NotificationSeverityFilter.Info,
+            },
+            {
+              label: categoryLabel(
+                NotificationSeverityFilter.Warning,
+                Label.Warning
+              ),
               value: NotificationSeverityFilter.Warning,
             },
-            { label: Label.Error, value: NotificationSeverityFilter.Error },
+            {
+              label: categoryLabel(
+                NotificationSeverityFilter.Error,
+                Label.Error
+              ),
+              value: NotificationSeverityFilter.Error,
+            },
           ]}
           selected={filter}
         />

@@ -39,4 +39,14 @@
   .l-navigation-bar {
     display: block;
   }
+
+  .app-side-nav-item__status {
+    align-self: center;
+  }
+
+  .notifications-count-badge {
+    background-color: $colors--theme--border-caution;
+    color: $colors--dark-theme--text-default;
+    margin-right: $sph--small;
+  }
 }

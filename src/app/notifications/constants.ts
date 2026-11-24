@@ -5,3 +5,10 @@ export enum NotificationSeverityFilter {
   Warning = "warning",
   Error = "error",
 }
+
+export const NOTIFICATION_CATEGORY_ICONS: Record<string, string> = {
+  success: "success",
+  info: "information",
+  warning: "warning",
+  error: "error",
+};

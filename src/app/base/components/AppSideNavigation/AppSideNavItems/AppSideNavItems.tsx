@@ -1,7 +1,7 @@
 import { useMemo, useState } from "react";
 
 import { Navigation } from "@canonical/maas-react-components";
-import { Badge, Icon } from "@canonical/react-components";
+import { Icon } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 
 import AppSideNavItem from "../AppSideNavItem";
@@ -10,7 +10,6 @@ import type { NavGroup } from "../types";
 import { isSelected } from "../utils";
 
 import { useGetUserEntitlements } from "@/app/api/query/auth";
-import { useAllNotifications } from "@/app/api/query/notifications";
 import type { EntitlementResponse } from "@/app/apiclient";
 import urls from "@/app/base/urls";
 import configSelectors from "@/app/store/config/selectors";
@@ -52,15 +51,6 @@ const AppSideNavItemGroup = ({
     configSelectors.experimentalSwitchProvisioning
   );
 
-  // Only used to render the severity summary on the "Notifications" nav
-  // item, so it's disabled entirely unless that nav item can actually be
-  // shown. Counts the user's full notification history (not just active
-  // ones), matching what the Notifications page itself shows.
-  const allNotifications = useAllNotifications({
-    enabled: import.meta.env.VITE_APP_NOTIFICATIONS_PAGE === "true",
-  });
-  const notificationCount = allNotifications.data?.items.length ?? 0;
-
   const filteredLinks = group.navLinks
     .filter(
       (navLink) =>
@@ -84,17 +74,6 @@ const AppSideNavItemGroup = ({
             data-testid="warning-icon"
             name="security-warning-grey"
           />
-        ) : navLink.label === "Notifications" ? (
-          <>
-            <Navigation.Icon name={navLink.icon ?? "notifications"} />
-            {notificationCount > 0 ? (
-              <Badge
-                aria-label={`${notificationCount} notifications`}
-                className="u-nudge-right--small"
-                value={notificationCount}
-              />
-            ) : null}
-          </>
         ) : (
           navLink.icon
         )
