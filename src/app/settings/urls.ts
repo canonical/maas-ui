@@ -1,5 +1,4 @@
 import type { UserGroupResponse } from "@/app/apiclient";
-import type { DHCPSnippet } from "@/app/store/dhcpsnippet/types";
 import type { LicenseKeys } from "@/app/store/licensekeys/types";
 import type { PackageRepository } from "@/app/store/packagerepository/types";
 import { argPath } from "@/app/utils";
@@ -12,11 +11,6 @@ const urls = {
     general: "/settings/configuration/general",
     index: "/settings/configuration",
     kernelParameters: "/settings/configuration/kernel-parameters",
-  },
-  dhcp: {
-    add: "/settings/dhcp/add",
-    edit: argPath<{ id: DHCPSnippet["id"] }>("/settings/dhcp/:id/edit"),
-    index: "/settings/dhcp",
   },
   images: {
     ubuntu: "/settings/images/ubuntu",

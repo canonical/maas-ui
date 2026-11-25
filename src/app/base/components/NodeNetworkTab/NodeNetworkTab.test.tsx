@@ -6,18 +6,16 @@ import NodeNetworkTab, { ExpandedState } from "./NodeNetworkTab";
 import { renderWithProviders } from "@/testing/utils";
 
 describe("NodeNetworkTab", () => {
-  it("displays the actions and interface and DHCP tables", () => {
+  it("displays the actions and interface table", () => {
     renderWithProviders(
       <NodeNetworkTab
         actions={() => <div data-testid="actions"></div>}
         addInterface={() => <div data-testid="add-interface"></div>}
-        dhcpTable={() => <div data-testid="dhcp-table"></div>}
         expandedForm={() => <div data-testid="expanded-form"></div>}
         interfaceTable={() => <div data-testid="interface-table"></div>}
       />
     );
     expect(screen.getByTestId("interface-table")).toBeInTheDocument();
-    expect(screen.getByTestId("dhcp-table")).toBeInTheDocument();
     expect(screen.getByTestId("actions")).toBeInTheDocument();
     expect(screen.queryByTestId("expanded-form")).not.toBeInTheDocument();
     expect(screen.queryByTestId("add-interface")).not.toBeInTheDocument();
@@ -35,7 +33,6 @@ describe("NodeNetworkTab", () => {
           ></button>
         )}
         addInterface={() => <div data-testid="add-interface"></div>}
-        dhcpTable={vi.fn()}
         expandedForm={vi.fn()}
         interfaceTable={vi.fn()}
       />
@@ -57,7 +54,6 @@ describe("NodeNetworkTab", () => {
           ></button>
         )}
         addInterface={vi.fn()}
-        dhcpTable={vi.fn()}
         expandedForm={(expanded) =>
           expanded?.content === ExpandedState.EDIT ? (
             <div data-testid="edit-interface"></div>

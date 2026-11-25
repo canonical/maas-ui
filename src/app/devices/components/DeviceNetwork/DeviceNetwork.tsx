@@ -3,13 +3,11 @@ import { useSelector } from "react-redux";
 
 import DeviceNetworkTable from "./DeviceNetworkTable";
 
-import DHCPTable from "@/app/base/components/DHCPTable";
 import NetworkActionRow from "@/app/base/components/NetworkActionRow";
 import NodeNetworkTab from "@/app/base/components/NodeNetworkTab";
 import { useCanEdit, useWindowTitle } from "@/app/base/hooks";
 import deviceSelectors from "@/app/store/device/selectors";
-import { DeviceMeta } from "@/app/store/device/types";
-import type { Device } from "@/app/store/device/types";
+import type { DeviceMeta, Device } from "@/app/store/device/types";
 import type { RootState } from "@/app/store/root/types";
 
 export enum Label {
@@ -39,14 +37,6 @@ const DeviceNetwork = ({ systemId }: Props): React.ReactElement => {
           <NetworkActionRow addInterfaceDisabled={!canEdit} node={device} />
         )}
         aria-label={Label.Title}
-        dhcpTable={() => (
-          <DHCPTable
-            className="u-no-padding--top"
-            editDisabled={!canEdit}
-            modelName={DeviceMeta.MODEL}
-            node={device}
-          />
-        )}
         interfaceTable={() => <DeviceNetworkTable systemId={systemId} />}
       />
     </>

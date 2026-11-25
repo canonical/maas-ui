@@ -2,7 +2,6 @@ import { useCallback } from "react";
 
 import { useSidePanel } from "@canonical/maas-react-components";
 import { useDispatch, useSelector } from "react-redux";
-import type { SchemaOf } from "yup";
 import * as Yup from "yup";
 
 import FormikForm from "@/app/base/components/FormikForm";
@@ -29,7 +28,7 @@ type CreateRecordValues = {
   ttl: DomainResource["ttl"] | "";
 };
 
-const CreateRecordSchema: SchemaOf<CreateRecordValues> = Yup.object()
+const CreateRecordSchema = Yup.object()
   .shape({
     name: Yup.string().required("Name is required."),
     rrtype: Yup.string().required("Record type is required."),

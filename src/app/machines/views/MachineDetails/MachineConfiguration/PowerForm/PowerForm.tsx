@@ -2,7 +2,6 @@ import { useCallback, useEffect, useState } from "react";
 
 import { Spinner } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
-import type { SchemaOf } from "yup";
 import * as Yup from "yup";
 
 import PowerFormFields from "./PowerFormFields";
@@ -76,7 +75,7 @@ const PowerForm = ({ systemId }: Props): React.ReactElement | null => {
     selectedPowerType,
     fieldScopes
   );
-  const PowerFormSchema: SchemaOf<PowerFormValues> = Yup.object()
+  const PowerFormSchema = Yup.object()
     .shape({
       powerParameters: Yup.object().shape(powerParametersSchema),
       powerType: Yup.string().required("Power type is required"),

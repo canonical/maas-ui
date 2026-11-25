@@ -37,11 +37,6 @@ describe("SubnetDetails", () => {
       title: "Reserved ranges",
     },
     {
-      component: "DHCPSnippets",
-      path: urls.networks.subnet.dhcpSnippets({ id: 1 }),
-      title: "DHCP snippets",
-    },
-    {
       component: "SubnetUsedIPs",
       path: urls.networks.subnet.usedIpAddresses({ id: 1 }),
       title: "Used IP addresses",

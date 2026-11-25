@@ -56,7 +56,6 @@ export const routes: Record<string, string> = {
   "settings commissioning scripts": "/settings/scripts/commissioning",
   "settings deployment scripts": "/settings/scripts/deploying",
   "settings testing scripts": "/settings/scripts/testing",
-  "settings dhcp snippets": "/settings/dhcp",
   "settings package repositories": "/settings/repositories",
   subnets: "/networks/subnets?by=fabric",
   "user setup": "/intro/user",

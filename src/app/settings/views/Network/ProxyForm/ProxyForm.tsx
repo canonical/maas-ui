@@ -24,7 +24,7 @@ const ProxySchema = Yup.object().shape({
   proxyType: Yup.string().required(),
   httpProxy: Yup.string().when("proxyType", {
     is: (val: string) => val === "externalProxy" || val === "peerProxy",
-    then: UrlSchema.required("Please enter the proxy URL."),
+    then: () => UrlSchema.required("Please enter the proxy URL."),
   }),
 });
 

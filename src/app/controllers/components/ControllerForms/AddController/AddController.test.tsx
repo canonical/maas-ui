@@ -51,20 +51,33 @@ describe("AddController", () => {
     expect(mockClose).toHaveBeenCalled();
   });
 
-  it("uses a fixed version in both snap and packages instructions", async () => {
+  it("updates every command when the version variant changes", async () => {
     renderWithProviders(<AddController />, {
       state,
     });
+    const register = screen.getByTestId("register-snippet");
     expect(
       screen.getByText(/sudo snap install maas --channel=3.2/)
     ).toBeInTheDocument();
+    expect(register).toHaveTextContent(
+      "sudo maas init rack --maas-url http://1.2.3.4/MAAS --secret veryverysecret"
+    );
 
     await userEvent.selectOptions(
-      screen.getAllByRole("combobox", { name: "version" })[0],
+      screen.getByRole("combobox", { name: "Version" }),
       "v3.2 Packages"
     );
     expect(
       screen.getByText(new RegExp("sudo apt-add-repository ppa:maas/3.2"))
     ).toBeInTheDocument();
+    expect(
+      screen.getByText(/sudo apt install maas-rack-controller/)
+    ).toBeInTheDocument();
+    expect(
+      screen.queryByText(/sudo snap install maas/)
+    ).not.toBeInTheDocument();
+    expect(register).toHaveTextContent(
+      "sudo maas-rack register --url http://1.2.3.4/MAAS --secret veryverysecret"
+    );
   });
 });

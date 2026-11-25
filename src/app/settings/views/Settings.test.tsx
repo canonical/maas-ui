@@ -118,17 +118,6 @@ describe("Settings", () => {
     ).toBeInTheDocument();
   });
 
-  it("shows a permission message on the DHCP snippets page without the global entities entitlement", async () => {
-    mockServer.use(authResolvers.getMeEntitlements.handler([]));
-    renderWithProviders(<SettingsRoutes />, {
-      initialEntries: [urls.settings.dhcp.index],
-    });
-
-    expect(
-      await screen.findByRole("heading", noPermissionHeading)
-    ).toBeInTheDocument();
-  });
-
   it("shows a permission message on the package repositories page without the global entities entitlement", async () => {
     mockServer.use(authResolvers.getMeEntitlements.handler([]));
     renderWithProviders(<SettingsRoutes />, {

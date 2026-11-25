@@ -49,7 +49,7 @@ export type CommonStates = Omit<
   | "router"
 >;
 
-// Get the types of the common models. e.g. "DHCPSnippetState".
+// Get the types of the common models. e.g. "PackageRepositoryState".
 export type CommonStateTypes = CommonStates[keyof CommonStates];
 
 // Models on the root state that contain statuses.
@@ -103,9 +103,9 @@ export const genericInitialState = {
 
 /**
  * A method to update the event errors for a model
- * @template S - The model state type e.g. DHCPSnippetState.
+ * @template S - The model state type e.g. PackageRepositoryState.
  * @template I - A model that is used as an array of items on the provided
- *               state e.g. DHCPSnippet
+ *               state e.g. PackageRepository
  * @template K - A model key e.g. "id"
  */
 export const updateErrors = <
@@ -151,7 +151,7 @@ export const updateErrors = <
 /**
  * A utility to generate a common actions and reducers.
  * @template I - A model that is used as an array of items on the provided
- *               state e.g. DHCPSnippet
+ *               state e.g. PackageRepository
  * @template E - The type of the errors for a model's state.
  * @template R - The type of the model's reducers.
  * @param name - The name of the model that matches the name in MAAS.
@@ -344,7 +344,7 @@ export const generateCommonReducers = <
  * The handlers for a status.
  * @template S - A model that includes status e.g. Machine.
  * @template I - A model that is used as an array of items on the provided
- *               state e.g. DHCPSnippet
+ *               state e.g. PackageRepository
  */
 export type StatusHandlers<
   S extends StatusStateTypes,
@@ -370,7 +370,7 @@ export type StatusHandlers<
  * A utility to generate reducers and actions to append to a slice.
  * @template S - A model that includes status e.g. Machine.
  * @template I - A model that is used as an array of items on the provided
- *               state e.g. DHCPSnippet
+ *               state e.g. PackageRepository
  * @template K - A model key e.g. "id"
  * @param primaryKey - The key used to index a model e.g. "id"
  *                            or "system_id".

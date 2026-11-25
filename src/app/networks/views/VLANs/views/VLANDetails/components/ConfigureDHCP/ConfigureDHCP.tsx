@@ -97,7 +97,7 @@ const ConfigureDHCP = ({ vlan }: ConfigureDHCPProps): ReactElement | null => {
       enableDHCP: Yup.boolean(),
       endIP: Yup.string().when("subnet", {
         is: (val: string) => isId(val),
-        then: Yup.string().required("End IP address is required"),
+        then: (schema) => schema.required("End IP address is required"),
       }),
       gatewayIP: Yup.string(),
       primaryRack: Yup.string().when(["enableDHCP", "dhcpType"], {
@@ -105,13 +105,13 @@ const ConfigureDHCP = ({ vlan }: ConfigureDHCPProps): ReactElement | null => {
           dhcpEnabled: boolean,
           dhcpType: DHCPType.CONTROLLERS | DHCPType.RELAY
         ) => dhcpEnabled && dhcpType === DHCPType.CONTROLLERS,
-        then: Yup.string().required("Primary rack is required"),
+        then: (schema) => schema.required("Primary rack is required"),
       }),
       relayVLAN: Yup.string(),
       secondaryRack: Yup.string(),
       startIP: Yup.string().when("subnet", {
         is: (val: string) => isId(val),
-        then: Yup.string().required("Start IP address is required"),
+        then: (schema) => schema.required("Start IP address is required"),
       }),
       subnet: Yup.string()
         .when(["enableDHCP", "dhcpType"], {
@@ -122,7 +122,7 @@ const ConfigureDHCP = ({ vlan }: ConfigureDHCPProps): ReactElement | null => {
             dhcpEnabled &&
             dhcpType === DHCPType.CONTROLLERS &&
             ipRanges.length === 0,
-          then: Yup.string().required("Subnet is required"),
+          then: (schema) => schema.required("Subnet is required"),
         })
         .test(
           "hasNoIPs",

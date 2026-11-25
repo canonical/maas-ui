@@ -1,6 +1,6 @@
 import { isIP, isIPv6 } from "is-ip";
 import * as Yup from "yup";
-import type { ObjectShape } from "yup/lib/object";
+import type { ObjectShape } from "yup";
 
 import type { PowerField, PowerType } from "@/app/store/general/types";
 import { PowerFieldScope, PowerFieldType } from "@/app/store/general/types";

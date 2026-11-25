@@ -59,7 +59,7 @@ const CreateRaidSchema = Yup.object().shape({
   mountOptions: Yup.string(),
   mountPoint: Yup.string().when("fstype", {
     is: (val: CreateRaidValues["fstype"]) => Boolean(val) && val !== "swap",
-    then: Yup.string().matches(/^\//, "Mount point must start with /"),
+    then: (schema) => schema.matches(/^\//, "Mount point must start with /"),
   }),
   name: Yup.string().required("Name is required"),
   partitionIds: Yup.array().of(Yup.number()),

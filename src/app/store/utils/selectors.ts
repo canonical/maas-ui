@@ -6,14 +6,14 @@ import type { RootState } from "@/app/store/root/types";
 import type { CommonStates, CommonStateTypes } from "@/app/store/utils";
 
 /**
- * @template I - A model item type e.g. DHCPSnippet
+ * @template I - A model item type e.g. PackageRepository
  */
 type SearchFunction<I> = (item: I, term: string) => boolean;
 
 /**
- * @template S - The model state type e.g. DHCPSnippetState.
+ * @template S - The model state type e.g. PackageRepositoryState.
  * @template I - A model that is used as an an array of items on the provided
- *               state e.g. DHCPSnippet
+ *               state e.g. PackageRepository
  * @template K - A model key e.g. "id"
  */
 type BaseSelectors<
@@ -21,8 +21,8 @@ type BaseSelectors<
   S extends CommonStateTypes,
   // The model type needs to be a reference to the supplied state so that
   // TypeScript can validate whether the key exists on the model.
-  // S["items"] will refer to something like `items: DHCPSnippet[];` and `[0]`
-  // will retrieve the type of the model e.g. `DHCPSnippet`.
+  // S["items"] will refer to something like `items: PackageRepository[];` and `[0]`
+  // will retrieve the type of the model e.g. `PackageRepository`.
   // See: https://www.typescriptlang.org/docs/handbook/release-notes/typescript-2-1.html#keyof-and-lookup-types
   I extends S["items"][0],
   // A model key as a reference to the supplied state item.
@@ -44,11 +44,11 @@ type BaseSelectors<
 };
 
 /**
- * @template S - The model state type e.g. DHCPSnippetState.
+ * @template S - The model state type e.g. PackageRepositoryState.
  * @template I - A model that is used as an an array of items on the provided
- *               state e.g. DHCPSnippet
+ *               state e.g. PackageRepository
  * @template {string} K - A model key e.g. "id"
- * @param {string} name - The root state key of the model e.g. "dhcpsnippet".
+ * @param {string} name - The root state key of the model e.g. "packagerepository".
  * @param {K} indexKey - The key of the id field e.g. "id" or "system_id".
  * @param {SearchFunction} searchFunction - The function to match items
  *                                          when filtering.

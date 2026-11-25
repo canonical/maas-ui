@@ -89,7 +89,7 @@ export const AddMachineForm = (): ReactElement => {
       .when("power_type", {
         is: (power_type: PowerType["name"]) =>
           power_type !== PowerTypeNames.IPMI,
-        then: Yup.string().required("At least one MAC address required"),
+        then: (schema) => schema.required("At least one MAC address required"),
       }),
     zone: Yup.string().required("Zone required"),
   });

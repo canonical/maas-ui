@@ -46,8 +46,8 @@ describe("AddChassisForm", () => {
               can_probe: false,
             }),
             factory.powerType({
-              name: PowerTypeNames.WEDGE,
-              description: "Dummy power type",
+              name: PowerTypeNames.PROXMOX,
+              description: "Proxmox",
               fields: [
                 factory.powerField({
                   name: "power_address",

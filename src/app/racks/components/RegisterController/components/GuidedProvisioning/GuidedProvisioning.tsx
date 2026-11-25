@@ -2,9 +2,10 @@ import type { ChangeEvent, ReactElement } from "react";
 import { useState } from "react";
 
 import { ExternalLink, useSidePanel } from "@canonical/maas-react-components";
-import { Button, CodeSnippet } from "@canonical/react-components";
+import { Button, Select } from "@canonical/react-components";
 
 import { useGenerateToken } from "@/app/api/query/racks";
+import CodeBlock from "@/app/base/components/CodeBlock";
 import CopyButton from "@/app/base/components/CopyButton";
 import docsUrls from "@/app/base/docsUrls";
 import "./_index.scss";
@@ -22,59 +23,30 @@ const GuidedProvisioning = ({ id }: GuidedProvisioningProps): ReactElement => {
     <div>
       To register a controller to the rack using guided provisioning, SSH into
       the controller and run the commands below.
-      <CodeSnippet
-        blocks={[
-          {
-            code: "sudo snap install maas-agent --channel=3.7",
-            dropdowns: [
-              {
-                options: [{ label: "v3.7 Snap", value: "3.7" }],
-                value: maasVersion,
-                onChange: (e: ChangeEvent<HTMLSelectElement>) => {
-                  setMaasVersion(e.target.value);
-                },
-              },
-            ],
-          },
-        ]}
-        className="u-nudge-down"
-        data-testid="first-command-snippet"
+      <Select
+        id="guided-provisioning-version"
+        label="Version"
+        onChange={(e: ChangeEvent<HTMLSelectElement>) => {
+          setMaasVersion(e.target.value);
+        }}
+        options={[{ label: "v3.7 Snap", value: "3.7" }]}
+        value={maasVersion}
+        wrapperClassName="u-nudge-down"
       />
+      <CodeBlock data-testid="first-command-snippet">
+        {`sudo snap install maas-agent --channel=${maasVersion}`}
+      </CodeBlock>
       Generate a bootstrap token and use it to initialize the MAAS agent.
-      <CodeSnippet
-        blocks={[
-          {
-            code: "maas-agent init --token <TOKEN> ",
-            dropdowns: [
-              {
-                options: [{ label: "v3.7 Snap", value: "3.7" }],
-                value: maasVersion,
-                onChange: (e: ChangeEvent<HTMLSelectElement>) => {
-                  setMaasVersion(e.target.value);
-                },
-              },
-            ],
-          },
-        ]}
-        className="u-nudge-down"
-        data-testid="second-command-snippet"
-      />
+      <CodeBlock className="u-nudge-down" data-testid="second-command-snippet">
+        {"maas-agent init --token <TOKEN> "}
+      </CodeBlock>
       {generateTokenMutation.isSuccess ? (
-        <CodeSnippet
-          blocks={[
-            {
-              code: (
-                <span>
-                  <span className="u-flex--end u-margin-bottom--medium">
-                    <CopyButton value={generateTokenMutation.data.token} />
-                  </span>
-                  {generateTokenMutation.data.token}
-                </span>
-              ),
-            },
-          ]}
-          className="p-agent-token"
-        />
+        <div className="p-agent-token">
+          <span className="u-flex--end">
+            <CopyButton value={generateTokenMutation.data.token} />
+          </span>
+          <CodeBlock>{generateTokenMutation.data.token}</CodeBlock>
+        </div>
       ) : (
         <span className="u-flex--end">
           <Button

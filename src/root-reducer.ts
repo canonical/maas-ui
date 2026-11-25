@@ -5,7 +5,6 @@ import type { RouterState } from "redux-first-history";
 import config from "@/app/store/config";
 import controller from "@/app/store/controller";
 import device from "@/app/store/device";
-import dhcpsnippet from "@/app/store/dhcpsnippet";
 import domain from "@/app/store/domain";
 import event from "@/app/store/event";
 import fabric from "@/app/store/fabric";
@@ -36,7 +35,6 @@ const createAppReducer = (routerReducer: Reducer<RouterState, Action>) =>
     config,
     controller,
     device,
-    dhcpsnippet,
     domain,
     event,
     fabric,

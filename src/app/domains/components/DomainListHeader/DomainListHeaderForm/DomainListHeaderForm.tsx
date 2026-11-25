@@ -3,7 +3,6 @@ import { useCallback, useState } from "react";
 import { useSidePanel } from "@canonical/maas-react-components";
 import { Col, Row } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
-import type { SchemaOf } from "yup";
 import * as Yup from "yup";
 
 import FormikField from "@/app/base/components/FormikField";
@@ -36,7 +35,7 @@ const DomainListHeaderForm = (): React.ReactElement => {
   const cleanup = useCallback(() => domainActions.cleanup(), []);
   const [shouldClose, setShouldClose] = useState(false);
 
-  const CreateDomainSchema: SchemaOf<CreateDomainValues> = Yup.object()
+  const CreateDomainSchema = Yup.object()
     .shape({
       name: Yup.string()
         .required("Domain name cannot be empty")

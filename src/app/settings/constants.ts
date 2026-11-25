@@ -87,7 +87,6 @@ export const settingsNavItems: NavItem[] = [
         path: settingsURLs.network.networkDiscovery,
         label: "Network discovery",
       },
-      { path: settingsURLs.dhcp.index, label: "DHCP snippets" },
     ],
   },
   {
