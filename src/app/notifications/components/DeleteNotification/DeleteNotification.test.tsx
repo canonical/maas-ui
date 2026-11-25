@@ -1,12 +1,18 @@
 import DeleteNotification from "./DeleteNotification";
 
+import { notificationResolvers } from "@/testing/resolvers/notifications";
 import {
   mockModal,
   renderWithProviders,
   screen,
+  setupMockServer,
   userEvent,
+  waitFor,
 } from "@/testing/utils";
 
+const mockServer = setupMockServer(
+  notificationResolvers.deleteNotification.handler()
+);
 const { mockClose } = await mockModal();
 
 describe("DeleteNotification", () => {
@@ -25,7 +31,28 @@ describe("DeleteNotification", () => {
     expect(mockClose).toHaveBeenCalled();
   });
 
-  // TODO: once deleting a single notification is wired up to the backend
-  // (see the TODO in DeleteNotification.tsx), add tests covering a
-  // successful submission and the resulting mutation call.
+  it("calls delete notification on save click", async () => {
+    renderWithProviders(<DeleteNotification id={1} />);
+
+    await userEvent.click(screen.getByRole("button", { name: "Delete" }));
+    await waitFor(() => {
+      expect(notificationResolvers.deleteNotification.resolved).toBeTruthy();
+    });
+  });
+
+  it("displays error messages when delete notification fails", async () => {
+    mockServer.use(
+      notificationResolvers.deleteNotification.error({
+        code: 400,
+        message: "Uh oh!",
+        kind: "Error",
+      })
+    );
+    renderWithProviders(<DeleteNotification id={1} />);
+
+    await userEvent.click(screen.getByRole("button", { name: "Delete" }));
+    await waitFor(() => {
+      expect(screen.getByText(/Uh oh!/i)).toBeInTheDocument();
+    });
+  });
 });

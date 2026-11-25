@@ -46,13 +46,15 @@ describe("NotificationsTable", () => {
     );
 
     await waitFor(() => {
-      ["Category", "Message", "Action"].forEach((column) => {
-        expect(
-          screen.getByRole("columnheader", {
-            name: new RegExp(`^${column}`, "i"),
-          })
-        ).toBeInTheDocument();
-      });
+      ["Category", "Message", "Notification's actions", "Action"].forEach(
+        (column) => {
+          expect(
+            screen.getByRole("columnheader", {
+              name: new RegExp(`^${column}`, "i"),
+            })
+          ).toBeInTheDocument();
+        }
+      );
     });
   });
 

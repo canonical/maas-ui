@@ -52,7 +52,7 @@ const useNotificationsTableColumns = (): NotificationsColumnDef[] => {
       {
         id: "action",
         enableSorting: false,
-        header: "Action",
+        header: "Notification's actions",
         // No actions exist yet for individual notifications (e.g. retry,
         // view logs). This column is a placeholder for that future work.
         cell: () => null,
@@ -61,7 +61,7 @@ const useNotificationsTableColumns = (): NotificationsColumnDef[] => {
         id: "delete",
         accessorKey: "id",
         enableSorting: false,
-        header: "",
+        header: "Actions",
         cell: ({ row: { original } }) => (
           <TableActions
             deleteTooltip="Delete notification"

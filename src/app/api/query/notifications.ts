@@ -12,6 +12,9 @@ import {
   queryOptionsWithHeaders,
 } from "@/app/api/utils";
 import type {
+  DeleteNotificationData,
+  DeleteNotificationErrors,
+  DeleteNotificationResponses,
   DismissNotificationData,
   DismissNotificationErrors,
   DismissNotificationResponses,
@@ -23,7 +26,11 @@ import type {
   NotificationResponse,
   Options,
 } from "@/app/apiclient";
-import { dismissNotification, listNotifications } from "@/app/apiclient";
+import {
+  deleteNotification,
+  dismissNotification,
+  listNotifications,
+} from "@/app/apiclient";
 import { listNotificationsQueryKey } from "@/app/apiclient/@tanstack/react-query.gen";
 import { DEFAULT_PAGE_SIZE } from "@/app/base/constants";
 
@@ -191,6 +198,24 @@ export const useDismissNotification = (
       DismissNotificationErrors,
       DismissNotificationData
     >(mutationOptions, dismissNotification),
+    onSuccess: () => {
+      return queryClient.invalidateQueries({
+        queryKey: listNotificationsQueryKey(),
+      });
+    },
+  });
+};
+
+export const useDeleteNotification = (
+  mutationOptions?: Options<DeleteNotificationData>
+) => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    ...mutationOptionsWithHeaders<
+      DeleteNotificationResponses,
+      DeleteNotificationErrors,
+      DeleteNotificationData
+    >(mutationOptions, deleteNotification),
     onSuccess: () => {
       return queryClient.invalidateQueries({
         queryKey: listNotificationsQueryKey(),
