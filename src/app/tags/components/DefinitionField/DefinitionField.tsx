@@ -1,11 +1,12 @@
 import { useEffect, useRef } from "react";
 
 import { ExternalLink } from "@canonical/maas-react-components";
-import { CodeSnippet, Textarea } from "@canonical/react-components";
+import { Textarea } from "@canonical/react-components";
 import type { FormikErrors } from "formik";
 import { useFormikContext } from "formik";
 import { useSelector } from "react-redux";
 
+import CodeBlock from "@/app/base/components/CodeBlock";
 import FormikField from "@/app/base/components/FormikField";
 import docsUrls from "@/app/base/docsUrls";
 import { useSendAnalytics } from "@/app/base/hooks";
@@ -99,15 +100,11 @@ export const DefinitionField = ({ id }: Props): React.ReactElement => {
       <p className="p-form-help-text u-sv1">
         This will tag legacy KVM vms running on AMD-based Hosts:
       </p>
-      <CodeSnippet
-        blocks={[
-          {
-            code: `//node[@class="system"]/vendor = "QEMU" and
+      <CodeBlock>
+        {`//node[@class="system"]/vendor = "QEMU" and
 //node[@class="processor"]/vendor[starts-with(.,"Advanced Micro Devices")] and not
-//node[@id="firmware"]/capabilities/capability/@id = "uefi"`,
-          },
-        ]}
-      />
+//node[@id="firmware"]/capabilities/capability/@id = "uefi"`}
+      </CodeBlock>
     </>
   );
 };

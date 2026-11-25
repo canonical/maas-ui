@@ -1,13 +1,7 @@
 import type { ReactElement } from "react";
 
 import { ContentSection } from "@canonical/maas-react-components";
-import {
-  CodeSnippet,
-  CodeSnippetBlockAppearance,
-  Link,
-  Notification,
-  Spinner,
-} from "@canonical/react-components";
+import { Link, Notification, Spinner } from "@canonical/react-components";
 
 import HardeningStatusTable from "./components/HardeningStatusTable";
 import { parseHardeningNotifications } from "./utils";
@@ -17,6 +11,7 @@ import {
   useActiveNotifications,
 } from "@/app/api/query/notifications";
 import { useSystemInfo } from "@/app/api/query/system";
+import CodeBlock from "@/app/base/components/CodeBlock";
 import PageContent from "@/app/base/components/PageContent";
 import { useWindowTitle } from "@/app/base/hooks";
 
@@ -76,14 +71,9 @@ const HardeningStatus = (): ReactElement => {
                 command on a region controller; the change takes effect on the
                 next region restart.
               </p>
-              <CodeSnippet
-                blocks={[
-                  {
-                    appearance: CodeSnippetBlockAppearance.LINUX_PROMPT,
-                    code: "maas config-hardening enable",
-                  },
-                ]}
-              />
+              <CodeBlock appearance="linux-prompt">
+                {"maas config-hardening enable"}
+              </CodeBlock>
               <p>
                 <Link
                   href={HARDENING_DOCS_URL}

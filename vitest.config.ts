@@ -36,7 +36,11 @@ export default defineConfig({
     server: {
       deps: {
         // Symlink-only
-        inline: [/maas-react-components\/node_modules\//],
+        inline: [
+          /maas-react-components\/node_modules\//,
+          // Pragma components import their own CSS, which Node can't load when externalized.
+          /@canonical\/react-ds-global\//,
+        ],
       },
     },
     coverage: {
