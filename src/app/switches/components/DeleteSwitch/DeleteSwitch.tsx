@@ -1,12 +1,10 @@
 import type { ReactElement } from "react";
 
-import {
-  Notification as NotificationBanner,
-  Spinner,
-} from "@canonical/react-components";
+import { Notification as NotificationBanner } from "@canonical/react-components";
 
 import { useDeleteSwitch, useGetSwitch } from "@/app/api/query/switches";
 import ModelActionForm from "@/app/base/components/ModelActionForm";
+import Spinner from "@/app/base/components/Spinner";
 import { useModal } from "@/app/base/modal-context";
 import { getSwitchErrorMessage } from "@/app/switches/utils";
 

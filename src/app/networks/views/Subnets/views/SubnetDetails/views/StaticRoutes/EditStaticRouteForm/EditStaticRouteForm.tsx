@@ -1,5 +1,5 @@
 import { useSidePanel } from "@canonical/maas-react-components";
-import { Col, Row, Spinner } from "@canonical/react-components";
+import { Col, Row } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 
@@ -7,6 +7,7 @@ import { Labels } from "../StaticRoutes";
 
 import FormikField from "@/app/base/components/FormikField";
 import FormikForm from "@/app/base/components/FormikForm";
+import Spinner from "@/app/base/components/Spinner";
 import SubnetSelect from "@/app/base/components/SubnetSelect";
 import { useFetchActions } from "@/app/base/hooks";
 import type { RootState } from "@/app/store/root/types";

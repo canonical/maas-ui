@@ -1,10 +1,11 @@
 import { useEffect, useRef, useState } from "react";
 
 import type { SearchBoxProps } from "@canonical/react-components";
-import { Icon } from "@canonical/react-components";
+import { Spinner } from "@canonical/react-ds-global";
 import classNames from "classnames";
 
 import SearchBox from "@/app/base/components/SearchBox";
+import { dsIconRoot } from "@/app/base/components/Spinner/iconRoot";
 
 type Props = Omit<
   SearchBoxProps,
@@ -72,7 +73,7 @@ const DebounceSearchBox = ({
           )}
           role="alert"
         >
-          <Icon className="u-animation--spin" name="spinner" />
+          <Spinner rootPath={dsIconRoot} />
         </div>
       )}
     </div>

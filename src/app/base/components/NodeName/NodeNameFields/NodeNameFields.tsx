@@ -1,6 +1,5 @@
 import { useEffect } from "react";
 
-import { Spinner } from "@canonical/react-components";
 import type { FormikErrors } from "formik";
 import { useFormikContext } from "formik";
 import { useSelector } from "react-redux";
@@ -9,6 +8,7 @@ import type { FormValues } from "../NodeName";
 
 import DomainSelect from "@/app/base/components/DomainSelect";
 import FormikField from "@/app/base/components/FormikField";
+import Spinner from "@/app/base/components/Spinner";
 import domainSelectors from "@/app/store/domain/selectors";
 import { DomainMeta } from "@/app/store/domain/types";
 

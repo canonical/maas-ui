@@ -1,6 +1,5 @@
 import { useCallback } from "react";
 
-import { Spinner } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 
@@ -9,6 +8,7 @@ import MachineFormFields from "./MachineFormFields";
 import Definition from "@/app/base/components/Definition";
 import EditableSection from "@/app/base/components/EditableSection";
 import FormikForm from "@/app/base/components/FormikForm";
+import Spinner from "@/app/base/components/Spinner";
 import { useCanEdit } from "@/app/base/hooks";
 import { useCanEditMachine } from "@/app/base/hooks/permissions";
 import { machineActions } from "@/app/store/machine";

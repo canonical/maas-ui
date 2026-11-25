@@ -1,7 +1,7 @@
 import type { ReactElement } from "react";
 import { useEffect } from "react";
 
-import { Select, Spinner } from "@canonical/react-components";
+import { Select } from "@canonical/react-components";
 import type { FormikContextType } from "formik";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
@@ -12,6 +12,7 @@ import type { NetworkDiscoveryValues } from "./types";
 
 import FormikField from "@/app/base/components/FormikField";
 import FormikForm from "@/app/base/components/FormikForm";
+import Spinner from "@/app/base/components/Spinner";
 import { useWindowTitle, useHasEntitlements } from "@/app/base/hooks";
 import { configActions } from "@/app/store/config";
 import configSelectors from "@/app/store/config/selectors";

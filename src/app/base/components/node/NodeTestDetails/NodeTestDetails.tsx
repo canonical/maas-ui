@@ -1,13 +1,14 @@
 import { useEffect, useState } from "react";
 
 import { GenericTable } from "@canonical/maas-react-components";
-import { Col, Row, Spinner, Tooltip } from "@canonical/react-components";
+import { Col, Row, Tooltip } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router";
 
 import NodeTestDetailsLogs from "./NodeTestDetailsLogs";
 import useNodeTestDetailsTableColumns from "./useNodeTestDetailsTableColumns/useNodeTestDetailsTableColumns";
 
+import Spinner from "@/app/base/components/Spinner";
 import { useGetURLId } from "@/app/base/hooks/urls";
 import type { RootState } from "@/app/store/root/types";
 import { scriptResultActions } from "@/app/store/scriptresult";

@@ -1,7 +1,6 @@
 import type { ReactElement } from "react";
 import { useState } from "react";
 
-import { Spinner } from "@canonical/react-components";
 import { Navigate, Route, Routes } from "react-router";
 
 import { Entitlement } from "../../constants";
@@ -13,6 +12,7 @@ import type {
 } from "@/app/apiclient";
 import ModelNotFound from "@/app/base/components/ModelNotFound";
 import PageContent from "@/app/base/components/PageContent/PageContent";
+import Spinner from "@/app/base/components/Spinner";
 import {
   useGetURLId,
   useWindowTitle,

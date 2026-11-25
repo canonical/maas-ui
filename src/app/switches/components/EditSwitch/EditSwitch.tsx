@@ -4,7 +4,6 @@ import { useSidePanel } from "@canonical/maas-react-components";
 import {
   Notification as NotificationBanner,
   Select,
-  Spinner,
 } from "@canonical/react-components";
 import { useQueryClient } from "@tanstack/react-query";
 import * as Yup from "yup";
@@ -15,6 +14,7 @@ import type { SwitchUpdateRequest, UpdateSwitchError } from "@/app/apiclient";
 import { getSwitchQueryKey } from "@/app/apiclient/@tanstack/react-query.gen";
 import FormikField from "@/app/base/components/FormikField";
 import FormikForm from "@/app/base/components/FormikForm";
+import Spinner from "@/app/base/components/Spinner";
 import { getSwitchErrorMessage } from "@/app/switches/utils";
 
 type EditSwitchProps = {

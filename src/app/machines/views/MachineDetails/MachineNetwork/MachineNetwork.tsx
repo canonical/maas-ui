@@ -1,12 +1,12 @@
 import type { ReactElement } from "react";
 import { useState } from "react";
 
-import { Spinner } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 
 import MachineNetworkActions from "./MachineNetworkActions";
 
 import NodeNetworkTab from "@/app/base/components/NodeNetworkTab";
+import Spinner from "@/app/base/components/Spinner";
 import NetworkTable from "@/app/base/components/node/networking/NetworkTable";
 import type { Selected } from "@/app/base/components/node/networking/types";
 import { useWindowTitle } from "@/app/base/hooks";

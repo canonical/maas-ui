@@ -1,10 +1,10 @@
-import { Spinner } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 
 import DeviceNetworkTable from "./DeviceNetworkTable";
 
 import NetworkActionRow from "@/app/base/components/NetworkActionRow";
 import NodeNetworkTab from "@/app/base/components/NodeNetworkTab";
+import Spinner from "@/app/base/components/Spinner";
 import { useCanEdit, useWindowTitle } from "@/app/base/hooks";
 import deviceSelectors from "@/app/store/device/selectors";
 import type { DeviceMeta, Device } from "@/app/store/device/types";

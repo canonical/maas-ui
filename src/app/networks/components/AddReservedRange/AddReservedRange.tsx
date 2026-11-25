@@ -2,7 +2,7 @@ import type { ReactElement } from "react";
 import { useCallback } from "react";
 
 import { useSidePanel } from "@canonical/maas-react-components";
-import { Col, Row, Spinner } from "@canonical/react-components";
+import { Col, Row } from "@canonical/react-components";
 import * as ipaddr from "ipaddr.js";
 import { isIP, isIPv4 } from "is-ip";
 import { useDispatch, useSelector } from "react-redux";
@@ -13,6 +13,7 @@ import FormikForm from "@/app/base/components/FormikForm";
 import PrefixedIpInput, {
   formatIpAddress,
 } from "@/app/base/components/PrefixedIpInput";
+import Spinner from "@/app/base/components/Spinner";
 import { ipRangeActions } from "@/app/store/iprange";
 import ipRangeSelectors from "@/app/store/iprange/selectors";
 import type { IPRange } from "@/app/store/iprange/types";

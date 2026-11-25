@@ -1,10 +1,10 @@
 import { ContentSection } from "@canonical/maas-react-components";
-import { Spinner } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 
 import VaultSettings from "./VaultSettings";
 
 import PageContent from "@/app/base/components/PageContent";
+import Spinner from "@/app/base/components/Spinner";
 import { useFetchActions, useWindowTitle } from "@/app/base/hooks";
 import { generalActions } from "@/app/store/general";
 import { vaultEnabled as vaultEnabledSelectors } from "@/app/store/general/selectors";

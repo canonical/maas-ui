@@ -1,10 +1,11 @@
 import { ExternalLink } from "@canonical/maas-react-components";
-import { Spinner, Strip } from "@canonical/react-components";
+import { Strip } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 import { Link } from "react-router";
 
 import ChangeStorageLayoutMenu from "./ChangeStorageLayoutMenu";
 
+import Spinner from "@/app/base/components/Spinner";
 import StorageTables from "@/app/base/components/node/StorageTables";
 import docsUrls from "@/app/base/docsUrls";
 import { useSendAnalytics, useWindowTitle } from "@/app/base/hooks";

@@ -3,7 +3,6 @@ import type { ReactElement } from "react";
 import { useSidePanel } from "@canonical/maas-react-components";
 import {
   Notification as NotificationBanner,
-  Spinner,
   Textarea,
 } from "@canonical/react-components";
 import { useQueryClient } from "@tanstack/react-query";
@@ -13,6 +12,7 @@ import type { UpdateZoneError, ZoneRequest } from "@/app/apiclient";
 import { getZoneQueryKey } from "@/app/apiclient/@tanstack/react-query.gen";
 import FormikField from "@/app/base/components/FormikField";
 import FormikForm from "@/app/base/components/FormikForm";
+import Spinner from "@/app/base/components/Spinner";
 
 type EditZoneProps = {
   id: number;

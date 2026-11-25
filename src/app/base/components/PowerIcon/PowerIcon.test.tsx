@@ -12,11 +12,15 @@ describe("PowerIcon", () => {
     expect(container.querySelector("i")).toBeInTheDocument();
   });
 
-  it("can show a spinner regardless of the power state", async () => {
+  it("can show a spinner regardless of the power state", () => {
     const { container } = render(
       <PowerIcon powerState={PowerState.ON} showSpinner />
     );
-    expect(container.querySelector("i")).toHaveClass("u-animation--spin");
+    expect(container.querySelector("svg")).toHaveAttribute(
+      "aria-label",
+      "loading"
+    );
+    expect(container.querySelector("i")).not.toBeInTheDocument();
   });
 
   it("makes the icon inline if children are provided", () => {

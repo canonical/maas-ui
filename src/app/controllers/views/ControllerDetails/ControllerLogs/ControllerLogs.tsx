@@ -1,6 +1,6 @@
-import { Spinner } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 
+import Spinner from "@/app/base/components/Spinner";
 import NodeLogs from "@/app/base/components/node/NodeLogs";
 import { useWindowTitle } from "@/app/base/hooks";
 import urls from "@/app/base/urls";

@@ -1,8 +1,8 @@
-import { Spinner } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 
 import InterfaceForm from "../InterfaceForm";
 
+import Spinner from "@/app/base/components/Spinner";
 import { useCycled } from "@/app/base/hooks";
 import { deviceActions } from "@/app/store/device";
 import deviceSelectors from "@/app/store/device/selectors";

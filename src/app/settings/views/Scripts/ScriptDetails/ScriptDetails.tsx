@@ -1,16 +1,11 @@
 import { useContext, useEffect, useRef } from "react";
 
 import { useSidePanel } from "@canonical/maas-react-components";
-import {
-  Button,
-  CodeSnippet,
-  Col,
-  Row,
-  Spinner,
-} from "@canonical/react-components";
+import { Button, CodeSnippet, Col, Row } from "@canonical/react-components";
 import { nanoid } from "@reduxjs/toolkit";
 import { useDispatch, useSelector } from "react-redux";
 
+import Spinner from "@/app/base/components/Spinner";
 import FileContext from "@/app/base/file-context";
 import { scriptActions } from "@/app/store/script";
 import scriptSelectors from "@/app/store/script/selectors";

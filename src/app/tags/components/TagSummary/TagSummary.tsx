@@ -1,10 +1,11 @@
-import { CodeSnippet, Col, Row, Spinner } from "@canonical/react-components";
+import { CodeSnippet, Col, Row } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 
 import AppliedTo from "../AppliedTo";
 
 import Definition from "@/app/base/components/Definition";
 import ModelNotFound from "@/app/base/components/ModelNotFound";
+import Spinner from "@/app/base/components/Spinner";
 import { useFetchActions } from "@/app/base/hooks";
 import urls from "@/app/base/urls";
 import type { RootState } from "@/app/store/root/types";

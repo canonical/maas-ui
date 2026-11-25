@@ -2,7 +2,6 @@ import type { ReactElement } from "react";
 import { useCallback } from "react";
 
 import { ExternalLink, useSidePanel } from "@canonical/maas-react-components";
-import { Spinner } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 
@@ -10,6 +9,7 @@ import ConfigureDHCPFields from "./ConfigureDHCPFields";
 import DHCPReservedRanges from "./DHCPReservedRanges";
 
 import FormikForm from "@/app/base/components/FormikForm";
+import Spinner from "@/app/base/components/Spinner";
 import docsUrls from "@/app/base/docsUrls";
 import { useCycled, useFetchActions } from "@/app/base/hooks";
 import { controllerActions } from "@/app/store/controller";

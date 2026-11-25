@@ -1,7 +1,6 @@
 import type { ReactElement } from "react";
 import { useEffect } from "react";
 
-import { Spinner } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 import { Navigate, Route, Routes } from "react-router";
 
@@ -14,6 +13,7 @@ import SubnetUsedIPs from "./views/SubnetUsedIPs";
 
 import ModelNotFound from "@/app/base/components/ModelNotFound";
 import PageContent from "@/app/base/components/PageContent/PageContent";
+import Spinner from "@/app/base/components/Spinner";
 import { useGetURLId, useWindowTitle } from "@/app/base/hooks";
 import { ReservedRangesTable } from "@/app/networks/components";
 import urls from "@/app/networks/urls";

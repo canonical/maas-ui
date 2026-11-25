@@ -1,10 +1,10 @@
-import { Spinner } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 
 import MachineForm from "./MachineForm";
 import PowerForm from "./PowerForm";
 import TagForm from "./TagForm";
 
+import Spinner from "@/app/base/components/Spinner";
 import { useWindowTitle } from "@/app/base/hooks";
 import { useGetURLId } from "@/app/base/hooks/urls";
 import machineSelectors from "@/app/store/machine/selectors";

@@ -1,13 +1,14 @@
 import { useEffect, useState } from "react";
 
 import { MainToolbar, useSidePanel } from "@canonical/maas-react-components";
-import { Button, Spinner } from "@canonical/react-components";
+import { Button } from "@canonical/react-components";
 import type { RowSelectionState } from "@tanstack/react-table";
 import { useSelector } from "react-redux";
 
 import DebounceSearchBox from "@/app/base/components/DebounceSearchBox";
 import ModelListSubtitle from "@/app/base/components/ModelListSubtitle";
 import NodeActionMenu from "@/app/base/components/NodeActionMenu";
+import Spinner from "@/app/base/components/Spinner";
 import { useHasEntitlements, useSendAnalytics } from "@/app/base/hooks";
 import { useModal } from "@/app/base/modal-context";
 import type { SetSearchFilter } from "@/app/base/types";

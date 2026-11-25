@@ -1,10 +1,10 @@
 import { GenericTable } from "@canonical/maas-react-components";
-import { Spinner } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 
 import type { DeviceNetworkRowData } from "./useDeviceNetworkTableColumns/useDeviceNetworkTableColumns";
 import useDeviceNetworkTableColumns from "./useDeviceNetworkTableColumns/useDeviceNetworkTableColumns";
 
+import Spinner from "@/app/base/components/Spinner";
 import { useFetchActions, useIsAllNetworkingDisabled } from "@/app/base/hooks";
 import deviceSelectors from "@/app/store/device/selectors";
 import type { Device, DeviceMeta } from "@/app/store/device/types";

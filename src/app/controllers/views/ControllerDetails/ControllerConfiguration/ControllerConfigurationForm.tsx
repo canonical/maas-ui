@@ -1,6 +1,5 @@
 import { useCallback } from "react";
 
-import { Spinner } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 
 import Definition from "@/app/base/components/Definition";
@@ -10,6 +9,7 @@ import NodeConfigurationFields, {
   NodeConfigurationSchema,
 } from "@/app/base/components/NodeConfigurationFields";
 import type { NodeConfigurationValues } from "@/app/base/components/NodeConfigurationFields";
+import Spinner from "@/app/base/components/Spinner";
 import TagLinks from "@/app/base/components/TagLinks";
 import {
   useFetchActions,

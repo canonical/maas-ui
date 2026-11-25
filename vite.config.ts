@@ -1,8 +1,50 @@
 /// <reference types="vitest" />
-import { defineConfig, loadEnv } from "vite";
-import react from "@vitejs/plugin-react-swc";
+import { cpSync, createReadStream, existsSync } from "node:fs";
 import * as path from "path";
+
+import react from "@vitejs/plugin-react-swc";
+import { defineConfig, loadEnv, type Plugin } from "vite";
 import eslint from "vite-plugin-eslint";
+
+const dsIconsRoot = path.resolve("node_modules/@canonical/ds-assets/icons");
+
+// Pragma Icon and Spinner load glyphs at runtime from /icons/*.svg.
+const serveDsIcons = (): Plugin => ({
+  name: "ds-icons",
+  configureServer(server) {
+    const prefix = `${server.config.base.replace(/\/$/, "")}/icons/`;
+    server.middlewares.use((req, res, next) => {
+      const pathname = req.url?.split("?")[0] ?? "";
+      if (!pathname.startsWith(prefix) || !pathname.endsWith(".svg")) {
+        next();
+        return;
+      }
+
+      let relative = "";
+      try {
+        relative = path
+          .normalize(decodeURIComponent(pathname.slice(prefix.length)))
+          .replace(/^(\.\.(\/|\\|$))+/, "");
+      } catch {
+        next();
+        return;
+      }
+
+      const file = path.join(dsIconsRoot, relative);
+      if (!file.startsWith(`${dsIconsRoot}${path.sep}`) || !existsSync(file)) {
+        next();
+        return;
+      }
+
+      res.setHeader("Content-Type", "image/svg+xml");
+      createReadStream(file).pipe(res);
+    });
+  },
+  writeBundle(options) {
+    const outDir = path.resolve(options.dir ?? "build");
+    cpSync(dsIconsRoot, path.join(outDir, "icons"), { recursive: true });
+  },
+});
 
 const manualChunks = [
   "@canonical/react-components",
@@ -74,7 +116,7 @@ export default defineConfig(({ mode }) => {
       },
       sourcemap: true,
     },
-    plugins: [react(), eslint()],
+    plugins: [react(), eslint(), serveDsIcons()],
     server: { port: 8401, hmr: process.env.CI ? false : { port: 8402 } },
     resolve: {
       alias: { "@": path.resolve(import.meta.dirname, "src") },

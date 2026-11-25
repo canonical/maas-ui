@@ -3,13 +3,13 @@ import { useCallback } from "react";
 
 import {
   Notification as NotificationBanner,
-  Spinner,
   Strip,
 } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router";
 
 import FormikForm from "@/app/base/components/FormikForm";
+import Spinner from "@/app/base/components/Spinner";
 import { useCycled } from "@/app/base/hooks";
 import { useModal } from "@/app/base/modal-context";
 import type { EmptyObject } from "@/app/base/types";

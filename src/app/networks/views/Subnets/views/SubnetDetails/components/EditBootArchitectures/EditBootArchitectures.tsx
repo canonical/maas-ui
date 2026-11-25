@@ -2,13 +2,14 @@ import type { ReactElement } from "react";
 import { useCallback } from "react";
 
 import { useSidePanel } from "@canonical/maas-react-components";
-import { Spinner, Strip } from "@canonical/react-components";
+import { Strip } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 
 import BootArchitecturesTable from "./BootArchitecturesTable";
 
 import FormikForm from "@/app/base/components/FormikForm";
+import Spinner from "@/app/base/components/Spinner";
 import { useFetchActions } from "@/app/base/hooks";
 import { generalActions } from "@/app/store/general";
 import { knownBootArchitectures as knownBootArchitecturesSelectors } from "@/app/store/general/selectors";

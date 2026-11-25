@@ -1,6 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
 
-import { Spinner } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 
@@ -8,6 +7,7 @@ import PowerFormFields from "./PowerFormFields";
 
 import EditableSection from "@/app/base/components/EditableSection";
 import FormikForm from "@/app/base/components/FormikForm";
+import Spinner from "@/app/base/components/Spinner";
 import NodePowerParameters from "@/app/base/components/node/NodePowerParameters";
 import { useCanEdit } from "@/app/base/hooks";
 import { useCanEditMachine } from "@/app/base/hooks/permissions";

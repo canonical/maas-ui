@@ -6,7 +6,6 @@ import {
   CodeSnippetBlockAppearance,
   Link,
   Notification,
-  Spinner,
 } from "@canonical/react-components";
 
 import HardeningStatusTable from "./components/HardeningStatusTable";
@@ -18,6 +17,7 @@ import {
 } from "@/app/api/query/notifications";
 import { useSystemInfo } from "@/app/api/query/system";
 import PageContent from "@/app/base/components/PageContent";
+import Spinner from "@/app/base/components/Spinner";
 import { useWindowTitle } from "@/app/base/hooks";
 
 const HARDENING_DOCS_URL = `${import.meta.env.VITE_APP_BASENAME}/docs/reference/configuration-guides/security-hardening/`;
