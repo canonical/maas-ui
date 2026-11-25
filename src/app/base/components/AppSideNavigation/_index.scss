@@ -42,6 +42,11 @@
 
   .app-side-nav-item__status {
     align-self: center;
+    // align-self: center lines it up with the row's icon, but the label
+    // text's own line-height sits visually lower than that, so nudge the
+    // badge down slightly to match the text's baseline instead.
+    position: relative;
+    top: $sp-x-small;
   }
 
   .notifications-count-badge {

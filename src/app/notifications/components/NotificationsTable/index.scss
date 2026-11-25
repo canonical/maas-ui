@@ -1,11 +1,16 @@
 .p-generic-table.notifications-table {
   th,
   td {
-    // Vanilla's base `td, th { text-align: left }` reset needs !important to
-    // beat (its own `.u-align--right` utility does the same).
+    &.message {
+      width: 60%;
+    }
+
+    &.category {
+      width: 15%;
+    }
+
     &.action {
-      text-align: right !important;
-      justify-content: flex-end !important;
+      width: 20%;
     }
   }
 }
