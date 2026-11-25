@@ -1,7 +1,7 @@
 import { useContext, useEffect, useRef } from "react";
 
 import { useSidePanel } from "@canonical/maas-react-components";
-import { Button, Col, Row, Spinner } from "@canonical/react-components";
+import { Button, Spinner } from "@canonical/react-components";
 import { nanoid } from "@reduxjs/toolkit";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -47,17 +47,13 @@ const ScriptDetails = ({ id }: Props): React.ReactElement => {
 
   return (
     <>
-      <Row>
-        <Col size={10}>
-          <CodeBlock>{script}</CodeBlock>
-          <hr />
-          <span className="u-flex--end">
-            <Button appearance="base" onClick={closeSidePanel}>
-              Close
-            </Button>
-          </span>
-        </Col>
-      </Row>
+      <CodeBlock>{script}</CodeBlock>
+      <hr />
+      <span className="u-flex--end">
+        <Button appearance="base" onClick={closeSidePanel}>
+          Close
+        </Button>
+      </span>
     </>
   );
 };
