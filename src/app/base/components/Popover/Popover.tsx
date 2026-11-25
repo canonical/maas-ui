@@ -2,7 +2,8 @@ import { useRef } from "react";
 import type { ReactNode } from "react";
 
 import classNames from "classnames";
-import usePortal from "react-useportal";
+
+import usePortal from "@/app/base/hooks/usePortal";
 
 type Props = {
   children: ReactNode;
