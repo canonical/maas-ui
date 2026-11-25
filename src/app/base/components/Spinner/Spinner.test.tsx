@@ -8,9 +8,13 @@ describe("Spinner", () => {
 
     const alert = screen.getByRole("alert");
     expect(alert).toHaveTextContent("Loading...");
-    expect(alert.innerHTML).toContain('class="ds spinner"');
-    expect(alert.innerHTML).toContain('aria-hidden="true"');
-    expect(alert.innerHTML).toContain('href="/icons/spinner.svg#spinner"');
+    const icon = alert.querySelector("svg");
+    expect(icon).toHaveClass("ds", "spinner");
+    expect(icon).toHaveAttribute("aria-hidden", "true");
+    expect(icon?.querySelector("use")).toHaveAttribute(
+      "href",
+      "/icons/spinner.svg#spinner"
+    );
   });
 
   it("keeps an accessible loading name when no label is visible", () => {

@@ -29,4 +29,17 @@ describe("PowerIcon", () => {
     );
     expect(container.querySelector("i")).toHaveClass("is-inline");
   });
+
+  it("makes the spinner inline if children are provided", () => {
+    const { container } = render(
+      <PowerIcon powerState={PowerState.ON} showSpinner>
+        Checking power
+      </PowerIcon>
+    );
+    expect(container.querySelector("svg")).toHaveClass(
+      "ds",
+      "spinner",
+      "is-inline"
+    );
+  });
 });

@@ -5,7 +5,7 @@ import { Spinner } from "@canonical/react-ds-global";
 import classNames from "classnames";
 
 import SearchBox from "@/app/base/components/SearchBox";
-import { dsIconRoot } from "@/app/base/components/Spinner/iconRoot";
+import { dsIconRoot } from "@/app/base/components/Spinner";
 
 type Props = Omit<
   SearchBoxProps,

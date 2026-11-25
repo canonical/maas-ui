@@ -4,8 +4,10 @@ import { Icon } from "@canonical/react-components";
 import { Spinner } from "@canonical/react-ds-global";
 import classNames from "classnames";
 
-import { dsIconRoot } from "@/app/base/components/Spinner/iconRoot";
+import { dsIconRoot } from "@/app/base/components/Spinner";
 import { PowerState } from "@/app/store/types/enum";
+
+import "./_index.scss";
 
 type Props = {
   children?: ReactNode;
