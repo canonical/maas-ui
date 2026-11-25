@@ -1,11 +1,7 @@
-import {
-  Button,
-  CodeSnippet,
-  Icon,
-  Textarea,
-} from "@canonical/react-components";
+import { Button, Icon, Textarea } from "@canonical/react-components";
 import fileDownload from "js-file-download";
 
+import CodeBlock from "@/app/base/components/CodeBlock";
 import CopyButton from "@/app/base/components/CopyButton";
 import type { CertificateData } from "@/app/store/general/types";
 
@@ -33,13 +29,12 @@ const CertificateDownload = ({
     <>
       {isGenerated ? (
         <div className="certificate-download">
-          <CodeSnippet
-            blocks={[
-              { code: `lxc config trust add - <<EOF\n\n${certificate}\nEOF` },
-            ]}
+          <CodeBlock
             className="u-no-margin--bottom"
             data-testid={TestIds.CertCodeSnippet}
-          />
+          >
+            {`lxc config trust add - <<EOF\n\n${certificate}\nEOF`}
+          </CodeBlock>
         </div>
       ) : (
         <Textarea

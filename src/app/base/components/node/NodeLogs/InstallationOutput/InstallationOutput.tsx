@@ -1,9 +1,8 @@
-import { CodeSnippet } from "@canonical/react-components";
-import { CodeSnippetBlockAppearance } from "@canonical/react-components/dist/components/CodeSnippet";
 import { useSelector } from "react-redux";
 
 import { useGetInstallationOutput } from "../hooks";
 
+import CodeBlock from "@/app/base/components/CodeBlock";
 import Spinner from "@/app/base/components/Spinner";
 import type { ControllerDetails } from "@/app/store/controller/types";
 import type { MachineDetails } from "@/app/store/machine/types";
@@ -78,20 +77,16 @@ const InstallationOutput = ({ node }: Props): React.ReactElement => {
     return <Spinner aria-label={Label.Loading} text="Loading..." />;
   }
 
+  const output = generateOutput(
+    node,
+    installationOutput.log,
+    installationOutput.result
+  );
+
   return (
-    <CodeSnippet
-      aria-label={Label.Title}
-      blocks={[
-        {
-          appearance: CodeSnippetBlockAppearance.NUMBERED,
-          code: generateOutput(
-            node,
-            installationOutput.log,
-            installationOutput.result
-          ),
-        },
-      ]}
-    />
+    <CodeBlock appearance="numbered" aria-label={Label.Title} role="region">
+      {output}
+    </CodeBlock>
   );
 };
 
