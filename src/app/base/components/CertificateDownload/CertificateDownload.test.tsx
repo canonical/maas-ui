@@ -57,6 +57,20 @@ describe("CertificateDownload", () => {
     expect(screen.queryByTestId(TestIds.CertTextarea)).not.toBeInTheDocument();
   });
 
+  it("preserves the line breaks of the generated certificate command", () => {
+    renderWithProviders(
+      <CertificateDownload
+        certificate={"line one\nline two"}
+        filename={certificate.CN}
+        isGenerated
+      />
+    );
+
+    expect(screen.getByTestId(TestIds.CertCodeSnippet).textContent).toBe(
+      "lxc config trust add - <<EOF\n\nline one\nline two\nEOF"
+    );
+  });
+
   it("shows as a textarea if certificate was not generated", () => {
     renderWithProviders(
       <CertificateDownload

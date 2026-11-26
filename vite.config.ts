@@ -13,6 +13,21 @@ const manualChunks = [
 const escapeRegExp = (value: string) =>
   value.replace(/[.*+?^${}()|[\]\\/]/g, "\\$&");
 
+// Prebuilt dependency CSS (e.g. @canonical/maas-react-components) can contain
+// Vanilla @font-face rules pointing at assets.ubuntu.com, which override our
+// local fonts and trigger external requests in air-gapped environments.
+const REMOTE_ASSETS_HOST = "assets.ubuntu.com";
+const stripRemoteFontFaces = {
+  postcssPlugin: "strip-remote-font-faces",
+  AtRule: {
+    "font-face": (atRule: { toString(): string; remove(): void }) => {
+      if (atRule.toString().includes(REMOTE_ASSETS_HOST)) {
+        atRule.remove();
+      }
+    },
+  },
+};
+
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, "./");
@@ -21,6 +36,7 @@ export default defineConfig(({ mode }) => {
     envDir: "./",
     base: "/",
     css: {
+      postcss: { plugins: [stripRemoteFontFaces] },
       preprocessorOptions: {
         scss: {
           quietDeps: true,

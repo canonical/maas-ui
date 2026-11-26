@@ -1,0 +1,59 @@
+// Block presentation for Pragma's InlineCode (@canonical/react-ds-global).
+// InlineCode renders a single <code> element; standalone and multi-line code is
+// composed as <pre class="p-code-block"><InlineCode>…</InlineCode></pre>.
+@mixin maas-code {
+  .p-code-block {
+    background: none;
+    margin-bottom: $spv--large;
+    overflow: visible;
+    padding: 0;
+
+    > .ds.inline-code {
+      // Unlayered so it wins over Vanilla's `pre code { background: none }`.
+      background-color: var(--inline-code-color-background);
+      display: block;
+      overflow-x: auto;
+      padding: $spv--small $sph--small;
+      white-space: pre;
+    }
+
+    // Prompt is presentational only, so it is never part of the copied text.
+    &--linux-prompt > .ds.inline-code::before {
+      color: $color-mid-dark;
+      content: "$ ";
+      user-select: none;
+    }
+
+    &--numbered {
+      counter-reset: code-line;
+
+      .p-code-block__line {
+        counter-increment: code-line;
+        display: block;
+
+        &::before {
+          color: $color-mid-dark;
+          content: counter(code-line);
+          display: inline-block;
+          margin-right: $sph--large;
+          min-width: 3ch;
+          text-align: right;
+          user-select: none;
+        }
+      }
+    }
+  }
+
+  .p-code-block-copyable {
+    align-items: center;
+    display: flex;
+    gap: $sph--small;
+    margin-bottom: $spv--large;
+
+    > .p-code-block {
+      flex: 1 1 auto;
+      margin-bottom: 0;
+      min-width: 0;
+    }
+  }
+}

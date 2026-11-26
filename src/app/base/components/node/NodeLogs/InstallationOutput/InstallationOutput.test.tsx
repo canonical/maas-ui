@@ -10,7 +10,7 @@ import {
 } from "@/app/store/scriptresult/types";
 import { PowerState } from "@/app/store/types/enum";
 import * as factory from "@/testing/factories";
-import { screen, renderWithProviders } from "@/testing/utils";
+import { screen, renderWithProviders, within } from "@/testing/utils";
 
 describe("InstallationOutput", () => {
   let state: RootState;
@@ -102,6 +102,23 @@ describe("InstallationOutput", () => {
       state,
     });
     expect(screen.getByText("script result")).toBeInTheDocument();
+  });
+
+  it("displays each log line as a numbered line in a labelled region", () => {
+    state.scriptresult.items[0].status = ScriptResultStatus.PASSED;
+    state.scriptresult.logs = {
+      1: factory.scriptResultData({ combined: "line one\nline two" }),
+    };
+    renderWithProviders(<InstallationOutput node={machine} />, {
+      state,
+    });
+    const region = screen.getByRole("region", { name: Label.Title });
+    expect(within(region).getByText("line one")).toHaveClass(
+      "p-code-block__line"
+    );
+    expect(within(region).getByText("line two")).toHaveClass(
+      "p-code-block__line"
+    );
   });
 
   it("displays the state when the installation failed without result", () => {
