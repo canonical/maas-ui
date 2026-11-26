@@ -34,7 +34,7 @@ export enum Headers {
 }
 
 const DHCPReservedRanges = ({ id }: Props): React.ReactElement | null => {
-  const { setFieldTouched, setFieldValue, validateForm, values } =
+  const { setFieldTouched, setValues, values } =
     useFormikContext<ConfigureDHCPValues>();
 
   const ipRanges = useSelector((state: RootState) =>
@@ -53,42 +53,32 @@ const DHCPReservedRanges = ({ id }: Props): React.ReactElement | null => {
   useEffect(() => {
     const subnet = subnets.find((s) => s.id === Number(values.subnet));
 
-    const setField = (field: string, value: string) =>
-      setFieldValue(field, value).catch((reason: unknown) => {
-        throw new FormikFieldChangeError(
-          field,
-          "setFieldValue",
-          reason as string
-        );
-      });
-
-    // Wait for all form values to be populated before validation.
-    Promise.all([
-      setField("endIP", subnet?.statistics.suggested_dynamic_range?.end || ""),
-      setField(
-        "gatewayIP",
-        subnet?.gateway_ip || subnet?.statistics.suggested_gateway || ""
-      ),
-      setField(
-        "startIP",
-        subnet?.statistics.suggested_dynamic_range?.start || ""
-      ),
-    ])
-      .then(() => {
-        if (isId(values.subnet)) {
-          setFieldTouched("subnet", true, false);
-        }
-        // need to manually call this as Yup does not automatically re-trigger the validation schema
-        return validateForm();
-      })
-      .catch((reason: unknown) => {
+    if (isId(values.subnet)) {
+      setFieldTouched("subnet", true, false).catch((reason: unknown) => {
         throw new FormikFieldChangeError(
           "subnet",
-          "validateForm",
+          "setFieldTouched",
           reason as string
         );
       });
-  }, [setFieldTouched, setFieldValue, subnets, validateForm, values.subnet]);
+    }
+    // Update all range fields in a single call so validation runs against the
+    // complete set of new values. Separate setFieldValue calls each validate a
+    // stale snapshot of the other fields, which leaves "required" errors behind
+    // in browsers where React hasn't re-rendered between calls (e.g. Firefox).
+    setValues(
+      (currentValues) => ({
+        ...currentValues,
+        endIP: subnet?.statistics.suggested_dynamic_range?.end || "",
+        gatewayIP:
+          subnet?.gateway_ip || subnet?.statistics.suggested_gateway || "",
+        startIP: subnet?.statistics.suggested_dynamic_range?.start || "",
+      }),
+      true
+    ).catch((reason: unknown) => {
+      throw new FormikFieldChangeError("subnet", "setValues", reason as string);
+    });
+  }, [setFieldTouched, setValues, subnets, values.subnet]);
 
   const columns = useDHCPReservedRangesColumns({
     hasIPRanges,
