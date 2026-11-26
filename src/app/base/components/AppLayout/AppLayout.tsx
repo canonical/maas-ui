@@ -47,9 +47,7 @@ const AppLayout = ({ children }: AppLayoutProps): ReactElement => {
       pageTitle="MAAS"
       secondaryNavigation={
         isSecondaryNavVisible ? (
-          <div
-            className={classNames("l-main__nav", `is-maas-${theme}--accent`)}
-          >
+          <div className={classNames(`is-maas-${theme}--accent`)}>
             <SecondaryNavigation
               isOpen
               items={isSettingsPage ? settingsNavItems : preferencesNavItems}
