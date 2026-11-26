@@ -300,6 +300,54 @@ describe("ConfigureDHCP", () => {
     });
   });
 
+  it("enables the submit button once a subnet with a suggested range is selected", async () => {
+    const primary = factory.controller({ system_id: "abc123" });
+    const vlan = factory.vlan({
+      id: 1,
+      primary_rack: null,
+      rack_sids: [primary.system_id],
+      relay_vlan: null,
+      secondary_rack: null,
+    });
+    const subnet = factory.subnet({
+      gateway_ip: "192.168.1.254",
+      statistics: factory.subnetStatistics({
+        num_available: 10,
+        suggested_dynamic_range: factory.subnetStatisticsRange({
+          start: "192.168.1.1",
+          end: "192.168.1.5",
+        }),
+      }),
+      vlan: vlan.id,
+    });
+    const state = factory.rootState({
+      subnet: factory.subnetState({ items: [subnet], loaded: true }),
+      controller: factory.controllerState({ items: [primary] }),
+      vlan: factory.vlanState({ items: [vlan] }),
+    });
+    renderWithProviders(<ConfigureDHCP vlan={vlan} />, { state });
+
+    await userEvent.selectOptions(
+      screen.getByRole("combobox", { name: "Rack controller" }),
+      primary.system_id
+    );
+    await userEvent.selectOptions(
+      screen.getByRole("combobox", { name: "Subnet" }),
+      getSubnetDisplay(subnet)
+    );
+
+    await waitFor(() => {
+      expect(
+        screen.getByRole("textbox", { name: "Start IP address" })
+      ).toHaveValue("192.168.1.1");
+    });
+    await waitFor(() => {
+      expect(
+        screen.getByRole("button", { name: "Configure DHCP" })
+      ).not.toBeAriaDisabled();
+    });
+  });
+
   it("displays an error when no subnet is selected", async () => {
     const primary = factory.controller({ system_id: "abc123" });
     const secondary = factory.controller({ system_id: "def456" });
