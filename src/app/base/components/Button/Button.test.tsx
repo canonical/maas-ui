@@ -1,6 +1,8 @@
+import type { FormEvent } from "react";
+
 import Button from "./Button";
 
-import { renderWithProviders, screen } from "@/testing/utils";
+import { renderWithProviders, screen, userEvent } from "@/testing/utils";
 
 describe("Button", () => {
   it("renders an ordinary action as a secondary button", () => {
@@ -54,9 +56,26 @@ describe("Button", () => {
     expect(button.querySelector("i")).toHaveClass("p-icon--edit");
   });
 
-  it("disables the button", () => {
-    renderWithProviders(<Button disabled>Save</Button>);
+  it("disables the button with aria-disabled so it stays focusable", async () => {
+    const onClick = vi.fn();
+    const onSubmit = vi.fn((event: FormEvent) => {
+      event.preventDefault();
+    });
+    renderWithProviders(
+      <form onSubmit={onSubmit}>
+        <Button disabled onClick={onClick} type="submit">
+          Save
+        </Button>
+      </form>
+    );
 
-    expect(screen.getByRole("button", { name: "Save" })).toBeDisabled();
+    const button = screen.getByRole("button", { name: "Save" });
+    expect(button).toHaveAttribute("aria-disabled", "true");
+    expect(button).not.toBeDisabled();
+
+    await userEvent.click(button);
+    expect(button).toHaveFocus();
+    expect(onClick).not.toHaveBeenCalled();
+    expect(onSubmit).not.toHaveBeenCalled();
   });
 });

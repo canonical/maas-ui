@@ -1,4 +1,9 @@
-import type { ButtonHTMLAttributes, ReactElement, ReactNode } from "react";
+import type {
+  ButtonHTMLAttributes,
+  MouseEvent,
+  ReactElement,
+  ReactNode,
+} from "react";
 
 import { Button as PragmaButton } from "@canonical/react-ds-global";
 import classNames from "classnames";
@@ -49,19 +54,31 @@ const Button = ({
   children,
   className,
   dense: _dense,
+  disabled,
   hasIcon: _hasIcon,
   inline: _inline,
+  onClick,
   small: _small,
   ...buttonProps
 }: Props): ReactElement => {
   const mapped = mapAppearance(appearance);
 
+  // Match Vanilla: use aria-disabled instead of the native attribute so disabled
+  // buttons stay hoverable/focusable (e.g. for tooltips), and block activation.
   return (
     <PragmaButton
+      aria-disabled={disabled || undefined}
       {...buttonProps}
       anticipation={mapped.anticipation}
       className={classNames(className) || undefined}
       importance={mapped.importance}
+      onClick={
+        disabled
+          ? (event: MouseEvent<HTMLButtonElement>) => {
+              event.preventDefault();
+            }
+          : onClick
+      }
       variant={mapped.variant}
     >
       {children}

@@ -185,7 +185,7 @@ describe("MachineActionMenuBar", () => {
     renderWithProviders(<MachineActionMenuBar />, { state });
 
     expect(
-      screen.getByRole("button", { name: "Delete" }).firstElementChild
+      screen.getByRole("button", { name: "Delete" }).querySelector("i")
     ).toHaveClass("p-icon--delete");
   });
 
