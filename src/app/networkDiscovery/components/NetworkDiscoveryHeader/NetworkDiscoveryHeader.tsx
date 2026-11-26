@@ -1,9 +1,9 @@
 import type { ReactElement } from "react";
 
 import { MainToolbar } from "@canonical/maas-react-components";
-import { Button } from "@canonical/react-components";
 
 import { useNetworkDiscoveries } from "@/app/api/query/networkDiscovery";
+import Button from "@/app/base/components/Button";
 import { useHasEntitlements } from "@/app/base/hooks";
 import { useModal } from "@/app/base/modal-context";
 import { ClearAllForm } from "@/app/networkDiscovery/components";

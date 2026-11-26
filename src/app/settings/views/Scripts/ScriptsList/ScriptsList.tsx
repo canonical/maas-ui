@@ -6,13 +6,13 @@ import {
   MainToolbar,
   useSidePanel,
 } from "@canonical/maas-react-components";
-import { Button } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 
 import { Entitlement } from "../../UserManagement/views/Groups/constants";
 
 import useScriptsTableColumns from "./hooks/useScriptsTableColumns/useScriptsTableColumns";
 
+import Button from "@/app/base/components/Button";
 import SearchBox from "@/app/base/components/SearchBox";
 import { useHasEntitlements, useWindowTitle } from "@/app/base/hooks";
 import ScriptsUpload from "@/app/settings/views/Scripts/ScriptsUpload";

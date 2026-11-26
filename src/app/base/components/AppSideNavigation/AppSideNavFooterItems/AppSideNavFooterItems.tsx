@@ -1,13 +1,13 @@
 import type { MouseEvent } from "react";
 
 import { Navigation } from "@canonical/maas-react-components";
-import { Button } from "@canonical/react-components";
 
 import AppSideNavItem from "../AppSideNavItem";
 import type { SideNavigationProps } from "../AppSideNavigation";
 import LogoutConfirm from "../LogoutConfirm";
 
 import type { CurrentUserInfo } from "@/app/api/query/auth";
+import Button from "@/app/base/components/Button";
 import { useModal } from "@/app/base/modal-context";
 import urls from "@/app/base/urls";
 

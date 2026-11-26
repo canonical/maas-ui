@@ -35,7 +35,7 @@ it("can override default props", async () => {
   );
   const button = screen.getByRole("button");
 
-  expect(button).toHaveClass("p-button--negative");
+  expect(button).toHaveClass("destructive");
   expect(button).toHaveClass("button-class");
   expect(within(button).getByLabelText("warning")).toHaveClass(
     "p-icon--warning"

@@ -3,16 +3,14 @@ import {
   MainToolbar,
   useSidePanel,
 } from "@canonical/maas-react-components";
-import {
-  Button,
-  Notification as NotificationBanner,
-} from "@canonical/react-components";
+import { Notification as NotificationBanner } from "@canonical/react-components";
 
 import { Entitlement } from "../../../UserManagement/views/Groups/constants";
 
 import useRepositoriesTableColumns from "./useRepositoriesTableColumns/useRepositoriesTableColumns";
 
 import { usePackageRepositories } from "@/app/api/query/packageRepositories";
+import Button from "@/app/base/components/Button";
 import { useHasEntitlements } from "@/app/base/hooks";
 import usePagination from "@/app/base/hooks/usePagination/usePagination";
 import { AddRepository } from "@/app/settings/views/Repositories/components";

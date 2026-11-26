@@ -2,9 +2,10 @@ import type { ChangeEvent } from "react";
 import { useState } from "react";
 
 import { ExternalLink, useSidePanel } from "@canonical/maas-react-components";
-import { Button, Col, Row, Select } from "@canonical/react-components";
+import { Col, Row, Select } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 
+import Button from "@/app/base/components/Button";
 import CodeBlock from "@/app/base/components/CodeBlock";
 import docsUrls from "@/app/base/docsUrls";
 import configSelectors from "@/app/store/config/selectors";

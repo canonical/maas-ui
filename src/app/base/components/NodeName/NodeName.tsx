@@ -1,12 +1,13 @@
 import { useEffect, useState } from "react";
 
-import { Button, Spinner } from "@canonical/react-components";
+import { Spinner } from "@canonical/react-components";
 import { usePrevious } from "@canonical/react-components/dist/hooks";
 import type { FormikErrors } from "formik";
 import * as Yup from "yup";
 
 import NodeNameFields from "./NodeNameFields";
 
+import Button from "@/app/base/components/Button";
 import FormikForm from "@/app/base/components/FormikForm";
 import { useCanEdit } from "@/app/base/hooks";
 import { hostnameValidation } from "@/app/base/validation";

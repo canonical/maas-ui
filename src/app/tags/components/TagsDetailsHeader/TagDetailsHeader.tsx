@@ -1,8 +1,9 @@
 import { MainToolbar } from "@canonical/maas-react-components";
-import { Button, Icon } from "@canonical/react-components";
+import { Icon } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 import { Link } from "react-router";
 
+import Button from "@/app/base/components/Button";
 import { useGetURLId, useHasEntitlements } from "@/app/base/hooks";
 import urls from "@/app/base/urls";
 import { Entitlement } from "@/app/settings/views/UserManagement/views/Groups/constants";

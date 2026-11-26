@@ -6,8 +6,9 @@ import type {
   SubComponentProps,
   TooltipProps,
 } from "@canonical/react-components";
-import { Button, Icon, Tooltip } from "@canonical/react-components";
+import { Icon, Tooltip } from "@canonical/react-components";
 
+import Button from "@/app/base/components/Button";
 import { breakLines, unindentString } from "@/app/utils";
 
 type Props = Omit<TooltipProps, "aria-label" | "children"> & {

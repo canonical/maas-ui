@@ -4,9 +4,9 @@ import {
   lazyLoadSidePanel,
   useSidePanel,
 } from "@canonical/maas-react-components";
-import { Button } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 
+import Button from "@/app/base/components/Button";
 import NetworkActionRow from "@/app/base/components/NetworkActionRow";
 import { NETWORK_DISABLED_MESSAGE } from "@/app/base/components/NetworkActionRow/NetworkActionRow";
 import type { Expanded } from "@/app/base/components/NodeNetworkTab/NodeNetworkTab";

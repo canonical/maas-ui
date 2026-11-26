@@ -1,14 +1,10 @@
 import type { ReactNode, AriaAttributes } from "react";
 import { useMemo, useState } from "react";
 
-import {
-  Accordion,
-  Button,
-  ContextualMenu,
-  List,
-} from "@canonical/react-components";
+import { Accordion, ContextualMenu, List } from "@canonical/react-components";
 import classNames from "classnames";
 
+import Button from "@/app/base/components/Button";
 import type { FilterValue } from "@/app/utils/search/filter-handlers";
 import type FilterItems from "@/app/utils/search/filter-items";
 

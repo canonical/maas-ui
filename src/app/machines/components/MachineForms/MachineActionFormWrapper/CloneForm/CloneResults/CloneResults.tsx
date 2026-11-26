@@ -2,11 +2,11 @@ import { useEffect, useState } from "react";
 
 import { GenericTable } from "@canonical/maas-react-components";
 import type { ValueOf } from "@canonical/react-components";
-import { Button } from "@canonical/react-components";
 import pluralize from "pluralize";
 import { useSelector } from "react-redux";
 import { Link } from "react-router";
 
+import Button from "@/app/base/components/Button";
 import type { APIError, SetSearchFilter } from "@/app/base/types";
 import urls from "@/app/base/urls";
 import useCloneResultsColumns from "@/app/machines/components/MachineForms/MachineActionFormWrapper/CloneForm/CloneResults/useCloneResultsColumns/useCloneResultsColumns";

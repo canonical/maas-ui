@@ -1,11 +1,12 @@
 import { useMemo } from "react";
 
 import { useSidePanel } from "@canonical/maas-react-components";
-import { Button, Icon } from "@canonical/react-components";
+import { Icon } from "@canonical/react-components";
 import type { ColumnDef } from "@tanstack/react-table";
 import { Link } from "react-router";
 
 import type { SwitchResponse } from "@/app/apiclient";
+import Button from "@/app/base/components/Button";
 import DoubleRow from "@/app/base/components/DoubleRow";
 import TableActions from "@/app/base/components/TableActions";
 import { useHasEntitlements } from "@/app/base/hooks";

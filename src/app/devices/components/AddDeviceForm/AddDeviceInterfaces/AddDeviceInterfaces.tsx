@@ -1,12 +1,13 @@
 import type { ChangeEvent } from "react";
 import { useEffect, useRef } from "react";
 
-import { Button, Card, Icon } from "@canonical/react-components";
+import { Card, Icon } from "@canonical/react-components";
 import { useFormikContext } from "formik";
 import { useSelector } from "react-redux";
 
 import type { AddDeviceInterface, AddDeviceValues } from "../types";
 
+import Button from "@/app/base/components/Button";
 import FormikField from "@/app/base/components/FormikField";
 import { FormikFieldChangeError } from "@/app/base/components/FormikField/FormikField";
 import IpAssignmentSelect from "@/app/base/components/IpAssignmentSelect";

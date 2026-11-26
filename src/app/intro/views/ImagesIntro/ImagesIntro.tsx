@@ -2,7 +2,7 @@ import type { ReactElement } from "react";
 import { useState } from "react";
 
 import {
-  Button,
+  Button as LinkButton,
   Icon,
   Notification as NotificationBanner,
   Tooltip,
@@ -13,6 +13,7 @@ import { useNavigate, Link } from "react-router";
 import { useGetConfiguration } from "@/app/api/query/configurations";
 import { useImageSources } from "@/app/api/query/imageSources";
 import { useCustomImages, useSelections } from "@/app/api/query/images";
+import Button from "@/app/base/components/Button";
 import type { SyncNavigateFunction } from "@/app/base/types";
 import urls from "@/app/base/urls";
 import ImagesTable from "@/app/images/components/ImagesTable";
@@ -72,9 +73,9 @@ const ImagesIntro = (): ReactElement => {
         )}
       </IntroCard>
       <div className="u-align--right">
-        <Button element={Link} to={urls.intro.index}>
+        <LinkButton element={Link} to={urls.intro.index}>
           Back
-        </Button>
+        </LinkButton>
         <Button
           appearance="positive"
           data-testid="images-intro-continue"

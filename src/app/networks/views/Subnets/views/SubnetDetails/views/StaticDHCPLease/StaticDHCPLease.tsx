@@ -1,12 +1,12 @@
 import type { ReactElement } from "react";
 
 import { MainToolbar, useSidePanel } from "@canonical/maas-react-components";
-import { Button } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 
 import ReserveDHCPLease from "./ReserveDHCPLease";
 import StaticDHCPTable from "./StaticDHCPTable";
 
+import Button from "@/app/base/components/Button";
 import { useHasEntitlements } from "@/app/base/hooks";
 import { Entitlement } from "@/app/settings/views/UserManagement/views/Groups/constants";
 import reservedIpSelectors from "@/app/store/reservedip/selectors";

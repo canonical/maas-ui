@@ -1,6 +1,5 @@
 import { ExternalLink, useSidePanel } from "@canonical/maas-react-components";
 import {
-  Button,
   Col,
   Notification as NotificationBanner,
   Row,
@@ -11,6 +10,7 @@ import { Link } from "react-router";
 
 import ConfigureDHCP from "../ConfigureDHCP";
 
+import Button from "@/app/base/components/Button";
 import ControllerLink from "@/app/base/components/ControllerLink";
 import Definition from "@/app/base/components/Definition";
 import TitledSection from "@/app/base/components/TitledSection";

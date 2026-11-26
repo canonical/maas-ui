@@ -1,11 +1,11 @@
 import type { ReactNode } from "react";
 
 import { MainToolbar, useSidePanel } from "@canonical/maas-react-components";
-import { Button } from "@canonical/react-components";
 import pluralize from "pluralize";
 import { Link } from "react-router";
 
 import { usePoolCount } from "@/app/api/query/pools";
+import Button from "@/app/base/components/Button";
 import { useHasEntitlements } from "@/app/base/hooks";
 import urls from "@/app/base/urls";
 import { AddPool } from "@/app/pools/components";

@@ -2,13 +2,13 @@ import type { ReactNode } from "react";
 
 import {
   ActionButton,
-  Button,
   Col,
   Notification as NotificationBanner,
   Row,
 } from "@canonical/react-components";
 import type { ActionButtonProps, ColSize } from "@canonical/react-components";
 
+import Button from "@/app/base/components/Button";
 import { COL_SIZES } from "@/app/base/constants";
 import { useCycled } from "@/app/base/hooks";
 import type { APIError } from "@/app/base/types";

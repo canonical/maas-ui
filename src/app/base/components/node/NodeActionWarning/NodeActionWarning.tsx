@@ -1,5 +1,4 @@
-import { Button } from "@canonical/react-components";
-
+import Button from "@/app/base/components/Button";
 import { NodeActions } from "@/app/store/types/node";
 
 const getErrorSentence = (

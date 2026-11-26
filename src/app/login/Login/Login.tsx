@@ -2,7 +2,6 @@ import type { ReactElement } from "react";
 import { useCallback, useEffect, useState } from "react";
 
 import {
-  Button,
   Card,
   Col,
   Notification as NotificationBanner,
@@ -15,6 +14,7 @@ import * as Yup from "yup";
 
 import { useAuthenticate, useIsOIDCUser } from "@/app/api/query/auth";
 import type { LoginError } from "@/app/apiclient";
+import Button from "@/app/base/components/Button";
 import CodeBlock from "@/app/base/components/CodeBlock";
 import FormikField from "@/app/base/components/FormikField";
 import { FormikFieldChangeError } from "@/app/base/components/FormikField/FormikField";

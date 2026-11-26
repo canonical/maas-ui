@@ -5,7 +5,7 @@ import {
   MainToolbar,
   useSidePanel,
 } from "@canonical/maas-react-components";
-import { Button, SearchBox } from "@canonical/react-components";
+import { SearchBox } from "@canonical/react-components";
 
 import { Entitlement } from "../../constants";
 import AddGroup from "../AddGroup";
@@ -13,6 +13,7 @@ import AddGroup from "../AddGroup";
 import useGroupsListColumns from "./useGroupsTableColumns/useGroupsTableColumns";
 
 import { useGroups } from "@/app/api/query/groups";
+import Button from "@/app/base/components/Button";
 import { useHasEntitlements } from "@/app/base/hooks";
 import usePagination from "@/app/base/hooks/usePagination/usePagination";
 

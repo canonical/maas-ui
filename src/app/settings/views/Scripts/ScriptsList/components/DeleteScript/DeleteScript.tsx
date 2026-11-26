@@ -1,6 +1,6 @@
-import { Button } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 
+import Button from "@/app/base/components/Button";
 import ModelActionForm from "@/app/base/components/ModelActionForm";
 import { useModal } from "@/app/base/modal-context";
 import type { RootState } from "@/app/store/root/types";

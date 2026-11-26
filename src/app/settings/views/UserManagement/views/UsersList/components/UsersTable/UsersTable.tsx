@@ -5,13 +5,13 @@ import {
   MainToolbar,
   useSidePanel,
 } from "@canonical/maas-react-components";
-import { Button } from "@canonical/react-components";
 
 import { Entitlement } from "../../../Groups/constants";
 
 import useUsersTableColumns from "./useUsersTableColumns/useUsersTableColumns";
 
 import { useUsers } from "@/app/api/query/users";
+import Button from "@/app/base/components/Button";
 import SearchBox from "@/app/base/components/SearchBox";
 import { useHasEntitlements } from "@/app/base/hooks";
 import usePagination from "@/app/base/hooks/usePagination/usePagination";

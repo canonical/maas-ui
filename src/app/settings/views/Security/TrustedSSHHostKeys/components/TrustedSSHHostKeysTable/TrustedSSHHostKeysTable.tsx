@@ -5,13 +5,14 @@ import {
   MainToolbar,
   useSidePanel,
 } from "@canonical/maas-react-components";
-import { Button, Notification } from "@canonical/react-components";
+import { Notification } from "@canonical/react-components";
 
 import AddTrustedSSHHostKey from "../AddTrustedSSHHostKey";
 
 import useTrustedSSHHostKeysTableColumns from "./useTrustedSSHHostKeysTableColumns";
 
 import { useTrustedSshHostKeys } from "@/app/api/query/trustedSshHostKeys";
+import Button from "@/app/base/components/Button";
 import { useHasEntitlements } from "@/app/base/hooks";
 import usePagination from "@/app/base/hooks/usePagination/usePagination";
 import { Entitlement } from "@/app/settings/views/UserManagement/views/Groups/constants";

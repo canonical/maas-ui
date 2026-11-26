@@ -1,7 +1,9 @@
 import type { ReactNode } from "react";
 import { useRef } from "react";
 
-import { Button, Icon } from "@canonical/react-components";
+import { Icon } from "@canonical/react-components";
+
+import Button from "@/app/base/components/Button";
 
 type Props = {
   isExpanded: boolean;

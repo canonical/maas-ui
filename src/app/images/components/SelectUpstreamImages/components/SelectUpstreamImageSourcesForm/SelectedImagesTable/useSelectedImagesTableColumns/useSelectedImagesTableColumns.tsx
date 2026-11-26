@@ -1,12 +1,13 @@
 import { useMemo } from "react";
 
-import { Button, Icon, Spinner, Tooltip } from "@canonical/react-components";
+import { Icon, Spinner, Tooltip } from "@canonical/react-components";
 import type { ColumnDef, Row } from "@tanstack/react-table";
 
 import type {
   BootSourceResponse,
   UiSourceAvailableImageResponse,
 } from "@/app/apiclient";
+import Button from "@/app/base/components/Button";
 import ImageSourceMenu from "@/app/images/components/ImageSourceMenu";
 import ReleaseTitleCell from "@/app/images/components/ReleaseTitleCell";
 import type { SelectedImage } from "@/app/images/components/SelectUpstreamImages/SelectUpstreamImages";

@@ -1,12 +1,13 @@
 import { memo } from "react";
 
-import { Button, Tooltip } from "@canonical/react-components";
+import { Tooltip } from "@canonical/react-components";
 import classNames from "classnames";
 import { useSelector } from "react-redux";
 import { Link } from "react-router";
 
 import MachineCheckbox from "../MachineCheckbox";
 
+import Button from "@/app/base/components/Button";
 import DoubleRow from "@/app/base/components/DoubleRow";
 import MacAddressDisplay from "@/app/base/components/MacAddressDisplay";
 import NonBreakingSpace from "@/app/base/components/NonBreakingSpace";

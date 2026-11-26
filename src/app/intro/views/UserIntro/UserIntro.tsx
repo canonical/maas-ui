@@ -1,9 +1,10 @@
 import { useState } from "react";
 
-import { ActionButton, Button, Card, Icon } from "@canonical/react-components";
+import { ActionButton, Card, Icon } from "@canonical/react-components";
 
 import { useCompleteIntro, useGetCurrentUser } from "@/app/api/query/auth";
 import { useListSshKeys } from "@/app/api/query/sshKeys";
+import Button from "@/app/base/components/Button";
 import TableConfirm from "@/app/base/components/TableConfirm";
 import { useCycled } from "@/app/base/hooks";
 import IntroCard from "@/app/intro/components/IntroCard";

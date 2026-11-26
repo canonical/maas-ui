@@ -2,7 +2,6 @@ import { useEffect, useMemo, type ReactElement } from "react";
 
 import { ContentSection, MainToolbar } from "@canonical/maas-react-components";
 import {
-  Button,
   Notification as NotificationBanner,
   Spinner,
   Tooltip,
@@ -15,6 +14,7 @@ import ResetSingleSignOn from "./components/ResetSingleSignOn";
 import SingleSignOnForm from "./components/SingleSignOnForm";
 
 import { useActiveOauthProvider } from "@/app/api/query/auth";
+import Button from "@/app/base/components/Button";
 import PageContent from "@/app/base/components/PageContent";
 import { useHasEntitlements, useWindowTitle } from "@/app/base/hooks";
 import { useModal } from "@/app/base/modal-context";

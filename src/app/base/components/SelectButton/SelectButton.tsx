@@ -1,6 +1,8 @@
 import type { ButtonProps } from "@canonical/react-components";
-import { Button, Icon } from "@canonical/react-components";
+import { Icon } from "@canonical/react-components";
 import classNames from "classnames";
+
+import Button from "@/app/base/components/Button";
 
 const SelectButton = ({
   children,

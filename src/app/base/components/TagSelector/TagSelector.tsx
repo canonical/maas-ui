@@ -1,13 +1,10 @@
 import type { ReactNode } from "react";
 import { useState } from "react";
 
-import {
-  Button,
-  Field,
-  Input,
-  useClickOutside,
-} from "@canonical/react-components";
+import { Field, Input, useClickOutside } from "@canonical/react-components";
 import classNames from "classnames";
+
+import Button from "@/app/base/components/Button";
 
 export type Tag = {
   id?: number;

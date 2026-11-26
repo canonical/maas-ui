@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 
 import { MainToolbar, useSidePanel } from "@canonical/maas-react-components";
-import { Button } from "@canonical/react-components";
 
+import Button from "@/app/base/components/Button";
 import DebounceSearchBox from "@/app/base/components/DebounceSearchBox";
 import { useHasEntitlements } from "@/app/base/hooks";
 import type { SetSearchFilter } from "@/app/base/types";

@@ -1,5 +1,6 @@
-import { Button } from "@canonical/react-components";
 import pluralize from "pluralize";
+
+import Button from "@/app/base/components/Button";
 
 type Props = {
   available: number;

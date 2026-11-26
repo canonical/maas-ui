@@ -1,11 +1,12 @@
 import type { ReactElement, ReactNode } from "react";
 
 import { useSidePanel } from "@canonical/maas-react-components";
-import { Button, Col, List, Row, Tooltip } from "@canonical/react-components";
+import { Col, List, Row, Tooltip } from "@canonical/react-components";
 import { useLocation } from "react-router";
 
 import { ExpandedState } from "../NodeNetworkTab/NodeNetworkTab";
 
+import Button from "@/app/base/components/Button";
 import type {
   Selected,
   SetSelected,
