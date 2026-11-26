@@ -17,6 +17,7 @@ type Props = {
   icon?: ReactNode | string;
   path: string;
   setIsCollapsed: SideNavigationProps["setIsCollapsed"];
+  status?: ReactNode;
 };
 
 export const AppSideNavItem = ({
@@ -25,6 +26,7 @@ export const AppSideNavItem = ({
   icon,
   path,
   setIsCollapsed,
+  status,
 }: Props): React.ReactElement => {
   const id = useId();
 
@@ -58,6 +60,11 @@ export const AppSideNavItem = ({
           )
         ) : null}
         <Navigation.Label>{navLink.label}</Navigation.Label>
+        {status ? (
+          <span className="app-side-nav-item__status p-side-navigation__status u-nudge-right is-fading-when-collapsed">
+            {status}
+          </span>
+        ) : null}
       </Navigation.Link>
     </Navigation.Item>
   );

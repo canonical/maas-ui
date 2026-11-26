@@ -3,6 +3,7 @@ import { http, HttpResponse } from "msw";
 import { BASE_URL } from "../utils";
 
 import type {
+  DeleteNotificationError,
   DismissNotificationError,
   ListNotificationsError,
   ListNotificationsResponse,
@@ -46,6 +47,12 @@ const mockListNotificationsError: ListNotificationsError = {
 };
 
 const mockDismissNotificationError: DismissNotificationError = {
+  message: "Not found",
+  code: 404,
+  kind: "Error",
+};
+
+const mockDeleteNotificationError: DeleteNotificationError = {
   message: "Not found",
   code: 404,
   kind: "Error",
@@ -95,6 +102,23 @@ const notificationResolvers = {
       http.post(`${BASE_URL}MAAS/a/v3/notifications/:id\\:dismiss`, () => {
         notificationResolvers.dismissNotification.resolved = true;
         return HttpResponse.json(error, { status: 404 });
+      }),
+  },
+  deleteNotification: {
+    resolved: false,
+    handler: () => {
+      return http.delete(
+        `${BASE_URL}MAAS/a/v3/notifications/:notification_id`,
+        () => {
+          notificationResolvers.deleteNotification.resolved = true;
+          return new HttpResponse(null, { status: 204 });
+        }
+      );
+    },
+    error: (error: DeleteNotificationError = mockDeleteNotificationError) =>
+      http.delete(`${BASE_URL}MAAS/a/v3/notifications/:notification_id`, () => {
+        notificationResolvers.deleteNotification.resolved = true;
+        return HttpResponse.json(error, { status: error.code });
       }),
   },
 };

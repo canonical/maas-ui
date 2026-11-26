@@ -12,6 +12,9 @@ import {
   queryOptionsWithHeaders,
 } from "@/app/api/utils";
 import type {
+  DeleteNotificationData,
+  DeleteNotificationErrors,
+  DeleteNotificationResponses,
   DismissNotificationData,
   DismissNotificationErrors,
   DismissNotificationResponses,
@@ -23,7 +26,11 @@ import type {
   NotificationResponse,
   Options,
 } from "@/app/apiclient";
-import { dismissNotification, listNotifications } from "@/app/apiclient";
+import {
+  deleteNotification,
+  dismissNotification,
+  listNotifications,
+} from "@/app/apiclient";
 import { listNotificationsQueryKey } from "@/app/apiclient/@tanstack/react-query.gen";
 import { DEFAULT_PAGE_SIZE } from "@/app/base/constants";
 
@@ -56,6 +63,38 @@ export const useActiveNotifications = () =>
       const fetchPage = (page: number) => {
         const { queryFn, queryKey } = notificationQueryOptions({
           query: { only_active: true, page, size: DEFAULT_PAGE_SIZE },
+        });
+        if (typeof queryFn !== "function") {
+          throw new Error("Notification query function is not available.");
+        }
+        return queryFn({ ...context, queryKey });
+      };
+      const firstPage = await fetchPage(1);
+      const items = [...firstPage.items];
+      const pageCount = Math.ceil(firstPage.total / DEFAULT_PAGE_SIZE);
+      for (let page = 2; page <= pageCount; page++) {
+        const nextPage = await fetchPage(page);
+        items.push(...nextPage.items);
+      }
+      return { ...firstPage, items };
+    },
+    refetchInterval: 30000,
+  });
+
+// Used by the Notifications page, which lists a user's full notification
+// history, including notifications they've already dismissed from the
+// toast bell.
+export const useAllNotifications = (options?: { enabled?: boolean }) =>
+  useWebsocketAwareQuery<
+    WithHeaders<ListNotificationsResponse>,
+    Error | ListNotificationsError
+  >({
+    queryKey: [...listNotificationsQueryKey({ query: {} }), "all"],
+    enabled: options?.enabled,
+    queryFn: async (context) => {
+      const fetchPage = (page: number) => {
+        const { queryFn, queryKey } = notificationQueryOptions({
+          query: { page, size: DEFAULT_PAGE_SIZE },
         });
         if (typeof queryFn !== "function") {
           throw new Error("Notification query function is not available.");
@@ -159,6 +198,24 @@ export const useDismissNotification = (
       DismissNotificationErrors,
       DismissNotificationData
     >(mutationOptions, dismissNotification),
+    onSuccess: () => {
+      return queryClient.invalidateQueries({
+        queryKey: listNotificationsQueryKey(),
+      });
+    },
+  });
+};
+
+export const useDeleteNotification = (
+  mutationOptions?: Options<DeleteNotificationData>
+) => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    ...mutationOptionsWithHeaders<
+      DeleteNotificationResponses,
+      DeleteNotificationErrors,
+      DeleteNotificationData
+    >(mutationOptions, deleteNotification),
     onSuccess: () => {
       return queryClient.invalidateQueries({
         queryKey: listNotificationsQueryKey(),

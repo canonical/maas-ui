@@ -1,15 +1,19 @@
 import type { MouseEvent } from "react";
 
 import { Navigation } from "@canonical/maas-react-components";
-import { Button } from "@canonical/react-components";
+import { Badge, Button } from "@canonical/react-components";
 
 import AppSideNavItem from "../AppSideNavItem";
 import type { SideNavigationProps } from "../AppSideNavigation";
 import LogoutConfirm from "../LogoutConfirm";
 
 import type { CurrentUserInfo } from "@/app/api/query/auth";
+import { useGetUserEntitlements } from "@/app/api/query/auth";
+import { useAllNotifications } from "@/app/api/query/notifications";
 import { useModal } from "@/app/base/modal-context";
 import urls from "@/app/base/urls";
+import { Entitlement } from "@/app/settings/views/UserManagement/views/Groups/constants";
+import { hasPermissions } from "@/app/utils/permissions";
 
 type Props = {
   authUser: CurrentUserInfo | undefined;
@@ -31,6 +35,13 @@ export const AppSideNavFooterItems = ({
   toggleDarkMode,
 }: Props): React.ReactElement | null => {
   const { openModal } = useModal();
+  const { data: userEntitlements } = useGetUserEntitlements();
+  const notificationsPageEnabled =
+    import.meta.env.VITE_APP_NOTIFICATIONS_PAGE === "true";
+  const allNotifications = useAllNotifications({
+    enabled: notificationsPageEnabled,
+  });
+  const notificationCount = allNotifications.data?.items.length ?? 0;
 
   if (!isAuthenticated) {
     return null;
@@ -65,6 +76,28 @@ export const AppSideNavFooterItems = ({
         path={path}
         setIsCollapsed={setIsCollapsed}
       />
+      {notificationsPageEnabled ? (
+        <AppSideNavItem
+          disabled={
+            !hasPermissions(userEntitlements, [
+              Entitlement.CAN_VIEW_NOTIFICATIONS,
+            ])
+          }
+          icon="notifications"
+          navLink={{ label: "Notifications", url: urls.notifications.index }}
+          path={path}
+          setIsCollapsed={setIsCollapsed}
+          status={
+            notificationCount > 0 ? (
+              <Badge
+                aria-label={`${notificationCount} notifications`}
+                className="notifications-count-badge"
+                value={notificationCount}
+              />
+            ) : undefined
+          }
+        />
+      ) : null}
       <Navigation.Item>
         <Navigation.Link
           appearance="link"
