@@ -1,10 +1,31 @@
 @mixin maas-tabs {
-  // Remove the 1px border underneath the standard Vanilla Tabs pattern. Used in
-  // the SectionHeader component which has a drop shadow.
-  .p-tabs.no-border {
-    .p-tabs__list::after,
-    .p-tabs__link[aria-selected="false"]:not(:hover)::before {
-      content: none;
+  // Pragma tabs (@canonical/react-ds-global) are styled in a cascade layer, so
+  // Vanilla's unlayered `a` and `ul` rules would otherwise override them.
+  // `revert-layer` drops those values and lets Pragma's colour, underline, focus
+  // ring, and list spacing apply. These selectors outrank Vanilla's `a:hover`
+  // and `nav ul`, and they come later in the stylesheet.
+  .ds.tabs .tabs-list {
+    margin-bottom: revert-layer;
+    margin-left: revert-layer;
+    padding-left: revert-layer;
+  }
+
+  .ds.tabs .tabs-link {
+    &,
+    &:is(:hover, :visited, :focus, :focus-visible) {
+      color: revert-layer;
+      text-decoration: revert-layer;
+    }
+
+    &:is(:focus, :focus-visible) {
+      outline: revert-layer;
+      outline-offset: revert-layer;
+    }
+
+    &:hover {
+      cursor: revert-layer;
+      text-decoration-thickness: revert-layer;
+      text-underline-offset: revert-layer;
     }
   }
 }

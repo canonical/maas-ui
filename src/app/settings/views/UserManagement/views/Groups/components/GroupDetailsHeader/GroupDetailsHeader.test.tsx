@@ -103,9 +103,9 @@ describe("GroupDetailsHeader", () => {
       );
 
       expect(
-        screen.getByRole("tab", { name: "Entitlements" })
+        screen.getByRole("link", { name: "Entitlements" })
       ).toBeInTheDocument();
-      expect(screen.getByRole("tab", { name: "Members" })).toBeInTheDocument();
+      expect(screen.getByRole("link", { name: "Members" })).toBeInTheDocument();
     });
 
     it("renders a Back to all groups link pointing to the groups url", async () => {

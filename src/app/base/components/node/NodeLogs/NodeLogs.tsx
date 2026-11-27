@@ -1,10 +1,10 @@
-import { Tabs } from "@canonical/react-components";
 import { Route, useLocation, Link, Routes } from "react-router";
 
 import DownloadMenu from "./DownloadMenu";
 import EventLogs from "./EventLogs";
 import InstallationOutput from "./InstallationOutput";
 
+import Tabs from "@/app/base/components/Tabs";
 import type { ControllerDetails } from "@/app/store/controller/types";
 import type { MachineDetails } from "@/app/store/machine/types";
 import type { Node } from "@/app/store/types/node";
@@ -35,6 +35,7 @@ const NodeLogs = ({ node, urls }: Props): React.ReactElement => {
     <>
       <div className="u-position--relative">
         <Tabs
+          aria-label="Logs"
           links={[
             {
               active:

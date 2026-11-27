@@ -177,7 +177,9 @@ describe("MachineHeader", () => {
       state,
     });
 
-    expect(screen.getByRole("tab", { name: /instances/i })).toBeInTheDocument();
+    expect(
+      screen.getByRole("link", { name: /instances/i })
+    ).toBeInTheDocument();
   });
 
   it("hides the subtitle when editing the name", async () => {
@@ -265,7 +267,7 @@ describe("MachineHeader", () => {
     renderWithProviders(<MachineHeader systemId="abc123" />, { state });
 
     expect(
-      screen.getByRole("tab", { name: /error configuration/i })
+      screen.getByRole("link", { name: /error configuration/i })
     ).toBeInTheDocument();
   });
 });

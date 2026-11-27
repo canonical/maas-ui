@@ -2,16 +2,15 @@ import type { ReactNode } from "react";
 
 import { MainToolbar } from "@canonical/maas-react-components";
 import type { ClassName } from "@canonical/react-components";
-import { List, Tabs } from "@canonical/react-components";
-import type { TabLink } from "@canonical/react-components/dist/components/Tabs/Tabs";
+import { List } from "@canonical/react-components";
 import classNames from "classnames";
 import type { JSX } from "react/jsx-runtime";
-import type { LinkProps } from "react-router";
 
 import Spinner from "@/app/base/components/Spinner";
+import Tabs, { type TabLink } from "@/app/base/components/Tabs";
 import type { DataTestElement } from "@/app/base/types";
 
-export type Props<P = LinkProps> = {
+export type Props = {
   actionMenuGroup?: React.ReactElement | null;
   buttons?: React.ReactElement[] | null;
   className?: ClassName;
@@ -21,7 +20,7 @@ export type Props<P = LinkProps> = {
   subtitle?: ReactNode;
   subtitleClassName?: string;
   subtitleLoading?: boolean;
-  tabLinks?: DataTestElement<TabLink<P>>[];
+  tabLinks?: DataTestElement<TabLink>[];
   title?: ReactNode;
   titleClassName?: string;
   titleElement?: keyof JSX.IntrinsicElements;
@@ -61,7 +60,7 @@ const generateSubtitle = (
   );
 };
 
-const SectionHeader = <P,>({
+const SectionHeader = ({
   actionMenuGroup,
   buttons = [],
   renderButtons,
@@ -76,7 +75,7 @@ const SectionHeader = <P,>({
   titleClassName,
   titleElement = "h1",
   ...props
-}: Props<P>): React.ReactElement | null => {
+}: Props): React.ReactElement | null => {
   return (
     <div className={classNames("section-header", className)} {...props}>
       <MainToolbar>
@@ -124,7 +123,11 @@ const SectionHeader = <P,>({
       {actionMenuGroup ? <>{actionMenuGroup}</> : null}
       {tabLinks?.length ? (
         <div className="section-header__tabs" data-testid="section-header-tabs">
-          <Tabs links={tabLinks} listClassName="u-no-margin--bottom" />
+          <Tabs
+            aria-label="Section navigation"
+            links={tabLinks}
+            listClassName="u-no-margin--bottom"
+          />
         </div>
       ) : null}
     </div>

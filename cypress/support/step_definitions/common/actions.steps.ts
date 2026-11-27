@@ -28,7 +28,9 @@ When("the user clicks the {string} link", (link: string) => {
 });
 
 When("the user opens the {string} tab", (tab: string) => {
-  cy.findByRole("tab", { name: new RegExp(tab, "i") }).click();
+  cy.findByRole("navigation", { name: "Section navigation" }).within(() => {
+    cy.findByRole("link", { name: new RegExp(tab, "i") }).click();
+  });
 });
 
 When(

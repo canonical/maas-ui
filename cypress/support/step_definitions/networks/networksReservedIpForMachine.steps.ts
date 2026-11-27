@@ -34,13 +34,17 @@ When(
       force: true,
     });
     cy.findByRole("heading", { name: "Subnet summary" }).should("exist");
-    cy.findByRole("tab", { name: /address reservation/i }).click();
+    cy.findByRole("navigation", { name: "Section navigation" }).within(() => {
+      cy.findByRole("link", { name: /address reservation/i }).click();
+    });
     cy.waitForPageToLoad();
   }
 );
 
 When("the user navigates to the address reservation tab", () => {
-  cy.findByRole("tab", { name: /address reservation/i }).click();
+  cy.findByRole("navigation", { name: "Section navigation" }).within(() => {
+    cy.findByRole("link", { name: /address reservation/i }).click();
+  });
   cy.waitForPageToLoad();
 });
 
