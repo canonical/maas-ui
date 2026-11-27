@@ -1,11 +1,11 @@
 import { useEffect } from "react";
 
-import { Button } from "@canonical/react-components";
 import pluralize from "pluralize";
 import { useDispatch, useSelector } from "react-redux";
 
 import DeleteDomainForm from "./DeleteDomainForm";
 
+import Button from "@/app/base/components/Button";
 import SectionHeader from "@/app/base/components/SectionHeader";
 import { useModal } from "@/app/base/modal-context";
 import { domainActions } from "@/app/store/domain";

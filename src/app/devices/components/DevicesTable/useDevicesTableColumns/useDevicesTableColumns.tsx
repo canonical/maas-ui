@@ -1,10 +1,11 @@
 import { useMemo } from "react";
 
-import { Button, Icon } from "@canonical/react-components";
+import { Icon } from "@canonical/react-components";
 import type { ColumnDef, Row } from "@tanstack/react-table";
 import { useSelector } from "react-redux";
 import { Link } from "react-router";
 
+import Button from "@/app/base/components/Button";
 import DoubleRow from "@/app/base/components/DoubleRow";
 import MacAddressDisplay from "@/app/base/components/MacAddressDisplay";
 import urls from "@/app/base/urls";

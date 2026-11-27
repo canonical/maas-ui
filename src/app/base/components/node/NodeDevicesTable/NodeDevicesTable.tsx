@@ -2,9 +2,9 @@ import type { ReactElement } from "react";
 import { useEffect } from "react";
 
 import { GenericTable, useSidePanel } from "@canonical/maas-react-components";
-import { Button } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 
+import Button from "@/app/base/components/Button";
 import useNodeDevicesTableColumns, {
   filterCells,
 } from "@/app/base/components/node/NodeDevicesTable/useNodeDevicesTableColumns/useNodeDevicesTableColumns";

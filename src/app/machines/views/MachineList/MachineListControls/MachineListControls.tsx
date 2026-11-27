@@ -2,11 +2,12 @@ import type { ReactElement } from "react";
 import { useEffect, useState } from "react";
 
 import { MainToolbar } from "@canonical/maas-react-components";
-import { Button, Col, Icon } from "@canonical/react-components";
+import { Col, Icon } from "@canonical/react-components";
 import pluralize from "pluralize";
 import { useDispatch } from "react-redux";
 import { Link } from "react-router";
 
+import Button from "@/app/base/components/Button";
 import DebounceSearchBox from "@/app/base/components/DebounceSearchBox";
 import GroupSelect from "@/app/base/components/GroupSelect";
 import { useHasEntitlements } from "@/app/base/hooks";

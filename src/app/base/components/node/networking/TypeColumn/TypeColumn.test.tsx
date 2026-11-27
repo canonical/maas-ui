@@ -37,7 +37,7 @@ describe("TypeColumn", () => {
       <TypeColumn nic={nic} node={state.machine.items[0]} />,
       { state }
     );
-    expect(screen.getByRole("button").children[0]).toHaveClass(
+    expect(screen.getByRole("button").querySelector("i")).toHaveClass(
       "p-icon--warning"
     );
   });

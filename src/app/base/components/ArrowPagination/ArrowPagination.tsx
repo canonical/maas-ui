@@ -1,7 +1,8 @@
 import type { HTMLProps } from "react";
 
-import { Button, Icon } from "@canonical/react-components";
+import { Icon } from "@canonical/react-components";
 
+import Button from "@/app/base/components/Button";
 import Spinner from "@/app/base/components/Spinner";
 
 type Props = HTMLProps<HTMLElement> & {

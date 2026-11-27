@@ -18,7 +18,6 @@ import {
   screen,
   setupMockServer,
   waitFor,
-  waitForLoading,
 } from "@/testing/utils";
 
 const mockServer = setupMockServer(
@@ -104,9 +103,8 @@ describe("SourcesTable", () => {
       );
 
       renderWithProviders(<SourcesTable canEdit />);
-      await waitForLoading();
 
-      const rowActions = screen.getAllByRole("button", {
+      const rowActions = await screen.findAllByRole("button", {
         name: "Toggle menu",
       });
       expect(rowActions.length).toBe(3);
@@ -168,10 +166,9 @@ describe("SourcesTable", () => {
       );
 
       renderWithProviders(<SourcesTable canEdit={false} />);
-      await waitForLoading();
 
       expect(
-        screen.getByRole("button", { name: "Toggle menu" })
+        await screen.findByRole("button", { name: "Toggle menu" })
       ).toBeAriaDisabled();
     });
   });

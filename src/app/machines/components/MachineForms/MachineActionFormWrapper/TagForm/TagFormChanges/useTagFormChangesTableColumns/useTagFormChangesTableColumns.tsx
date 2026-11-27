@@ -1,12 +1,13 @@
 import { useMemo, type ReactNode } from "react";
 
 import type { ChipProps } from "@canonical/react-components";
-import { Button, Icon } from "@canonical/react-components";
+import { Icon } from "@canonical/react-components";
 import type { Column, ColumnDef, Header, Row } from "@tanstack/react-table";
 
 import TagChip from "../../TagChip";
 import { type RowType, Column as ColumnLabel } from "../TagFormChanges";
 
+import Button from "@/app/base/components/Button";
 import type { TagIdCountMap } from "@/app/store/machine/utils";
 import type { Tag, TagMeta } from "@/app/store/tag/types";
 

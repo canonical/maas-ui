@@ -1,7 +1,8 @@
 import { useSidePanel } from "@canonical/maas-react-components";
-import { Button, Col, Row } from "@canonical/react-components";
+import { Col, Row } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 
+import Button from "@/app/base/components/Button";
 import Definition from "@/app/base/components/Definition";
 import FabricLink from "@/app/base/components/FabricLink";
 import SpaceLink from "@/app/base/components/SpaceLink";

@@ -19,6 +19,7 @@ import {
   setupMockServer,
   userEvent,
   waitFor,
+  within,
 } from "@/testing/utils";
 
 vi.mock("@reduxjs/toolkit", async () => {
@@ -101,9 +102,11 @@ describe("MachineHeader", () => {
     });
 
     expect(screen.getByRole("button", { name: /locked/i })).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: /locked/i })).toHaveClass(
-      "has-icon"
-    );
+    expect(
+      within(screen.getByRole("button", { name: /locked/i })).getByLabelText(
+        "locked"
+      )
+    ).toHaveClass("p-icon--locked");
   });
 
   it("displays an icon when locked", () => {
@@ -114,9 +117,11 @@ describe("MachineHeader", () => {
     });
 
     expect(screen.getByRole("button", { name: /locked/i })).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: /locked/i })).toHaveClass(
-      "has-icon"
-    );
+    expect(
+      within(screen.getByRole("button", { name: /locked/i })).getByLabelText(
+        "locked"
+      )
+    ).toHaveClass("p-icon--locked");
   });
 
   it("displays machine status", () => {

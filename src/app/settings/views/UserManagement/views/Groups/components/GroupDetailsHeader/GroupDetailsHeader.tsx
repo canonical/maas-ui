@@ -1,7 +1,7 @@
 import type { Dispatch, ReactElement, SetStateAction } from "react";
 
 import { useSidePanel } from "@canonical/maas-react-components";
-import { Button, ContextualMenu } from "@canonical/react-components";
+import { ContextualMenu } from "@canonical/react-components";
 import { Link, useLocation } from "react-router";
 
 import { useGroupStatistics } from "@/app/api/query/groups";
@@ -10,6 +10,7 @@ import type {
   UserGroupMemberResponse,
   UserGroupResponse,
 } from "@/app/apiclient";
+import Button from "@/app/base/components/Button";
 import SectionHeader from "@/app/base/components/SectionHeader";
 import { useModal } from "@/app/base/modal-context";
 import urls from "@/app/settings/urls";

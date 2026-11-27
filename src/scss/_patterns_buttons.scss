@@ -21,4 +21,83 @@
   [class*="p-button"].no-background {
     background-color: transparent;
   }
+
+  // Pragma buttons (@canonical/react-ds-global) are styled in a cascade layer,
+  // so Vanilla's unlayered `button` element rules would otherwise override them.
+  // `revert-layer` drops the unlayered values and lets Pragma's apply. Vanilla's
+  // font size, line height, block padding, margins and focus outline are kept,
+  // as MAAS has no Pragma density context and these keep buttons aligned with
+  // Vanilla inputs. `:where()` keeps specificity equal to Vanilla's selectors,
+  // so these win by source order. Call-site classes can still override the
+  // rest state, but not the background/border/decoration of the states below.
+  button:where(.ds.button) {
+    background-color: revert-layer;
+    border-color: revert-layer;
+    border-style: revert-layer;
+    border-width: revert-layer;
+    color: revert-layer;
+    cursor: revert-layer;
+    display: revert-layer;
+    font-weight: revert-layer;
+    justify-content: revert-layer;
+    padding-left: revert-layer;
+    padding-right: revert-layer;
+    text-align: revert-layer;
+    text-decoration: revert-layer;
+    transition: revert-layer;
+  }
+
+  button:where(.ds.button):is(
+      :hover,
+      :active,
+      :focus,
+      [aria-expanded="true"],
+      [aria-pressed="true"],
+      [aria-selected="true"]
+    ) {
+    background-color: revert-layer;
+    border-color: revert-layer;
+    text-decoration: revert-layer;
+    transition-duration: revert-layer;
+  }
+
+  // The Button adapter marks disabled buttons with `aria-disabled` (as Vanilla
+  // does) so they keep receiving hover/focus for tooltips. Pragma only styles
+  // `:disabled`, so mirror its disabled tokens here.
+  button:where(.ds.button)[aria-disabled="true"] {
+    background-color: var(
+      --modifier-surface-disabled,
+      var(--button-color-background-disabled)
+    );
+    border-color: var(
+      --modifier-color-border-disabled,
+      var(--color-border-highlighted-disabled)
+    );
+    color: var(--modifier-color-text-disabled, var(--color-text-disabled));
+    cursor: not-allowed;
+
+    > .icon {
+      color: var(--modifier-color-icon-disabled, var(--color-icon-disabled));
+    }
+
+    // Vanilla icons are background images, so dim them as Vanilla did.
+    [class*="p-icon"] {
+      opacity: 0.333;
+    }
+  }
+
+  button:where(.ds.button.link)[aria-disabled="true"] {
+    background-color: transparent;
+    border-color: transparent;
+  }
+
+  // Link-variant buttons used as navigation items or table headers keep their
+  // previous Vanilla look rather than Pragma's underlined inline link.
+  .ds.button.link:is(
+      .p-side-navigation__link,
+      .p-button--column-header,
+      .p-button--table-header
+    ) {
+    text-decoration: none;
+  }
 }

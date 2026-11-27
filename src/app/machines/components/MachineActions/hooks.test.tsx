@@ -1,9 +1,8 @@
 import type { ReactNode } from "react";
 
-import { Button } from "@canonical/react-components";
-
 import { useMachineActionMenus, useMachineActions } from "./hooks";
 
+import Button from "@/app/base/components/Button";
 import { Entitlement } from "@/app/settings/views/UserManagement/views/Groups/constants";
 import type { RootState } from "@/app/store/root/types";
 import { NodeActions } from "@/app/store/types/node";

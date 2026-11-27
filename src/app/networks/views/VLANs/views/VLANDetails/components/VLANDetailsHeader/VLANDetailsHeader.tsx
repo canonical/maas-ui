@@ -1,8 +1,8 @@
 import type { ReactElement } from "react";
 
-import { Button } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 
+import Button from "@/app/base/components/Button";
 import SectionHeader from "@/app/base/components/SectionHeader";
 import { useFetchActions, useHasEntitlements } from "@/app/base/hooks";
 import { useModal } from "@/app/base/modal-context";

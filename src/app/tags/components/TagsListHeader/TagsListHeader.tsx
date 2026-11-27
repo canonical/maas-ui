@@ -1,8 +1,8 @@
 import { MainToolbar, useSidePanel } from "@canonical/maas-react-components";
-import { Button } from "@canonical/react-components";
 
 import AddTagForm from "../AddTagForm";
 
+import Button from "@/app/base/components/Button";
 import SearchBox from "@/app/base/components/SearchBox";
 import SegmentedControl from "@/app/base/components/SegmentedControl";
 import { useHasEntitlements } from "@/app/base/hooks";

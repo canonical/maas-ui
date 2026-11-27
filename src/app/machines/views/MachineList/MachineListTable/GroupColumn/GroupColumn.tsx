@@ -1,7 +1,6 @@
 import type { ReactElement } from "react";
 
-import { Button } from "@canonical/react-components";
-
+import Button from "@/app/base/components/Button";
 import DoubleRow from "@/app/base/components/DoubleRow";
 import GroupCheckbox from "@/app/machines/views/MachineList/MachineListTable/GroupCheckbox";
 import MachineListGroupCount from "@/app/machines/views/MachineList/MachineListTable/MachineListGroupCount";

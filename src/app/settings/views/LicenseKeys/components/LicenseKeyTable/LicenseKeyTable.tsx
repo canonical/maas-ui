@@ -5,9 +5,10 @@ import {
   MainToolbar,
   useSidePanel,
 } from "@canonical/maas-react-components";
-import { Button, Tooltip } from "@canonical/react-components";
+import { Tooltip } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 
+import Button from "@/app/base/components/Button";
 import SearchBox from "@/app/base/components/SearchBox";
 import { useFetchActions, useWindowTitle } from "@/app/base/hooks";
 import { LicenseKeyAdd } from "@/app/settings/views/LicenseKeys/components";

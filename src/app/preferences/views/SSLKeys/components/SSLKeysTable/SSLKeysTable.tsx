@@ -5,12 +5,10 @@ import {
   MainToolbar,
   useSidePanel,
 } from "@canonical/maas-react-components";
-import {
-  Button,
-  Notification as NotificationBanner,
-} from "@canonical/react-components";
+import { Notification as NotificationBanner } from "@canonical/react-components";
 
 import { useGetSslKeys } from "@/app/api/query/sslKeys";
+import Button from "@/app/base/components/Button";
 import { AddSSLKey } from "@/app/preferences/views/SSLKeys/components";
 import useSSLKeysTableColumns from "@/app/preferences/views/SSLKeys/components/SSLKeysTable/useSSLKeysTableColumns/useSSLKeysTableColumns";
 

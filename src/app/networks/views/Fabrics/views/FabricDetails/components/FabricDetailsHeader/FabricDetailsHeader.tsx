@@ -1,7 +1,6 @@
 import type { ReactElement } from "react";
 
-import { Button } from "@canonical/react-components";
-
+import Button from "@/app/base/components/Button";
 import SectionHeader from "@/app/base/components/SectionHeader";
 import { useHasEntitlements } from "@/app/base/hooks";
 import { useModal } from "@/app/base/modal-context";

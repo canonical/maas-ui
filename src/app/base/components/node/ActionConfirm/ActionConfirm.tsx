@@ -2,13 +2,13 @@ import type { ReactNode } from "react";
 
 import {
   ActionButton,
-  Button,
   Col,
   Notification as NotificationBanner,
   Row,
 } from "@canonical/react-components";
 import type { ActionButtonProps } from "@canonical/react-components";
 
+import Button from "@/app/base/components/Button";
 import { useSendAnalyticsWhen } from "@/app/base/hooks";
 import type { AnalyticsEvent } from "@/app/base/types";
 import { useMachineDetailsForm } from "@/app/machines/hooks";

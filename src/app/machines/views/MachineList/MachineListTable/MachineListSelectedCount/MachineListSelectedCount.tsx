@@ -1,10 +1,8 @@
-import {
-  Notification as NotificationBanner,
-  Button,
-} from "@canonical/react-components";
+import { Notification as NotificationBanner } from "@canonical/react-components";
 import pluralize from "pluralize";
 import { useDispatch } from "react-redux";
 
+import Button from "@/app/base/components/Button";
 import { machineActions } from "@/app/store/machine";
 import { FilterMachines } from "@/app/store/machine/utils";
 

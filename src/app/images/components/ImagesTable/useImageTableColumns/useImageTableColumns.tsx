@@ -1,7 +1,6 @@
 import { type Dispatch, type SetStateAction, useMemo } from "react";
 
 import {
-  Button,
   Icon,
   Tooltip,
   useToastNotification,
@@ -22,6 +21,7 @@ import {
   useAvailableSelections,
   useDeleteSelections,
 } from "@/app/api/query/images";
+import Button from "@/app/base/components/Button";
 import DoubleRow from "@/app/base/components/DoubleRow/DoubleRow";
 import Spinner from "@/app/base/components/Spinner";
 import { useHasEntitlements } from "@/app/base/hooks";

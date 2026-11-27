@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 
 import { MainToolbar, useSidePanel } from "@canonical/maas-react-components";
-import { Button } from "@canonical/react-components";
 import type { RowSelectionState } from "@tanstack/react-table";
 import { useSelector } from "react-redux";
 
+import Button from "@/app/base/components/Button";
 import DebounceSearchBox from "@/app/base/components/DebounceSearchBox";
 import ModelListSubtitle from "@/app/base/components/ModelListSubtitle";
 import NodeActionMenu from "@/app/base/components/NodeActionMenu";

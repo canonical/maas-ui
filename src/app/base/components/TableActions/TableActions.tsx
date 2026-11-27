@@ -1,6 +1,7 @@
-import { Button, Tooltip } from "@canonical/react-components";
+import { Button as LinkButton, Tooltip } from "@canonical/react-components";
 import { Link } from "react-router";
 
+import Button from "@/app/base/components/Button";
 import CopyButton from "@/app/base/components/CopyButton";
 
 type Props = {
@@ -36,7 +37,7 @@ const TableActions = ({
     {copyValue && <CopyButton value={copyValue} />}
     {(editPath || onEdit) && (
       <Tooltip message={editTooltip} position="left">
-        <Button
+        <LinkButton
           appearance="base"
           className="is-dense u-table-cell-padding-overlap"
           data-testid="table-actions-edit"
@@ -51,12 +52,12 @@ const TableActions = ({
           to={editPath || ""}
         >
           <i className="p-icon--edit">Edit</i>
-        </Button>
+        </LinkButton>
       </Tooltip>
     )}
     {(onDelete || deletePath) && (
       <Tooltip message={deleteTooltip} position="left">
-        <Button
+        <LinkButton
           appearance="base"
           className="is-dense u-table-cell-padding-overlap"
           data-testid="table-actions-delete"
@@ -72,7 +73,7 @@ const TableActions = ({
           type={deletePath ? undefined : "button"}
         >
           <i className="p-icon--delete">Delete</i>
-        </Button>
+        </LinkButton>
       </Tooltip>
     )}
     {onClear && (

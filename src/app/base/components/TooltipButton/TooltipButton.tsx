@@ -6,9 +6,13 @@ import type {
   SubComponentProps,
   TooltipProps,
 } from "@canonical/react-components";
-import { Button, Icon, Tooltip } from "@canonical/react-components";
+import { Icon, Tooltip } from "@canonical/react-components";
+import classNames from "classnames";
 
+import Button from "@/app/base/components/Button";
 import { breakLines, unindentString } from "@/app/utils";
+
+import "./_index.scss";
 
 type Props = Omit<TooltipProps, "aria-label" | "children"> & {
   "aria-label"?: ButtonProps["aria-label"];
@@ -27,6 +31,10 @@ const TooltipButton = ({
   message,
   ...tooltipProps
 }: Props): React.ReactElement => {
+  const {
+    className: buttonClassName = "u-no-border u-no-line-height u-no-margin",
+    ...restButtonProps
+  } = buttonProps ?? {};
   return (
     <Tooltip
       message={
@@ -39,11 +47,13 @@ const TooltipButton = ({
       <Button
         appearance="base"
         aria-label={ariaLabel}
-        className="u-no-border u-no-line-height u-no-margin"
+        className={classNames("tooltip-button", buttonClassName, {
+          "tooltip-button--icon-only": !children && iconName,
+        })}
         hasIcon
         small
         type="button"
-        {...buttonProps}
+        {...restButtonProps}
       >
         {typeof children === "string" ? <span>{children}</span> : children}
         {iconName ? (

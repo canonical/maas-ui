@@ -1,8 +1,9 @@
 import { MainToolbar } from "@canonical/maas-react-components";
-import { Button, Icon } from "@canonical/react-components";
+import { Icon } from "@canonical/react-components";
 
 import DeleteAllNotifications from "../DeleteAllNotifications";
 
+import Button from "@/app/base/components/Button";
 import SegmentedControl from "@/app/base/components/SegmentedControl";
 import { useModal } from "@/app/base/modal-context";
 import {

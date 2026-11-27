@@ -1,0 +1,20 @@
+// Definitions only — don't include vf-base/vf-p-icons here, as they would
+// re-emit Vanilla's base styles and @font-face rules into this chunk.
+@import "vanilla-framework";
+
+// Pragma's button styles are layered, so these unlayered rules beat its
+// tertiary (ghost) surface in every interaction state.
+.ds.button.tooltip-button {
+  &,
+  &:is(:hover, :active, :focus, [aria-expanded="true"], [aria-disabled="true"]) {
+    background-color: transparent;
+  }
+}
+
+// Make icon-only buttons square: match the block padding, plus half of any
+// extra height the line box adds over the 1rem icon (e.g. `u-match-h3`).
+.ds.button.tooltip-button--icon-only {
+  justify-content: center;
+  padding-inline: $input-vertical-padding;
+  padding-inline: calc(#{$input-vertical-padding} + (max(1lh, 1rem) - 1rem) / 2);
+}

@@ -6,13 +6,11 @@ import {
   MainToolbar,
   useSidePanel,
 } from "@canonical/maas-react-components";
-import {
-  Button,
-  Notification as NotificationBanner,
-} from "@canonical/react-components";
+import { Notification as NotificationBanner } from "@canonical/react-components";
 
 import { useListSshKeys } from "@/app/api/query/sshKeys";
 import type { SshKeyResponse } from "@/app/apiclient";
+import Button from "@/app/base/components/Button";
 import docsUrls from "@/app/base/docsUrls";
 import { AddSSHKey } from "@/app/preferences/views/SSHKeys/components";
 import useSSHKeysTableColumns from "@/app/preferences/views/SSHKeys/components/SSHKeysTable/useSSHKeysTableColumns/useSSHKeysTableColumns";

@@ -2,9 +2,10 @@ import type { ChangeEvent, ReactElement } from "react";
 import { useState } from "react";
 
 import { ExternalLink, useSidePanel } from "@canonical/maas-react-components";
-import { Button, Select } from "@canonical/react-components";
+import { Select } from "@canonical/react-components";
 
 import { useGenerateToken } from "@/app/api/query/racks";
+import Button from "@/app/base/components/Button";
 import CodeBlock from "@/app/base/components/CodeBlock";
 import CopyButton from "@/app/base/components/CopyButton";
 import docsUrls from "@/app/base/docsUrls";

@@ -1,12 +1,12 @@
 import type { ReactElement } from "react";
 
 import { GenericTable, useSidePanel } from "@canonical/maas-react-components";
-import { Button } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 
 import AddStaticRouteForm from "./AddStaticRouteForm";
 import useStaticRoutesColumns from "./useStaticRoutesColumns/useStaticRoutesColumns";
 
+import Button from "@/app/base/components/Button";
 import TitledSection from "@/app/base/components/TitledSection";
 import { useFetchActions, useHasEntitlements } from "@/app/base/hooks";
 import { Entitlement } from "@/app/settings/views/UserManagement/views/Groups/constants";

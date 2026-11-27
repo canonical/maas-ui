@@ -1,10 +1,12 @@
 import type { ReactNode } from "react";
 
-import { ActionButton, Button, Tooltip } from "@canonical/react-components";
+import { ActionButton, Tooltip } from "@canonical/react-components";
 import type { ActionButtonProps } from "@canonical/react-components";
 import classNames from "classnames";
 import type { FormikContextType } from "formik";
 import { useFormikContext } from "formik";
+
+import Button from "@/app/base/components/Button";
 
 export type FormikContextFunc<V, R = void> = (
   values: V,

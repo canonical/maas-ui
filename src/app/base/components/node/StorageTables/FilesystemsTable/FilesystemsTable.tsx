@@ -1,8 +1,9 @@
 import type { ReactElement } from "react";
 
 import { GenericTable, useSidePanel } from "@canonical/maas-react-components";
-import { Button, Tooltip } from "@canonical/react-components";
+import { Tooltip } from "@canonical/react-components";
 
+import Button from "@/app/base/components/Button";
 import AddSpecialFilesystem from "@/app/base/components/node/StorageTables/FilesystemsTable/AddSpecialFilesystem";
 import useFileSystemsTableColumns from "@/app/base/components/node/StorageTables/FilesystemsTable/useFilesystemsTableColumns/useFileSystemsTableColumns";
 import type { ControllerDetails } from "@/app/store/controller/types";

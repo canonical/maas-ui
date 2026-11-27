@@ -3,10 +3,10 @@ import {
   MainToolbar,
   useSidePanel,
 } from "@canonical/maas-react-components";
-import { Button } from "@canonical/react-components";
 
 import { APIKeyAdd, APIKeyTable } from "../components";
 
+import Button from "@/app/base/components/Button";
 import PageContent from "@/app/base/components/PageContent";
 import { useWindowTitle } from "@/app/base/hooks";
 

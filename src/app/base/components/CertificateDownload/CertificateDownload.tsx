@@ -1,6 +1,7 @@
-import { Button, Icon, Textarea } from "@canonical/react-components";
+import { Icon, Textarea } from "@canonical/react-components";
 import fileDownload from "js-file-download";
 
+import Button from "@/app/base/components/Button";
 import CodeBlock from "@/app/base/components/CodeBlock";
 import CopyButton from "@/app/base/components/CopyButton";
 import type { CertificateData } from "@/app/store/general/types";

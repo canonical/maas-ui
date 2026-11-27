@@ -1,9 +1,10 @@
 import type { ReactElement } from "react";
 
 import { useSidePanel } from "@canonical/maas-react-components";
-import { Button, Icon, ICONS, Tooltip } from "@canonical/react-components";
+import { Icon, ICONS, Tooltip } from "@canonical/react-components";
 import { Link } from "react-router";
 
+import Button from "@/app/base/components/Button";
 import { HardwareType } from "@/app/base/enum";
 import { useSendAnalytics } from "@/app/base/hooks";
 import TestMachineForm from "@/app/machines/components/MachineForms/MachineActionFormWrapper/TestMachineForm";

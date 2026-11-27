@@ -1,11 +1,11 @@
 import { useMemo } from "react";
 
 import { useSidePanel } from "@canonical/maas-react-components";
-import { Button } from "@canonical/react-components";
 import type { ColumnDef } from "@tanstack/react-table";
 
 import DeleteScript from "../../components/DeleteScript";
 
+import Button from "@/app/base/components/Button";
 import TableActions from "@/app/base/components/TableActions";
 import { useModal } from "@/app/base/modal-context";
 import ScriptDetails from "@/app/settings/views/Scripts/ScriptDetails";

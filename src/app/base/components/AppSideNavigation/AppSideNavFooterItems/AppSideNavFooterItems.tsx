@@ -1,7 +1,7 @@
 import type { MouseEvent } from "react";
 
 import { Navigation } from "@canonical/maas-react-components";
-import { Badge, Button } from "@canonical/react-components";
+import { Badge } from "@canonical/react-components";
 
 import AppSideNavItem from "../AppSideNavItem";
 import type { SideNavigationProps } from "../AppSideNavigation";
@@ -10,6 +10,7 @@ import LogoutConfirm from "../LogoutConfirm";
 import type { CurrentUserInfo } from "@/app/api/query/auth";
 import { useGetUserEntitlements } from "@/app/api/query/auth";
 import { useAllNotifications } from "@/app/api/query/notifications";
+import Button from "@/app/base/components/Button";
 import { useModal } from "@/app/base/modal-context";
 import urls from "@/app/base/urls";
 import { Entitlement } from "@/app/settings/views/UserManagement/views/Groups/constants";

@@ -5,12 +5,13 @@ import {
   useSidePanel,
 } from "@canonical/maas-react-components";
 import type { ButtonProps } from "@canonical/react-components";
-import { Button, Icon, Switch } from "@canonical/react-components";
+import { Icon, Switch } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 
 import type { MachineActionGroup } from "./types";
 
 import { useGetUserEntitlements } from "@/app/api/query/auth";
+import Button from "@/app/base/components/Button";
 import { lazyLoadModal, useModal } from "@/app/base/modal-context";
 import { Entitlement } from "@/app/settings/views/UserManagement/views/Groups/constants";
 import { machineActions } from "@/app/store/machine";

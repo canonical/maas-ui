@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
 
-import { Button, Input } from "@canonical/react-components";
+import { Input } from "@canonical/react-components";
 import { useFormikContext } from "formik";
 
 import type { AddMachineValues } from "../types";
 
 import ArchitectureSelect from "@/app/base/components/ArchitectureSelect";
+import Button from "@/app/base/components/Button";
 import DomainSelect from "@/app/base/components/DomainSelect";
 import FormikField from "@/app/base/components/FormikField";
 import { FormikFieldChangeError } from "@/app/base/components/FormikField/FormikField";

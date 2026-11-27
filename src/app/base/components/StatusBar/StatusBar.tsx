@@ -3,7 +3,6 @@ import { useEffect } from "react";
 
 import {
   AppStatus,
-  Button,
   Icon,
   ICONS,
   Link,
@@ -20,6 +19,7 @@ import TooltipButton from "../TooltipButton";
 
 import { useNotifications } from "@/app/api/query/notifications";
 import { useSystemInfo } from "@/app/api/query/system";
+import Button from "@/app/base/components/Button";
 import { useFetchActions, useUsabilla } from "@/app/base/hooks";
 import configSelectors from "@/app/store/config/selectors";
 import controllerSelectors from "@/app/store/controller/selectors";

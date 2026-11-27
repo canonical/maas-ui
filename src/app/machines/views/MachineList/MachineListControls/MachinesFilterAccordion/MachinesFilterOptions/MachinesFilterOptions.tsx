@@ -1,10 +1,11 @@
 import type { ReactNode } from "react";
 import { useEffect } from "react";
 
-import { Button, List } from "@canonical/react-components";
+import { List } from "@canonical/react-components";
 import classNames from "classnames";
 import { useDispatch, useSelector } from "react-redux";
 
+import Button from "@/app/base/components/Button";
 import Spinner from "@/app/base/components/Spinner";
 import { machineActions } from "@/app/store/machine";
 import machineSelectors from "@/app/store/machine/selectors";

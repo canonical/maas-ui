@@ -1,6 +1,6 @@
 import { useRef, useState } from "react";
 
-import { Button } from "@canonical/react-components";
+import Button from "@/app/base/components/Button";
 
 type Props = {
   value: string;
