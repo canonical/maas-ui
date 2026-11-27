@@ -9,6 +9,7 @@ import {
   bulkAddGroupMembers,
   bulkCreateSelections,
   bulkDeleteCustomImages,
+  bulkDeleteNotifications,
   bulkDeleteSelections,
   bulkRemoveGroupEntitlements,
   bulkRemoveGroupMembers,
@@ -18,6 +19,7 @@ import {
   clearAllDiscoveriesWithOptionalIpAndMac,
   clearNeighboursDiscoveries,
   clearRdnsAndMdnsDiscoveries,
+  commissionMachine,
   completeIntro,
   createBootsource,
   createBootsourceBootsourceselection,
@@ -60,7 +62,7 @@ import {
   deleteNotification,
   deleteOauthProvider,
   deletePackageRepository,
-  deleteRackAgent,
+  deleteRackController,
   deleteRacks,
   deleteResourcePool,
   deleteSpace,
@@ -110,7 +112,7 @@ import {
   getOperationTasks,
   getPackageRepository,
   getRack,
-  getRackAgent,
+  getRackController,
   getResourcePool,
   getSelection,
   getSelectionStatistic,
@@ -161,7 +163,7 @@ import {
   listOperations,
   listPackageRepositories,
   listPowerTypes,
-  listRackAgents,
+  listRackControllers,
   listRacks,
   listRacksWithSummary,
   listResourcePools,
@@ -227,6 +229,9 @@ import type {
   BulkDeleteCustomImagesData,
   BulkDeleteCustomImagesError,
   BulkDeleteCustomImagesResponse,
+  BulkDeleteNotificationsData,
+  BulkDeleteNotificationsError,
+  BulkDeleteNotificationsResponse,
   BulkDeleteSelectionsData,
   BulkDeleteSelectionsError,
   BulkDeleteSelectionsResponse,
@@ -254,6 +259,9 @@ import type {
   ClearRdnsAndMdnsDiscoveriesData,
   ClearRdnsAndMdnsDiscoveriesError,
   ClearRdnsAndMdnsDiscoveriesResponse,
+  CommissionMachineData,
+  CommissionMachineError,
+  CommissionMachineResponse,
   CompleteIntroData,
   CompleteIntroError,
   CompleteIntroResponse,
@@ -380,9 +388,9 @@ import type {
   DeletePackageRepositoryData,
   DeletePackageRepositoryError,
   DeletePackageRepositoryResponse,
-  DeleteRackAgentData,
-  DeleteRackAgentError,
-  DeleteRackAgentResponse,
+  DeleteRackControllerData,
+  DeleteRackControllerError,
+  DeleteRackControllerResponse,
   DeleteRacksData,
   DeleteRacksError,
   DeleteRacksResponse,
@@ -525,9 +533,9 @@ import type {
   GetPackageRepositoryData,
   GetPackageRepositoryError,
   GetPackageRepositoryResponse,
-  GetRackAgentData,
-  GetRackAgentError,
-  GetRackAgentResponse,
+  GetRackControllerData,
+  GetRackControllerError,
+  GetRackControllerResponse,
   GetRackData,
   GetRackError,
   GetRackResponse,
@@ -681,9 +689,9 @@ import type {
   ListPowerTypesData,
   ListPowerTypesError,
   ListPowerTypesResponse,
-  ListRackAgentsData,
-  ListRackAgentsError,
-  ListRackAgentsResponse,
+  ListRackControllersData,
+  ListRackControllersError,
+  ListRackControllersResponse,
   ListRacksData,
   ListRacksError,
   ListRacksResponse,
@@ -3076,6 +3084,33 @@ export const getFabricVlanSubnetIprangeOptions = (
     queryKey: getFabricVlanSubnetIprangeQueryKey(options),
   });
 
+/**
+ * Commission Machine
+ */
+export const commissionMachineMutation = (
+  options?: Partial<Options<CommissionMachineData>>
+): UseMutationOptions<
+  CommissionMachineResponse,
+  CommissionMachineError,
+  Options<CommissionMachineData>
+> => {
+  const mutationOptions: UseMutationOptions<
+    CommissionMachineResponse,
+    CommissionMachineError,
+    Options<CommissionMachineData>
+  > = {
+    mutationFn: async (fnOptions) => {
+      const { data } = await commissionMachine({
+        ...options,
+        ...fnOptions,
+        throwOnError: true,
+      });
+      return data;
+    },
+  };
+  return mutationOptions;
+};
+
 export const getMachinePowerParametersQueryKey = (
   options: Options<GetMachinePowerParametersData>
 ) => createQueryKey("getMachinePowerParameters", options);
@@ -3220,6 +3255,33 @@ export const getNosInstallerOptions = (options: Options<GetNosInstallerData>) =>
     },
     queryKey: getNosInstallerQueryKey(options),
   });
+
+/**
+ * Bulk Delete Notifications
+ */
+export const bulkDeleteNotificationsMutation = (
+  options?: Partial<Options<BulkDeleteNotificationsData>>
+): UseMutationOptions<
+  BulkDeleteNotificationsResponse,
+  BulkDeleteNotificationsError,
+  Options<BulkDeleteNotificationsData>
+> => {
+  const mutationOptions: UseMutationOptions<
+    BulkDeleteNotificationsResponse,
+    BulkDeleteNotificationsError,
+    Options<BulkDeleteNotificationsData>
+  > = {
+    mutationFn: async (fnOptions) => {
+      const { data } = await bulkDeleteNotifications({
+        ...options,
+        ...fnOptions,
+        throwOnError: true,
+      });
+      return data;
+    },
+  };
+  return mutationOptions;
+};
 
 export const listNotificationsQueryKey = (
   options?: Options<ListNotificationsData>
@@ -3711,22 +3773,22 @@ export const createRackMutation = (
 };
 
 /**
- * Delete Rack Agent
+ * Delete Rack Controller
  */
-export const deleteRackAgentMutation = (
-  options?: Partial<Options<DeleteRackAgentData>>
+export const deleteRackControllerMutation = (
+  options?: Partial<Options<DeleteRackControllerData>>
 ): UseMutationOptions<
-  DeleteRackAgentResponse,
-  DeleteRackAgentError,
-  Options<DeleteRackAgentData>
+  DeleteRackControllerResponse,
+  DeleteRackControllerError,
+  Options<DeleteRackControllerData>
 > => {
   const mutationOptions: UseMutationOptions<
-    DeleteRackAgentResponse,
-    DeleteRackAgentError,
-    Options<DeleteRackAgentData>
+    DeleteRackControllerResponse,
+    DeleteRackControllerError,
+    Options<DeleteRackControllerData>
   > = {
     mutationFn: async (fnOptions) => {
-      const { data } = await deleteRackAgent({
+      const { data } = await deleteRackController({
         ...options,
         ...fnOptions,
         throwOnError: true,
@@ -3737,21 +3799,24 @@ export const deleteRackAgentMutation = (
   return mutationOptions;
 };
 
-export const getRackAgentQueryKey = (options: Options<GetRackAgentData>) =>
-  createQueryKey("getRackAgent", options);
+export const getRackControllerQueryKey = (
+  options: Options<GetRackControllerData>
+) => createQueryKey("getRackController", options);
 
 /**
- * Get Rack Agent
+ * Get Rack Controller
  */
-export const getRackAgentOptions = (options: Options<GetRackAgentData>) =>
+export const getRackControllerOptions = (
+  options: Options<GetRackControllerData>
+) =>
   queryOptions<
-    GetRackAgentResponse,
-    GetRackAgentError,
-    GetRackAgentResponse,
-    ReturnType<typeof getRackAgentQueryKey>
+    GetRackControllerResponse,
+    GetRackControllerError,
+    GetRackControllerResponse,
+    ReturnType<typeof getRackControllerQueryKey>
   >({
     queryFn: async ({ queryKey, signal }) => {
-      const { data } = await getRackAgent({
+      const { data } = await getRackController({
         ...options,
         ...queryKey[0],
         signal,
@@ -3759,7 +3824,7 @@ export const getRackAgentOptions = (options: Options<GetRackAgentData>) =>
       });
       return data;
     },
-    queryKey: getRackAgentQueryKey(options),
+    queryKey: getRackControllerQueryKey(options),
   });
 
 /**
@@ -3868,21 +3933,24 @@ export const generateRackBootstrapTokenMutation = (
   return mutationOptions;
 };
 
-export const listRackAgentsQueryKey = (options: Options<ListRackAgentsData>) =>
-  createQueryKey("listRackAgents", options);
+export const listRackControllersQueryKey = (
+  options: Options<ListRackControllersData>
+) => createQueryKey("listRackControllers", options);
 
 /**
- * List Rack Agents
+ * List Rack Controllers
  */
-export const listRackAgentsOptions = (options: Options<ListRackAgentsData>) =>
+export const listRackControllersOptions = (
+  options: Options<ListRackControllersData>
+) =>
   queryOptions<
-    ListRackAgentsResponse,
-    ListRackAgentsError,
-    ListRackAgentsResponse,
-    ReturnType<typeof listRackAgentsQueryKey>
+    ListRackControllersResponse,
+    ListRackControllersError,
+    ListRackControllersResponse,
+    ReturnType<typeof listRackControllersQueryKey>
   >({
     queryFn: async ({ queryKey, signal }) => {
-      const { data } = await listRackAgents({
+      const { data } = await listRackControllers({
         ...options,
         ...queryKey[0],
         signal,
@@ -3890,7 +3958,7 @@ export const listRackAgentsOptions = (options: Options<ListRackAgentsData>) =>
       });
       return data;
     },
-    queryKey: listRackAgentsQueryKey(options),
+    queryKey: listRackControllersQueryKey(options),
   });
 
 export const listRacksWithSummaryQueryKey = (
