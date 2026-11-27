@@ -1,12 +1,12 @@
 import { memo, useEffect, useState } from "react";
 
-import { Spinner } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router";
 
 import { usePools } from "@/app/api/query/pools";
 import type { ResourcePoolResponse } from "@/app/apiclient";
 import DoubleRow from "@/app/base/components/DoubleRow";
+import Spinner from "@/app/base/components/Spinner";
 import urls from "@/app/base/urls";
 import { useToggleMenu } from "@/app/machines/hooks";
 import type { MachineMenuToggleHandler } from "@/app/machines/types";

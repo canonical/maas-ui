@@ -1,8 +1,8 @@
-import { Spinner } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 
 import ServicesCard from "./ServicesCard";
 
+import Spinner from "@/app/base/components/Spinner";
 import HardwareCard from "@/app/base/components/node/HardwareCard";
 import OverviewCard from "@/app/base/components/node/OverviewCard";
 import { useWindowTitle } from "@/app/base/hooks";

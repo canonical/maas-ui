@@ -1,6 +1,5 @@
 import { useSidePanel } from "@canonical/maas-react-components";
 import type { PropsWithSpread } from "@canonical/react-components";
-import { Spinner } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 import * as Yup from "yup";
 
@@ -8,6 +7,7 @@ import InterfaceFormFields from "./InterfaceFormFields";
 
 import type { FormikFormProps } from "@/app/base/components/FormikForm";
 import FormikForm from "@/app/base/components/FormikForm";
+import Spinner from "@/app/base/components/Spinner";
 import { TAG_SELECTOR_INPUT_NAME } from "@/app/base/components/TagSelector/TagSelector";
 import { useFetchActions, useIsAllNetworkingDisabled } from "@/app/base/hooks";
 import { MAC_ADDRESS_REGEX } from "@/app/base/validation";

@@ -1,7 +1,6 @@
 import type { Dispatch, ReactElement, SetStateAction } from "react";
 
 import { MainToolbar, useSidePanel } from "@canonical/maas-react-components";
-import { Spinner } from "@canonical/react-components";
 import type { RowSelectionState } from "@tanstack/react-table";
 import pluralize from "pluralize";
 
@@ -9,6 +8,7 @@ import { useImageSources } from "@/app/api/query/imageSources";
 import { useSelectionStatuses } from "@/app/api/query/images";
 import type { BootSourceResponse } from "@/app/apiclient";
 import Button from "@/app/base/components/Button";
+import Spinner from "@/app/base/components/Spinner";
 import { useHasEntitlements } from "@/app/base/hooks";
 import { useModal } from "@/app/base/modal-context";
 import DeleteImages from "@/app/images/components/DeleteImages";

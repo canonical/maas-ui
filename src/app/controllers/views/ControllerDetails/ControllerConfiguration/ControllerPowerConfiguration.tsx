@@ -1,15 +1,13 @@
 import { useCallback, useEffect, useState } from "react";
 
-import {
-  Notification as NotificationBanner,
-  Spinner,
-} from "@canonical/react-components";
+import { Notification as NotificationBanner } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 
 import EditableSection from "@/app/base/components/EditableSection";
 import FormikForm from "@/app/base/components/FormikForm";
 import PowerTypeFields from "@/app/base/components/PowerTypeFields";
+import Spinner from "@/app/base/components/Spinner";
 import NodePowerParameters from "@/app/base/components/node/NodePowerParameters";
 import {
   useCanEdit,

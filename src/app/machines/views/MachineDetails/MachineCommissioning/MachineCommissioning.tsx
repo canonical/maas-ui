@@ -1,9 +1,9 @@
 import { useEffect } from "react";
 
-import { Spinner } from "@canonical/react-components";
 import { usePrevious } from "@canonical/react-components/dist/hooks";
 import { useDispatch, useSelector } from "react-redux";
 
+import Spinner from "@/app/base/components/Spinner";
 import NodeTestsTable from "@/app/base/components/node/NodeTestsTable";
 import { useWindowTitle } from "@/app/base/hooks";
 import { useGetURLId } from "@/app/base/hooks/urls";

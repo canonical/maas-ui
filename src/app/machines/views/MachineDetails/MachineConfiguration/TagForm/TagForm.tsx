@@ -1,7 +1,7 @@
-import { Spinner } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 
 import EditableSection from "@/app/base/components/EditableSection";
+import Spinner from "@/app/base/components/Spinner";
 import TagLinks from "@/app/base/components/TagLinks";
 import { useFetchActions, useCanEdit } from "@/app/base/hooks";
 import { useCanEditMachine } from "@/app/base/hooks/permissions";

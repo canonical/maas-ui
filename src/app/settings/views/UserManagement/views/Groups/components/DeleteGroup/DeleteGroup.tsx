@@ -1,11 +1,9 @@
-import {
-  Spinner,
-  Notification as NotificationBanner,
-} from "@canonical/react-components";
+import { Notification as NotificationBanner } from "@canonical/react-components";
 import pluralize from "pluralize";
 
 import { useDeleteGroup, useGetGroup } from "@/app/api/query/groups";
 import ModelActionForm from "@/app/base/components/ModelActionForm";
+import Spinner from "@/app/base/components/Spinner";
 import { useModal } from "@/app/base/modal-context";
 
 type Props = {

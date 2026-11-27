@@ -1,17 +1,12 @@
 import { useEffect, useRef } from "react";
 
-import {
-  Col,
-  Notification,
-  Row,
-  Spinner,
-  Strip,
-} from "@canonical/react-components";
+import { Col, Notification, Row, Strip } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useLocation, useNavigate } from "react-router";
 
 import { useCreateSession, useGetCallback } from "@/app/api/query/auth";
 import PageContent from "@/app/base/components/PageContent";
+import Spinner from "@/app/base/components/Spinner";
 import urls from "@/app/base/urls";
 import { statusActions } from "@/app/store/status";
 import statusSelectors from "@/app/store/status/selectors";

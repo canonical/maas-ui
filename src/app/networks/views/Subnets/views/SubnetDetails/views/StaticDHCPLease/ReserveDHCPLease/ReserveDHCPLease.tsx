@@ -2,7 +2,6 @@ import type { ReactElement } from "react";
 import { useCallback } from "react";
 
 import { useSidePanel } from "@canonical/maas-react-components";
-import { Spinner } from "@canonical/react-components";
 import * as ipaddr from "ipaddr.js";
 import { isIP, isIPv4 } from "is-ip";
 import { useDispatch, useSelector } from "react-redux";
@@ -14,6 +13,7 @@ import MacAddressField from "@/app/base/components/MacAddressField";
 import PrefixedIpInput, {
   formatIpAddress,
 } from "@/app/base/components/PrefixedIpInput";
+import Spinner from "@/app/base/components/Spinner";
 import { MAC_ADDRESS_REGEX } from "@/app/base/validation";
 import { reservedIpActions } from "@/app/store/reservedip";
 import reservedIpSelectors from "@/app/store/reservedip/selectors";

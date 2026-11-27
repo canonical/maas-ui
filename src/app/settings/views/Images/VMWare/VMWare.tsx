@@ -1,14 +1,12 @@
 import { ContentSection } from "@canonical/maas-react-components";
-import {
-  Notification as NotificationBanner,
-  Spinner,
-} from "@canonical/react-components";
+import { Notification as NotificationBanner } from "@canonical/react-components";
 
 import VMWareForm from "../VMWareForm";
 
 import { useConfigurations } from "@/app/api/query/configurations";
 import type { PublicConfigName } from "@/app/apiclient";
 import PageContent from "@/app/base/components/PageContent";
+import Spinner from "@/app/base/components/Spinner";
 import { useWindowTitle } from "@/app/base/hooks";
 import { ConfigNames } from "@/app/store/config/types";
 

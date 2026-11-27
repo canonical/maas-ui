@@ -1,7 +1,7 @@
-import { Spinner } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 import { Link } from "react-router";
 
+import Spinner from "@/app/base/components/Spinner";
 import { useFetchActions } from "@/app/base/hooks";
 import urls from "@/app/base/urls";
 import { deviceActions } from "@/app/store/device";

@@ -1,14 +1,12 @@
 import type { ReactElement } from "react";
 
-import {
-  Notification as NotificationBanner,
-  Spinner,
-} from "@canonical/react-components";
+import { Notification as NotificationBanner } from "@canonical/react-components";
 import { useQueryClient } from "@tanstack/react-query";
 
 import { useDeleteUser, useGetUser } from "@/app/api/query/users";
 import { getUserQueryKey } from "@/app/apiclient/@tanstack/react-query.gen";
 import ModelActionForm from "@/app/base/components/ModelActionForm";
+import Spinner from "@/app/base/components/Spinner";
 import { useModal } from "@/app/base/modal-context";
 
 type DeleteUserProps = {

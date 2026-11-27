@@ -1,12 +1,12 @@
 import { useState } from "react";
 
 import { formatBytes } from "@canonical/maas-react-components";
-import { Spinner } from "@canonical/react-components";
 import classNames from "classnames";
 import pluralize from "pluralize";
 import { useSelector } from "react-redux";
 
 import LabelledList from "@/app/base/components/LabelledList";
+import Spinner from "@/app/base/components/Spinner";
 import machineSelectors from "@/app/store/machine/selectors";
 import type { Machine } from "@/app/store/machine/types";
 import { isMachineDetails } from "@/app/store/machine/utils";

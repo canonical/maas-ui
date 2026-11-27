@@ -1,9 +1,10 @@
 import type { ReactElement } from "react";
 
 import { ContentSection } from "@canonical/maas-react-components";
-import { Col, Row, Spinner } from "@canonical/react-components";
+import { Col, Row } from "@canonical/react-components";
 
 import { useGetCurrentUser } from "@/app/api/query/auth";
+import Spinner from "@/app/base/components/Spinner";
 import { useWindowTitle } from "@/app/base/hooks";
 import { EditUser } from "@/app/settings/views/UserManagement/views/UsersList/components";
 

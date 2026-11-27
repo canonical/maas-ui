@@ -1,12 +1,13 @@
 import type { ReactNode } from "react";
 import { Fragment } from "react";
 
-import { Card, Spinner } from "@canonical/react-components";
+import { Card } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 import { Link } from "react-router";
 
 import NetworkCardTable from "./NetworkCardTable";
 
+import Spinner from "@/app/base/components/Spinner";
 import { useFetchActions } from "@/app/base/hooks";
 import type { Device } from "@/app/store/device/types";
 import { fabricActions } from "@/app/store/fabric";

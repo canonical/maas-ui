@@ -1,13 +1,13 @@
 import { useEffect } from "react";
 
 import type { SelectProps } from "@canonical/react-components";
-import { Spinner } from "@canonical/react-components";
 import { useFormikContext } from "formik";
 import { useDispatch, useSelector } from "react-redux";
 
 import DynamicSelect from "@/app/base/components/DynamicSelect";
 import type { Props as FormikFieldProps } from "@/app/base/components/FormikField/FormikField";
 import { FormikFieldChangeError } from "@/app/base/components/FormikField/FormikField";
+import Spinner from "@/app/base/components/Spinner";
 import fabricSelectors from "@/app/store/fabric/selectors";
 import type { RootState } from "@/app/store/root/types";
 import { vlanActions } from "@/app/store/vlan";

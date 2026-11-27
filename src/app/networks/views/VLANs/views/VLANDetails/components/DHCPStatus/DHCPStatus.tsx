@@ -3,7 +3,6 @@ import {
   Col,
   Notification as NotificationBanner,
   Row,
-  Spinner,
 } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 import { Link } from "react-router";
@@ -13,6 +12,7 @@ import ConfigureDHCP from "../ConfigureDHCP";
 import Button from "@/app/base/components/Button";
 import ControllerLink from "@/app/base/components/ControllerLink";
 import Definition from "@/app/base/components/Definition";
+import Spinner from "@/app/base/components/Spinner";
 import TitledSection from "@/app/base/components/TitledSection";
 import docsUrls from "@/app/base/docsUrls";
 import { useFetchActions } from "@/app/base/hooks";

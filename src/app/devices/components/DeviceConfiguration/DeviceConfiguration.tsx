@@ -1,4 +1,4 @@
-import { Spinner, Strip } from "@canonical/react-components";
+import { Strip } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 
 import { useZones } from "@/app/api/query/zones";
@@ -9,6 +9,7 @@ import NodeConfigurationFields, {
   NodeConfigurationSchema,
 } from "@/app/base/components/NodeConfigurationFields";
 import type { NodeConfigurationValues } from "@/app/base/components/NodeConfigurationFields/types";
+import Spinner from "@/app/base/components/Spinner";
 import TagLinks from "@/app/base/components/TagLinks";
 import { useCanEdit, useWindowTitle } from "@/app/base/hooks";
 import urls from "@/app/base/urls";

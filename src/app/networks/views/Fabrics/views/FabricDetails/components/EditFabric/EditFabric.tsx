@@ -1,7 +1,7 @@
 import type { ReactElement } from "react";
 import { useCallback } from "react";
 
-import { Col, Row, Spinner, Textarea } from "@canonical/react-components";
+import { Col, Row, Textarea } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 
@@ -9,6 +9,7 @@ import FabricController from "../FabricSummary/FabricController";
 
 import FormikField from "@/app/base/components/FormikField";
 import FormikForm from "@/app/base/components/FormikForm";
+import Spinner from "@/app/base/components/Spinner";
 import { fabricActions } from "@/app/store/fabric";
 import fabricSelectors from "@/app/store/fabric/selectors";
 import type { Fabric, FabricMeta } from "@/app/store/fabric/types";

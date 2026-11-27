@@ -5,7 +5,6 @@ import {
   Col,
   Notification as NotificationBanner,
   Row,
-  Spinner,
 } from "@canonical/react-components";
 import * as Yup from "yup";
 
@@ -18,6 +17,7 @@ import {
 import FormikField from "@/app/base/components/FormikField";
 import FormikForm from "@/app/base/components/FormikForm";
 import PageContent from "@/app/base/components/PageContent";
+import Spinner from "@/app/base/components/Spinner";
 import { useHasEntitlements } from "@/app/base/hooks";
 import { ConfigNames } from "@/app/store/config/types";
 

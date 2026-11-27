@@ -2,7 +2,7 @@ import type { ReactElement } from "react";
 import { useState } from "react";
 
 import { useSidePanel } from "@canonical/maas-react-components";
-import { Spinner, useToastNotification } from "@canonical/react-components";
+import { useToastNotification } from "@canonical/react-components";
 import { useQueryClient } from "@tanstack/react-query";
 import { useDispatch, useSelector } from "react-redux";
 import type { Dispatch } from "redux";
@@ -16,6 +16,7 @@ import { useCreateSwitch } from "@/app/api/query/switches";
 import type { DiscoveryResponse } from "@/app/apiclient";
 import { listDiscoveriesQueryKey } from "@/app/apiclient/@tanstack/react-query.gen";
 import FormikForm from "@/app/base/components/FormikForm";
+import Spinner from "@/app/base/components/Spinner";
 import { useCycled, useFetchActions } from "@/app/base/hooks";
 import urls from "@/app/base/urls";
 import { hostnameValidation, MAC_ADDRESS_REGEX } from "@/app/base/validation";

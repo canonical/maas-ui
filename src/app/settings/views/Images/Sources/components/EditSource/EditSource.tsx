@@ -6,7 +6,6 @@ import {
   Icon,
   Notification as NotificationBanner,
   Select,
-  Spinner,
   Textarea,
   Tooltip,
 } from "@canonical/react-components";
@@ -25,6 +24,7 @@ import type {
 import FormikField from "@/app/base/components/FormikField";
 import { FormikFieldChangeError } from "@/app/base/components/FormikField/FormikField";
 import FormikForm from "@/app/base/components/FormikForm";
+import Spinner from "@/app/base/components/Spinner";
 import type { SourceValues } from "@/app/settings/views/Images/Sources/components/AddSource/AddSource";
 import { SourceSchema } from "@/app/settings/views/Images/Sources/components/AddSource/AddSource";
 import { Labels } from "@/app/settings/views/Images/Sources/constants";

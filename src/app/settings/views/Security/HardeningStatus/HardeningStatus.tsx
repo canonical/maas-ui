@@ -1,7 +1,7 @@
 import type { ReactElement } from "react";
 
 import { ContentSection } from "@canonical/maas-react-components";
-import { Link, Notification, Spinner } from "@canonical/react-components";
+import { Link, Notification } from "@canonical/react-components";
 
 import HardeningStatusTable from "./components/HardeningStatusTable";
 import { parseHardeningNotifications } from "./utils";
@@ -13,6 +13,7 @@ import {
 import { useSystemInfo } from "@/app/api/query/system";
 import CodeBlock from "@/app/base/components/CodeBlock";
 import PageContent from "@/app/base/components/PageContent";
+import Spinner from "@/app/base/components/Spinner";
 import { useWindowTitle } from "@/app/base/hooks";
 
 const HARDENING_DOCS_URL = `${import.meta.env.VITE_APP_BASENAME}/docs/reference/configuration-guides/security-hardening/`;

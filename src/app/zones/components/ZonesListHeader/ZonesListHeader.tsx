@@ -1,13 +1,13 @@
 import type { ReactElement } from "react";
 
 import { MainToolbar, useSidePanel } from "@canonical/maas-react-components";
-import { Spinner } from "@canonical/react-components";
 
 import ZonesListTitle from "./ZonesListTitle";
 
 import { useZoneCount } from "@/app/api/query/zones";
 import Button from "@/app/base/components/Button";
 import ModelListSubtitle from "@/app/base/components/ModelListSubtitle";
+import Spinner from "@/app/base/components/Spinner";
 import { useHasEntitlements } from "@/app/base/hooks";
 import { Entitlement } from "@/app/settings/views/UserManagement/views/Groups/constants";
 import { AddZone } from "@/app/zones/components";

@@ -1,10 +1,11 @@
 import * as React from "react";
 
-import { Spinner, Tooltip } from "@canonical/react-components";
+import { Tooltip } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 import { Link } from "react-router";
 
 import DoubleRow from "@/app/base/components/DoubleRow";
+import Spinner from "@/app/base/components/Spinner";
 import TooltipButton from "@/app/base/components/TooltipButton";
 import { useMachineActions } from "@/app/machines/components/MachineActions/hooks";
 import { useToggleMenu } from "@/app/machines/hooks";

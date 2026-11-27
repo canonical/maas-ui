@@ -4,7 +4,6 @@ import { useState } from "react";
 import { useSidePanel } from "@canonical/maas-react-components";
 import {
   Notification as NotificationBanner,
-  Spinner,
 } from "@canonical/react-components";
 import { useQueryClient } from "@tanstack/react-query";
 import * as Yup from "yup";
@@ -27,6 +26,7 @@ import {
 import Button from "@/app/base/components/Button";
 import FormikField from "@/app/base/components/FormikField";
 import FormikForm from "@/app/base/components/FormikForm";
+import Spinner from "@/app/base/components/Spinner";
 
 type EditUserProps = {
   id: number;

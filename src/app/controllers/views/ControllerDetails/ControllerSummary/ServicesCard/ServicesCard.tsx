@@ -1,10 +1,11 @@
 import type { ReactNode } from "react";
 
-import { Card, Icon, Spinner } from "@canonical/react-components";
+import { Card, Icon } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 
 import ServiceStatus from "./ServiceStatus";
 
+import Spinner from "@/app/base/components/Spinner";
 import { useFetchActions } from "@/app/base/hooks";
 import type { ControllerDetails } from "@/app/store/controller/types";
 import type { RootState } from "@/app/store/root/types";

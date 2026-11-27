@@ -1,4 +1,4 @@
-import { Icon, Spinner, Textarea } from "@canonical/react-components";
+import { Icon, Textarea } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 
@@ -10,6 +10,7 @@ import { useConfigurations } from "@/app/api/query/configurations";
 import type { PublicConfigName } from "@/app/apiclient";
 import CertificateMetadata from "@/app/base/components/CertificateMetadata";
 import FormikForm from "@/app/base/components/FormikForm";
+import Spinner from "@/app/base/components/Spinner";
 import { useHasEntitlements } from "@/app/base/hooks";
 import { getConfigsFromResponse } from "@/app/settings/utils";
 import { configActions } from "@/app/store/config";

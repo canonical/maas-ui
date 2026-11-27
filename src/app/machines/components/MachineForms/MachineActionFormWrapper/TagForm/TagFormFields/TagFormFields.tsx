@@ -1,7 +1,7 @@
 import type { Dispatch, ReactNode, SetStateAction } from "react";
 import { useEffect } from "react";
 
-import { Icon, Spinner } from "@canonical/react-components";
+import { Icon } from "@canonical/react-components";
 import { useFormikContext } from "formik";
 import { useSelector } from "react-redux";
 
@@ -14,6 +14,7 @@ import {
 } from "../hooks";
 import type { TagFormValues } from "../types";
 
+import Spinner from "@/app/base/components/Spinner";
 import TagField from "@/app/base/components/TagField";
 import type { Tag as TagSelectorTag } from "@/app/base/components/TagSelector/TagSelector";
 import type { MachineActionFormProps } from "@/app/machines/types";

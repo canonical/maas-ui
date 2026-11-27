@@ -1,8 +1,9 @@
 import { ExternalLink } from "@canonical/maas-react-components";
-import { Icon, Spinner } from "@canonical/react-components";
+import { Icon } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 
 import CodeBlock from "@/app/base/components/CodeBlock";
+import Spinner from "@/app/base/components/Spinner";
 import docsUrls from "@/app/base/docsUrls";
 import { useFetchActions } from "@/app/base/hooks";
 import { useId } from "@/app/base/hooks/base";

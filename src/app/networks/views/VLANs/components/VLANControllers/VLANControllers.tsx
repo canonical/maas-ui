@@ -1,8 +1,8 @@
-import { Spinner } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 
 import ControllerLink from "@/app/base/components/ControllerLink";
 import Definition from "@/app/base/components/Definition";
+import Spinner from "@/app/base/components/Spinner";
 import TooltipButton from "@/app/base/components/TooltipButton";
 import controllerSelectors from "@/app/store/controller/selectors";
 import type { RootState } from "@/app/store/root/types";

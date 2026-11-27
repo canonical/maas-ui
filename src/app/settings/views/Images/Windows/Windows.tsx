@@ -1,13 +1,11 @@
 import { ContentSection } from "@canonical/maas-react-components";
-import {
-  Notification as NotificationBanner,
-  Spinner,
-} from "@canonical/react-components";
+import { Notification as NotificationBanner } from "@canonical/react-components";
 
 import WindowsForm, { windowsConfigName } from "../WindowsForm/WindowsForm";
 
 import { useGetConfiguration } from "@/app/api/query/configurations";
 import PageContent from "@/app/base/components/PageContent";
+import Spinner from "@/app/base/components/Spinner";
 import { useWindowTitle } from "@/app/base/hooks";
 
 export enum Labels {

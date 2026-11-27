@@ -1,9 +1,6 @@
 import type { ReactElement } from "react";
 
-import {
-  Notification as NotificationBanner,
-  Spinner,
-} from "@canonical/react-components";
+import { Notification as NotificationBanner } from "@canonical/react-components";
 import pluralize from "pluralize";
 
 import {
@@ -13,6 +10,7 @@ import {
 } from "@/app/api/query/auth";
 import type { OAuthProviderResponse } from "@/app/apiclient";
 import ModelActionForm from "@/app/base/components/ModelActionForm";
+import Spinner from "@/app/base/components/Spinner";
 import { useModal } from "@/app/base/modal-context";
 
 type Props = {
