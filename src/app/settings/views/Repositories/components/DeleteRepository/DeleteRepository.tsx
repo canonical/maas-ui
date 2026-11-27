@@ -1,7 +1,4 @@
-import {
-  Notification as NotificationBanner,
-  Spinner,
-} from "@canonical/react-components";
+import { Notification as NotificationBanner } from "@canonical/react-components";
 import { useQueryClient } from "@tanstack/react-query";
 
 import {
@@ -11,6 +8,7 @@ import {
 import type { PackageRepositoryResponse } from "@/app/apiclient";
 import { getPackageRepositoryQueryKey } from "@/app/apiclient/@tanstack/react-query.gen";
 import ModelActionForm from "@/app/base/components/ModelActionForm";
+import Spinner from "@/app/base/components/Spinner";
 import { useModal } from "@/app/base/modal-context";
 
 type Props = {

@@ -3,7 +3,6 @@ import type { Dispatch, ReactElement, SetStateAction } from "react";
 import {
   Icon,
   Notification as NotificationBanner,
-  Spinner,
   Tooltip,
 } from "@canonical/react-components";
 import type { RowSelectionState } from "@tanstack/react-table";
@@ -16,6 +15,7 @@ import {
   useImages,
 } from "@/app/api/query/images";
 import ModelActionForm from "@/app/base/components/ModelActionForm";
+import Spinner from "@/app/base/components/Spinner";
 import { useModal } from "@/app/base/modal-context";
 import { ConfigNames } from "@/app/store/config/types";
 

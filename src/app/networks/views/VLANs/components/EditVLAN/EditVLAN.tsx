@@ -2,7 +2,7 @@ import type { ReactElement } from "react";
 import { useCallback } from "react";
 
 import { useSidePanel } from "@canonical/maas-react-components";
-import { Col, Row, Spinner, Textarea } from "@canonical/react-components";
+import { Col, Row, Textarea } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 
@@ -12,6 +12,7 @@ import FabricSelect from "@/app/base/components/FabricSelect";
 import FormikField from "@/app/base/components/FormikField";
 import FormikForm from "@/app/base/components/FormikForm";
 import SpaceSelect from "@/app/base/components/SpaceSelect";
+import Spinner from "@/app/base/components/Spinner";
 import type { RootState } from "@/app/store/root/types";
 import { getSpaceDisplay } from "@/app/store/space/utils";
 import { VLANMTURange, VLANVidRange } from "@/app/store/types/enum";

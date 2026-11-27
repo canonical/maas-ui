@@ -4,7 +4,6 @@ import { ContentSection, MainToolbar } from "@canonical/maas-react-components";
 import {
   Button,
   Notification as NotificationBanner,
-  Spinner,
   Tooltip,
 } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
@@ -16,6 +15,7 @@ import SingleSignOnForm from "./components/SingleSignOnForm";
 
 import { useActiveOauthProvider } from "@/app/api/query/auth";
 import PageContent from "@/app/base/components/PageContent";
+import Spinner from "@/app/base/components/Spinner";
 import { useHasEntitlements, useWindowTitle } from "@/app/base/hooks";
 import { useModal } from "@/app/base/modal-context";
 import { generalActions } from "@/app/store/general";

@@ -3,7 +3,6 @@ import { type Dispatch, type SetStateAction, useMemo } from "react";
 import {
   Button,
   Icon,
-  Spinner,
   Tooltip,
   useToastNotification,
 } from "@canonical/react-components";
@@ -24,6 +23,7 @@ import {
   useDeleteSelections,
 } from "@/app/api/query/images";
 import DoubleRow from "@/app/base/components/DoubleRow/DoubleRow";
+import Spinner from "@/app/base/components/Spinner";
 import { useHasEntitlements } from "@/app/base/hooks";
 import { useModal } from "@/app/base/modal-context";
 import DeleteImages from "@/app/images/components/DeleteImages";

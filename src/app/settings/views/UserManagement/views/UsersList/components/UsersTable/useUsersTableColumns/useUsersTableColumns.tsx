@@ -1,12 +1,12 @@
 import { useMemo, useState } from "react";
 
 import { useSidePanel } from "@canonical/maas-react-components";
-import { Spinner } from "@canonical/react-components";
 import type { ColumnDef } from "@tanstack/react-table";
 import { Link } from "react-router";
 
 import { useGetCurrentUser } from "@/app/api/query/auth";
 import type { UserWithStatistics } from "@/app/api/query/users";
+import Spinner from "@/app/base/components/Spinner";
 import TableActions from "@/app/base/components/TableActions";
 import TableHeader from "@/app/base/components/TableHeader";
 import TooltipButton from "@/app/base/components/TooltipButton";

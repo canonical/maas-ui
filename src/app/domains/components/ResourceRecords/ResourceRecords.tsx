@@ -1,9 +1,10 @@
 import { MainToolbar, useSidePanel } from "@canonical/maas-react-components";
-import { Button, Col, Row, Spinner, Strip } from "@canonical/react-components";
+import { Button, Col, Row, Strip } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 
 import AddRecordForm from "../DomainDetailsHeader/AddRecordForm";
 
+import Spinner from "@/app/base/components/Spinner";
 import { useHasEntitlements } from "@/app/base/hooks";
 import { ResourceRecordsTable } from "@/app/domains/components";
 import { Entitlement } from "@/app/settings/views/UserManagement/views/Groups/constants";

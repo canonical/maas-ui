@@ -1,8 +1,8 @@
 import type { ReactNode } from "react";
 
-import { Spinner } from "@canonical/react-components";
-
 import type { TableStatus } from "./getTableStatus";
+
+import Spinner from "@/app/base/components/Spinner";
 
 export const generateEmptyStateMsg = (
   status: TableStatus,

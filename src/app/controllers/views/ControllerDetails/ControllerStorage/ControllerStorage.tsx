@@ -1,6 +1,6 @@
-import { Spinner } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 
+import Spinner from "@/app/base/components/Spinner";
 import StorageTables from "@/app/base/components/node/StorageTables";
 import { useWindowTitle } from "@/app/base/hooks";
 import controllerSelectors from "@/app/store/controller/selectors";

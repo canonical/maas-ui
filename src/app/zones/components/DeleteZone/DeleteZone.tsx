@@ -1,9 +1,6 @@
 import React from "react";
 
-import {
-  Notification as NotificationBanner,
-  Spinner,
-} from "@canonical/react-components";
+import { Notification as NotificationBanner } from "@canonical/react-components";
 import { useQueryClient } from "@tanstack/react-query";
 
 import { useDeleteZone, useGetZone } from "@/app/api/query/zones";
@@ -12,6 +9,7 @@ import {
   listZonesWithStatisticsQueryKey,
 } from "@/app/apiclient/@tanstack/react-query.gen";
 import ModelActionForm from "@/app/base/components/ModelActionForm";
+import Spinner from "@/app/base/components/Spinner";
 import { useModal } from "@/app/base/modal-context";
 
 type DeleteZoneProps = {

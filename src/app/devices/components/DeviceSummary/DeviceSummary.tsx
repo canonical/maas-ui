@@ -1,9 +1,10 @@
-import { Spinner, Strip } from "@canonical/react-components";
+import { Strip } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 
 import DeviceOverviewCard from "./DeviceOverviewCard";
 
 import NodeSummaryNetworkCard from "@/app/base/components/NodeSummaryNetworkCard";
+import Spinner from "@/app/base/components/Spinner";
 import { useWindowTitle } from "@/app/base/hooks";
 import urls from "@/app/base/urls";
 import deviceSelectors from "@/app/store/device/selectors";

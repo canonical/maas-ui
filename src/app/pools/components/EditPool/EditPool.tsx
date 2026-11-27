@@ -1,10 +1,7 @@
 import type { ReactElement } from "react";
 
 import { useSidePanel } from "@canonical/maas-react-components";
-import {
-  Notification as NotificationBanner,
-  Spinner,
-} from "@canonical/react-components";
+import { Notification as NotificationBanner } from "@canonical/react-components";
 import { useQueryClient } from "@tanstack/react-query";
 import * as Yup from "yup";
 
@@ -16,6 +13,7 @@ import type {
 import { getResourcePoolQueryKey } from "@/app/apiclient/@tanstack/react-query.gen";
 import FormikField from "@/app/base/components/FormikField";
 import FormikForm from "@/app/base/components/FormikForm";
+import Spinner from "@/app/base/components/Spinner";
 
 type EditPoolProps = {
   id: number;

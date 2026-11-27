@@ -1,10 +1,10 @@
 import { useEffect } from "react";
 
-import { Spinner } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 
 import ControllerLink from "@/app/base/components/ControllerLink";
 import Definition from "@/app/base/components/Definition";
+import Spinner from "@/app/base/components/Spinner";
 import { controllerActions } from "@/app/store/controller";
 import controllerSelectors from "@/app/store/controller/selectors";
 import type { Fabric, FabricMeta } from "@/app/store/fabric/types";

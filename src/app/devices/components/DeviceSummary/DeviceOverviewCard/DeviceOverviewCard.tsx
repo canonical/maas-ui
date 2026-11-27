@@ -1,7 +1,8 @@
-import { Card, Spinner } from "@canonical/react-components";
+import { Card } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 
 import LabelledList from "@/app/base/components/LabelledList";
+import Spinner from "@/app/base/components/Spinner";
 import deviceSelectors from "@/app/store/device/selectors";
 import type { Device, DeviceMeta } from "@/app/store/device/types";
 import { isDeviceDetails } from "@/app/store/device/utils";

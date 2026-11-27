@@ -1,6 +1,8 @@
 import type { HTMLProps } from "react";
 
-import { Button, Icon, Spinner } from "@canonical/react-components";
+import { Button, Icon } from "@canonical/react-components";
+
+import Spinner from "@/app/base/components/Spinner";
 
 type Props = HTMLProps<HTMLElement> & {
   currentPage: number;

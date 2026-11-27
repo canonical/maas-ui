@@ -1,0 +1,8 @@
+// Definitions only — don't include vf-base/vf-p-icons here, as they would
+// re-emit Vanilla's base styles and @font-face rules into this chunk.
+@import "vanilla-framework";
+
+// Vanilla's `[class*="p-icon--"].is-inline` rule doesn't match Pragma's Spinner.
+.ds.spinner.is-inline {
+  margin-right: $sph--small;
+}

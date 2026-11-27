@@ -3,7 +3,6 @@ import type { ReactElement } from "react";
 import {
   Icon,
   Notification as NotificationBanner,
-  Spinner,
 } from "@canonical/react-components";
 
 import {
@@ -11,6 +10,7 @@ import {
   useGetImageSource,
 } from "@/app/api/query/imageSources";
 import ModelActionForm from "@/app/base/components/ModelActionForm";
+import Spinner from "@/app/base/components/Spinner";
 import { useModal } from "@/app/base/modal-context";
 
 type DeleteSourceProps = {

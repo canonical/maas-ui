@@ -1,5 +1,4 @@
 import { useSidePanel } from "@canonical/maas-react-components";
-import { Spinner } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 
 import DeleteTagForm from "../../components/DeleteTagForm";
@@ -8,6 +7,7 @@ import UpdateTagForm from "../../components/UpdateTagForm";
 
 import ModelNotFound from "@/app/base/components/ModelNotFound";
 import PageContent from "@/app/base/components/PageContent";
+import Spinner from "@/app/base/components/Spinner";
 import { useFetchActions, useWindowTitle } from "@/app/base/hooks";
 import { useGetURLId } from "@/app/base/hooks/urls";
 import { useModal } from "@/app/base/modal-context";

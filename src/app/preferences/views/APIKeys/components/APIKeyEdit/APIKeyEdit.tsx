@@ -1,8 +1,8 @@
-import { Spinner } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 
 import APIKeyForm from "../APIKeyForm";
 
+import Spinner from "@/app/base/components/Spinner";
 import { useFetchActions } from "@/app/base/hooks";
 import type { RootState } from "@/app/store/root/types";
 import { tokenActions } from "@/app/store/token";

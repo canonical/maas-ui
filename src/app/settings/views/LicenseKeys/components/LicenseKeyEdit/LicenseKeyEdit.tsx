@@ -1,8 +1,8 @@
-import { Spinner } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 
 import LicenseKeyForm from "../LicenseKeyForm";
 
+import Spinner from "@/app/base/components/Spinner";
 import { useFetchActions } from "@/app/base/hooks";
 import { licenseKeysActions } from "@/app/store/licensekeys";
 import licenseKeysSelectors from "@/app/store/licensekeys/selectors";

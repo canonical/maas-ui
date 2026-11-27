@@ -4,7 +4,6 @@ import { ContentSection } from "@canonical/maas-react-components";
 import {
   Icon,
   Notification as NotificationBanner,
-  Spinner,
 } from "@canonical/react-components";
 import { formatDuration } from "date-fns";
 import * as Yup from "yup";
@@ -19,6 +18,7 @@ import type { PublicConfigName, SetConfigurationsError } from "@/app/apiclient";
 import FormikField from "@/app/base/components/FormikField";
 import FormikForm from "@/app/base/components/FormikForm";
 import PageContent from "@/app/base/components/PageContent";
+import Spinner from "@/app/base/components/Spinner";
 import { useWindowTitle, useHasEntitlements } from "@/app/base/hooks";
 import { useLogout } from "@/app/base/hooks/logout";
 import { configActions } from "@/app/store/config";

@@ -1,14 +1,12 @@
 import type { ReactElement, ReactNode } from "react";
 import { useEffect } from "react";
 
-import {
-  Notification as NotificationBanner,
-  Spinner,
-} from "@canonical/react-components";
+import { Notification as NotificationBanner } from "@canonical/react-components";
 import { useNavigate } from "react-router";
 
 import PageContent from "@/app/base/components/PageContent";
 import type { PageContentProps } from "@/app/base/components/PageContent/PageContent";
+import Spinner from "@/app/base/components/Spinner";
 import { useWindowTitle } from "@/app/base/hooks";
 import type { APIError, SyncNavigateFunction } from "@/app/base/types";
 import { useExitURL } from "@/app/intro/hooks";

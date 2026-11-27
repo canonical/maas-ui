@@ -1,6 +1,6 @@
-import { Spinner } from "@canonical/react-components";
 import { Link } from "react-router";
 
+import Spinner from "@/app/base/components/Spinner";
 import urls from "@/app/base/urls";
 import type { Machine, MachineMeta } from "@/app/store/machine/types";
 import { useFetchMachine } from "@/app/store/machine/utils";

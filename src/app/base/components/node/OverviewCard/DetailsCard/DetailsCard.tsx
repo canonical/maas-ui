@@ -1,8 +1,9 @@
-import { Icon, Spinner } from "@canonical/react-components";
+import { Icon } from "@canonical/react-components";
 import classNames from "classnames";
 import { useSelector } from "react-redux";
 import { Link } from "react-router";
 
+import Spinner from "@/app/base/components/Spinner";
 import {
   useFetchActions,
   useCanEdit,

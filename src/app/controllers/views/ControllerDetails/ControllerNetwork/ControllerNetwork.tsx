@@ -1,7 +1,7 @@
-import { Spinner } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 
 import NodeNetworkTab from "@/app/base/components/NodeNetworkTab";
+import Spinner from "@/app/base/components/Spinner";
 import NetworkTable from "@/app/base/components/node/networking/NetworkTable";
 import { useWindowTitle } from "@/app/base/hooks";
 import controllerSelectors from "@/app/store/controller/selectors";

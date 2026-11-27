@@ -1,7 +1,7 @@
-import { Spinner } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 
 import DoubleRow from "@/app/base/components/DoubleRow";
+import Spinner from "@/app/base/components/Spinner";
 import TooltipButton from "@/app/base/components/TooltipButton";
 import fabricSelectors from "@/app/store/fabric/selectors";
 import type { RootState } from "@/app/store/root/types";

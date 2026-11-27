@@ -1,6 +1,6 @@
 import type { ReactElement } from "react";
 
-import { Spinner, Strip } from "@canonical/react-components";
+import { Strip } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router";
 
@@ -8,6 +8,7 @@ import { Entitlement } from "../../../UserManagement/views/Groups/constants";
 
 import FormikField from "@/app/base/components/FormikField";
 import FormikForm from "@/app/base/components/FormikForm";
+import Spinner from "@/app/base/components/Spinner";
 import { useFetchActions, useHasEntitlements } from "@/app/base/hooks";
 import urls from "@/app/base/urls";
 import configSelectors from "@/app/store/config/selectors";

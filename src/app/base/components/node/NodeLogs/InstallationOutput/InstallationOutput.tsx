@@ -1,9 +1,9 @@
-import { Spinner } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 
 import { useGetInstallationOutput } from "../hooks";
 
 import CodeBlock from "@/app/base/components/CodeBlock";
+import Spinner from "@/app/base/components/Spinner";
 import type { ControllerDetails } from "@/app/store/controller/types";
 import type { MachineDetails } from "@/app/store/machine/types";
 import type { RootState } from "@/app/store/root/types";

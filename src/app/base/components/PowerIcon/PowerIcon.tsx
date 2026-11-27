@@ -1,9 +1,13 @@
 import type { ReactNode } from "react";
 
 import { Icon } from "@canonical/react-components";
+import { Spinner } from "@canonical/react-ds-global";
 import classNames from "classnames";
 
+import { dsIconRoot } from "@/app/base/components/Spinner";
 import { PowerState } from "@/app/store/types/enum";
+
+import "./_index.scss";
 
 type Props = {
   children?: ReactNode;
@@ -12,10 +16,7 @@ type Props = {
   showSpinner?: boolean;
 };
 
-const getIconName = (powerState: PowerState, showSpinner?: boolean): string => {
-  if (showSpinner) {
-    return "spinner";
-  }
+const getIconName = (powerState: PowerState): string => {
   switch (powerState) {
     case PowerState.ERROR:
       return "power-error";
@@ -38,17 +39,23 @@ const PowerIcon = ({
 }: Props): React.ReactElement => {
   const iconClass = classNames(className, {
     "is-inline": Boolean(children),
-    "u-animation--spin": showSpinner,
   });
-  const iconName = getIconName(powerState, showSpinner);
 
   return (
     <span>
-      <Icon
-        aria-label={showSpinner ? "loading" : powerState}
-        className={iconClass}
-        name={iconName}
-      />
+      {showSpinner ? (
+        <Spinner
+          aria-label="loading"
+          className={iconClass}
+          rootPath={dsIconRoot}
+        />
+      ) : (
+        <Icon
+          aria-label={powerState}
+          className={iconClass}
+          name={getIconName(powerState)}
+        />
+      )}
       {children}
     </span>
   );

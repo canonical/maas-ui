@@ -6,7 +6,6 @@ import type { MultiSelectItem } from "@canonical/react-components";
 import {
   SearchBox,
   Notification as NotificationBanner,
-  Spinner,
   Strip,
 } from "@canonical/react-components";
 
@@ -22,6 +21,7 @@ import type {
   UiSourceAvailableImageResponse,
 } from "@/app/apiclient";
 import FormikForm from "@/app/base/components/FormikForm";
+import Spinner from "@/app/base/components/Spinner";
 import type {
   SelectedImage,
   SelectUpstreamImagesStepValues,

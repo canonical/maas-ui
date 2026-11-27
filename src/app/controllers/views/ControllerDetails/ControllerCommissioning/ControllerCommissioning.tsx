@@ -1,8 +1,9 @@
 import { useEffect } from "react";
 
-import { Spinner, usePrevious } from "@canonical/react-components";
+import { usePrevious } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 
+import Spinner from "@/app/base/components/Spinner";
 import NodeTestsTable from "@/app/base/components/node/NodeTestsTable";
 import { useWindowTitle } from "@/app/base/hooks";
 import controllerSelectors from "@/app/store/controller/selectors";

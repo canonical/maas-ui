@@ -1,11 +1,11 @@
 import { ContentSection } from "@canonical/maas-react-components";
-import { Spinner } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 
 import TLSDisabled from "./TLSDisabled";
 import TLSEnabled from "./TLSEnabled";
 
 import PageContent from "@/app/base/components/PageContent";
+import Spinner from "@/app/base/components/Spinner";
 import { useFetchActions, useWindowTitle } from "@/app/base/hooks";
 import { generalActions } from "@/app/store/general";
 import { tlsCertificate as tlsCertificateSelectors } from "@/app/store/general/selectors";

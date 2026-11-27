@@ -10,7 +10,6 @@ import type { CustomSelectProps } from "@canonical/react-components";
 import {
   CustomSelect,
   Notification,
-  Spinner,
   Tooltip,
 } from "@canonical/react-components";
 import { useFormikContext } from "formik";
@@ -25,6 +24,7 @@ import { usePowerTypes } from "@/app/api/query/powerTypes";
 import { useSystemInfo } from "@/app/api/query/system";
 import FormikField from "@/app/base/components/FormikField";
 import { FormikFieldChangeError } from "@/app/base/components/FormikField/FormikField";
+import Spinner from "@/app/base/components/Spinner";
 import { useFetchActions } from "@/app/base/hooks";
 import type { AnyObject } from "@/app/base/types";
 import { generalActions } from "@/app/store/general";

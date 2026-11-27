@@ -1,6 +1,5 @@
 import type { ReactElement } from "react";
 
-import { Spinner } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 import { Link } from "react-router";
 
@@ -8,6 +7,7 @@ import NumaCard from "./NumaCard";
 import WorkloadCard from "./WorkloadCard";
 
 import NodeSummaryNetworkCard from "@/app/base/components/NodeSummaryNetworkCard";
+import Spinner from "@/app/base/components/Spinner";
 import HardwareCard from "@/app/base/components/node/HardwareCard";
 import OverviewCard from "@/app/base/components/node/OverviewCard";
 import TestResults from "@/app/base/components/node/TestResults";
