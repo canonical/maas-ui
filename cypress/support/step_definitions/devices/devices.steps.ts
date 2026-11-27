@@ -14,9 +14,9 @@ Given("the user adds a new device", () => {
 When("the user opens the device configuration", () => {
   cy.findByRole("link", { name: /cypress-device/ }).click();
 
-  cy.findByRole("tab", {
-    name: /Configuration/,
-  }).click();
+  cy.findByRole("navigation", { name: "Section navigation" }).within(() => {
+    cy.findByRole("link", { name: /Configuration/ }).click();
+  });
 });
 
 When("the user adds a tag to the device", () => {
@@ -46,6 +46,8 @@ Then("the section header title should be {string}", (expectedTitle: string) => {
 });
 
 Then("the tag should be visible in the device summary", () => {
-  cy.findByRole("tab", { name: /Summary/ }).click();
+  cy.findByRole("navigation", { name: "Section navigation" }).within(() => {
+    cy.findByRole("link", { name: /Summary/ }).click();
+  });
   cy.findByText(new RegExp(tag, "i")).should("exist");
 });
