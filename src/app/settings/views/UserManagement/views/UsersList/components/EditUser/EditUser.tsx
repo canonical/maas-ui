@@ -2,9 +2,7 @@ import type { ReactElement } from "react";
 import { useState } from "react";
 
 import { useSidePanel } from "@canonical/maas-react-components";
-import {
-  Notification as NotificationBanner,
-} from "@canonical/react-components";
+import { Notification as NotificationBanner } from "@canonical/react-components";
 import { useQueryClient } from "@tanstack/react-query";
 import * as Yup from "yup";
 
