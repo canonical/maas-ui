@@ -3,7 +3,6 @@ import { useState } from "react";
 import { Col, Modal, Row, Textarea } from "@canonical/react-components";
 import { useFormikContext } from "formik";
 import { useSelector } from "react-redux";
-import usePortal from "react-useportal";
 import * as Yup from "yup";
 
 import type { NodeConfigurationValues } from "./types";
@@ -13,6 +12,7 @@ import { FormikFieldChangeError } from "@/app/base/components/FormikField/Formik
 import NodeTagForm from "@/app/base/components/NodeTagForm";
 import TagIdField from "@/app/base/components/TagIdField";
 import ZoneSelect from "@/app/base/components/ZoneSelect";
+import usePortal from "@/app/base/hooks/usePortal";
 import type { RootState } from "@/app/store/root/types";
 import tagSelectors from "@/app/store/tag/selectors";
 

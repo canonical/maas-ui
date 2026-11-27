@@ -108,10 +108,10 @@ When("the user creates a subnet with a known CIDR", () => {
   const cidr = `192.168.${Math.floor(Math.random() * 100) + 100}.0/24`;
   const knownIp = cidr.replace(".0/24", ".25");
 
-  Cypress.env("knownSubnetName", subnetName);
-  Cypress.env("knownSubnetCidr", cidr);
-  Cypress.env("knownDeviceIp", knownIp);
-  Cypress.env("useKnownDeviceIpForDnsRecordTest", true);
+  Cypress.expose("knownSubnetName", subnetName);
+  Cypress.expose("knownSubnetCidr", cidr);
+  Cypress.expose("knownDeviceIp", knownIp);
+  Cypress.expose("useKnownDeviceIpForDnsRecordTest", true);
 
   cy.findByRole("button", { name: "Add" }).click();
   cy.findByRole("menuitem", { name: "Subnet" }).click();

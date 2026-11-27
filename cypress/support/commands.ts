@@ -11,51 +11,51 @@ import {
 import type { A11yPageContext } from "./e2e";
 
 Cypress.Commands.add("login", (options) => {
-  const defaultOptions = {
-    username: Cypress.env("username"),
-    password: Cypress.env("password"),
-    shouldSkipIntro: true,
-    shouldSkipSetupIntro: true,
-  };
-  const { username, password, shouldSkipIntro, shouldSkipSetupIntro } = {
-    ...defaultOptions,
-    ...options,
-  };
+  cy.env(["password"]).then(({ password: defaultPassword }) => {
+    const {
+      username = Cypress.expose("username"),
+      password = defaultPassword,
+      shouldSkipIntro = true,
+      shouldSkipSetupIntro = true,
+    } = options ?? {};
 
-  shouldSkipSetupIntro
-    ? cy.setCookie("skipsetupintro", "true")
-    : cy.setCookie("skipsetupintro", "false");
-  shouldSkipIntro
-    ? cy.setCookie("skipintro", "true")
-    : cy.setCookie("skipintro", "false");
+    shouldSkipSetupIntro
+      ? cy.setCookie("skipsetupintro", "true")
+      : cy.setCookie("skipsetupintro", "false");
+    shouldSkipIntro
+      ? cy.setCookie("skipintro", "true")
+      : cy.setCookie("skipintro", "false");
 
-  cy.request({
-    method: "POST",
-    url: `${Cypress.env("BASENAME")}/a/v3/auth/login`,
-    form: true,
-    body: {
-      username,
-      password,
-    },
-  }).then((resp) => {
-    const { access_token, refresh_token } = resp.body;
+    cy.request({
+      method: "POST",
+      url: `${Cypress.expose("BASENAME")}/a/v3/auth/login`,
+      form: true,
+      body: {
+        username,
+        password,
+      },
+    }).then((resp) => {
+      const { access_token, refresh_token } = resp.body;
 
-    cy.setCookie("maas.local_jwt_token_cookie", access_token, {
-      sameSite: "strict",
-      path: "/",
-    });
+      cy.setCookie("maas.local_jwt_token_cookie", access_token, {
+        sameSite: "strict",
+        path: "/",
+      });
 
-    cy.setCookie("maas.local_refresh_token_cookie", refresh_token, {
-      sameSite: "strict",
-      path: "/",
+      cy.setCookie("maas.local_refresh_token_cookie", refresh_token, {
+        sameSite: "strict",
+        path: "/",
+      });
     });
   });
 });
 
 Cypress.Commands.add("loginNonAdmin", () => {
-  cy.login({
-    username: Cypress.env("nonAdminUsername"),
-    password: Cypress.env("nonAdminPassword"),
+  cy.env(["nonAdminPassword"]).then(({ nonAdminPassword }) => {
+    cy.login({
+      username: Cypress.expose("nonAdminUsername"),
+      password: nonAdminPassword,
+    });
   });
 });
 
@@ -188,7 +188,7 @@ Cypress.Commands.add("testA11y", (pageContext) => {
       },
     },
     (violations) => logViolations(violations, pageContext),
-    Cypress.env("skipA11yFailures")
+    Cypress.expose("skipA11yFailures")
   );
 });
 

@@ -33,6 +33,7 @@ Scenario: Clicking a button expands and collapses the side navigation
 
 Scenario: Opening and closing the menu on mobile
     Given the viewport is "iphone-8"
+    And the page is loaded
     And the main navigation should not be visible 
     When the user clicks the "Menu" button in the navigation banner
     Then the main navigation should be visible
@@ -41,6 +42,7 @@ Scenario: Opening and closing the menu on mobile
 
 Scenario: Clicking a link automatically closes the menu on mobile
     Given the viewport is "iphone-8"
+    And the page is loaded
     And the main navigation should not be visible
     When the user clicks the "Menu" button in the navigation banner
     And the user clicks the "devices" link in the main navigation

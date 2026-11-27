@@ -5,15 +5,15 @@ let deviceName = "";
 
 When("the user enters valid device details", () => {
   deviceName = generateName("device");
-  Cypress.env("createdDeviceName", deviceName);
+  Cypress.expose("createdDeviceName", deviceName);
 
   cy.findByLabelText(/Device name/).type(deviceName);
   cy.get("input[placeholder='00:00:00:00:00:00']").type(generateMac());
 
-  const shouldUseKnownIp = !!Cypress.env("useKnownDeviceIpForDnsRecordTest");
+  const shouldUseKnownIp = !!Cypress.expose("useKnownDeviceIpForDnsRecordTest");
   if (shouldUseKnownIp) {
-    const knownSubnetCidr = String(Cypress.env("knownSubnetCidr") || "");
-    const knownDeviceIp = String(Cypress.env("knownDeviceIp") || "");
+    const knownSubnetCidr = String(Cypress.expose("knownSubnetCidr") || "");
+    const knownDeviceIp = String(Cypress.expose("knownDeviceIp") || "");
 
     expect(knownSubnetCidr, "known subnet CIDR").to.not.equal("");
     expect(knownDeviceIp, "known device IP").to.not.equal("");
@@ -35,7 +35,7 @@ When("the user enters valid device details", () => {
     const suffix = knownDeviceIp.split(".").pop() || knownDeviceIp;
     cy.findByRole("textbox", { name: /IP address/i }).type(suffix);
 
-    Cypress.env("useKnownDeviceIpForDnsRecordTest", false);
+    Cypress.expose("useKnownDeviceIpForDnsRecordTest", false);
   }
 });
 
