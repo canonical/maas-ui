@@ -1,9 +1,9 @@
-import { Tabs } from "@canonical/react-components";
 import { Link, Route, Routes, useLocation } from "react-router";
 
 import ScriptStatus from "../../ScriptStatus";
 import NodeTestDetails from "../NodeTestDetails/NodeTestDetails";
 
+import Tabs from "@/app/base/components/Tabs";
 import MachineCommissioning from "@/app/machines/views/MachineDetails/MachineCommissioning";
 import MachineDeployment from "@/app/machines/views/MachineDetails/MachineDeployment";
 import MachineTests from "@/app/machines/views/MachineDetails/MachineTests";
@@ -55,6 +55,7 @@ const NodeScripts = ({ node, urls }: Props) => {
   return (
     <>
       <Tabs
+        aria-label="Scripts"
         links={[
           {
             active:

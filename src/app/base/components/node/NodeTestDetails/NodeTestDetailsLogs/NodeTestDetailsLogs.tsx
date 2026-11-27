@@ -1,8 +1,7 @@
 import { useState } from "react";
 
-import { Tabs } from "@canonical/react-components";
-
 import CodeBlock from "@/app/base/components/CodeBlock";
+import Tabs from "@/app/base/components/Tabs";
 import type { ScriptResultData } from "@/app/store/scriptresult/types";
 import { ScriptResultDataType } from "@/app/store/scriptresult/types";
 
@@ -33,7 +32,7 @@ const NodeTestDetailsLogs = ({ log }: Props): React.ReactElement => {
 
   return (
     <>
-      <Tabs links={links} />
+      <Tabs aria-label="Log output" links={links} />
       <CodeBlock className="u-no-margin--bottom" data-testid="log-content">
         {tabText === "" ? "No data" : tabText}
       </CodeBlock>

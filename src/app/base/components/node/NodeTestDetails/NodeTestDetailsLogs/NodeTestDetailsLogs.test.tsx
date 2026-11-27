@@ -28,7 +28,7 @@ describe("NodeTestDetailsLogs", () => {
     const log = factory.scriptResultData();
 
     render(<NodeTestDetailsLogs log={log} />);
-    await userEvent.click(screen.getByTestId("tab-link-yaml"));
+    await userEvent.click(screen.getByRole("link", { name: "yaml" }));
 
     expect(screen.getByTestId("log-content")).toHaveTextContent("yaml result");
   });
@@ -37,7 +37,7 @@ describe("NodeTestDetailsLogs", () => {
     const log = factory.scriptResultData();
 
     render(<NodeTestDetailsLogs log={log} />);
-    await userEvent.click(screen.getByTestId("tab-link-stderr"));
+    await userEvent.click(screen.getByRole("link", { name: "stderr" }));
 
     expect(screen.getByTestId("log-content")).toHaveTextContent("No data");
   });
