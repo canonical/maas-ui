@@ -115,6 +115,9 @@ const NetworkDiscoverySettings = lazy(
   () => import("@/app/settings/views/Network/NetworkDiscoverySettings")
 );
 const Networks = lazy(() => import("@/app/networks"));
+const NotificationsList = lazy(
+  () => import("@/app/notifications/views/NotificationsList")
+);
 const PoolsList = lazy(() => import("@/app/pools/views/PoolsList"));
 const RacksList = lazy(() => import("@/app/racks/views/RacksList"));
 const SwitchesList = lazy(() => import("@/app/switches/views/SwitchesList"));
@@ -651,6 +654,18 @@ export const router = createBrowserRouter(
                 >
                   <ErrorBoundary>
                     <RacksList />
+                  </ErrorBoundary>
+                </RequireEntitlements>
+              ),
+            },
+            {
+              path: `${urls.notifications.index}/*`,
+              element: (
+                <RequireEntitlements
+                  entitlements={[Entitlement.CAN_VIEW_NOTIFICATIONS]}
+                >
+                  <ErrorBoundary>
+                    <NotificationsList />
                   </ErrorBoundary>
                 </RequireEntitlements>
               ),

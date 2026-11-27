@@ -1,0 +1,16 @@
+.p-generic-table.notifications-table {
+  th,
+  td {
+    &.message {
+      width: 60%;
+    }
+
+    &.category {
+      width: 15%;
+    }
+
+    &.action {
+      width: 20%;
+    }
+  }
+}

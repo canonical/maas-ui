@@ -4,11 +4,11 @@ import { SortDirection } from "@/app/base/types";
 import { PowerFieldScope } from "@/app/store/general/types";
 import type {
   FetchFilters,
+  FilterGroupOptionType,
   Machine,
   MachineDetails,
-  SelectedMachines,
-  FilterGroupOptionType,
   MachineStateListGroup,
+  SelectedMachines,
 } from "@/app/store/machine/types";
 import { FetchSortDirection, FilterGroupKey } from "@/app/store/machine/types";
 import type { Tag, TagMeta } from "@/app/store/tag/types";
